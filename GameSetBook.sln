@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameSetBook.Web", "GameSetB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameSetBook.Infrastructure", "GameSetBook.Infrastructure\GameSetBook.Infrastructure.csproj", "{A93038B9-289B-4CF9-AEBE-BBDAED8BBAE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameSetBook.Core", "GameSetBook.Core\GameSetBook.Core.csproj", "{CDEFCE19-62CC-47A8-AB39-D7C7940DF134}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameSetBook.Common", "GameSetBook.Common\GameSetBook.Common.csproj", "{77A01E53-6343-4AE5-BC87-27E6F5F0FF2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{A93038B9-289B-4CF9-AEBE-BBDAED8BBAE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A93038B9-289B-4CF9-AEBE-BBDAED8BBAE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A93038B9-289B-4CF9-AEBE-BBDAED8BBAE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDEFCE19-62CC-47A8-AB39-D7C7940DF134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDEFCE19-62CC-47A8-AB39-D7C7940DF134}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDEFCE19-62CC-47A8-AB39-D7C7940DF134}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDEFCE19-62CC-47A8-AB39-D7C7940DF134}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77A01E53-6343-4AE5-BC87-27E6F5F0FF2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77A01E53-6343-4AE5-BC87-27E6F5F0FF2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77A01E53-6343-4AE5-BC87-27E6F5F0FF2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77A01E53-6343-4AE5-BC87-27E6F5F0FF2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
