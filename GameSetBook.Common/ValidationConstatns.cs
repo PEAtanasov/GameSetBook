@@ -28,8 +28,14 @@ namespace GameSetBook.Common
 
         public static class CityConstants
         {
-            public const int NameMinLength = 2;
+            public const int NameMinLength = 3;
             public const int NameMaxLength = 50;
+        }
+
+        public static class CountryConstants
+        {
+            public const int NameMinLength = 4;
+            public const int NameMaxLength = 56;
         }
     }
 }
