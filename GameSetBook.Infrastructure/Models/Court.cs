@@ -1,7 +1,8 @@
-﻿using GameSetBook.Infrastructure.Models.Enums;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
+using GameSetBook.Infrastructure.Models.Enums;
 using static GameSetBook.Common.ValidationConstatns.CourtConstants;
 
 namespace GameSetBook.Infrastructure.Models

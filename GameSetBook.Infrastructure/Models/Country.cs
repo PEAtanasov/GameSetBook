@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
+using static GameSetBook.Common.ValidationConstatns.CountryConstants;
+
 namespace GameSetBook.Infrastructure.Models
 {
     /// <summary>
@@ -25,7 +27,7 @@ namespace GameSetBook.Infrastructure.Models
         /// Country name
         /// </summary>
         [Required]
-        [MaxLength(100)]
+        [MaxLength(NameMaxLength)]
         [Comment("Country name")]
         public string Name { get; set; } = string.Empty;
 
