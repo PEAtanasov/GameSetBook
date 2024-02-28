@@ -37,5 +37,11 @@ namespace GameSetBook.Common
             public const int NameMinLength = 4;
             public const int NameMaxLength = 56;
         }
+
+        public static class CourtConstants
+        {
+            public const int NameMinLength = 1;
+            public const int NameMaxLength = 20;
+        }
     }
 }
