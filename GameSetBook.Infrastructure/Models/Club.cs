@@ -141,6 +141,13 @@ namespace GameSetBook.Infrastructure.Models
         public string PhoneNumber { get; set; } = string.Empty;
 
         /// <summary>
+        /// Is the club active
+        /// </summary>
+        [Required]
+        [Comment("Is the club active")]
+        public bool IsActive { get; set; }
+
+        /// <summary>
         /// Club owner's identifier
         /// </summary>
         [Required]

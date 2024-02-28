@@ -25,5 +25,11 @@ namespace GameSetBook.Common
             public const int PhoneMinLength = 6;
             public const int PhoneMaxLength = 15;
         }
+
+        public static class CityConstants
+        {
+            public const int NameMinLength = 2;
+            public const int NameMaxLength = 50;
+        }
     }
 }
