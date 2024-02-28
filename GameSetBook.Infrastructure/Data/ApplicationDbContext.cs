@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace GameSetBook.Web.Data
+namespace GameSetBook.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
