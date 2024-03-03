@@ -1,4 +1,4 @@
-namespace GameSetBook.Web.Models
+namespace GameSetBook.Core.Models
 {
     public class ErrorViewModel
     {

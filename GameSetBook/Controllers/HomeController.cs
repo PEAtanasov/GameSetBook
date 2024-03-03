@@ -1,6 +1,8 @@
-﻿using GameSetBook.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+
+using GameSetBook.Core.Models;
+using System.Security.Claims;
 
 namespace GameSetBook.Web.Controllers
 {
@@ -15,6 +17,7 @@ namespace GameSetBook.Web.Controllers
 
         public IActionResult Index()
         {
+            var firstNameClaim = HttpContext.User.FindFirst(ClaimTypes.GivenName)?.Value;
             return View();
         }
 

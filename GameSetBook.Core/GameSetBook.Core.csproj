@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GameSetBook.Common\GameSetBook.Common.csproj" />
+    <ProjectReference Include="..\GameSetBook.Infrastructure\GameSetBook.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

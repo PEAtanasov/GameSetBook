@@ -14,6 +14,7 @@ namespace GameSetBook.Infrastructure.Models
         public Country()
         {
             Cities = new List<City>();
+            Profiles = new List<GameSetMatchUpProfile>();
         }
 
         /// <summary>
@@ -32,5 +33,6 @@ namespace GameSetBook.Infrastructure.Models
         public string Name { get; set; } = string.Empty;
 
         public ICollection<City> Cities { get; set;}
+        public ICollection<GameSetMatchUpProfile> Profiles { get; set; }
     }
 }
