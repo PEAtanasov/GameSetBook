@@ -47,6 +47,20 @@ namespace GameSetBook.Infrastructure.Models
         public bool IsLighted {  get; set; }
 
         /// <summary>
+        /// Price for renting court per one hour
+        /// </summary>
+        [Required]
+        [Comment("Price for renting court per one hour")]
+        public decimal PricePerHour { get; set; }
+
+        /// <summary>
+        /// Is the court indoor
+        /// </summary>
+        [Required]
+        [Comment("Is the court indoor")]
+        public bool IsIndoor { get; set; }
+
+        /// <summary>
         /// Is the court active
         /// </summary>
         [Required]

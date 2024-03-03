@@ -118,11 +118,12 @@ namespace GameSetBook.Infrastructure.Models
         public bool HasShop { get; set; }
 
         /// <summary>
-        /// Price for renting court per one hour
+        /// Club's logo Url
         /// </summary>
         [Required]
-        [Comment("Price for renting court per one hour")]
-        public decimal CourtPricePerHour { get; set; }
+        [Comment("Club's logo Url")]
+        [MaxLength(ClubLogoUrlMaxLength)]
+        public string LogoUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// Club's email

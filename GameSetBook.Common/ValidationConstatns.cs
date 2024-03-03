@@ -18,6 +18,10 @@
 
             public const int PhoneMinLength = 6;
             public const int PhoneMaxLength = 15;
+
+            public const int ClubLogoUrlMaxLength = 1024;
+
+            public const string DefaultClubLogoUrl = "images/club_logo/default_club_logo.png";
         }
 
         public static class CityConstants
@@ -45,6 +49,10 @@
 
             public const int LastNameMinLength = 1;
             public const int LastNameMaxLength = 30;
+
+            public const int ProfileImageUrlMaxLength = 1024;
+
+            public const string DefaultProfileImageUrl = "images/profile/default_image_profile.png";
         }
     }
 }

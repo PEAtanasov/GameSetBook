@@ -37,6 +37,14 @@ namespace GameSetBook.Infrastructure.Models
         public string LastName { get; set; } = string.Empty;
 
         /// <summary>
+        /// Url reference to the profile image
+        /// </summary>
+        [Required]
+        [Comment("Url reference to the profile image")]
+        [MaxLength(ProfileImageUrlMaxLength)]
+        public string ProfileImageUrl { get; set; } = string.Empty.ToString();
+
+        /// <summary>
         /// User identifier
         /// </summary>
         [Required]

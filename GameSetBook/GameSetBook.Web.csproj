@@ -20,4 +20,9 @@
     <ProjectReference Include="..\GameSetBook.Infrastructure\GameSetBook.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\club_logo\" />
+    <Folder Include="wwwroot\images\profile\" />
+  </ItemGroup>
+
 </Project>
