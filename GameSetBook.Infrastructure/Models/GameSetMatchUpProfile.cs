@@ -37,6 +37,13 @@ namespace GameSetBook.Infrastructure.Models
         public string LastName { get; set; } = string.Empty;
 
         /// <summary>
+        /// Player description
+        /// </summary>
+        [Comment("Player description")]
+        [MaxLength(DescriptionMaxLength)]
+        public string? PlayerDescription { get; set; }
+
+        /// <summary>
         /// Url reference to the profile image
         /// </summary>
         [Required]

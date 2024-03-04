@@ -149,6 +149,21 @@ namespace GameSetBook.Infrastructure.Models
         public bool IsActive { get; set; }
 
         /// <summary>
+        /// Is the club aprooved from app admin
+        /// </summary>
+        [Required]
+        [Comment("Is the club aprooved from app admin")]
+        public bool IsAproovedFromAdmin { get; set; }
+
+        /// <summary>
+        /// Club rating given from its clients
+        /// </summary>
+        [Required]
+        [Comment("Club rating given from its clients")]
+        [Range(RatingMinValue,RatingMaxValue, ConvertValueInInvariantCulture =false)]
+        public double Rating { get; set; }
+
+        /// <summary>
         /// Club owner's identifier
         /// </summary>
         [Required]

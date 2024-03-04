@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using static GameSetBook.Common.ValidationConstatns.BookingConstants;
+
 namespace GameSetBook.Infrastructure.Models
 {
     /// <summary>
@@ -62,6 +64,14 @@ namespace GameSetBook.Infrastructure.Models
         [Required]
         [Comment("Date of the booking")]
         public DateTime BookingDate { get; set; }
+
+        /// <summary>
+        /// Client's name
+        /// </summary>
+        [Required]
+        [Comment("Client's name")]
+        [MaxLength(ClientNameMaxLength)]
+        public string ClientName { get; set; } = string.Empty;
 
         /// <summary>
         /// Client identifier

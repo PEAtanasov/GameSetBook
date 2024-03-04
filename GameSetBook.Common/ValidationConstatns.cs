@@ -19,6 +19,9 @@
             public const int PhoneMinLength = 6;
             public const int PhoneMaxLength = 15;
 
+            public const double RatingMinValue = 0.00;
+            public const double RatingMaxValue = 10.00;
+
             public const int ClubLogoUrlMaxLength = 1024;
 
             public const string DefaultClubLogoUrl = "images/club_logo/default_club_logo.png";
@@ -50,9 +53,16 @@
             public const int LastNameMinLength = 1;
             public const int LastNameMaxLength = 30;
 
+            public const int DescriptionMaxLength = 30;
+
             public const int ProfileImageUrlMaxLength = 1024;
 
             public const string DefaultProfileImageUrl = "images/profile/default_image_profile.png";
+        }
+
+        public static class BookingConstants
+        {
+            public const int ClientNameMaxLength = 50;
         }
     }
 }
