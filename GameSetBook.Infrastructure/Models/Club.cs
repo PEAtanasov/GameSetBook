@@ -153,7 +153,7 @@ namespace GameSetBook.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("Is the club aprooved from app admin")]
-        public bool IsAproovedFromAdmin { get; set; }
+        public bool IsAproovedByAdmin { get; set; }
 
         /// <summary>
         /// Club rating given from its clients
