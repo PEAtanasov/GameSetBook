@@ -23,8 +23,6 @@
             public const double RatingMaxValue = 10.00;
 
             public const int ClubLogoUrlMaxLength = 1024;
-
-            public const string DefaultClubLogoUrl = "images/club_logo/default_club_logo.png";
         }
 
         public static class CityConstants
@@ -56,13 +54,24 @@
             public const int DescriptionMaxLength = 30;
 
             public const int ProfileImageUrlMaxLength = 1024;
-
-            public const string DefaultProfileImageUrl = "images/profile/default_image_profile.png";
         }
 
         public static class BookingConstants
         {
             public const int ClientNameMaxLength = 50;
         }
+
+        public static class ReviewConstants
+        {
+            public const int ReviewtTitleMinLength = 1;
+            public const int ReviewtTitleMaxLength = 20;
+
+            public const int ReviewtDescriptionMinLength = 1;
+            public const int ReviewtDescriptionMaxLength = 100;
+
+            public const int ReviewMinRate = 1;
+            public const int ReviewtMaxRate = 10;
+        }
+
     }
 }

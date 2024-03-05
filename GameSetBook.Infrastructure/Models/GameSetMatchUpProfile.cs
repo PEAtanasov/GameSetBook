@@ -49,7 +49,7 @@ namespace GameSetBook.Infrastructure.Models
         [Required]
         [Comment("Url reference to the profile image")]
         [MaxLength(ProfileImageUrlMaxLength)]
-        public string ProfileImageUrl { get; set; } = string.Empty.ToString();
+        public string ProfileImageUrl { get; set; } = Common.ImageSource.DefaultProfileImageUrl;
 
         /// <summary>
         /// User identifier
