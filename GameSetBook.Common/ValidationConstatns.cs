@@ -58,7 +58,11 @@
 
         public static class BookingConstants
         {
-            public const int ClientNameMaxLength = 50;
+            public const int ClientNameMinLength = 2;
+            public const int ClientNameMaxLength = 30;
+
+            public const int ClientPhoneMinLength = 5;
+            public const int ClientPhoneMaxLength = 15;
         }
 
         public static class ReviewConstants
@@ -71,6 +75,15 @@
 
             public const int ReviewMinRate = 1;
             public const int ReviewtMaxRate = 10;
+        }
+
+        public static class MessageConstants
+        {
+            public const int TitleMinLength = 1;
+            public const int TitleMaxLength = 50;
+
+            public const int ContentMinLength = 1;
+            public const int ContentMaxLength = 2000;
         }
 
     }
