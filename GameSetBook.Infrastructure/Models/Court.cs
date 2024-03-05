@@ -75,8 +75,8 @@ namespace GameSetBook.Infrastructure.Models
         [ForeignKey(nameof(Club))]
         public string ClubId { get; set; } = string.Empty;
 
-        public Club Club { get; set; } = null!;
+        public virtual Club Club { get; set; } = null!;
 
-        public ICollection<Booking> Bookings { get; set; }
+        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }

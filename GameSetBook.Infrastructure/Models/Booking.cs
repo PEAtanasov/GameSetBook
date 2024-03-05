@@ -81,7 +81,7 @@ namespace GameSetBook.Infrastructure.Models
         [ForeignKey(nameof(Client))]
         public string ClientId { get; set; } = string.Empty;
 
-        public IdentityUser Client { get; set; } = null!;
+        public virtual IdentityUser Client { get; set; } = null!;
 
         /// <summary>
         /// Court identifier

@@ -51,7 +51,7 @@ namespace GameSetBook.Infrastructure.Models
         [Comment("Current review's club identifier")]
         public string ClubId { get; set; } = string.Empty;
 
-        public Club Club { get; set; } = null!;
+        public virtual Club Club { get; set; } = null!;
 
         /// <summary>
         /// Current review's reviewer identifier
@@ -61,6 +61,6 @@ namespace GameSetBook.Infrastructure.Models
         [Comment("Current review's reviewer identifier")]
         public string ReviewerId { get; set; } = string.Empty;
 
-        public IdentityUser Reviewer { get; set; } = null!;
+        public virtual IdentityUser Reviewer { get; set; } = null!;
     }
 }
