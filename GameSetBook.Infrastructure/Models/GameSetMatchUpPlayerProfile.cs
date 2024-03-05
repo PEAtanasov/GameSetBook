@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GameSetBook.Infrastructure.Models.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,8 +12,12 @@ namespace GameSetBook.Infrastructure.Models
     /// GameSetMatchUp player profile entity
     /// </summary>
     [Comment("GameSetMatchUp player profile entity")]
-    public class GameSetMatchUpProfile
+    public class GameSetMatchUpPlayerProfile
     {
+        public GameSetMatchUpPlayerProfile()
+        {
+            TournamentsGSMUPlayerProfile = new List<TournamentGSMUPlayerProfile>();
+        }
         /// <summary>
         /// Profile identifier
         /// </summary>
@@ -44,6 +49,20 @@ namespace GameSetBook.Infrastructure.Models
         public string? PlayerDescription { get; set; }
 
         /// <summary>
+        /// Player's level
+        /// </summary>
+        [Required]
+        [Comment("Player's level")]
+        public PlayerLevel PlayerLevel { get; set; }
+
+        /// <summary>
+        /// Player's level
+        /// </summary>
+        [Required]
+        [Comment("Player's level")]
+        public PlayStyle PlayStyle { get; set; }
+
+        /// <summary>
         /// Url reference to the profile image
         /// </summary>
         [Required]
@@ -59,7 +78,7 @@ namespace GameSetBook.Infrastructure.Models
         [Comment("User identifier")]
         public string UserId { get; set; } = string.Empty;
 
-        public IdentityUser User { get; set; } = null!;
+        public virtual IdentityUser User { get; set; } = null!;
 
         /// <summary>
         /// User's city
@@ -69,7 +88,7 @@ namespace GameSetBook.Infrastructure.Models
         [ForeignKey(nameof(City))]
         public int CityId { get; set; }
 
-        public City City { get; set; } = null!;
+        public virtual City City { get; set; } = null!;
 
         /// <summary>
         /// User's country
@@ -79,6 +98,8 @@ namespace GameSetBook.Infrastructure.Models
         [ForeignKey(nameof(Country))]
         public int CountryId { get; set; }
 
-        public Country Country { get; set; } = null!;
+        public virtual Country Country { get; set; } = null!;
+
+        public virtual ICollection<TournamentGSMUPlayerProfile> TournamentsGSMUPlayerProfile { get; set; }
     }
 }
