@@ -17,6 +17,7 @@ namespace GameSetBook.Infrastructure.Models
         {
             Id= Guid.NewGuid().ToString();
             Courts = new List<Court>();
+            ClubReviews = new List<ClubReview>();
         }
         /// <summary>
         /// Club identifier
@@ -39,7 +40,7 @@ namespace GameSetBook.Infrastructure.Models
         [Required]
         [Comment("Club description")]
         [MaxLength(DescriptionMaxLength)]
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; } = Common.ImageSource.DefaultClubLogoUrl;
 
         /// <summary>
         /// Club working time start
@@ -158,10 +159,15 @@ namespace GameSetBook.Infrastructure.Models
         /// <summary>
         /// Club rating given from its clients
         /// </summary>
-        [Required]
-        [Comment("Club rating given from its clients")]
-        [Range(RatingMinValue,RatingMaxValue, ConvertValueInInvariantCulture =false)]
-        public double Rating { get; set; }
+        [NotMapped]
+        public double Rating 
+        {
+            get
+            {
+                double averageRate = ClubReviews.Average(x => x.Rate);
+                return Math.Round(averageRate, 1);
+            }
+        }
 
         /// <summary>
         /// Club owner's identifier
@@ -173,5 +179,7 @@ namespace GameSetBook.Infrastructure.Models
         public virtual IdentityUser ClubOwner { get; set; } = null!;
 
         public virtual ICollection<Court> Courts { get; set; }
+
+        public virtual ICollection<ClubReview> ClubReviews { get; set; }
     }
 }
