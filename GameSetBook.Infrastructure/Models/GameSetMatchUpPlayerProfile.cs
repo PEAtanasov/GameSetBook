@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using static GameSetBook.Common.ValidationConstatns.GameSetMatchUpProfileGConstants;
+using static GameSetBook.Common.ImageSource;
+using GameSetBook.Infrastructure.Models.Contracts;
 
 namespace GameSetBook.Infrastructure.Models
 {
@@ -12,11 +14,13 @@ namespace GameSetBook.Infrastructure.Models
     /// GameSetMatchUp player profile entity
     /// </summary>
     [Comment("GameSetMatchUp player profile entity")]
-    public class GameSetMatchUpPlayerProfile
+    public class GameSetMatchUpPlayerProfile : IDeletable
     {
         public GameSetMatchUpPlayerProfile()
         {
             TournamentsGSMUPlayerProfile = new List<TournamentGSMUPlayerProfile>();
+            ReceivedMessages = new List<Message>();
+            SentMessages = new List<Message>();
         }
         /// <summary>
         /// Profile identifier
@@ -68,7 +72,20 @@ namespace GameSetBook.Infrastructure.Models
         [Required]
         [Comment("Url reference to the profile image")]
         [MaxLength(ProfileImageUrlMaxLength)]
-        public string ProfileImageUrl { get; set; } = Common.ImageSource.DefaultProfileImageUrl;
+        public string ProfileImageUrl { get; set; } = DefaultProfileImageUrl;
+
+        /// <summary>
+        /// Is the record deleted
+        /// </summary>
+        [Required]
+        [Comment("IsDeleted the record deleted")]
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// Deleted on date
+        /// </summary>
+        [Comment("Deleted on date")]
+        public DateTime? DeletedOn { get; set; }
 
         /// <summary>
         /// User identifier
@@ -101,5 +118,8 @@ namespace GameSetBook.Infrastructure.Models
         public virtual Country Country { get; set; } = null!;
 
         public virtual ICollection<TournamentGSMUPlayerProfile> TournamentsGSMUPlayerProfile { get; set; }
+
+        public virtual ICollection<Message> ReceivedMessages { get; set; }
+        public virtual ICollection<Message> SentMessages { get; set; }
     }
 }

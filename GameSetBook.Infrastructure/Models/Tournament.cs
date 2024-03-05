@@ -1,6 +1,5 @@
 ﻿using GameSetBook.Infrastructure.Models.Enums;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using System.ComponentModel.DataAnnotations;
 
 namespace GameSetBook.Infrastructure.Models
@@ -59,6 +58,26 @@ namespace GameSetBook.Infrastructure.Models
         [Required]
         [Comment("Tournament end date and time")]
         public DateTime End { get; set; }
+
+        /// <summary>
+        /// Number of allowed players to join the tournament
+        /// </summary>
+        [Required]
+        [Comment("Number of allowed players to join the tournament")]
+        public int NumberOfPlayersAllowed { get; set; }
+
+        /// <summary>
+        /// Is the record deleted
+        /// </summary>
+        [Required]
+        [Comment("IsDeleted the record deleted")]
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// Deleted on date
+        /// </summary>
+        [Comment("Deleted on date")]
+        public DateTime? DeletedOn { get; set; }
 
         /// <summary>
         /// Current tournament's club identifier

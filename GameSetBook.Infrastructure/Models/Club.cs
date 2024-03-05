@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using static GameSetBook.Common.ValidationConstatns.ClubConstants;
+using static GameSetBook.Common.ImageSource;
+using GameSetBook.Infrastructure.Models.Contracts;
 
 namespace GameSetBook.Infrastructure.Models
 {
@@ -11,11 +13,12 @@ namespace GameSetBook.Infrastructure.Models
     /// Club entity
     /// </summary>
     [Comment("Club entity")]
-    public class Club
+    [Index(IsUnique = true, Name = nameof(Name))]
+    public class Club : IDeletable
     {
         public Club()
         {
-            Id= Guid.NewGuid().ToString();
+            Id = Guid.NewGuid().ToString();
             Courts = new List<Court>();
             ClubReviews = new List<ClubReview>();
         }
@@ -40,7 +43,7 @@ namespace GameSetBook.Infrastructure.Models
         [Required]
         [Comment("Club description")]
         [MaxLength(DescriptionMaxLength)]
-        public string Description { get; set; } = Common.ImageSource.DefaultClubLogoUrl;
+        public string Description { get; set; } = DefaultClubLogoUrl;
 
         /// <summary>
         /// Club working time start
@@ -150,6 +153,19 @@ namespace GameSetBook.Infrastructure.Models
         public bool IsActive { get; set; }
 
         /// <summary>
+        /// Is the record deleted
+        /// </summary>
+        [Required]
+        [Comment("IsDeleted the record deleted")]
+        public bool IsDeleted { get ; set ; }
+
+        /// <summary>
+        /// Deleted on date
+        /// </summary>
+        [Comment("Deleted on date")]
+        public DateTime? DeletedOn { get ; set ; }
+
+        /// <summary>
         /// Is the club aprooved from app admin
         /// </summary>
         [Required]
@@ -160,7 +176,7 @@ namespace GameSetBook.Infrastructure.Models
         /// Club rating given from its clients
         /// </summary>
         [NotMapped]
-        public double Rating 
+        public double Rating
         {
             get
             {
@@ -181,5 +197,6 @@ namespace GameSetBook.Infrastructure.Models
         public virtual ICollection<Court> Courts { get; set; }
 
         public virtual ICollection<ClubReview> ClubReviews { get; set; }
+       
     }
 }

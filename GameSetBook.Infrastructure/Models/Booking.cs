@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GameSetBook.Infrastructure.Models.Contracts;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,7 +12,7 @@ namespace GameSetBook.Infrastructure.Models
     /// Booking entity
     /// </summary>
     [Comment("Booking entity")]
-    public class Booking
+    public class Booking : IDeletable
     {
         public Booking()
         {
@@ -29,7 +30,7 @@ namespace GameSetBook.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("Booking price")]
-        public decimal Price {  get; set; }
+        public decimal Price { get; set; }
 
         /// <summary>
         /// is the the booking available
@@ -39,10 +40,16 @@ namespace GameSetBook.Infrastructure.Models
         public bool IsAvailable { get; set; } = true;
 
         /// <summary>
-        /// is the booking canceled
+        /// is the booking deleted/canceled
         /// </summary>
         [Comment("is the booking canceled")]
-        public bool? IsCanceled { get; set; }
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// Deleted on date and time
+        /// </summary>
+        [Comment("Deleted on date and time")]
+        public DateTime? DeletedOn { get; set; }
 
         /// <summary>
         /// Date and time booking is created
@@ -56,7 +63,7 @@ namespace GameSetBook.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("Hour of the booking")]
-        public int Hour { get; set;}
+        public int Hour { get; set; }
 
         /// <summary>
         /// Date of the booking
@@ -72,6 +79,15 @@ namespace GameSetBook.Infrastructure.Models
         [Comment("Client's name")]
         [MaxLength(ClientNameMaxLength)]
         public string ClientName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Client's phone number
+        /// </summary>
+        [Required]
+        [MaxLength(ClientNameMaxLength)]
+        [Phone]
+        [Comment("Client's phone number")]
+        public string PhoneNumber { get; set; } = string.Empty;
 
         /// <summary>
         /// Client identifier
