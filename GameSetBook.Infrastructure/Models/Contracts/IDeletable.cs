@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GameSetBook.Infrastructure.Models.Contracts
+﻿namespace GameSetBook.Infrastructure.Models.Contracts
 {
     /// <summary>
     /// Entity which can be deleted

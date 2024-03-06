@@ -1,5 +1,4 @@
-﻿using GameSetBook.Infrastructure.Models.Enums;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using static GameSetBook.Common.ValidationConstatns.GameSetMatchUpProfileGConstants;
 using static GameSetBook.Common.ImageSource;
 using GameSetBook.Infrastructure.Models.Contracts;
+using GameSetBook.Infrastructure.Models.Enums;
 
 namespace GameSetBook.Infrastructure.Models
 {

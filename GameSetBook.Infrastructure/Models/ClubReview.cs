@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 using static GameSetBook.Common.ValidationConstatns.ReviewConstants;
 
 namespace GameSetBook.Infrastructure.Models

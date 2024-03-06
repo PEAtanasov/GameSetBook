@@ -1,7 +1,8 @@
-﻿using GameSetBook.Infrastructure.Models.Contracts;
-using GameSetBook.Infrastructure.Models.Enums;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+
+using GameSetBook.Infrastructure.Models.Contracts;
+using GameSetBook.Infrastructure.Models.Enums;
 
 namespace GameSetBook.Infrastructure.Models
 {

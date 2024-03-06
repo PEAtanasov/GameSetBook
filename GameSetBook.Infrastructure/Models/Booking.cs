@@ -1,8 +1,9 @@
-﻿using GameSetBook.Infrastructure.Models.Contracts;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
+using GameSetBook.Infrastructure.Models.Contracts;
 
 using static GameSetBook.Common.ValidationConstatns.BookingConstants;
 

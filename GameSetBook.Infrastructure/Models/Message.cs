@@ -1,7 +1,7 @@
-﻿using GameSetBook.Infrastructure.Models.Contracts;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+
+using GameSetBook.Infrastructure.Models.Contracts;
 using static GameSetBook.Common.ValidationConstatns.MessageConstants;
 
 namespace GameSetBook.Infrastructure.Models
