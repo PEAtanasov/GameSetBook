@@ -30,6 +30,7 @@ namespace GameSetBook.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("Booking price")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
         /// <summary>

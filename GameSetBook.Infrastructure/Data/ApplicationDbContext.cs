@@ -81,7 +81,23 @@ namespace GameSetBook.Infrastructure.Data
             builder.Entity<Tournament>()
                 .HasQueryFilter(c => !c.IsDeleted);
 
+            // City Configuration
+            builder.Entity<City>()
+                .HasQueryFilter(c => c.Clubs.Any(cl => !cl.IsDeleted));
+            // ClubReview
+            builder.Entity<ClubReview>()
+                .HasQueryFilter(cr => !cr.Club.IsDeleted);
+
+            //Cour Configurations
+            builder.Entity<Court>()
+                .HasQueryFilter(c => !c.Club.IsDeleted);
+
+            //TournamentGSMUPlayerProfile Configuration
+            builder.Entity<TournamentGSMUPlayerProfile>()
+                .HasQueryFilter(g => !g.PlayerProile.IsDeleted);
+
             base.OnModelCreating(builder);
         }
     }
+
 }

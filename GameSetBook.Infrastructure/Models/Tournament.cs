@@ -11,6 +11,10 @@ namespace GameSetBook.Infrastructure.Models
     [Comment("Tournament entity class")]
     public class Tournament : IDeletable
     {
+        public Tournament()
+        {
+            this.TournamentGSMUPlayerProfiles = new List<TournamentGSMUPlayerProfile>();
+        }
         /// <summary>
         /// Tournament identifier
         /// </summary>
@@ -37,7 +41,7 @@ namespace GameSetBook.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("Tournament players level range start from (including)")]
-        public PlayerLevel PlayerLevelRangeFrom {  get; set; }
+        public PlayerLevel PlayerLevelRangeFrom { get; set; }
 
         /// <summary>
         /// Tournament players level range end to (including)
@@ -51,7 +55,7 @@ namespace GameSetBook.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("Tournament start date and time")]
-        public DateTime Start {  get; set; }
+        public DateTime Start { get; set; }
 
         /// <summary>
         /// Tournament end date and time
@@ -89,6 +93,6 @@ namespace GameSetBook.Infrastructure.Models
 
         public virtual Club Club { get; set; } = null!;
 
-        public virtual ICollection<TournamentGSMUPlayerProfile> TournamentGSMUPlayerProfiles { get; set; } = new List<TournamentGSMUPlayerProfile>();
+        public virtual ICollection<TournamentGSMUPlayerProfile> TournamentGSMUPlayerProfiles { get; set; }
     }
 }

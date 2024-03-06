@@ -1,7 +1,7 @@
 ﻿using GameSetBook.Infrastructure.Models.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 using static GameSetBook.Common.ValidationConstatns.MessageConstants;
 
 namespace GameSetBook.Infrastructure.Models
@@ -40,7 +40,7 @@ namespace GameSetBook.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("Sender player profile identifier")]
-        public string SenderProfileId { get; set; } = string.Empty;
+        public int SenderProfileId { get; set; }
 
         public GameSetMatchUpPlayerProfile SenderProfile { get; set; } = null!;
 
@@ -49,7 +49,8 @@ namespace GameSetBook.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("Receiver player profile identifier")]
-        public string ReceiverProfileId { get; set; } = string.Empty;
+        public int ReceiverProfileId { get; set; }
+
         public GameSetMatchUpPlayerProfile ReceiverProfile { get; set; } = null!;
 
         /// <summary>

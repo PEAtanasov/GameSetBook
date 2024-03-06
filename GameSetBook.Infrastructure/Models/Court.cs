@@ -51,6 +51,7 @@ namespace GameSetBook.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("Price for renting court per one hour")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal PricePerHour { get; set; }
 
         /// <summary>
