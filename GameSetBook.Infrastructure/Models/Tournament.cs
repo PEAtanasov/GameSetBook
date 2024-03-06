@@ -1,4 +1,5 @@
-﻿using GameSetBook.Infrastructure.Models.Enums;
+﻿using GameSetBook.Infrastructure.Models.Contracts;
+using GameSetBook.Infrastructure.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,7 +9,7 @@ namespace GameSetBook.Infrastructure.Models
     /// Tournament entity
     /// </summary>
     [Comment("Tournament entity class")]
-    public class Tournament
+    public class Tournament : IDeletable
     {
         /// <summary>
         /// Tournament identifier

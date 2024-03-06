@@ -27,30 +27,59 @@ namespace GameSetBook.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            //TODO to impelemnt configurations in separate class for cleaner DbContext Class !!!
+
+            // TournamentGSMUPlayerProfile Configuration
+
             builder.Entity<TournamentGSMUPlayerProfile>()
                 .HasKey(tp => new { tp.PlayerProfileId, tp.TournamentId });
 
             builder.Entity<TournamentGSMUPlayerProfile>()
                 .HasOne(tp => tp.PlayerProile)
                 .WithMany(pp => pp.TournamentsGSMUPlayerProfile)
-                .OnDelete(DeleteBehavior.Restrict); // Set OnDelete behavior to Cascade, or noaction
+                .OnDelete(DeleteBehavior.Cascade); // Set OnDelete behavior to Cascade, or noaction
 
             builder.Entity<TournamentGSMUPlayerProfile>()
                 .HasOne(tp => tp.Tournament)
                 .WithMany(t => t.TournamentGSMUPlayerProfiles)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // GameSetMatchUpPlayerProfile Configurrations
 
             builder.Entity<GameSetMatchUpPlayerProfile>()
                 .HasMany(p => p.SentMessages)
                 .WithOne(m => m.SenderProfile)
                 .HasForeignKey(m => m.SenderProfileId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+                .OnDelete(DeleteBehavior.Cascade);
+             
             builder.Entity<GameSetMatchUpPlayerProfile>()
                 .HasMany(p => p.ReceivedMessages)
                 .WithOne(m => m.ReceiverProfile)
                 .HasForeignKey(m => m.ReceiverProfileId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<GameSetMatchUpPlayerProfile>()
+                .HasQueryFilter(c => !c.IsDeleted);
+
+            // Club Configurrations
+
+            builder.Entity<Club>()
+                .HasQueryFilter(c => !c.IsDeleted); 
+
+            // Booking Configurrations
+
+            builder.Entity<Booking>()
+                .HasQueryFilter(c => !c.IsDeleted);
+
+            // Message Configurrations
+
+            builder.Entity<Message>()
+                .HasQueryFilter(c => !c.IsDeleted);
+
+            // Tournament Configurrations
+
+            builder.Entity<Tournament>()
+                .HasQueryFilter(c => !c.IsDeleted);
 
             base.OnModelCreating(builder);
         }
