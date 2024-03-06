@@ -84,6 +84,4 @@ namespace GameSetBook.Infrastructure.Data
             base.OnModelCreating(builder);
         }
     }
-
-
 }
