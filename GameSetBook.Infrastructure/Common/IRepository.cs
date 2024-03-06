@@ -32,12 +32,27 @@ namespace GameSetBook.Infrastructure.Common
         Task AddAsync<T>(T entity) where T : class;
 
         /// <summary>
-        /// Delete item from database
+        /// Set item item to Deleted
         /// </summary>
         /// <typeparam name="T">type of item</typeparam>
         /// <param name="entity">item</param>
         /// <returns></returns>
         void Delete<T>(T entity) where T : class, IDeletable;
+
+        /// <summary>
+        /// Set deleted item to IsDeleted=false
+        /// </summary>
+        /// <typeparam name="T">type of item</typeparam>
+        /// <param name="entity">item</param>
+        /// <returns></returns>
+        void UnDelete<T>(T entity) where T : class, IDeletable;
+
+        /// <summary>
+        /// Deletes item from database
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        public void HardDelete<T>(T entity) where T : class;
 
         /// <summary>
         /// Get all elements

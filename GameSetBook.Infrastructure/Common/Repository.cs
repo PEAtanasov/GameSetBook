@@ -62,7 +62,7 @@ namespace GameSetBook.Infrastructure.Common
         }
 
         /// <summary>
-        /// Delete item from database
+        /// Set item item to Deleted
         /// </summary>
         /// <typeparam name="T">type of item</typeparam>
         /// <param name="entity">item</param>
@@ -71,6 +71,28 @@ namespace GameSetBook.Infrastructure.Common
         {
             entity.IsDeleted = false;
             entity.DeletedOn = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Set deleted item to IsDeleted=false
+        /// </summary>
+        /// <typeparam name="T">type of item</typeparam>
+        /// <param name="entity">item</param>
+        /// <returns></returns>
+        void IRepository.UnDelete<T>(T entity)
+        {
+            entity.IsDeleted = true;
+            entity.DeletedOn = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Deletes item from database
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        public void HardDelete<T>(T entity) where T : class
+        {
+             this.DbSet<T>().Remove(entity);
         }
 
         /// <summary>
