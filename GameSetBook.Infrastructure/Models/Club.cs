@@ -18,7 +18,7 @@ namespace GameSetBook.Infrastructure.Models
     {
         public Club()
         {
-            Id = Guid.NewGuid().ToString();
+
             Courts = new List<Court>();
             ClubReviews = new List<ClubReview>();
         }
@@ -27,7 +27,7 @@ namespace GameSetBook.Infrastructure.Models
         /// </summary>
         [Key]
         [Comment("Club identifier")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Club name

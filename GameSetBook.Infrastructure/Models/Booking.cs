@@ -15,16 +15,12 @@ namespace GameSetBook.Infrastructure.Models
     [Comment("Booking entity")]
     public class Booking : IDeletable
     {
-        public Booking()
-        {
-            Id = Guid.NewGuid().ToString();
-        }
         /// <summary>
         /// Booking identifier
         /// </summary>
         [Key]
         [Comment("Booking identifier")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Booking price

@@ -50,7 +50,7 @@ namespace GameSetBook.Infrastructure.Models
         [Required]
         [ForeignKey(nameof(Club))]
         [Comment("Current review's club identifier")]
-        public string ClubId { get; set; } = string.Empty;
+        public int ClubId { get; set; }
 
         public virtual Club Club { get; set; } = null!;
 

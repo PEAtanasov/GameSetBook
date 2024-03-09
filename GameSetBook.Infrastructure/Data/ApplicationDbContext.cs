@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 using GameSetBook.Infrastructure.Models;
 using GameSetBook.Infrastructure.Data.Configurations;
+using Microsoft.AspNetCore.Identity;
 
 namespace GameSetBook.Infrastructure.Data
 {
@@ -27,6 +28,9 @@ namespace GameSetBook.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new IdentityUserConfiguration());
+            builder.ApplyConfiguration(new RoleConfiguration());
+            builder.ApplyConfiguration(new UserRoleConfiguration());
             builder.ApplyConfiguration(new ClubConfiguration());
             builder.ApplyConfiguration(new CountryConfiguration());
             builder.ApplyConfiguration(new CityConfiguration());

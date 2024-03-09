@@ -90,7 +90,7 @@ namespace GameSetBook.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("Current tournament's club identifier")]
-        public string ClubId { get; set; } = string.Empty;
+        public int ClubId { get; set; }
 
         public virtual Club Club { get; set; } = null!;
 
