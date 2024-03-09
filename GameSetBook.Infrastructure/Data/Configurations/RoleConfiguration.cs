@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+using static GameSetBook.Common.UserConstants;
 
 namespace GameSetBook.Infrastructure.Data.Configurations
 {
@@ -24,22 +21,22 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 new IdentityRole()
                 {
                     Id = "18906160-6956-4ecc-9b7c-fa5d0a4d0f82",
-                    Name = "Admin",
-                    NormalizedName = "ADMIN"
+                    Name = AdminRole,
+                    NormalizedName = AdminRole.ToUpper()
                 },
 
                 new IdentityRole()
                 {
                     Id = "757178e3-b3c9-4414-8dd6-a72196f2b6d5",
-                    Name = "ClubOwner",
-                    NormalizedName = "CLUBOWNER"
+                    Name = ClubOwnerRole,
+                    NormalizedName = ClubOwnerRole.ToUpper()
                 },
 
                 new IdentityRole()
                 {
                     Id = "cd40263e-6425-4dad-ada2-60e5813e5eb2",
-                    Name = "GSMUUser",
-                    NormalizedName = "GSMUUSER"
+                    Name = GSMUUserRole,
+                    NormalizedName = GSMUUserRole.ToUpper()
                 }           
             };
             return roles;
