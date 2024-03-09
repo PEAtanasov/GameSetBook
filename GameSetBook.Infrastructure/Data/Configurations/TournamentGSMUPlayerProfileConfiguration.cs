@@ -11,6 +11,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
         {
             builder
                 .HasKey(tp => new { tp.PlayerProfileId, tp.TournamentId });
+              
 
             builder
                 .HasOne(tp => tp.PlayerProile)

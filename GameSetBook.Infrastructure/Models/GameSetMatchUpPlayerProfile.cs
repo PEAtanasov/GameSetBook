@@ -107,16 +107,6 @@ namespace GameSetBook.Infrastructure.Models
 
         public virtual City City { get; set; } = null!;
 
-        /// <summary>
-        /// User's country
-        /// </summary>
-        [Required]
-        [Comment("User's country")]
-        [ForeignKey(nameof(Country))]
-        public int CountryId { get; set; }
-
-        public virtual Country Country { get; set; } = null!;
-
         public virtual ICollection<TournamentGSMUPlayerProfile> TournamentsGSMUPlayerProfile { get; set; }
 
         public virtual ICollection<Message> ReceivedMessages { get; set; }

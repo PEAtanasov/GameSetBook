@@ -9,7 +9,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Message> builder)
         {
-            builder.HasQueryFilter(c => !c.IsDeleted);
+            builder.HasQueryFilter(c => !c.SenderProfile.IsDeleted);
         }
     }
 }

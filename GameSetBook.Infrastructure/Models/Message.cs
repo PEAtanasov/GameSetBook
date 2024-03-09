@@ -10,7 +10,7 @@ namespace GameSetBook.Infrastructure.Models
     /// Message entity class
     /// </summary>
     [Comment("Message entity class")]
-    public class Message : IDeletable
+    public class Message
     {
         /// <summary>
         /// Message identifier
@@ -61,17 +61,10 @@ namespace GameSetBook.Infrastructure.Models
         public DateTime SentOn { get; set; }
 
         /// <summary>
-        /// Is the record deleted
+        /// Is the the message read
         /// </summary>
         [Required]
-        [Comment("IsDeleted the record deleted")]
-        public bool IsDeleted { get; set; }
-
-        /// <summary>
-        /// Deleted on date
-        /// </summary>
-        [Comment("Deleted on date")]
-        public DateTime? DeletedOn { get; set; }
-
+        [Comment("Is the the message read")]
+        public bool Read { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace GameSetBook.Infrastructure.Models
     /// Club entity
     /// </summary>
     [Comment("Club entity")]
-    //[Index(IsUnique = true, Name = nameof(Name))]
+    [Index(nameof(Name), IsUnique = true)]
     public class Club : IDeletable
     {
         public Club()

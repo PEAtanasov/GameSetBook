@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 using GameSetBook.Infrastructure.Models;
+using GameSetBook.Infrastructure.Data.Configurations;
 
 namespace GameSetBook.Infrastructure.Data
 {
@@ -26,6 +27,17 @@ namespace GameSetBook.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new ClubConfiguration());
+            builder.ApplyConfiguration(new CountryConfiguration());
+            builder.ApplyConfiguration(new CityConfiguration());
+            builder.ApplyConfiguration(new CourtConfiguration());
+            builder.ApplyConfiguration(new BookingConfiguration());
+            builder.ApplyConfiguration(new ClubReviewConfiguration());
+            builder.ApplyConfiguration(new GameSetMatchUpPlayerProfileConfiguration());
+            builder.ApplyConfiguration(new TournamentConfiguration());
+            builder.ApplyConfiguration(new TournamentGSMUPlayerProfileConfiguration());
+            builder.ApplyConfiguration(new MessageConfiguration());
+
             base.OnModelCreating(builder);
         }
     }

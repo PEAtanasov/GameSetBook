@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using GameSetBook.Infrastructure.Data;
+using GameSetBook.Infrastructure.Common;
+using GameSetBook.Core.Contracts;
+using GameSetBook.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,10 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services
+    .AddScoped<IRepository,Repository>()
+    .AddScoped<IClubService,ClubService>();
 
 var app = builder.Build();
 

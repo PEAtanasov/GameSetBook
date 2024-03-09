@@ -3,21 +3,28 @@ using System.Diagnostics;
 
 using GameSetBook.Core.Models;
 using System.Security.Claims;
+using GameSetBook.Core.Services;
+using GameSetBook.Core.Contracts;
 
 namespace GameSetBook.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IClubService clubService;
+        private readonly ILogger<HomeController> logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IClubService clubService)
         {
-            _logger = logger;
+            this.clubService = clubService;
+            this.logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var firstNameClaim = HttpContext.User.FindFirst(ClaimTypes.GivenName)?.Value;
+            
+            //var model = await clubService.GetAllClubsAsync();
+
             return View();
         }
 
