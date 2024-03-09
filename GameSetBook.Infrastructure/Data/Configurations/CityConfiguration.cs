@@ -11,12 +11,12 @@ namespace GameSetBook.Infrastructure.Data.Configurations
         {
             builder.HasQueryFilter(c => c.Clubs.Any(cl => !cl.IsDeleted));
 
-            builder.HasData(SeedCities());
+            builder.HasData(CitySeed());
 
 
         }
 
-        private IList<City> SeedCities()
+        private IList<City> CitySeed()
         {
             var cities = new List<City>()
             {

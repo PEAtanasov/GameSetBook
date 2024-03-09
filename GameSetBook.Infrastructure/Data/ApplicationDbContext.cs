@@ -31,9 +31,9 @@ namespace GameSetBook.Infrastructure.Data
             builder.ApplyConfiguration(new IdentityUserConfiguration());
             builder.ApplyConfiguration(new RoleConfiguration());
             builder.ApplyConfiguration(new UserRoleConfiguration());
-            builder.ApplyConfiguration(new ClubConfiguration());
             builder.ApplyConfiguration(new CountryConfiguration());
             builder.ApplyConfiguration(new CityConfiguration());
+            builder.ApplyConfiguration(new ClubConfiguration());  
             builder.ApplyConfiguration(new CourtConfiguration());
             builder.ApplyConfiguration(new BookingConfiguration());
             builder.ApplyConfiguration(new ClubReviewConfiguration());

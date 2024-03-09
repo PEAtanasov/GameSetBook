@@ -166,6 +166,13 @@ namespace GameSetBook.Infrastructure.Models
         public DateTime? DeletedOn { get ; set ; }
 
         /// <summary>
+        /// Date and time the club has been created
+        /// </summary>
+        [Required]
+        [Comment("Date and time the club has been created")]
+        public DateTime RegisteredOn { get; set; }
+
+        /// <summary>
         /// Is the club aprooved from app admin
         /// </summary>
         [Required]

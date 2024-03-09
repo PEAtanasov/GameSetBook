@@ -9,10 +9,10 @@ namespace GameSetBook.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Country> builder)
         {
-            builder.HasData(SeedCountries());
+            builder.HasData(CountrySeed());
         }
 
-        private IList<Country> SeedCountries()
+        private IList<Country> CountrySeed()
         {
             var countries = new List<Country>()
             {
