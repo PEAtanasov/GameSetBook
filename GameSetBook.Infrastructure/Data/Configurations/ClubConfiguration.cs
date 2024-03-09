@@ -10,6 +10,19 @@ namespace GameSetBook.Infrastructure.Data.Configurations
         public void Configure(EntityTypeBuilder<Club> builder)
         {
             builder.HasQueryFilter(c => !c.IsDeleted);
+            
         }
+
+        //private IList<Club> ClubSeed()
+        //{
+        //    var clubs = new List<Club>()
+        //    {
+        //        new Club()
+        //        {
+                   
+        //        }
+        //    };
+        //    return default;
+        //}
     }
 }
