@@ -25,7 +25,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
 
             user = new IdentityUser()
             {
-                Id = "7675dcd4-f0de-4e90-98fc-31b8ee54768f",
+                Id = "65a12477-a9c9-48f1-a844-0ec223e1bca5",
                 Email = "admin@mail.com",
                 NormalizedEmail = "ADMIN@GMAIL.COM"
 
@@ -36,7 +36,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
 
             user = new IdentityUser()
             {
-                Id = "7bbb2a6d-2243-4945-85a4-c365240a303b",
+                Id = "82cd50ca-b023-42e5-8344-227d5c45877c",
                 Email = "clubowner@mail.com",
                 NormalizedEmail = "CLUBOWNER@GMAIL.COM"
 
@@ -47,7 +47,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
 
             user = user = new IdentityUser()
             {
-                Id = "0a7178d0-e1d9-4249-8d4e-a393fe17c813",
+                Id = "83544abd-e9e2-4592-ad5e-23cd2f63e5a0",
                 Email = "user@mail.com",
                 NormalizedEmail = "USER@GMAIL.COM"
             };

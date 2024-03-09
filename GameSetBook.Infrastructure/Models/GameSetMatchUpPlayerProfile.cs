@@ -19,8 +19,7 @@ namespace GameSetBook.Infrastructure.Models
         public GameSetMatchUpPlayerProfile()
         {
             TournamentsGSMUPlayerProfile = new List<TournamentGSMUPlayerProfile>();
-            ReceivedMessages = new List<Message>();
-            SentMessages = new List<Message>();
+            Messages = new List<Message>();
         }
         /// <summary>
         /// Profile identifier
@@ -109,7 +108,6 @@ namespace GameSetBook.Infrastructure.Models
 
         public virtual ICollection<TournamentGSMUPlayerProfile> TournamentsGSMUPlayerProfile { get; set; }
 
-        public virtual ICollection<Message> ReceivedMessages { get; set; }
-        public virtual ICollection<Message> SentMessages { get; set; }
+        public virtual ICollection<Message> Messages { get; set; }
     }
 }

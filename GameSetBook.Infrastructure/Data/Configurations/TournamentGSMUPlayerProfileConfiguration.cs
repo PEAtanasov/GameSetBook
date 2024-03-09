@@ -16,12 +16,12 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             builder
                 .HasOne(tp => tp.PlayerProile)
                 .WithMany(pp => pp.TournamentsGSMUPlayerProfile)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .HasOne(tp => tp.Tournament)
                 .WithMany(t => t.TournamentGSMUPlayerProfiles)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .HasQueryFilter(g => !g.PlayerProile.IsDeleted);

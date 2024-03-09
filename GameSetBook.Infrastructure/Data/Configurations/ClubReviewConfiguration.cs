@@ -9,6 +9,12 @@ namespace GameSetBook.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<ClubReview> builder)
         {
+            builder
+                .HasOne(c=>c.Club)
+                .WithMany(c=>c.ClubReviews)
+                .HasForeignKey(c=>c.ClubId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             builder.HasQueryFilter(cr => !cr.Club.IsDeleted);
         }
     }

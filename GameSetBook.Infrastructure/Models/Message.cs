@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 using GameSetBook.Infrastructure.Models.Contracts;
 using static GameSetBook.Common.ValidationConstatns.MessageConstants;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GameSetBook.Infrastructure.Models
 {
@@ -39,6 +40,7 @@ namespace GameSetBook.Infrastructure.Models
         /// Sender player profile identifier
         /// </summary>
         [Required]
+        [ForeignKey(nameof(SenderProfile))]
         [Comment("Sender player profile identifier")]
         public int SenderProfileId { get; set; }
 

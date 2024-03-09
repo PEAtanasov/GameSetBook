@@ -9,6 +9,11 @@ namespace GameSetBook.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Message> builder)
         {
+            builder
+                .HasOne(m => m.SenderProfile)
+                .WithMany(s => s.Messages)
+                .HasForeignKey(m => m.SenderProfileId)
+                .OnDelete(DeleteBehavior.NoAction);
             builder.HasQueryFilter(c => !c.SenderProfile.IsDeleted);
         }
     }

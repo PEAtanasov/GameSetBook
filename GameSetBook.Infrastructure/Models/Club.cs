@@ -78,16 +78,6 @@ namespace GameSetBook.Infrastructure.Models
         public virtual City City { get; set; } = null!;
 
         /// <summary>
-        /// Club's country identifier
-        /// </summary>
-        [Required]
-        [Comment("Club's country identifier")]
-        [ForeignKey(nameof(Country))]
-        public int CountryId { get; set; }
-
-        public virtual Country Country { get; set; } = null!;
-
-        /// <summary>
         /// Number of coaches in the club
         /// </summary> 
         [Comment("Number of coaches in the club")]
