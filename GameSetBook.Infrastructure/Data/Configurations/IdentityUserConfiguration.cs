@@ -26,33 +26,39 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             user = new IdentityUser()
             {
                 Id = "65a12477-a9c9-48f1-a844-0ec223e1bca5",
+                UserName = "admin@mail.com",
+                NormalizedUserName = "ADMIN@GMAIL.COM",
                 Email = "admin@mail.com",
                 NormalizedEmail = "ADMIN@GMAIL.COM"
 
             };
             user.PasswordHash =
-                 hasher.HashPassword(user, "Admin123");
+                 hasher.HashPassword(user, "aaaaaa1");
             users.Add(user);
 
             user = new IdentityUser()
             {
                 Id = "82cd50ca-b023-42e5-8344-227d5c45877c",
+                UserName = "clubowner@mail.com",
+                NormalizedUserName = "CLUBOWNER@GMAIL.COM",
                 Email = "clubowner@mail.com",
                 NormalizedEmail = "CLUBOWNER@GMAIL.COM"
 
             };
             user.PasswordHash =
-                 hasher.HashPassword(user, "Admin123");
+                 hasher.HashPassword(user, "aaaaaa1");
             users.Add(user);
 
             user = user = new IdentityUser()
             {
                 Id = "83544abd-e9e2-4592-ad5e-23cd2f63e5a0",
+                UserName = "user@mail.com",
+                NormalizedUserName = "USER@GMAIL.COM",
                 Email = "user@mail.com",
                 NormalizedEmail = "USER@GMAIL.COM"
             };
             user.PasswordHash =
-                 hasher.HashPassword(user, "User123");
+                 hasher.HashPassword(user, "aaaaaa1");
             users.Add(user);
             
             return users;

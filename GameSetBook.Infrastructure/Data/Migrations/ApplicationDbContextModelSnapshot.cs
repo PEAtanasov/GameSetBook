@@ -681,21 +681,21 @@ namespace GameSetBook.Data.Migrations
                         new
                         {
                             Id = "18906160-6956-4ecc-9b7c-fa5d0a4d0f82",
-                            ConcurrencyStamp = "295eed43-2774-4a00-9159-a29390b01665",
+                            ConcurrencyStamp = "0101ce32-56cf-47c4-9112-883f30f57d7e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "757178e3-b3c9-4414-8dd6-a72196f2b6d5",
-                            ConcurrencyStamp = "1dbc8d23-c6e3-4c0c-8107-7678fc2ac7c0",
+                            ConcurrencyStamp = "88aeac26-9101-4095-9a8a-390cff1ffd12",
                             Name = "ClubOwner",
                             NormalizedName = "CLUBOWNER"
                         },
                         new
                         {
                             Id = "cd40263e-6425-4dad-ada2-60e5813e5eb2",
-                            ConcurrencyStamp = "fcbed157-7da9-4939-ba2d-e7d773f47065",
+                            ConcurrencyStamp = "26e56ab7-c624-4cba-a9e7-cf3314b45582",
                             Name = "GSMUUser",
                             NormalizedName = "GSMUUSER"
                         });
@@ -795,42 +795,42 @@ namespace GameSetBook.Data.Migrations
                         {
                             Id = "65a12477-a9c9-48f1-a844-0ec223e1bca5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1502e1d1-2324-416e-8122-1bd4f9246bd4",
+                            ConcurrencyStamp = "e06c5d37-4d94-49ec-b69c-e6eca66cc574",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPoLvvUBaITqSZz2Go0F42umFKOAWEyye4a4wzp+THT2kJW/dg9UlrMUD3Mx/5N8uw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEL58c4p4tLahuQOwbsPoQIhLcfFw3N6QI4Zlx3yEvf671Hg8k48cRNVTT63bDwAASQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "51065809-750a-4eb0-90e0-2cc45280061d",
+                            SecurityStamp = "969b4e41-e7e3-414b-a0fc-400b817d6fe2",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "82cd50ca-b023-42e5-8344-227d5c45877c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "188a5d2f-3523-498a-b50f-851b57e65f82",
+                            ConcurrencyStamp = "26de3351-08c9-4f7a-910f-f4b8b9787f85",
                             Email = "clubowner@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "CLUBOWNER@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEZSjRLO0xir8KpmBxeU9OMtLpxIutg269+Ds7eIHf/G7K9XJKUr6QJf/LdAdCH7Qw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELzj6JaqTk5qWv9kF+8Xd1IIYoSb22WMTKEnVXL0ZJrGZfPUg/BwM3wTk1iCiGDlGQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "847e0af3-d5e7-4d63-ae05-36f37ee7eb16",
+                            SecurityStamp = "fa5c329a-adb4-435d-9f26-82d533abb368",
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "83544abd-e9e2-4592-ad5e-23cd2f63e5a0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6a929caf-0055-4af1-bbc2-53006dddf3f0",
+                            ConcurrencyStamp = "08069628-5845-469f-a0ed-bab5b3b7d696",
                             Email = "user@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI7wENE3nvx84+MTkCrR4HezTd2Px4a5t2frat0navUK+zzzWM/HvHXqxWErL/XL4A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH7c4Wy2Hx04tAFXrL2tfAJLbfCNj0+vRvldy42qO2UU3wf9b+F0YRImoqAjQLpYYg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b83bcb1e-6a0f-425a-9481-6abc7311014e",
+                            SecurityStamp = "0de0bada-f7c3-4dfa-8af3-5c2f54ecb7f5",
                             TwoFactorEnabled = false
                         });
                 });
