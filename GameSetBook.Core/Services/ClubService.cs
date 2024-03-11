@@ -53,6 +53,7 @@ namespace GameSetBook.Core.Services
             var model = new ClubDetailsViewModel()
             {
                 Id = club.Id,
+                Name = club.Name,
                 Description = club.Description,
                 NumberOfCoaches = club.NumberOfCoaches,
                 NumberOfCourts = club.NumberOfCourts,

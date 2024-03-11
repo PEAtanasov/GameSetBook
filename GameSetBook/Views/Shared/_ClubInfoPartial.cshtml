@@ -1,8 +1,9 @@
 ﻿@model ClubInfoViewModel
-@{
 
-}
-
-@Model.Name
-@Model.FullAddress
-@Model.PhoneNumber
+<div class="club-info">
+    <img src="~/@Model.Logourl" alt="@Model.Name Logo" class="img-fluid" />
+    <p><strong>@Model.Name</strong></p>
+    <p><strong>Phone Number:</strong> @Model.PhoneNumber</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Full Address:</strong> @Model.FullAddress</p>
+</div>

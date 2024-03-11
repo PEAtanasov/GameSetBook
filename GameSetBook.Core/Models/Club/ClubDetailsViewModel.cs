@@ -3,6 +3,7 @@
     public class ClubDetailsViewModel
     {
         public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int WorkingTimeStart { get; set; }
         public int WorkingTimeEnd { get; set; }

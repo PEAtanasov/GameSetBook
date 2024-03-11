@@ -29,14 +29,21 @@ namespace GameSetBook.Web.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            if (!await clubService.ClubExsitAsync(id))
+            //if (!await clubService.ClubExsitAsync(id))
+            //{
+            //    return BadRequest();
+            //}
+
+            try
             {
-                return BadRequest();
+                var model = await clubService.GetClubDetailsAsync(id);
+                return View(model);
             }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
 
-            var model = await clubService.GetClubDetailsAsync(id);
-
-            return View(model);
+            }
         }
     }
 }
