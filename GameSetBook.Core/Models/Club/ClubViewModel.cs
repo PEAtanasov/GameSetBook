@@ -23,6 +23,6 @@ namespace GameSetBook.Core.Models.Club
 
         public int NumberofCourts { get; set; }
 
-        //public double Rating { get; set; }
+        public double Rating { get; set; }
     }
 }

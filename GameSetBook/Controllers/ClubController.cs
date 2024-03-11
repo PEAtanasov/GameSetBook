@@ -13,9 +13,29 @@ namespace GameSetBook.Web.Controllers
             this.clubService = clubService;
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var model = await clubService.GetAllClubsAsync();
+            ViewData["CurrentFilter"] = searchString;
+
+            var clubs = await clubService.GetAllClubsAsync();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                clubs = clubs.Where(c => c.Name.ToLower().Contains(searchString.ToLower()));
+            }
+
+            return View(clubs);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            if (!await clubService.ClubExsitAsync(id))
+            {
+                return BadRequest();
+            }
+
+            var model = await clubService.GetClubDetailsAsync(id);
+
             return View(model);
         }
     }

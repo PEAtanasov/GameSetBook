@@ -1,0 +1,15 @@
+﻿@model ClubDetailsViewModel
+@{
+    ViewBag.Title = "Club Details";
+}
+
+here is the main view:
+<hr />
+
+@Model.NumberOfCourts,
+@Model.Description
+
+<hr />
+here is the partial view:
+<partial name ="_ClubInfoPartial" model="@Model.ClubInfo" />
+
