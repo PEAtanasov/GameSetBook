@@ -117,7 +117,7 @@ namespace GameSetBook.Infrastructure.Models
         [Required]
         [Comment("Club's logo Url")]
         [MaxLength(ClubLogoUrlMaxLength)]
-        public string LogoUrl { get; set; } = string.Empty;
+        public string LogoUrl { get; set; } = DefaultClubLogoUrl;
 
         /// <summary>
         /// Club's email
