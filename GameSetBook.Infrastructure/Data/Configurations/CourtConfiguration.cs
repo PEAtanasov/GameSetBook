@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using GameSetBook.Infrastructure.Models;
-using GameSetBook.Infrastructure.Models.Enums;
+using GameSetBook.Common.Enums;
 
 namespace GameSetBook.Infrastructure.Data.Configurations
 {

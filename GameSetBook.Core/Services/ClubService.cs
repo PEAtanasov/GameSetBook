@@ -4,8 +4,8 @@ using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Club;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
-using GameSetBook.Core.Models;
 using Microsoft.AspNetCore.Identity;
+using GameSetBook.Core.Models.City;
 
 namespace GameSetBook.Core.Services
 {

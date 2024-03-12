@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GameSetBook.Infrastructure.Models.Enums
+namespace GameSetBook.Common.Enums
 {
     public enum PlayerLevel
     {

@@ -2,8 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-using GameSetBook.Infrastructure.Models.Enums;
 using static GameSetBook.Common.ValidationConstatns.CourtConstants;
+using GameSetBook.Common.Enums;
 
 namespace GameSetBook.Infrastructure.Models
 {

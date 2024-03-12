@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using static GameSetBook.Common.ValidationConstatns.GameSetMatchUpProfileGConstants;
 using static GameSetBook.Common.ImageSource;
 using GameSetBook.Infrastructure.Models.Contracts;
-using GameSetBook.Infrastructure.Models.Enums;
+using GameSetBook.Common.Enums;
 
 namespace GameSetBook.Infrastructure.Models
 {

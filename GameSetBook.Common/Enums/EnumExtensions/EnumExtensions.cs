@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace GameSetBook.Infrastructure.Models.Enums.EnumExtensions
+namespace GameSetBook.Common.Enums.EnumExtensions
 {
     public static class EnumExtensions
     {
@@ -9,7 +9,7 @@ namespace GameSetBook.Infrastructure.Models.Enums.EnumExtensions
         {
             var field = value.GetType().GetField(value.ToString());
             var attribute = field?.GetCustomAttribute<DisplayAttribute>();
-            return attribute == null ? value.ToString() : attribute.Name?? null!;
+            return attribute == null ? value.ToString() : attribute.Name ?? null!;
         }
     }
 }

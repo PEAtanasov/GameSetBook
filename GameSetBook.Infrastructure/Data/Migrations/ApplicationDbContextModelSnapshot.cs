@@ -86,7 +86,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasIndex("CourtId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
 
                     b.HasComment("Booking entity");
 
@@ -130,7 +130,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
 
                     b.HasComment("City entity");
 
@@ -277,7 +277,7 @@ namespace GameSetBook.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Clubs");
+                    b.ToTable("Clubs", (string)null);
 
                     b.HasComment("Club entity");
 
@@ -347,7 +347,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasIndex("ReviewerId");
 
-                    b.ToTable("ClubReviews");
+                    b.ToTable("ClubReviews", (string)null);
 
                     b.HasComment("Club's review entity");
                 });
@@ -369,7 +369,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
 
                     b.HasComment("Country entity");
 
@@ -429,7 +429,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasIndex("ClubId");
 
-                    b.ToTable("Courts");
+                    b.ToTable("Courts", (string)null);
 
                     b.HasComment("Court entity");
 
@@ -521,7 +521,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GameSetMatchUpPlayerProfiles");
+                    b.ToTable("GameSetMatchUpPlayerProfiles", (string)null);
 
                     b.HasComment("GameSetMatchUp player profile entity");
                 });
@@ -569,7 +569,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasIndex("SenderProfileId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
 
                     b.HasComment("Message entity class");
                 });
@@ -629,7 +629,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasIndex("ClubId");
 
-                    b.ToTable("Tournaments");
+                    b.ToTable("Tournaments", (string)null);
 
                     b.HasComment("Tournament entity class");
                 });
@@ -648,7 +648,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasIndex("TournamentId");
 
-                    b.ToTable("TournamentsGSMUPlayerProfiles");
+                    b.ToTable("TournamentsGSMUPlayerProfiles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

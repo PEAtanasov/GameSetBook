@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-
-using GameSetBook.Core.Models;
 using System.Security.Claims;
-using GameSetBook.Core.Services;
+
+using GameSetBook.Core.Models.Error;
 using GameSetBook.Core.Contracts;
 
 namespace GameSetBook.Web.Controllers

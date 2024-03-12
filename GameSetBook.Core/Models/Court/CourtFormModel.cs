@@ -1,4 +1,4 @@
-﻿using GameSetBook.Infrastructure.Models.Enums;
+﻿using GameSetBook.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 
 using static GameSetBook.Common.ErrorMessageConstants;

@@ -1,4 +1,4 @@
-﻿namespace GameSetBook.Core.Models
+﻿namespace GameSetBook.Core.Models.City
 {
     public class CityViewModel
     {
