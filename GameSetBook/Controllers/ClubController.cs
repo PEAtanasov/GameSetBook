@@ -1,6 +1,7 @@
-﻿using GameSetBook.Core.Contracts;
+﻿using GameSetBook.Common;
+using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Club;
-using GameSetBook.Infrastructure.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
@@ -11,14 +12,19 @@ namespace GameSetBook.Web.Controllers
     public class ClubController : BaseController
     {
         private readonly IClubService clubService;
-        private readonly ICityService cityService;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public ClubController(IClubService clubService, ICityService cityService, IWebHostEnvironment webHostEnvironment)
+        public ClubController(IClubService clubService,
+            IWebHostEnvironment webHostEnvironment,
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             this.clubService = clubService;
-            this.cityService = cityService;
             this.webHostEnvironment = webHostEnvironment;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         public async Task<IActionResult> Index(string searchString)
@@ -46,6 +52,7 @@ namespace GameSetBook.Web.Controllers
             try
             {
                 var model = await clubService.GetClubDetailsAsync(id);
+
                 return View(model);
             }
             catch (Exception ex)
@@ -60,7 +67,7 @@ namespace GameSetBook.Web.Controllers
         {
             var model = new ClubCreateFormModel();
 
-            var cities = await cityService.GetAllCitiesAsync();
+            var cities = await clubService.GetAllCitiesAsync();
 
             ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 
@@ -72,7 +79,7 @@ namespace GameSetBook.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var cities = await cityService.GetAllCitiesAsync();
+                var cities = await clubService.GetAllCitiesAsync();
                 ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
                 return View(model);
             }
@@ -84,7 +91,7 @@ namespace GameSetBook.Web.Controllers
                 if (clubLogoImage.Length > 5242880)
                 {
                     TempData["ImageSizeToBig"] = ImageSizeToBig;
-                    var cities = await cityService.GetAllCitiesAsync();
+                    var cities = await clubService.GetAllCitiesAsync();
                     ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
                     return View(model);
                 }
@@ -95,7 +102,7 @@ namespace GameSetBook.Web.Controllers
                     && Path.GetExtension(clubLogoImage.FileName).ToLower() != ".gif")
                 {
                     TempData["WrongImageFormat"] = WrongImageFormat;
-                    var cities = await cityService.GetAllCitiesAsync();
+                    var cities = await clubService.GetAllCitiesAsync();
                     ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
                     return View(model);
                 }
@@ -140,6 +147,15 @@ namespace GameSetBook.Web.Controllers
                 ModelState.AddModelError(string.Empty, UnknownError);
                 return View(model);
             }
+
+            var user = await userManager.GetUserAsync(User);
+
+            if (!await roleManager.RoleExistsAsync(UserConstants.ClubOwnerRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(UserConstants.ClubOwnerRole));
+            }
+
+            await userManager.AddToRoleAsync(user, UserConstants.ClubOwnerRole);
 
             var id = await clubService.GetClubByIdByName(model.Name);
 

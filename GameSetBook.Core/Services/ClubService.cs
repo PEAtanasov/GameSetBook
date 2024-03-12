@@ -4,12 +4,15 @@ using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Club;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
+using GameSetBook.Core.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace GameSetBook.Core.Services
 {
     public class ClubService : IClubService
     {
         private readonly IRepository repository;
+        private readonly UserManager<IdentityUser> userManager;
 
         public ClubService(IRepository repository)
         {
@@ -19,7 +22,7 @@ namespace GameSetBook.Core.Services
         {
             var model = await repository.GetAllReadOnly<Club>()
                 .Where(c => c.IsActive && c.IsAproovedByAdmin)
-                .Include(b => b.City)
+                .Include(c => c.City)
                 .Include(c => c.Courts)
                 .Include(c => c.ClubReviews)
                 .Select(c => new ClubViewModel()
@@ -69,6 +72,7 @@ namespace GameSetBook.Core.Services
         {
             var club = await repository.GetAllReadOnly<Club>()
                 .Include(c => c.City)
+                .ThenInclude(ct => ct.Country)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (club == null)
@@ -82,8 +86,9 @@ namespace GameSetBook.Core.Services
                 Logourl = club.LogoUrl,
                 Name = club.Name,
                 PhoneNumber = club.PhoneNumber,
-                FullAddress = club.Address,
-                CityName = club.City.Name
+                Address = club.Address,
+                CityName = club.City.Name,
+                CountryName= club.City.Country.Name
             };
 
             return model;
@@ -141,6 +146,18 @@ namespace GameSetBook.Core.Services
                 throw new ArgumentException();
             }
             return club.Id;
+        }
+
+        public async Task<IEnumerable<CityViewModel>> GetAllCitiesAsync()
+        {
+            var cities = await repository.GetAllReadOnly<City>()
+                .Select(c => new CityViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                }).ToListAsync();
+
+            return cities;
         }
     }
 }

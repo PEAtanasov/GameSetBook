@@ -1,4 +1,5 @@
-﻿using GameSetBook.Core.Models.Club;
+﻿using GameSetBook.Core.Models;
+using GameSetBook.Core.Models.Club;
 using GameSetBook.Infrastructure.Common;
 
 namespace GameSetBook.Core.Contracts
@@ -11,5 +12,6 @@ namespace GameSetBook.Core.Contracts
         Task<ClubInfoViewModel> GetClubIfno(int id);
         Task<bool> ClubExsitAsync(int id);
         Task CreateAsync(ClubCreateFormModel model);
+        Task<IEnumerable<CityViewModel>> GetAllCitiesAsync();
     }
 }
