@@ -28,7 +28,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services
     .AddScoped<IRepository, Repository>()
-    .AddScoped<IClubService, ClubService>();
+    .AddScoped<IClubService, ClubService>()
+    .AddScoped<ICourtService,CourtService>();
 
 var app = builder.Build();
 

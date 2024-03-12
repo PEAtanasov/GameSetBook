@@ -53,6 +53,9 @@
         {
             public const int NameMinLength = 1;
             public const int NameMaxLength = 20;
+
+            public const int MinPricePerHour = 0;
+            public const int MaxPricePerHour = 500;
         }
 
         public static class GameSetMatchUpProfileGConstants
