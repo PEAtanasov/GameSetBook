@@ -1,13 +1,9 @@
-﻿using GameSetBook.Core.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+
+using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Club;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameSetBook.Core.Services
 {
@@ -19,7 +15,7 @@ namespace GameSetBook.Core.Services
         {
             this.repository = repository;
         }
-        public async Task<IEnumerable<ClubViewModel>> GetAllClubsAsync()
+        public async Task<IEnumerable<ClubViewModel>> GetAllClubsReadOnlyAsync()
         {
             var model = await repository.GetAllReadOnly<Club>()
                 .Where(c => c.IsActive && c.IsAproovedByAdmin)
@@ -72,8 +68,8 @@ namespace GameSetBook.Core.Services
         public async Task<ClubInfoViewModel> GetClubIfno(int id)
         {
             var club = await repository.GetAllReadOnly<Club>()
-                .Include(c=>c.City)
-                .FirstOrDefaultAsync(c=>c.Id==id);
+                .Include(c => c.City)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (club == null)
             {
@@ -102,6 +98,49 @@ namespace GameSetBook.Core.Services
                 return false;
             }
             return true;
+        }
+
+        public async Task CreateAsync(ClubCreateFormModel model)
+        {
+            if (await repository.GetAllReadOnly<Club>().AnyAsync(c => c.Name == model.Name))
+            {
+                throw new ArgumentException("The event already exist");
+            }
+
+            var club = new Club()
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Address = model.Address,
+                CityId = model.CityId,
+                ClubOwnerId = model.ClubOwnerId,
+                HasParking = model.HasParking,
+                Email = model.Email,
+                HasShop = model.HasShop,
+                IsActive = true,
+                HasShower = model.HasShower,
+                IsAproovedByAdmin = false,
+                NumberOfCoaches = model.NumberOfCoaches,
+                NumberOfCourts = model.NumberOfCourts,
+                PhoneNumber = model.PhoneNumber,
+                WorkingTimeStart = model.WorkingTimeStart,
+                WorkingTimeEnd = model.WorkingTimeEnd,
+                LogoUrl = model.LogoUrl ?? Common.ImageSource.DefaultClubLogoUrl,
+                RegisteredOn = DateTime.Now,
+            };
+
+            await repository.AddAsync(club);
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task<int> GetClubByIdByName(string name)
+        {
+            var club = await repository.GetAllReadOnly<Club>().FirstOrDefaultAsync(c => c.Name == name);
+            if (club==null)
+            {
+                throw new ArgumentException();
+            }
+            return club.Id;
         }
     }
 }

@@ -14,7 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => 
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = true;
@@ -27,8 +27,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 builder.Services.AddControllersWithViews();
 
 builder.Services
-    .AddScoped<IRepository,Repository>()
-    .AddScoped<IClubService,ClubService>();
+    .AddScoped<IRepository, Repository>()
+    .AddScoped<IClubService, ClubService>()
+    .AddScoped<ICityService, CityService>();
 
 var app = builder.Build();
 

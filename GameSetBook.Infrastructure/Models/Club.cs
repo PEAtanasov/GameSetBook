@@ -43,7 +43,7 @@ namespace GameSetBook.Infrastructure.Models
         [Required]
         [Comment("Club description")]
         [MaxLength(DescriptionMaxLength)]
-        public string Description { get; set; } = DefaultClubLogoUrl;
+        public string Description { get; set; } = string.Empty;
 
         /// <summary>
         /// Club working time start
@@ -169,18 +169,18 @@ namespace GameSetBook.Infrastructure.Models
         [Comment("Is the club aprooved from app admin")]
         public bool IsAproovedByAdmin { get; set; }
 
-        /// <summary>
-        /// Club rating given from its clients
-        /// </summary>
-        [NotMapped]
-        public double Rating
-        {
-            get
-            {
-                double averageRate = ClubReviews.Average(x => x.Rate);
-                return Math.Round(averageRate, 1);
-            }
-        }
+        ///// <summary>
+        ///// Club rating given from its clients
+        ///// </summary>
+        //[NotMapped]
+        //public double Rating
+        //{
+        //    get
+        //    {
+        //        double averageRate = ClubReviews.Average(x => x.Rate);
+        //        return Math.Round(averageRate, 1);
+        //    }
+        //}
 
         /// <summary>
         /// Club owner's identifier

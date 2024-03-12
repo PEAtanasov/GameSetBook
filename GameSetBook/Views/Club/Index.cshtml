@@ -43,8 +43,8 @@
                         <td>@club.NumberofCourts</td>
                         
                         <td>
-                            <button class="btn btn-success">Details</button>
-                            <a asp-controller="Club" asp-action="ClubDetails" asp-route-id="@club.Id" class="btn btn-primary">Reserve</a>
+                            <a asp-controller="Club" asp-action="Details" asp-route-id="@club.Id" class="btn btn-primary">Details</a>
+                            <a asp-controller="Court" asp-action="Index" asp-route-id="@club.Id" class="btn btn-success">Reserve</a>
                         </td>
                     </tr>
                 }

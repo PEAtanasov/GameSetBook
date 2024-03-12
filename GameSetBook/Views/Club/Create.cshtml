@@ -1,0 +1,128 @@
+﻿@model ClubCreateFormModel
+
+@{
+    IFormFile file = ViewBag.File;
+    IEnumerable<SelectListItem> cities = ViewBag.Cities;
+    ViewBag.Title = "Create Club";
+}
+
+@if (TempData.ContainsKey("ImageSizeToBig"))
+{
+    <div class="alert alert-success alert-dismissible fade show text-center mx-auto col-xl-6" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        @TempData["ImageSizeToBig"]
+    </div>
+}
+
+@if (TempData.ContainsKey("WrongImageFormat"))
+{
+    <div class="alert alert-success alert-dismissible fade show text-center mx-auto col-xl-6" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        @TempData["WrongImageFormat"]
+    </div>
+}
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" aria-required="true" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <input asp-for="Description" class="form-control" aria-required="true" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="WorkingTimeStart" class="form-label"></label>
+                <input asp-for="WorkingTimeStart" class="form-control" aria-required="true" />
+                <span asp-validation-for="WorkingTimeStart" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="WorkingTimeEnd" class="form-label"></label>
+                <input asp-for="WorkingTimeEnd" class="form-control" aria-required="true" />
+                <span asp-validation-for="WorkingTimeEnd" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Address" class="form-label"></label>
+                <input asp-for="Address" class="form-control" aria-required="true" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CityId" class="form-label"></label>
+                <select asp-for="CityId" class="form-select" asp-items="cities"></select>
+                <span asp-validation-for="CityId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" aria-required="true" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PhoneNumber" class="form-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" aria-required="true" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="NumberOfCoaches" class="form-label"></label>
+                <input asp-for="NumberOfCoaches" class="form-control" aria-required="true" />
+                <span asp-validation-for="NumberOfCoaches" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="NumberOfCourts" class="form-label"></label>
+                <input asp-for="NumberOfCourts" class="form-control" aria-required="true" />
+                <span asp-validation-for="NumberOfCourts" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <label>
+                        Parking
+                        <input type="checkbox" asp-for="HasParking" />
+                        <span asp-validation-for="HasParking" class="text-danger"></span>
+                    </label>
+                </div>
+                <div class="col-4">
+                    <label>
+                        Tennis Shop
+                        <input type="checkbox" asp-for="HasShop" />
+                        <span asp-validation-for="HasShop" class="text-danger"></span>
+                    </label>
+                </div>
+                <div class="col-4">
+                    <label>
+                        Showers
+                        <input type="checkbox" asp-for="HasShower" />
+                        <span asp-validation-for="HasShower" class="text-danger"></span>
+                    </label>
+                </div>
+            </div>
+            <hr />
+            <div class="mb-3">
+                <label class="form-label-add-edit"></label>
+                <input type="file" name="ClubLogoImage" class="form-control-file" accept="image/*" aria-describedby="clubLogoImageHelp" />
+                <small id="clubLogoImageHelp" class="form-text text-muted">Please upload an image file for your club logo.</small>
+            </div>
+
+            <div class="mb-3 text-center">
+                <input class="btn btn-primary" type="submit" value="Create" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

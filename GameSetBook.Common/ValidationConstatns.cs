@@ -23,6 +23,18 @@
             public const double RatingMaxValue = 10.00;
 
             public const int ClubLogoUrlMaxLength = 1024;
+
+            public const int ClubWorkingHourStartLowerRange = 0;
+            public const int ClubWorkingHourStartUpperRange = 12;
+
+            public const int ClubWorkingHourEndLowerrange = 13;
+            public const int ClubWorkingHourEndUpperrange = 24;
+
+            public const int MinCoaches = 0;
+            public const int MaxCoaches = 100;
+
+            public const int MinCourts = 1;
+            public const int MaxCourts = 100;
         }
 
         public static class CityConstants
@@ -92,5 +104,9 @@
             public const string DateOnlyFormat = "dd-MM-yyy";
         }
 
+        public static class ImageSizeConstants
+        {
+            public const int ClubLogoMaxLength = 5242880;
+        }
     }
 }
