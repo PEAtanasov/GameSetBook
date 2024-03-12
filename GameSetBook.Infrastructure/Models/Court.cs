@@ -36,7 +36,7 @@ namespace GameSetBook.Infrastructure.Models
         /// Court surface
         /// </summary>
         [Required]
-        [Comment("Court name")]
+        [Comment("Court surface")]
         public Surface Surface { get; set; }
 
         /// <summary>
