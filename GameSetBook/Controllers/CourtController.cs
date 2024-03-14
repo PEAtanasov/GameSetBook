@@ -39,15 +39,33 @@ namespace GameSetBook.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CourtFormModel[] model)
+        public async Task<IActionResult> Create(CourtFormModel[] model)
         {
-            int number = 0;
-            foreach (var item in model)
-            {
-                number = (int)item.Surface;
-            }
-            return RedirectToAction("Index", "Club");
-        }
+            var clubId = model[0].ClubId;
 
+            if (!ModelState.IsValid)
+            {
+                var surfaceSelectList = Enum.GetValues(typeof(Surface)).Cast<Surface>().Select(v => new SelectListItem
+                {
+                    Text = v.GetDisplayName(),
+                    Value = ((int)v).ToString()
+                }).ToList();
+
+                ViewBag.Surfaces = surfaceSelectList;
+
+                return View(model);
+            }
+
+            try
+            {
+                await courtService.CreateInitialAsync(model);
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return RedirectToAction("Index","Club");
+        }
     }
 }

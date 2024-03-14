@@ -1,11 +1,12 @@
-﻿using GameSetBook.Common;
-using GameSetBook.Core.Contracts;
+﻿using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Club;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
+
 using static GameSetBook.Common.ErrorMessageConstants;
+using static GameSetBook.Common.UserConstants;
 
 namespace GameSetBook.Web.Controllers
 {
@@ -44,28 +45,22 @@ namespace GameSetBook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            //if (!await clubService.ClubExsitAsync(id))
-            //{
-            //    return BadRequest();
-            //}
 
-            try
+            if (!await clubService.ClubExsitAsync(id))
             {
-                var model = await clubService.GetClubDetailsAsync(id);
-
-                return View(model);
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Error", "Home", new { errorMessage = ex.Message });
 
-            }
+            var model = await clubService.GetClubDetailsAsync(id);
+
+            return View(model);
+
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var model = new ClubCreateFormModel();
+            var model = new ClubFormModel();
 
             var cities = await clubService.GetAllCitiesAsync();
 
@@ -75,8 +70,13 @@ namespace GameSetBook.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ClubCreateFormModel model, IFormFile clubLogoImage)
+        public async Task<IActionResult> Create(ClubFormModel model, IFormFile? clubLogoImage)
         {
+            if (await clubService.ClubExsitByNameAsync(model.Name))
+            {
+                ModelState.AddModelError(string.Empty, "Club with that name already exist");
+            }
+
             if (!ModelState.IsValid)
             {
                 var cities = await clubService.GetAllCitiesAsync();
@@ -90,7 +90,8 @@ namespace GameSetBook.Web.Controllers
             {
                 if (clubLogoImage.Length > 5242880)
                 {
-                    TempData["ImageSizeToBig"] = ImageSizeToBig;
+                    ModelState.AddModelError(string.Empty, ImageSizeToBig);
+                    //TempData["ImageSizeToBig"] = ImageSizeToBig;
                     var cities = await clubService.GetAllCitiesAsync();
                     ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
                     return View(model);
@@ -101,7 +102,8 @@ namespace GameSetBook.Web.Controllers
                     && Path.GetExtension(clubLogoImage.FileName).ToLower() != ".png"
                     && Path.GetExtension(clubLogoImage.FileName).ToLower() != ".gif")
                 {
-                    TempData["WrongImageFormat"] = WrongImageFormat;
+                    ModelState.AddModelError(string.Empty, WrongImageFormat);
+                    //TempData["WrongImageFormat"] = WrongImageFormat;
                     var cities = await clubService.GetAllCitiesAsync();
                     ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
                     return View(model);
@@ -121,7 +123,7 @@ namespace GameSetBook.Web.Controllers
                 string uniqueFileName = $"{model.Name}_logo{Path.GetExtension(clubLogoImage.FileName)}";
 
                 string filePath = Path.Combine(uploadPath, uniqueFileName);
-                relativePath = Path.Combine(imagePath, uniqueFileName).Replace('\\', '/');
+                relativePath = Path.Combine(imagePath, uniqueFileName).Replace('\\', '/').Replace(' ','_');
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -131,35 +133,27 @@ namespace GameSetBook.Web.Controllers
                 model.LogoUrl = relativePath;
             }
 
-            model.ClubOwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            try
-            {
-                await clubService.CreateAsync(model);
-            }
-            catch (ArgumentException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return View(model);
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError(string.Empty, UnknownError);
-                return View(model);
-            }
+            model.ClubOwnerId = GetUserId();
+            await clubService.CreateAsync(model);
 
             var user = await userManager.GetUserAsync(User);
 
-            if (!await roleManager.RoleExistsAsync(UserConstants.ClubOwnerRole))
+            if (!await roleManager.RoleExistsAsync(ClubOwnerRole))
             {
-                await roleManager.CreateAsync(new IdentityRole(UserConstants.ClubOwnerRole));
+                await roleManager.CreateAsync(new IdentityRole(ClubOwnerRole));
             }
 
-            await userManager.AddToRoleAsync(user, UserConstants.ClubOwnerRole);
-
-            var id = await clubService.GetClubByIdByName(model.Name);
+            if (!await userManager.IsInRoleAsync(user,ClubOwnerRole))
+            {
+                await userManager.AddToRoleAsync(user, ClubOwnerRole);
+            }
+  
+            var id = await clubService.GetClubByIdByNameAsync(model.Name);
 
             return RedirectToAction("Create", "Court", new { clubId = id, numberOfCourts = model.NumberOfCourts });
         }
+
+        private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
+
     }
 }

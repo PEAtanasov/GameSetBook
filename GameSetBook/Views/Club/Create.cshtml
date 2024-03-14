@@ -1,4 +1,4 @@
-﻿@model ClubCreateFormModel
+﻿@model ClubFormModel
 
 @{
     IFormFile file = ViewBag.File;
@@ -19,6 +19,18 @@
     <div class="alert alert-success alert-dismissible fade show text-center mx-auto col-xl-6" role="alert">
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         @TempData["WrongImageFormat"]
+    </div>
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger" role="alert">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
     </div>
 }
 

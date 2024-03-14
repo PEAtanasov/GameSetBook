@@ -7,7 +7,7 @@ using static GameSetBook.Common.ValidationConstatns.ClubConstants;
 
 namespace GameSetBook.Core.Models.Club
 {
-    public class ClubCreateFormModel
+    public class ClubFormModel
     {
         /// <summary>
         /// Club identifier

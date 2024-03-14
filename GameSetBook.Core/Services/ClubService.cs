@@ -12,7 +12,6 @@ namespace GameSetBook.Core.Services
     public class ClubService : IClubService
     {
         private readonly IRepository repository;
-        private readonly UserManager<IdentityUser> userManager;
 
         public ClubService(IRepository repository)
         {
@@ -43,11 +42,16 @@ namespace GameSetBook.Core.Services
 
         public async Task<ClubDetailsViewModel> GetClubDetailsAsync(int id)
         {
-            var club = await repository.GetByIdAsync<Club>(id);
-            if (club == null)
-            {
-                throw new ArgumentException("The club does not exist");
-            }
+            //var club = await repository.GetByIdAsync<Club>(id);
+
+            var club = await repository.GetAllReadOnly<Club>()
+                .Where(c=>c.IsAproovedByAdmin==true && c.IsActive==true)
+                .FirstAsync(c=>c.Id==id);
+
+            //if (club == null)
+            //{
+            //    throw new ArgumentException("The club does not exist");
+            //}
 
             var model = new ClubDetailsViewModel()
             {
@@ -62,13 +66,13 @@ namespace GameSetBook.Core.Services
                 IsActive = club.IsActive,
                 WorkingTimeStart = club.WorkingTimeStart,
                 WorkingTimeEnd = club.WorkingTimeEnd,
-                ClubInfo = await GetClubIfno(club.Id)
+                ClubInfo = await GetClubIfnoAsync(club.Id)
             };
 
             return model;
         }
 
-        public async Task<ClubInfoViewModel> GetClubIfno(int id)
+        public async Task<ClubInfoViewModel> GetClubIfnoAsync(int id)
         {
             var club = await repository.GetAllReadOnly<Club>()
                 .Include(c => c.City)
@@ -98,20 +102,15 @@ namespace GameSetBook.Core.Services
         {
             var club = await repository.GetByIdAsync<Club>(id);
 
-            if (club == null)
+            if (club == null || club.IsActive==false || club.IsAproovedByAdmin==false)
             {
                 return false;
             }
             return true;
         }
 
-        public async Task CreateAsync(ClubCreateFormModel model)
+        public async Task CreateAsync(ClubFormModel model)
         {
-            if (await repository.GetAllReadOnly<Club>().AnyAsync(c => c.Name == model.Name))
-            {
-                throw new ArgumentException("The event already exist");
-            }
-
             var club = new Club()
             {
                 Name = model.Name,
@@ -138,7 +137,7 @@ namespace GameSetBook.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task<int> GetClubByIdByName(string name)
+        public async Task<int> GetClubByIdByNameAsync(string name)
         {
             var club = await repository.GetAllReadOnly<Club>().FirstOrDefaultAsync(c => c.Name == name);
             if (club==null)
@@ -158,6 +157,11 @@ namespace GameSetBook.Core.Services
                 }).ToListAsync();
 
             return cities;
+        }
+
+        public async Task<bool> ClubExsitByNameAsync(string name)
+        {
+            return await repository.GetAllReadOnly<Club>().AnyAsync(c => c.Name.ToLower() == name.ToLower());
         }
     }
 }
