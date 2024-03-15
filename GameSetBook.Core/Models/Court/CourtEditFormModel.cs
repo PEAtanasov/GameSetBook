@@ -55,6 +55,17 @@ namespace GameSetBook.Core.Models.Court
         [Required]
         public int ClubId { get; set; }
 
+        /// <summary>
+        /// Is the court active
+        /// </summary>
+        [Required]
+        [Display(Name = "Status(uncheck to deactivate)")]
+        public bool IsActive { get; set; }
+
+        /// <summary>
+        /// Current court club's owner identifier
+        /// </summary>
+        public string ClubOwnerId { get; set; } = string.Empty;
 
     }
 }

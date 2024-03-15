@@ -6,5 +6,7 @@ namespace GameSetBook.Core.Contracts
     {
         Task<bool> ClubHasCourts(int clubId);
         Task CreateInitialAsync(CourtCreateFormModel[] model);
+        Task<CourtEditFormModel> GetCourtEditFormModelAsync(int courtId);
+        Task Edit(CourtEditFormModel model);
     }
 }

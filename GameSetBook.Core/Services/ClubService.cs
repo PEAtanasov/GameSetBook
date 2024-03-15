@@ -29,7 +29,7 @@ namespace GameSetBook.Core.Services
                     Name = c.Name,
                     CityName = c.City.Name,
                     LogoUrl = c.LogoUrl,
-                    Prcie = c.Courts.OrderBy(c => c.PricePerHour).Select(c => c.PricePerHour).FirstOrDefault(),
+                    Prcie = c.Courts.Where(c=>c.IsActive).OrderBy(c => c.PricePerHour).Select(c => c.PricePerHour).FirstOrDefault(),
                     NumberofCourts = c.NumberOfCourts,
                     WorkingTimeStart = c.WorkingTimeStart,
                     WorkingTimeEnd = c.WorkingTimeEnd,

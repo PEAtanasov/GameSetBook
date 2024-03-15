@@ -84,55 +84,21 @@ namespace GameSetBook.Web.Controllers
                 return View(model);
             }
 
-            string relativePath = string.Empty;
-
             if (clubLogoImage != null && clubLogoImage.Length > 0)
             {
-                if (clubLogoImage.Length > 5242880)
+                try
                 {
-                    ModelState.AddModelError(string.Empty, ImageSizeToBig);
+                    model.LogoUrl = GetLogoUrlPath(clubLogoImage,model.Name);
+                }
+                catch (ArgumentException ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
 
                     var cities = await clubService.GetAllCitiesAsync();
                     ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 
                     return View(model);
                 }
-
-                if (Path.GetExtension(clubLogoImage.FileName).ToLower() != ".jpg"
-                    && Path.GetExtension(clubLogoImage.FileName) != ".jpeg"
-                    && Path.GetExtension(clubLogoImage.FileName).ToLower() != ".png"
-                    && Path.GetExtension(clubLogoImage.FileName).ToLower() != ".gif")
-                {
-                    ModelState.AddModelError(string.Empty, WrongImageFormat);
-
-                    var cities = await clubService.GetAllCitiesAsync();
-                    ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
-                    
-                    return View(model);
-                }
-
-                string webRootPath = webHostEnvironment.WebRootPath;
-
-                string imagePath = Path.Combine("images", "club_logo");
-
-                string uploadPath = Path.Combine(webRootPath, imagePath);
-
-                if (!Directory.Exists(uploadPath))
-                {
-                    Directory.CreateDirectory(uploadPath);
-                }
-
-                string uniqueFileName = $"{model.Name}_logo{Path.GetExtension(clubLogoImage.FileName)}";
-
-                string filePath = Path.Combine(uploadPath, uniqueFileName);
-                relativePath = Path.Combine(imagePath, uniqueFileName).Replace('\\', '/').Replace(' ','_');
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    clubLogoImage.CopyTo(stream);
-                }
-
-                model.LogoUrl = relativePath;
             }
 
             model.ClubOwnerId = GetUserId();
@@ -156,6 +122,47 @@ namespace GameSetBook.Web.Controllers
         }
 
         private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        private string GetLogoUrlPath(IFormFile clubLogoImage, string modelName)
+        {
+            string relativePath = string.Empty;
+
+            if (clubLogoImage.Length > 5242880)
+            {
+                throw new ArgumentException(ImageSizeToBig);
+            }
+
+            if (Path.GetExtension(clubLogoImage.FileName).ToLower() != ".jpg"
+                   && Path.GetExtension(clubLogoImage.FileName) != ".jpeg"
+                   && Path.GetExtension(clubLogoImage.FileName).ToLower() != ".png"
+                   && Path.GetExtension(clubLogoImage.FileName).ToLower() != ".gif")
+            {
+                throw new ArgumentException(WrongImageFormat);
+            }
+
+            string webRootPath = webHostEnvironment.WebRootPath;
+
+            string imagePath = Path.Combine("images", "club_logo");
+
+            string uploadPath = Path.Combine(webRootPath, imagePath);
+
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+
+            string uniqueFileName = $"{modelName.Replace(' ', '_')}_logo{Path.GetExtension(clubLogoImage.FileName)}";
+
+            string filePath = Path.Combine(uploadPath, uniqueFileName);
+            relativePath = Path.Combine(imagePath, uniqueFileName).Replace('\\', '/');
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                clubLogoImage.CopyTo(stream);
+            }
+
+            return relativePath;
+        }
 
     }
 }

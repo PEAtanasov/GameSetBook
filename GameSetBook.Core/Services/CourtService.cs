@@ -22,7 +22,7 @@ namespace GameSetBook.Core.Services
             int clubId = model[0].ClubId;
 
             var club = await repository.GetByIdAsync<Club>(clubId) ?? throw new ArgumentException(ClubDoesNotExist);
-            
+
             if (await ClubHasCourts(clubId))
             {
                 throw new ArgumentException(ClubHasExistingCourts);
@@ -55,9 +55,49 @@ namespace GameSetBook.Core.Services
                 .AnyAsync();
         }
 
-        public async Task<CourtCreateFormModel> EditCourt(int courtId)
+        public async Task<CourtEditFormModel> GetCourtEditFormModelAsync(int courtId)
         {
-            var court = repository.GetAll()
+            var court = await repository.GetAllReadOnly<Court>()
+                .Include(c=>c.Club)
+                .FirstOrDefaultAsync(c => c.Id == courtId) 
+                ?? throw new ArgumentException("The court does not exist");
+
+            var model = new CourtEditFormModel()
+            {
+                Id = court.Id,
+                Name = court.Name,
+                ClubId = court.ClubId,
+                IsIndoor = court.IsIndoor,
+                IsLighted = court.IsLighted,
+                PricePerHour = court.PricePerHour,
+                Surface = court.Surface,
+                IsActive = court.IsActive,
+                ClubOwnerId = court.Club.ClubOwnerId
+            };
+
+            return model;
+        }
+
+        public async Task Edit(CourtEditFormModel model)
+        {
+            var courtToEdit = await repository.GetAll<Court>()
+                .Where(c => c.Id == model.Id)
+                .Include(c => c.Club)
+                .FirstOrDefaultAsync();
+
+            if (courtToEdit == null)
+            {
+                throw new ArgumentException("The court does not exist");
+            }
+
+            courtToEdit.Name = model.Name;
+            courtToEdit.PricePerHour = model.PricePerHour;
+            courtToEdit .Surface = model.Surface;
+            courtToEdit.IsLighted= model.IsLighted;
+            courtToEdit.IsIndoor = model.IsIndoor;
+            courtToEdit.IsActive= model.IsActive;
+
+            await repository.SaveChangesAsync();
         }
     }
 }
