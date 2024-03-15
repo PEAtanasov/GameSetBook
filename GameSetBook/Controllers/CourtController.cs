@@ -1,25 +1,37 @@
-﻿using GameSetBook.Common.Enums;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+using GameSetBook.Common.Enums;
 using GameSetBook.Common.Enums.EnumExtensions;
 using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Court;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 
 namespace GameSetBook.Web.Controllers
 {
     public class CourtController : BaseController
     {
         public readonly ICourtService courtService;
-        public CourtController(ICourtService courtService)
+        public readonly IClubService clubService;
+        public CourtController(ICourtService courtService, IClubService clubService)
         {
             this.courtService = courtService;
+            this.clubService = clubService;
         }
 
         [HttpGet]
-        public IActionResult Create(int clubId, int numberOfCourts)
+        public async Task<IActionResult> Create(int clubId, int numberOfCourts)
         {
-            CourtFormModel[] model = new CourtFormModel[numberOfCourts];
+            if (!await clubService.ClubExsitAsync(clubId))
+            {
+                return BadRequest();
+            }
+
+            if (await clubService.IsClubAprooved(clubId))
+            {
+                return BadRequest();
+            }
+            
+            CourtCreateFormModel[] model = new CourtCreateFormModel[numberOfCourts];
 
             var surfaceSelectList = Enum.GetValues(typeof(Surface)).Cast<Surface>().Select(v => new SelectListItem
             {
@@ -30,7 +42,7 @@ namespace GameSetBook.Web.Controllers
 
             for (int i = 0; i < numberOfCourts; i++)
             {
-                model[i] = new CourtFormModel()
+                model[i] = new CourtCreateFormModel()
                 {
                      ClubId = clubId,
                 };
@@ -39,9 +51,14 @@ namespace GameSetBook.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CourtFormModel[] model)
+        public async Task<IActionResult> Create(CourtCreateFormModel[] model)
         {
             var clubId = model[0].ClubId;
+
+            if (!await clubService.ClubExsitAsync(clubId))
+            {
+                return BadRequest();
+            }
 
             if (!ModelState.IsValid)
             {
@@ -66,6 +83,12 @@ namespace GameSetBook.Web.Controllers
             }
 
             return RedirectToAction("Index","Club");
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+
+            return View();
         }
     }
 }

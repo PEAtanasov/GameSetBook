@@ -1,10 +1,10 @@
-﻿using GameSetBook.Core.Contracts;
-using GameSetBook.Core.Models.Club;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 
+using GameSetBook.Core.Contracts;
+using GameSetBook.Core.Models.Club;
 using static GameSetBook.Common.ErrorMessageConstants;
 using static GameSetBook.Common.UserConstants;
 
@@ -74,7 +74,7 @@ namespace GameSetBook.Web.Controllers
         {
             if (await clubService.ClubExsitByNameAsync(model.Name))
             {
-                ModelState.AddModelError(string.Empty, "Club with that name already exist");
+                ModelState.AddModelError(string.Empty, string.Format(ClubWithThatNameExist, model.Name));
             }
 
             if (!ModelState.IsValid)
@@ -91,9 +91,10 @@ namespace GameSetBook.Web.Controllers
                 if (clubLogoImage.Length > 5242880)
                 {
                     ModelState.AddModelError(string.Empty, ImageSizeToBig);
-                    //TempData["ImageSizeToBig"] = ImageSizeToBig;
+
                     var cities = await clubService.GetAllCitiesAsync();
                     ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+
                     return View(model);
                 }
 
@@ -103,9 +104,10 @@ namespace GameSetBook.Web.Controllers
                     && Path.GetExtension(clubLogoImage.FileName).ToLower() != ".gif")
                 {
                     ModelState.AddModelError(string.Empty, WrongImageFormat);
-                    //TempData["WrongImageFormat"] = WrongImageFormat;
+
                     var cities = await clubService.GetAllCitiesAsync();
                     ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+                    
                     return View(model);
                 }
 

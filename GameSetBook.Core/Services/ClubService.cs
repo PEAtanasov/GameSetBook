@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using GameSetBook.Core.Contracts;
+using GameSetBook.Core.Models.City;
 using GameSetBook.Core.Models.Club;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
-using Microsoft.AspNetCore.Identity;
-using GameSetBook.Core.Models.City;
 
 namespace GameSetBook.Core.Services
 {
@@ -42,16 +41,9 @@ namespace GameSetBook.Core.Services
 
         public async Task<ClubDetailsViewModel> GetClubDetailsAsync(int id)
         {
-            //var club = await repository.GetByIdAsync<Club>(id);
-
             var club = await repository.GetAllReadOnly<Club>()
                 .Where(c=>c.IsAproovedByAdmin==true && c.IsActive==true)
                 .FirstAsync(c=>c.Id==id);
-
-            //if (club == null)
-            //{
-            //    throw new ArgumentException("The club does not exist");
-            //}
 
             var model = new ClubDetailsViewModel()
             {
@@ -77,12 +69,8 @@ namespace GameSetBook.Core.Services
             var club = await repository.GetAllReadOnly<Club>()
                 .Include(c => c.City)
                 .ThenInclude(ct => ct.Country)
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .FirstAsync(c => c.Id == id);
 
-            if (club == null)
-            {
-                throw new ArgumentException("The club does not exist");
-            }
             var model = new ClubInfoViewModel()
             {
                 Id = club.Id,
@@ -96,17 +84,6 @@ namespace GameSetBook.Core.Services
             };
 
             return model;
-        }
-
-        public async Task<bool> ClubExsitAsync(int id)
-        {
-            var club = await repository.GetByIdAsync<Club>(id);
-
-            if (club == null || club.IsActive==false || club.IsAproovedByAdmin==false)
-            {
-                return false;
-            }
-            return true;
         }
 
         public async Task CreateAsync(ClubFormModel model)
@@ -137,16 +114,6 @@ namespace GameSetBook.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task<int> GetClubByIdByNameAsync(string name)
-        {
-            var club = await repository.GetAllReadOnly<Club>().FirstOrDefaultAsync(c => c.Name == name);
-            if (club==null)
-            {
-                throw new ArgumentException();
-            }
-            return club.Id;
-        }
-
         public async Task<IEnumerable<CityViewModel>> GetAllCitiesAsync()
         {
             var cities = await repository.GetAllReadOnly<City>()
@@ -159,9 +126,37 @@ namespace GameSetBook.Core.Services
             return cities;
         }
 
+        public async Task<int> GetClubByIdByNameAsync(string name)
+        {
+            var club = await repository.GetAllReadOnly<Club>().FirstOrDefaultAsync(c => c.Name == name);
+            if (club==null)
+            {
+                throw new ArgumentException();
+            }
+            return club.Id;
+        }
+
+        public async Task<bool> ClubExsitAsync(int id)
+        {
+            var club = await repository.GetByIdAsync<Club>(id);
+
+            if (club == null )//|| club.IsActive == false || club.IsAproovedByAdmin == false)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public async Task<bool> ClubExsitByNameAsync(string name)
         {
-            return await repository.GetAllReadOnly<Club>().AnyAsync(c => c.Name.ToLower() == name.ToLower());
+            return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Name.ToLower() == name.ToLower());
+        }
+
+        public async Task<bool> IsClubAprooved(int id)
+        {
+            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c=> c.Id == id);
+
+            return club.IsAproovedByAdmin;
         }
     }
 }

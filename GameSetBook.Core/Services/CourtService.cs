@@ -1,28 +1,31 @@
-﻿using GameSetBook.Core.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+
+using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Court;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
-using Microsoft.EntityFrameworkCore;
+using static GameSetBook.Common.ErrorMessageConstants;
 
 namespace GameSetBook.Core.Services
 {
     public class CourtService : ICourtService
     {
         public readonly IRepository repository;
+
         public CourtService(IRepository repository)
         {
             this.repository = repository;
         }
 
-        public async Task CreateInitialAsync(CourtFormModel[] model)
+        public async Task CreateInitialAsync(CourtCreateFormModel[] model)
         {
             int clubId = model[0].ClubId;
 
-            var club = await repository.GetByIdAsync<Club>(clubId) ?? throw new ArgumentException("The club does not exist");
+            var club = await repository.GetByIdAsync<Club>(clubId) ?? throw new ArgumentException(ClubDoesNotExist);
             
             if (await ClubHasCourts(clubId))
             {
-                throw new ArgumentException("The club has existing courts");
+                throw new ArgumentException(ClubHasExistingCourts);
             }
 
             Court court;
@@ -47,12 +50,14 @@ namespace GameSetBook.Core.Services
 
         public async Task<bool> ClubHasCourts(int clubId)
         {
-            bool hascourts= await repository.GetAllReadOnly<Court>()
+            return await repository.GetAllReadOnly<Court>()
                 .Where(c => c.ClubId == clubId)
                 .AnyAsync();
+        }
 
-            return hascourts;
+        public async Task<CourtCreateFormModel> EditCourt(int courtId)
+        {
+            var court = repository.GetAll()
         }
     }
-
 }

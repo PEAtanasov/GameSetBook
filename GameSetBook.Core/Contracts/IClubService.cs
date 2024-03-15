@@ -14,5 +14,7 @@ namespace GameSetBook.Core.Contracts
         Task CreateAsync(ClubFormModel model);
         Task<IEnumerable<CityViewModel>> GetAllCitiesAsync();
         Task<bool> ClubExsitByNameAsync(string name);
+        Task<bool> IsClubAprooved(int id);
+
     }
 }

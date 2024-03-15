@@ -8,6 +8,9 @@
         public const string RangeMessage = "The field {0} must be between {1} and {2}";
         public static string ImageSizeToBig = $"The file size must not exceed {ValidationConstatns.ImageSizeConstants.ClubLogoMaxLength/1024/1024} MB.";
         public const string WrongImageFormat = "Please upload an valid image format (JPG, JPEG, GIF, or PNG).";
-        public const string UnknownError = "Unknown error" ;
+        public const string UnknownError = "Unknown error";
+        public const string ClubDoesNotExist = "The club does not exist";
+        public const string ClubHasExistingCourts = "The club has existing courts";
+        public const string ClubWithThatNameExist = "Club with the name {0} already exist";
     }
 }
