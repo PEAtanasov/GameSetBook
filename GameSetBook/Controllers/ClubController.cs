@@ -28,6 +28,7 @@ namespace GameSetBook.Web.Controllers
             this.roleManager = roleManager;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index(string searchString)
         {
             ViewData["CurrentFilter"] = searchString;
@@ -121,6 +122,11 @@ namespace GameSetBook.Web.Controllers
             return RedirectToAction("Create", "Court", new { clubId = id, numberOfCourts = model.NumberOfCourts });
         }
 
+        public async Task<IActionResult> Edit(int clubId)
+        {
+            return View();
+        }
+
         private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         private string GetLogoUrlPath(IFormFile clubLogoImage, string modelName)
@@ -163,6 +169,5 @@ namespace GameSetBook.Web.Controllers
 
             return relativePath;
         }
-
     }
 }

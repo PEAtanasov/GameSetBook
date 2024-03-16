@@ -5,6 +5,8 @@ using GameSetBook.Core.Models.City;
 using GameSetBook.Core.Models.Club;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
+using static GameSetBook.Common.ErrorMessageConstants;
+using GameSetBook.Core.Models.Court;
 
 namespace GameSetBook.Core.Services
 {
@@ -29,11 +31,11 @@ namespace GameSetBook.Core.Services
                     Name = c.Name,
                     CityName = c.City.Name,
                     LogoUrl = c.LogoUrl,
-                    Prcie = c.Courts.Where(c=>c.IsActive).OrderBy(c => c.PricePerHour).Select(c => c.PricePerHour).FirstOrDefault(),
+                    Prcie = c.Courts.Where(c => c.IsActive).OrderBy(c => c.PricePerHour).Select(c => c.PricePerHour).FirstOrDefault(),
                     NumberofCourts = c.NumberOfCourts,
                     WorkingTimeStart = c.WorkingTimeStart,
                     WorkingTimeEnd = c.WorkingTimeEnd,
-                    //Rating = Math.Round(c.ClubReviews.Average(x => x.Rate),1),
+                    Rating = c.Rating
                 }).ToListAsync();
 
             return model;
@@ -42,8 +44,8 @@ namespace GameSetBook.Core.Services
         public async Task<ClubDetailsViewModel> GetClubDetailsAsync(int id)
         {
             var club = await repository.GetAllReadOnly<Club>()
-                .Where(c=>c.IsAproovedByAdmin==true && c.IsActive==true)
-                .FirstAsync(c=>c.Id==id);
+                .Where(c => c.IsAproovedByAdmin == true && c.IsActive == true)
+                .FirstAsync(c => c.Id == id);
 
             var model = new ClubDetailsViewModel()
             {
@@ -80,7 +82,7 @@ namespace GameSetBook.Core.Services
                 PhoneNumber = club.PhoneNumber,
                 Address = club.Address,
                 CityName = club.City.Name,
-                CountryName= club.City.Country.Name
+                CountryName = club.City.Country.Name
             };
 
             return model;
@@ -114,6 +116,51 @@ namespace GameSetBook.Core.Services
             await repository.SaveChangesAsync();
         }
 
+        public async Task<ClubFormModel> EditAsync(int clubId)
+        {
+            if (!await ClubExsitAsync(clubId))
+            {
+                throw new ArgumentException(ClubDoesNotExist);
+            }
+
+            var club = await repository.GetAllReadOnly<Club>()
+                .Where(c => c.Id == clubId)
+                .Include(c => c.Courts)
+                .Select(c => new ClubFormModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Address = c.Address,
+                    CityId = c.CityId,
+                    Description = c.Description,
+                    Email = c.Email,
+                    HasParking = c.HasParking,
+                    HasShower = c.HasShower,
+                    HasShop = c.HasShop,
+                    ClubOwnerId = c.ClubOwnerId,
+                    LogoUrl = c.LogoUrl,
+                    NumberOfCoaches = c.NumberOfCoaches,
+                    NumberOfCourts = c.NumberOfCourts,
+                    PhoneNumber = c.PhoneNumber,
+                    WorkingTimeStart = c.WorkingTimeStart,
+                    WorkingTimeEnd = c.WorkingTimeEnd,
+                    Courts = c.Courts.Select(ct => new CourtEditFormModel()
+                    {
+                        Id = ct.Id,
+                        Name = ct.Name,
+                        ClubId = ct.ClubId,
+                        IsIndoor = ct.IsIndoor,
+                        IsLighted = ct.IsLighted,
+                        Surface = ct.Surface,
+                        PricePerHour = ct.PricePerHour,
+                        IsActive = ct.IsActive
+                    }).ToList()
+                })
+                .FirstAsync();
+
+            return club;
+        }
+
         public async Task<IEnumerable<CityViewModel>> GetAllCitiesAsync()
         {
             var cities = await repository.GetAllReadOnly<City>()
@@ -129,7 +176,7 @@ namespace GameSetBook.Core.Services
         public async Task<int> GetClubByIdByNameAsync(string name)
         {
             var club = await repository.GetAllReadOnly<Club>().FirstOrDefaultAsync(c => c.Name == name);
-            if (club==null)
+            if (club == null)
             {
                 throw new ArgumentException();
             }
@@ -140,7 +187,7 @@ namespace GameSetBook.Core.Services
         {
             var club = await repository.GetByIdAsync<Club>(id);
 
-            if (club == null )//|| club.IsActive == false || club.IsAproovedByAdmin == false)
+            if (club == null)//|| club.IsActive == false || club.IsAproovedByAdmin == false)
             {
                 return false;
             }
@@ -154,7 +201,7 @@ namespace GameSetBook.Core.Services
 
         public async Task<bool> IsClubAprooved(int id)
         {
-            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c=> c.Id == id);
+            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Id == id);
 
             return club.IsAproovedByAdmin;
         }

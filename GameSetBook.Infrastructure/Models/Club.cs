@@ -169,24 +169,29 @@ namespace GameSetBook.Infrastructure.Models
         [Comment("Is the club aprooved from app admin")]
         public bool IsAproovedByAdmin { get; set; }
 
-        ///// <summary>
-        ///// Club rating given from its clients
-        ///// </summary>
-        //[NotMapped]
-        //public double Rating
-        //{
-        //    get
-        //    {
-        //        double averageRate = ClubReviews.Average(x => x.Rate);
-        //        return Math.Round(averageRate, 1);
-        //    }
-        //}
+        /// <summary>
+        /// Club rating given from its clients
+        /// </summary>
+        [NotMapped]
+        public double Rating
+        {
+            get
+            {
+                if (ClubReviews == null || !ClubReviews.Any())
+                {
+                    return 0;
+                }
+
+                return Math.Round(ClubReviews.Average(x => x.Rate), 1);
+            }
+        }
 
         /// <summary>
         /// Club owner's identifier
         /// </summary>
         [Required]
         [ForeignKey(nameof(ClubOwner))]
+        [Comment("Club owner's identifier")]
         public string ClubOwnerId { get; set; } = string.Empty;
 
         public virtual IdentityUser ClubOwner { get; set; } = null!;

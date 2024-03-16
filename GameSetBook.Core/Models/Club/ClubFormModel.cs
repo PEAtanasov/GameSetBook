@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GameSetBook.Core.Models.Court;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 using static GameSetBook.Common.ErrorMessageConstants;
@@ -9,6 +10,11 @@ namespace GameSetBook.Core.Models.Club
 {
     public class ClubFormModel
     {
+        public ClubFormModel()
+        {
+            Courts = new List<CourtEditFormModel>();
+        }
+
         /// <summary>
         /// Club identifier
         /// </summary>
@@ -118,6 +124,11 @@ namespace GameSetBook.Core.Models.Club
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Club owner identifier
+        /// </summary>
         public string ClubOwnerId { get; set; } = string.Empty;
+
+        public ICollection<CourtEditFormModel> Courts { get; set; }
     }
 }

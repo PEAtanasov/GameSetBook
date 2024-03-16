@@ -10,5 +10,6 @@
         public string Address { get; set; } = string.Empty;
         public string CityName {  get; set; } = string.Empty;
         public string CountryName { get; set; } = string.Empty;
+        public double Rating { get; set; }
     }   
 }

@@ -27,7 +27,7 @@
                     <th scope="col">Working Time</th>
                     <th scope="col">Prices From</th>
                     <th scope="col">Courts</th>
-                   
+                    <th scope="col">Rating</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -41,7 +41,16 @@
                         <td>@club.WorkingTimeStart - @club.WorkingTimeEnd</td>
                         <td>@club.Prcie</td>
                         <td>@club.NumberofCourts</td>
-                        
+                        <td>
+                            @if (@club.Rating>0)
+                            {
+                                @club.Rating
+                            }
+                            else
+                            {
+                                <small>No Rating</small>
+                            }
+                        </td>
                         <td>
                             <a asp-controller="Club" asp-action="Details" asp-route-id="@club.Id" class="btn btn-primary">Details</a>
                             <a asp-controller="Court" asp-action="Index" asp-route-id="@club.Id" class="btn btn-success">Reserve</a>

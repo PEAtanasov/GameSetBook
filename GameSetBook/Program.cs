@@ -1,35 +1,17 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
-using GameSetBook.Infrastructure.Data;
-using GameSetBook.Infrastructure.Common;
-using GameSetBook.Core.Contracts;
-using GameSetBook.Core.Services;
+using GameSetBook.Web.Extensions;
+using GameSetBook.Web.ModelBinders;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddApplicationDbContext(builder.Configuration);
+builder.Services.AddApplicationIdentity(builder.Configuration);
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+builder.Services.AddControllersWithViews(options =>
 {
-    options.SignIn.RequireConfirmedAccount = false;
-    options.Password.RequireDigit = true;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-})
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+    options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+});
 
-builder.Services
-    .AddScoped<IRepository, Repository>()
-    .AddScoped<IClubService, ClubService>()
-    .AddScoped<ICourtService,CourtService>();
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
