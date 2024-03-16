@@ -8,6 +8,7 @@ using GameSetBook.Common.Enums.EnumExtensions;
 using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Court;
 using static GameSetBook.Common.UserConstants;
+using GameSetBook.Web.Extensions;
 
 namespace GameSetBook.Web.Controllers
 {
@@ -81,7 +82,6 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Edit(int id)
         {
-
             CourtEditFormModel model;
             try
             {
@@ -93,7 +93,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if (model.ClubOwnerId != GetUserId())
+            if (model.ClubOwnerId != User.Id())
             {
                 return Unauthorized();
             }
@@ -107,7 +107,7 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Edit(CourtEditFormModel model)
         {
-            if (model.ClubOwnerId != GetUserId())
+            if (model.ClubOwnerId != User.Id())
             {
                 return Unauthorized();
             }
@@ -141,8 +141,5 @@ namespace GameSetBook.Web.Controllers
                 Value = ((int)v).ToString()
             }).ToList();
         }
-
-        private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
-
     }
 }

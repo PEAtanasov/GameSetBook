@@ -7,6 +7,7 @@ using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Club;
 using static GameSetBook.Common.ErrorMessageConstants;
 using static GameSetBook.Common.UserConstants;
+using GameSetBook.Web.Extensions;
 
 namespace GameSetBook.Web.Controllers
 {
@@ -102,7 +103,7 @@ namespace GameSetBook.Web.Controllers
                 }
             }
 
-            model.ClubOwnerId = GetUserId();
+            model.ClubOwnerId = User.Id();
             await clubService.CreateAsync(model);
 
             var user = await userManager.GetUserAsync(User);
@@ -126,8 +127,6 @@ namespace GameSetBook.Web.Controllers
         {
             return View();
         }
-
-        private string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         private string GetLogoUrlPath(IFormFile clubLogoImage, string modelName)
         {
