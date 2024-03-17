@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Security.Claims;
 
 using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Club;
@@ -34,7 +33,7 @@ namespace GameSetBook.Web.Controllers
         {
             ViewData["CurrentFilter"] = searchString;
 
-            var clubs = await clubService.GetAllClubsReadOnlyAsync();
+            var clubs = await clubService.GetAllClubsAsync();
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -42,6 +41,25 @@ namespace GameSetBook.Web.Controllers
             }
 
             return View(clubs);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index2([FromQuery]AllClubsSortingModel model)
+        {
+            var clubs = await clubService.GetClubSortingServiceModelAsync(
+                model.City,
+                model.SearchTerm,
+                model.ClubSorting,
+                model.CurrentPage,
+                model.ClubsPerPage
+                );
+
+            var cities = await clubService.GetAllCitiesAsync();
+            model.Cities = cities.Select(c => c.Name);
+            model.TotalClubCount = clubs.TotalClubCount;
+            model.Clubs = clubs.Clubs;
+
+            return View(model);
         }
 
         [HttpGet]
@@ -106,17 +124,17 @@ namespace GameSetBook.Web.Controllers
             model.ClubOwnerId = User.Id();
             await clubService.CreateAsync(model);
 
-            var user = await userManager.GetUserAsync(User);
+            //var user = await userManager.GetUserAsync(User);
 
-            if (!await roleManager.RoleExistsAsync(ClubOwnerRole))
-            {
-                await roleManager.CreateAsync(new IdentityRole(ClubOwnerRole));
-            }
+            //if (!await roleManager.RoleExistsAsync(ClubOwnerRole))
+            //{
+            //    await roleManager.CreateAsync(new IdentityRole(ClubOwnerRole));
+            //}
 
-            if (!await userManager.IsInRoleAsync(user,ClubOwnerRole))
-            {
-                await userManager.AddToRoleAsync(user, ClubOwnerRole);
-            }
+            //if (!await userManager.IsInRoleAsync(user,ClubOwnerRole))
+            //{
+            //    await userManager.AddToRoleAsync(user, ClubOwnerRole);
+            //}
   
             var id = await clubService.GetClubByIdByNameAsync(model.Name);
 

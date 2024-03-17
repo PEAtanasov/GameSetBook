@@ -22,7 +22,7 @@ namespace GameSetBook.Web.Controllers
         {
             var firstNameClaim = HttpContext.User.FindFirst(ClaimTypes.GivenName)?.Value;
             
-            var model = await clubService.GetAllClubsReadOnlyAsync();
+            var model = await clubService.GetAllClubsAsync();
 
             return View();
         }
