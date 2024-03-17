@@ -7,6 +7,7 @@ using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
 using static GameSetBook.Common.ErrorMessageConstants;
 using GameSetBook.Core.Models.Court;
+using GameSetBook.Core.Enums;
 
 namespace GameSetBook.Core.Services
 {
@@ -18,14 +19,14 @@ namespace GameSetBook.Core.Services
         {
             this.repository = repository;
         }
-        public async Task<IEnumerable<ClubViewModel>> GetAllClubsReadOnlyAsync()
+        public async Task<IEnumerable<ClubServiceViewModel>> GetAllClubsAsync()
         {
             var model = await repository.GetAllReadOnly<Club>()
                 .Where(c => c.IsActive && c.IsAproovedByAdmin)
-                .Include(c => c.City)
-                .Include(c => c.Courts)
+                //.Include(c => c.City)
+                //.Include(c => c.Courts)
                 .Include(c => c.ClubReviews)
-                .Select(c => new ClubViewModel()
+                .Select(c => new ClubServiceViewModel()
                 {
                     Id = c.Id,
                     Name = c.Name,
@@ -45,6 +46,7 @@ namespace GameSetBook.Core.Services
         {
             var club = await repository.GetAllReadOnly<Club>()
                 .Where(c => c.IsAproovedByAdmin == true && c.IsActive == true)
+                .Include(c => c.ClubReviews)
                 .FirstAsync(c => c.Id == id);
 
             var model = new ClubDetailsViewModel()
@@ -57,10 +59,10 @@ namespace GameSetBook.Core.Services
                 HasParking = club.HasParking,
                 HasShower = club.HasShower,
                 HasShop = club.HasShop,
-                IsActive = club.IsActive,
                 WorkingTimeStart = club.WorkingTimeStart,
                 WorkingTimeEnd = club.WorkingTimeEnd,
-                ClubInfo = await GetClubIfnoAsync(club.Id)
+                ClubInfo = await GetClubIfnoAsync(club.Id),
+                Rating = club.Rating
             };
 
             return model;
@@ -204,6 +206,71 @@ namespace GameSetBook.Core.Services
             var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Id == id);
 
             return club.IsAproovedByAdmin;
+        }
+
+        public async Task<ClubSortingServiceModel> GetClubSortingServiceModelAsync(
+            string? city = null, 
+            string? searchTerm = null, 
+            ClubSorting clubSorting = ClubSorting.Newest, 
+            int currentPage = 1,
+            int clubsPerPage = 1)
+        {
+            var clubsToSort = repository.GetAllReadOnly<Club>().Include(c => c.ClubReviews);
+                
+
+            if (city != null)
+            {
+                clubsToSort = clubsToSort.Where(c=>c.City.Name==city).Include(c => c.ClubReviews);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                clubsToSort = clubsToSort.Where(c => c.Name.ToLower().Contains(searchTerm.ToLower())).Include(c => c.ClubReviews);
+            }
+
+            clubsToSort = clubSorting switch
+            {
+                ClubSorting.PriceAscending => clubsToSort.OrderBy(c => c.Courts.Select(c => c.PricePerHour).OrderBy(ct => ct).First()).Include(c => c.ClubReviews),
+                ClubSorting.PriceDescending => clubsToSort.OrderByDescending(c => c.Courts.Select(c => c.PricePerHour).OrderBy(ct => ct).First()).Include(c => c.ClubReviews),
+                ClubSorting.NumberOfCourtsAscending => clubsToSort.OrderBy(c=>c.NumberOfCourts).Include(c => c.ClubReviews),
+                ClubSorting.NumberOfCourtsDescending => clubsToSort.OrderByDescending(c => c.NumberOfCourts).Include(c => c.ClubReviews),
+                _ => clubsToSort
+            };
+
+            var clubs = await clubsToSort
+                .Skip((currentPage-1)*clubsPerPage)
+                .Take(clubsPerPage)
+                .Select(c=> new ClubServiceViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    CityName = c.City.Name,
+                    LogoUrl = c.LogoUrl,
+                    Prcie = c.Courts.Where(c => c.IsActive).OrderBy(c => c.PricePerHour).Select(c => c.PricePerHour).FirstOrDefault(),
+                    NumberofCourts = c.NumberOfCourts,
+                    WorkingTimeStart = c.WorkingTimeStart,
+                    WorkingTimeEnd = c.WorkingTimeEnd,
+                    Rating = c.Rating
+                })
+                .ToListAsync();
+
+            if (clubSorting==ClubSorting.RatingAscending)
+            {
+                clubs=clubs.OrderBy(c => c.Rating).ToList();
+            }
+
+            if (clubSorting == ClubSorting.RatingDescending)
+            {
+                clubs=clubs.OrderByDescending(c => c.Rating).ToList();
+            }
+
+            int totalClubs = await clubsToSort.CountAsync();
+
+            return new ClubSortingServiceModel()
+            {
+                Clubs = clubs,
+                TotalClubCount = totalClubs
+            };
         }
     }
 }
