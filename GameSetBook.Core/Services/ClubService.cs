@@ -215,30 +215,34 @@ namespace GameSetBook.Core.Services
             int currentPage = 1,
             int clubsPerPage = 1)
         {
-            var clubsToSort = repository.GetAllReadOnly<Club>().Include(c => c.ClubReviews);
+
+            var clubsToSort = repository.GetAllReadOnly<Club>();
                 
 
             if (city != null)
             {
-                clubsToSort = clubsToSort.Where(c=>c.City.Name==city).Include(c => c.ClubReviews);
+                clubsToSort = clubsToSort.Where(c => c.City.Name == city);
             }
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                clubsToSort = clubsToSort.Where(c => c.Name.ToLower().Contains(searchTerm.ToLower())).Include(c => c.ClubReviews);
+                clubsToSort = clubsToSort.Where(c => c.Name.ToLower().Contains(searchTerm.ToLower()));
             }
 
             clubsToSort = clubSorting switch
             {
-                ClubSorting.PriceAscending => clubsToSort.OrderBy(c => c.Courts.Select(c => c.PricePerHour).OrderBy(ct => ct).First()).Include(c => c.ClubReviews),
-                ClubSorting.PriceDescending => clubsToSort.OrderByDescending(c => c.Courts.Select(c => c.PricePerHour).OrderBy(ct => ct).First()).Include(c => c.ClubReviews),
-                ClubSorting.NumberOfCourtsAscending => clubsToSort.OrderBy(c=>c.NumberOfCourts).Include(c => c.ClubReviews),
-                ClubSorting.NumberOfCourtsDescending => clubsToSort.OrderByDescending(c => c.NumberOfCourts).Include(c => c.ClubReviews),
-                _ => clubsToSort
+                ClubSorting.PriceAscending => clubsToSort.OrderBy(c => c.Courts.Select(c => c.PricePerHour).OrderBy(ct => ct).First()),
+                ClubSorting.PriceDescending => clubsToSort.OrderByDescending(c => c.Courts.Select(c => c.PricePerHour).OrderBy(ct => ct).First()),
+                ClubSorting.NumberOfCourtsAscending => clubsToSort.OrderBy(c => c.NumberOfCourts),
+                ClubSorting.NumberOfCourtsDescending => clubsToSort.OrderByDescending(c => c.NumberOfCourts),
+                ClubSorting.RatingAscending => clubsToSort.OrderBy(c => c.ClubReviews.Any() ? c.ClubReviews.Average(r => r.Rate) : 0),
+                ClubSorting.RatingDescending => clubsToSort.OrderByDescending(c => c.ClubReviews.Any() ? c.ClubReviews.Average(r => r.Rate) : 0),
+                _ => clubsToSort.OrderByDescending(c => c.Id)
             };
 
             var clubs = await clubsToSort
-                .Skip((currentPage-1)*clubsPerPage)
+                .Include(c=>c.ClubReviews)
+                .Skip((currentPage - 1) * clubsPerPage)
                 .Take(clubsPerPage)
                 .Select(c=> new ClubServiceViewModel()
                 {
@@ -253,16 +257,6 @@ namespace GameSetBook.Core.Services
                     Rating = c.Rating
                 })
                 .ToListAsync();
-
-            if (clubSorting==ClubSorting.RatingAscending)
-            {
-                clubs=clubs.OrderBy(c => c.Rating).ToList();
-            }
-
-            if (clubSorting == ClubSorting.RatingDescending)
-            {
-                clubs=clubs.OrderByDescending(c => c.Rating).ToList();
-            }
 
             int totalClubs = await clubsToSort.CountAsync();
 

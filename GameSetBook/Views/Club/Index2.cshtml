@@ -6,85 +6,100 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<form method="get">
-    <div class="row">
-        <div class="form-group col-md-3 d-flex justify-content-between">
-            <div class="form-group">
-                <label asp-for="City"></label>
-                <select asp-for="City" class="form-control">
-                    <option value="">All</option>
-                    @foreach (var city in Model.Cities)
-                    {
-                        <option value="@city">@city</option>
-                    }
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group col-md-3">
-            <label asp-for="SearchTerm"></label>
-            <input asp-for="SearchTerm" class="form-control" placeholder="Club name">
-        </div>
-
-        <div class="form-group col-md-3">
-            <div class="form-group">
-                <label asp-for="ClubSorting"></label>
-                <select asp-for="ClubSorting" class="form-control">
-                    <option value="0">Newest</option>
-                    <option value="1">Price (Low -> High)</option>
-                    <option value="2">Price (High -> Low)</option>
-                    <option value="3">Rating (Low -> High)</option>
-                    <option value="4">Rating (High -> Low)</option>
-                    <option value="5">Number of courts (Low -> High)</option>
-                    <option value="6">Number of courts (High -> Low)</option>
-                </select>
-            </div>
+<div class="container col-sm-10">
+    <form method="get" class="row g-3">
+        <div class="col-md-3">
+            <label class="form-label">City</label>
+            <select asp-for="City" class="form-select">
+                <option value="">All</option>
+                @foreach (var city in Model.Cities)
+                {
+                    <option value="@city">@city</option>
+                }
+            </select>
         </div>
 
         <div class="col-md-3">
-            <div class="form-group mt-4 p-2">
-                <input type="submit" value="Search" class="btn btn-primary" />
+            <label class="form-label">Club Name</label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Enter club name">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Sort By</label>
+            <select asp-for="ClubSorting" class="form-select">
+                <option value="0">Newest</option>
+                <option value="1">Price (Low -> High)</option>
+                <option value="2">Price (High -> Low)</option>
+                <option value="3">Rating (Low -> High)</option>
+                <option value="4">Rating (High -> Low)</option>
+                <option value="5">Number of Courts (Low -> High)</option>
+                <option value="6">Number of Courts (High -> Low)</option>
+            </select>
+        </div>
+
+        <div class="col-md-3 d-flex align-items-end">
+            <div class="form-group mt-4">
+                <button type="submit" class="btn btn-primary me-2">Search</button>
+                <a asp-action="Index2" class="btn btn-secondary">Back to full list</a>
             </div>
         </div>
-    </div>
-</form>
-
-@{
-    var previousPage = Model.CurrentPage - 1;
-    if (previousPage < 1)
-    {
-        previousPage = 1;
-    }
-    var maxPage = Math.Ceiling((double)Model.TotalClubCount /
-       Model.ClubsPerPage);
-}
-
-<div class="row mb-5">
-    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
-        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
-           asp-controller="Club"
-           asp-action="Index2"
-           asp-route-currentPage="@previousPage"
-           asp-route-category="@Model.City"
-           asp-route-searchTerm="@Model.SearchTerm"
-           asp-route-sorting="@((int)Model.ClubSorting)"><<</a>
-    </div>
+    </form>
 
     @{
-        var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
-        !Model.Clubs.Any();
+        var previousPage = Model.CurrentPage - 1;
+        if (previousPage < 1)
+        {
+            previousPage = 1;
+        }
+        var maxPage = Math.Ceiling((double)Model.TotalClubCount / Model.ClubsPerPage);
     }
+</div>
 
-    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
-        <a class="btn btn-primary
-           @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
-           asp-controller="Club"
-           asp-action="Index2"
-           asp-route-currentPage="@(Model.CurrentPage + 1)"
-           asp-route-category="@Model.City"
-           asp-route-searchTerm="@Model.SearchTerm"
-           asp-route-sorting="@((int)Model.ClubSorting)">>></a>
-    </div>
+
+<div class="d-flex justify-content-center">
+    <nav>
+        <ul class="pagination">
+            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : string.Empty)">
+                <a class="page-link"
+                   asp-controller="Club"
+                   asp-action="Index2"
+                   asp-route-currentPage="@previousPage"
+                   asp-route-city="@Model.City"
+                   asp-route-searchTerm="@Model.SearchTerm"
+                   asp-route-clubSorting="@((int)Model.ClubSorting)">Previous</a>
+            </li>
+
+            @for (int i = 1; i <= maxPage; i++)
+            {
+                <li class="page-item">
+                    <a class="page-link @(Model.CurrentPage == i ? "active" : string.Empty)"
+                       asp-controller="Club"
+                       asp-action="Index2"
+                       asp-route-currentPage="@i"
+                       asp-route-city="@Model.City"
+                       asp-route-searchTerm="@Model.SearchTerm"
+                       asp-route-clubSorting="@((int)Model.ClubSorting)">
+                        @i
+                    </a>
+                </li>
+            }
+
+            @{
+                var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
+                !Model.Clubs.Any();
+            }
+
+            <li class="page-item @(shouldButtonBeDisabled ? "disabled" : string.Empty)">
+                <a class="page-link"
+                   asp-controller="Club"
+                   asp-action="Index2"
+                   asp-route-currentPage="@(Model.CurrentPage + 1)"
+                   asp-route-city="@Model.City"
+                   asp-route-searchTerm="@Model.SearchTerm"
+                   asp-route-clubSorting="@((int)Model.ClubSorting)">Next</a>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 @if (!Model.Clubs.Any())

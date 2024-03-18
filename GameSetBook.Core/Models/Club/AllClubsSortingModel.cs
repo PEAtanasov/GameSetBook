@@ -10,16 +10,17 @@ namespace GameSetBook.Core.Models.Club
             Clubs = new List<ClubServiceViewModel>();
             Cities = new List<string>();
         }
-        public string City { get; set; } = null!;
-
-        [Display(Name = "Search by name")]
-        public string SearchTerm { get; set; } = null!;
-
-        public ClubSorting ClubSorting { get; set; } = ClubSorting.Newest;
-
-        public int CurrentPage { get; set; } = 1;
 
         public int ClubsPerPage { get; } = 6;
+
+        public string City { get; init; } = null!;
+
+        [Display(Name = "Search by name")]
+        public string SearchTerm { get; init; } = null!;
+
+        public ClubSorting ClubSorting { get; init; }
+
+        public int CurrentPage { get; init; } = 1;
 
         public int TotalClubCount { get; set; }
 
