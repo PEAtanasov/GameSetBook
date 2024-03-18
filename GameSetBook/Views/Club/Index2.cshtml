@@ -3,6 +3,14 @@
     ViewBag.Title = "Explore All Clubs";
 }
 
+@if (TempData.ContainsKey("Error"))
+{
+    <div class="alert alert-danger alert-dismissible fade show text-center mx-auto col-xl-6" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        @TempData["Error"]
+    </div>
+}
+
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 

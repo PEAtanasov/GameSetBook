@@ -80,6 +80,11 @@ namespace GameSetBook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            if (User.IsInRole(ClubOwnerRole) || await clubService.HasClubWithOwnerId(User.Id()))
+            {
+                TempData["Error"] = UsersAreAllowedToRegisterOnlyOneClub;
+                return RedirectToAction(nameof(Index2), "Club");
+            }
             var model = new ClubFormModel();
 
             var cities = await clubService.GetAllCitiesAsync();
@@ -92,6 +97,11 @@ namespace GameSetBook.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ClubFormModel model, IFormFile? clubLogoImage)
         {
+            if (User.IsInRole(ClubOwnerRole)|| await clubService.HasClubWithOwnerId(User.Id()))
+            {
+                return Unauthorized();
+            }
+
             if (await clubService.ClubExsitByNameAsync(model.Name))
             {
                 ModelState.AddModelError(string.Empty, string.Format(ClubWithThatNameExist, model.Name));
@@ -141,7 +151,7 @@ namespace GameSetBook.Web.Controllers
             return RedirectToAction("Create", "Court", new { clubId = id, numberOfCourts = model.NumberOfCourts });
         }
 
-        public async Task<IActionResult> Edit(int clubId)
+        public async Task<IActionResult> MyClub(int clubId)
         {
             return View();
         }

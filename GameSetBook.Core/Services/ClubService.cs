@@ -216,7 +216,8 @@ namespace GameSetBook.Core.Services
             int clubsPerPage = 1)
         {
 
-            var clubsToSort = repository.GetAllReadOnly<Club>();
+            var clubsToSort = repository.GetAllReadOnly<Club>()
+                .Where(c => c.IsActive && c.IsAproovedByAdmin);
                 
 
             if (city != null)
@@ -275,6 +276,11 @@ namespace GameSetBook.Core.Services
                 Clubs = clubs,
                 TotalClubCount = totalClubs
             };
+        }
+
+        public async Task<bool> HasClubWithOwnerId(string ownerId)
+        {
+            return await repository.GetAllReadOnly<Club>().AnyAsync(c=>c.ClubOwnerId==ownerId);
         }
     }
 }
