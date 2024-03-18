@@ -45,7 +45,7 @@ namespace GameSetBook.Web.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Index2([FromQuery]AllClubsSortingModel model)
-        {
+        {            
             var clubs = await clubService.GetClubSortingServiceModelAsync(
                 model.City,
                 model.SearchTerm,

@@ -53,6 +53,7 @@
         }
         var maxPage = Math.Ceiling((double)Model.TotalClubCount / Model.ClubsPerPage);
     }
+
 </div>
 
 
@@ -93,7 +94,7 @@
                 <a class="page-link"
                    asp-controller="Club"
                    asp-action="Index2"
-                   asp-route-currentPage="@(Model.CurrentPage + 1)"
+                   asp-route-currentPage="@(Model.CurrentPage+1)"
                    asp-route-city="@Model.City"
                    asp-route-searchTerm="@Model.SearchTerm"
                    asp-route-clubSorting="@((int)Model.ClubSorting)">Next</a>

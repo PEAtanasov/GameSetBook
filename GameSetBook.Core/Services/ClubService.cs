@@ -240,6 +240,18 @@ namespace GameSetBook.Core.Services
                 _ => clubsToSort.OrderByDescending(c => c.Id)
             };
 
+            int totalClubs = await clubsToSort.CountAsync();
+            var maxPage = Math.Ceiling((double)totalClubs / clubsPerPage);
+
+            if (currentPage>maxPage)
+            {
+                currentPage = (int)maxPage;
+            }
+            if (currentPage<=0)
+            {
+                currentPage = 1;
+            }
+
             var clubs = await clubsToSort
                 .Include(c=>c.ClubReviews)
                 .Skip((currentPage - 1) * clubsPerPage)
@@ -257,8 +269,6 @@ namespace GameSetBook.Core.Services
                     Rating = c.Rating
                 })
                 .ToListAsync();
-
-            int totalClubs = await clubsToSort.CountAsync();
 
             return new ClubSortingServiceModel()
             {
