@@ -131,6 +131,20 @@ namespace GameSetBook.Web.Controllers
             return RedirectToAction("Index", "Club");
         }
 
+        public async Task<IActionResult> Schedule(int clubId, DateTime? date)
+        {
+
+            if (!await clubService.ClubExsitAsync(clubId))
+            {
+                return BadRequest();
+            }
+
+            var model = await courtService.GetAllCourtsScheduleAsync(clubId, date);
+
+            ViewData["ClubInfo"] = await clubService.GetClubIfnoAsync(clubId);
+
+            return View(model);
+        }
 
         private static List<SelectListItem> GetSurfaces()
         {

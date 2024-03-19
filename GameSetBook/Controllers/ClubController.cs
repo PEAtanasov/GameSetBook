@@ -7,6 +7,7 @@ using GameSetBook.Core.Models.Club;
 using static GameSetBook.Common.ErrorMessageConstants;
 using static GameSetBook.Common.UserConstants;
 using GameSetBook.Web.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameSetBook.Web.Controllers
 {
@@ -150,7 +151,7 @@ namespace GameSetBook.Web.Controllers
 
             return RedirectToAction("Create", "Court", new { clubId = id, numberOfCourts = model.NumberOfCourts });
         }
-
+        [Authorize(Roles =ClubOwnerRole)]
         public async Task<IActionResult> MyClub(int clubId)
         {
             return View();

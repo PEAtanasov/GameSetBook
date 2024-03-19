@@ -35,7 +35,7 @@ namespace GameSetBook.Infrastructure.Models
         /// </summary>
         [Required]
         [Comment("is the the booking available")]
-        public bool IsAvailable { get; set; } = true;
+        public bool IsAvailable { get; set; } = false;
 
         /// <summary>
         /// is the booking deleted/canceled

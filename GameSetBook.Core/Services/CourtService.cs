@@ -5,6 +5,8 @@ using GameSetBook.Core.Models.Court;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
 using static GameSetBook.Common.ErrorMessageConstants;
+using GameSetBook.Common.Enums.EnumExtensions;
+using GameSetBook.Core.Models.Booking;
 
 namespace GameSetBook.Core.Services
 {
@@ -58,8 +60,8 @@ namespace GameSetBook.Core.Services
         public async Task<CourtEditFormModel> GetCourtEditFormModelAsync(int courtId)
         {
             var court = await repository.GetAllReadOnly<Court>()
-                .Include(c=>c.Club)
-                .FirstOrDefaultAsync(c => c.Id == courtId) 
+                .Include(c => c.Club)
+                .FirstOrDefaultAsync(c => c.Id == courtId)
                 ?? throw new ArgumentException("The court does not exist");
 
             var model = new CourtEditFormModel()
@@ -92,12 +94,81 @@ namespace GameSetBook.Core.Services
 
             courtToEdit.Name = model.Name;
             courtToEdit.PricePerHour = model.PricePerHour;
-            courtToEdit .Surface = model.Surface;
-            courtToEdit.IsLighted= model.IsLighted;
+            courtToEdit.Surface = model.Surface;
+            courtToEdit.IsLighted = model.IsLighted;
             courtToEdit.IsIndoor = model.IsIndoor;
-            courtToEdit.IsActive= model.IsActive;
+            courtToEdit.IsActive = model.IsActive;
 
             await repository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<CourtScheduleViewModel>> GetAllCourtsScheduleAsync(int clubId, DateTime? date)
+        {
+            DateTime currentDate = date ?? DateTime.Now;
+
+            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Id == clubId);
+
+            int workingTimeStart = club.WorkingTimeStart;
+            int workingTimeEnd = club.WorkingTimeEnd;
+
+            var courts = await repository.GetAllReadOnly<Court>()
+                .Where(c => c.ClubId == clubId && c.IsActive == true)
+                .Select(c => new CourtScheduleViewModel()
+                {
+                    Id = c.Id,
+                    ClubId = c.ClubId,
+                    IsIndoor = c.IsIndoor,
+                    IsLightes = c.IsLighted,
+                    Name = c.Name,
+                    Price = c.PricePerHour,
+                    Surface = c.Surface.GetDisplayName(),
+                    Bookings = c.Bookings.Where(b => b.BookingDate.Date == currentDate).Select(b => new BookingScheduleViewModel()
+                    {
+                        CourtId = b.CourtId,
+                        Hour = b.Hour,
+                        IsAvailable = b.IsAvailable,
+                        BookingDate = b.BookingDate
+                    }).ToList(),
+                })
+                .ToListAsync();
+
+            for (int i = 0; i < courts.Count; i++)
+            {
+                List<BookingScheduleViewModel> bookings = GetAvailableBookings(workingTimeStart, workingTimeEnd, currentDate, courts[i].Id);
+                foreach (var booking in courts[i].Bookings)
+                {
+                    for (int n = 0; n < bookings.Count; n++)
+                    {
+                        if (bookings[n].Hour == booking.Hour)
+                        {
+                            bookings[n] = booking;
+                        }
+                    }
+                }
+                courts[i].Bookings = bookings;
+            }
+
+            return courts;
+        }
+
+        private List<BookingScheduleViewModel> GetAvailableBookings(int start, int end, DateTime date,int courtId)
+        {
+            List<BookingScheduleViewModel> bookings = new List<BookingScheduleViewModel>();
+
+            BookingScheduleViewModel booking;
+
+            for (int i = start; i <= end; i++)
+            {
+                booking = new BookingScheduleViewModel()
+                {
+                    Hour = i,
+                    BookingDate = date,
+                    CourtId = courtId,
+                };
+                bookings.Add(booking);
+            }
+
+            return bookings;
         }
     }
 }
