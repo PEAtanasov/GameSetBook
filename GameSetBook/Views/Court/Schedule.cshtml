@@ -63,7 +63,16 @@
                                 @for (int i = @WorkingTimeStart; i <= WorkingTimeEnd; i++)
                                 {
                                     <tr>
-                                        <th>@i:00</th>
+                                        <th>
+                                            @if (i<10)
+                                            {
+                                                <span>0@(i):00</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@(i):00</span>
+                                            }
+                                        </th>
                                         @foreach (var court in Model)
                                         {
                                             var booking = null as BookingScheduleViewModel;
