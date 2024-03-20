@@ -82,7 +82,7 @@ namespace GameSetBook.Infrastructure.Models
         /// Client's phone number
         /// </summary>
         [Required]
-        [MaxLength(ClientNameMaxLength)]
+        [MaxLength(ClientPhoneMaxLength)]
         [Phone]
         [Comment("Client's phone number")]
         public string PhoneNumber { get; set; } = string.Empty;

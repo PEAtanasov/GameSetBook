@@ -13,6 +13,7 @@ namespace GameSetBook.Web.Extensions
         {
             services.AddScoped<ICourtService, CourtService>();
             services.AddScoped<IClubService, ClubService>();
+            services.AddScoped<IBookingService, BookingService>();
             
             return services;
         }

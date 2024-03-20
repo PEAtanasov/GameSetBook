@@ -156,6 +156,13 @@ namespace GameSetBook.Core.Services
             return await repository.GetAllReadOnly<Court>().AnyAsync(c => c.Id == id);
         }
 
+        public async Task<decimal> GetPrice(int id)
+        {
+            var court = await repository.GetAllReadOnly<Court>().FirstAsync(c => c.Id == id);
+
+            return court.PricePerHour;
+        }
+
         private List<BookingScheduleViewModel> GetAvailableBookings(int start, int end, DateTime date, int courtId)
         {
             List<BookingScheduleViewModel> bookings = new List<BookingScheduleViewModel>();
