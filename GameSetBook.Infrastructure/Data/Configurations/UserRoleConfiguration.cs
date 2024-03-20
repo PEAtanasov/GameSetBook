@@ -28,13 +28,6 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                     UserId="82cd50ca-b023-42e5-8344-227d5c45877c",
                     RoleId ="757178e3-b3c9-4414-8dd6-a72196f2b6d5"
                 },
-
-                //SMPUuser
-                new IdentityUserRole<string>()
-                {
-                    UserId="83544abd-e9e2-4592-ad5e-23cd2f63e5a0",
-                    RoleId ="cd40263e-6425-4dad-ada2-60e5813e5eb2"
-                }
             };
 
             return userRoles;

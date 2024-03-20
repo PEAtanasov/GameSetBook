@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-using static GameSetBook.Common.ValidationConstatns.BookingConstants;
 using static GameSetBook.Common.ErrorMessageConstants;
+using static GameSetBook.Common.ValidationConstatns.BookingConstants;
 
 namespace GameSetBook.Core.Models.Booking
 {

@@ -30,14 +30,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                     Id = "757178e3-b3c9-4414-8dd6-a72196f2b6d5",
                     Name = ClubOwnerRole,
                     NormalizedName = ClubOwnerRole.ToUpper()
-                },
-
-                new IdentityRole()
-                {
-                    Id = "cd40263e-6425-4dad-ada2-60e5813e5eb2",
-                    Name = GSMUUserRole,
-                    NormalizedName = GSMUUserRole.ToUpper()
-                }           
+                },     
             };
             return roles;
         }

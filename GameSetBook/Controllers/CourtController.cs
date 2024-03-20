@@ -7,7 +7,7 @@ using GameSetBook.Common.Enums.EnumExtensions;
 using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Court;
 using static GameSetBook.Common.UserConstants;
-using GameSetBook.Web.Extensions;
+using System.Security.Claims;
 
 namespace GameSetBook.Web.Controllers
 {

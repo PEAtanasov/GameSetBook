@@ -32,6 +32,5 @@ namespace GameSetBook.Core.Contracts
         Task<bool> IsClubAprooved(int id);
 
         Task<bool> HasClubWithOwnerId(string ownerId);
-
     }
 }

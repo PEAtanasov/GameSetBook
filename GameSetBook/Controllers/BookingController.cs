@@ -2,7 +2,7 @@
 
 using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Booking;
-using GameSetBook.Web.Extensions;
+using System.Security.Claims;
 
 namespace GameSetBook.Web.Controllers
 {
@@ -10,11 +10,13 @@ namespace GameSetBook.Web.Controllers
     {
         private readonly IBookingService bookingService;
         private readonly ICourtService courtService;
+        private readonly IClubService clubService;
 
-        public BookingController(IBookingService bookingService, ICourtService courtService)
+        public BookingController(IBookingService bookingService, ICourtService courtService, IClubService clubService)
         {
             this.bookingService = bookingService;
             this.courtService = courtService;
+            this.clubService = clubService;
         }
 
         [HttpGet]

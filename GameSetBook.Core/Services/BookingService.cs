@@ -22,6 +22,15 @@ namespace GameSetBook.Core.Services
                 .Where(b => b.CourtId == courtId)
                 .AnyAsync(b => b.BookingDate.Date == date.Date && b.Hour == hour);
 
+            var club = await repository.GetAllReadOnly<Booking>()
+                .Where(b => b.CourtId == courtId)
+                .Select(b => b.Court.Club).FirstAsync();
+
+            if (hour < club.WorkingTimeStart || hour >= club.WorkingTimeEnd)
+            {
+                return false;
+            }
+
             if (bookingAlreadyExist)
             {
                 return false;
@@ -51,7 +60,7 @@ namespace GameSetBook.Core.Services
                 Price = model.Price,
             };
 
-            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c=>c.Courts.Any(ct=>ct.Id==model.CourtId));
+            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Courts.Any(ct => ct.Id == model.CourtId));
 
             await repository.AddAsync(booking);
             await repository.SaveChangesAsync();

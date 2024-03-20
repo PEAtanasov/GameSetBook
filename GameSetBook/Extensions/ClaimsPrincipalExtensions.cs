@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace GameSetBook.Web.Extensions
+﻿namespace System.Security.Claims
 {
     public static class ClaimsPrincipalExtensions
     {

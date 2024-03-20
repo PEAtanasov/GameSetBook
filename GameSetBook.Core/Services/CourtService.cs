@@ -169,7 +169,7 @@ namespace GameSetBook.Core.Services
 
             BookingScheduleViewModel booking;
 
-            for (int i = start; i <= end; i++)
+            for (int i = start; i < end; i++)
             {
                 booking = new BookingScheduleViewModel()
                 {

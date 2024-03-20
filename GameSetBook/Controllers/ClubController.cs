@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Club;
 using static GameSetBook.Common.ErrorMessageConstants;
 using static GameSetBook.Common.UserConstants;
-using GameSetBook.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace GameSetBook.Web.Controllers

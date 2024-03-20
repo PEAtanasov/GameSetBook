@@ -209,16 +209,16 @@ namespace GameSetBook.Core.Services
         }
 
         public async Task<ClubSortingServiceModel> GetClubSortingServiceModelAsync(
-            string? city = null, 
-            string? searchTerm = null, 
-            ClubSorting clubSorting = ClubSorting.Newest, 
+            string? city = null,
+            string? searchTerm = null,
+            ClubSorting clubSorting = ClubSorting.Newest,
             int currentPage = 1,
             int clubsPerPage = 1)
         {
 
             var clubsToSort = repository.GetAllReadOnly<Club>()
                 .Where(c => c.IsActive && c.IsAproovedByAdmin);
-                
+
 
             if (city != null)
             {
@@ -244,20 +244,20 @@ namespace GameSetBook.Core.Services
             int totalClubs = await clubsToSort.CountAsync();
             var maxPage = Math.Ceiling((double)totalClubs / clubsPerPage);
 
-            if (currentPage>maxPage)
+            if (currentPage > maxPage)
             {
                 currentPage = (int)maxPage;
             }
-            if (currentPage<=0)
+            if (currentPage <= 0)
             {
                 currentPage = 1;
             }
 
             var clubs = await clubsToSort
-                .Include(c=>c.ClubReviews)
+                .Include(c => c.ClubReviews)
                 .Skip((currentPage - 1) * clubsPerPage)
                 .Take(clubsPerPage)
-                .Select(c=> new ClubServiceViewModel()
+                .Select(c => new ClubServiceViewModel()
                 {
                     Id = c.Id,
                     Name = c.Name,
@@ -280,7 +280,7 @@ namespace GameSetBook.Core.Services
 
         public async Task<bool> HasClubWithOwnerId(string ownerId)
         {
-            return await repository.GetAllReadOnly<Club>().AnyAsync(c=>c.ClubOwnerId==ownerId);
+            return await repository.GetAllReadOnly<Club>().AnyAsync(c => c.ClubOwnerId == ownerId);
         }
     }
 }

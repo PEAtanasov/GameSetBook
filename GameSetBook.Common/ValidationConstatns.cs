@@ -61,10 +61,10 @@
         public static class GameSetMatchUpProfileGConstants
         {
             public const int FirstNameMinLength = 1;
-            public const int FirstNameMaxLength = 30;
+            public const int FirstNameMaxLength = 50;
 
             public const int LastNameMinLength = 1;
-            public const int LastNameMaxLength = 30;
+            public const int LastNameMaxLength = 50;
 
             public const int DescriptionMaxLength = 30;
 
@@ -74,7 +74,7 @@
         public static class BookingConstants
         {
             public const int ClientNameMinLength = 2;
-            public const int ClientNameMaxLength = 30;
+            public const int ClientNameMaxLength = 100;
 
             public const int ClientPhoneMinLength = 5;
             public const int ClientPhoneMaxLength = 15;
