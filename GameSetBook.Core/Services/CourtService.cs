@@ -122,7 +122,7 @@ namespace GameSetBook.Core.Services
                     Name = c.Name,
                     Price = c.PricePerHour,
                     Surface = c.Surface.GetDisplayName(),
-                    Bookings = c.Bookings.Where(b => b.BookingDate.Date == currentDate).Select(b => new BookingScheduleViewModel()
+                    Bookings = c.Bookings.Where(b => b.BookingDate.Date == currentDate.Date).Select(b => new BookingScheduleViewModel()
                     {
                         CourtId = b.CourtId,
                         Hour = b.Hour,
@@ -151,7 +151,12 @@ namespace GameSetBook.Core.Services
             return courts;
         }
 
-        private List<BookingScheduleViewModel> GetAvailableBookings(int start, int end, DateTime date,int courtId)
+        public async Task<bool> CourtExist(int id)
+        {
+            return await repository.GetAllReadOnly<Court>().AnyAsync(c => c.Id == id);
+        }
+
+        private List<BookingScheduleViewModel> GetAvailableBookings(int start, int end, DateTime date, int courtId)
         {
             List<BookingScheduleViewModel> bookings = new List<BookingScheduleViewModel>();
 

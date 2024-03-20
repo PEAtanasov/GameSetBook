@@ -131,8 +131,9 @@ namespace GameSetBook.Web.Controllers
             return RedirectToAction("Index", "Club");
         }
 
-        public async Task<IActionResult> Schedule(int clubId, DateTime? date)
+        public async Task<IActionResult> Schedule(int id, DateTime? date)
         {
+            int clubId = id;
 
             if (!await clubService.ClubExsitAsync(clubId))
             {
@@ -140,6 +141,8 @@ namespace GameSetBook.Web.Controllers
             }
 
             var model = await courtService.GetAllCourtsScheduleAsync(clubId, date);
+
+            ViewData["CurrentDate"] = date ?? DateTime.Now;
 
             ViewData["ClubInfo"] = await clubService.GetClubIfnoAsync(clubId);
 
