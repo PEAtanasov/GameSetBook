@@ -15,7 +15,7 @@ namespace GameSetBook.Infrastructure.Models
         public City()
         {
             Clubs = new List<Club>();
-            Profiles = new List<GameSetMatchUpPlayerProfile>();
+            //Profiles = new List<GameSetMatchUpPlayerProfile>();
         }
 
         /// <summary>
@@ -44,6 +44,6 @@ namespace GameSetBook.Infrastructure.Models
         public virtual Country Country { get; set; } = null!;
 
         public virtual ICollection<Club> Clubs { get; set;}
-        public virtual ICollection<GameSetMatchUpPlayerProfile> Profiles { get; set; }
+        //public virtual ICollection<GameSetMatchUpPlayerProfile> Profiles { get; set; }
     }
 }

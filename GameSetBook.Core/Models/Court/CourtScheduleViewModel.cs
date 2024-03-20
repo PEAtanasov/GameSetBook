@@ -11,7 +11,7 @@ namespace GameSetBook.Core.Models.Court
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Surface {  get; set; } = string.Empty;
-        public bool IsLightes { get; set; }
+        public bool IsLighted { get; set; }
         public bool IsIndoor { get; set; }
         public decimal Price { get; set; }
         public int ClubId { get; set; }

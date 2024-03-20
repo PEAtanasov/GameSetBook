@@ -118,7 +118,7 @@ namespace GameSetBook.Core.Services
                     Id = c.Id,
                     ClubId = c.ClubId,
                     IsIndoor = c.IsIndoor,
-                    IsLightes = c.IsLighted,
+                    IsLighted = c.IsLighted,
                     Name = c.Name,
                     Price = c.PricePerHour,
                     Surface = c.Surface.GetDisplayName(),
