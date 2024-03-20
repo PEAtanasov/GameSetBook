@@ -12,7 +12,6 @@
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
-<hr />
 
 <div class="container col-sm-10">
     <form method="get" class="row g-3">
@@ -153,7 +152,7 @@
                         </td>
                         <td>
                             <a asp-controller="Club" asp-action="Details" asp-route-id="@club.Id" class="btn btn-primary">Details</a>
-                            <a asp-controller="Court" asp-action="Index" asp-route-id="@club.Id" class="btn btn-success">Reserve</a>
+                            <a asp-controller="Court" asp-action="Schedule" asp-route-id="@club.Id" class="btn btn-success">Book Now</a>
                         </td>
                     </tr>
                 }
