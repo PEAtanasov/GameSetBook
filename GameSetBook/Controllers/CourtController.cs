@@ -131,9 +131,12 @@ namespace GameSetBook.Web.Controllers
             return RedirectToAction("Index", "Club");
         }
 
+        [HttpGet]
         public async Task<IActionResult> Schedule(int id, DateTime? date)
         {
             int clubId = id;
+
+            ViewData["ClubId"] = clubId;
 
             if (!await clubService.ClubExsitAsync(clubId))
             {
