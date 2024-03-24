@@ -142,10 +142,17 @@ namespace GameSetBook.Web.Controllers
             {
                 return BadRequest();
             }
+            
+            DateTime currentDate = date ?? DateTime.Now;
 
-            var model = await courtService.GetAllCourtsScheduleAsync(clubId, date);
+            if (currentDate.Date< DateTime.Now.Date)
+            {
+                currentDate = DateTime.Now;
+            }
 
-            ViewData["CurrentDate"] = date ?? DateTime.Now;
+            var model = await courtService.GetAllCourtsScheduleAsync(clubId, currentDate);
+
+            ViewData["CurrentDate"] = currentDate;
 
             ViewData["ClubInfo"] = await clubService.GetClubIfnoAsync(clubId);
 

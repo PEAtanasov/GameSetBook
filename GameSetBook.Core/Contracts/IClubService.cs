@@ -15,7 +15,7 @@ namespace GameSetBook.Core.Contracts
             int currentPage = 1,
             int clubsPerPage = 1);
 
-        Task<int> GetClubByIdByNameAsync(string name);
+        Task<int> GetClubIdByNameAsync(string name);
 
         Task<ClubDetailsViewModel> GetClubDetailsAsync(int id);
 
@@ -31,6 +31,8 @@ namespace GameSetBook.Core.Contracts
 
         Task<bool> IsClubAprooved(int id);
 
-        Task<bool> HasClubWithOwnerId(string ownerId);
+        Task<bool> ClubWithOwnerIdExist(string ownerId);
+
+        Task<bool> IsTheOwnerOfTheClub(int clubId, string UserId);
     }
 }

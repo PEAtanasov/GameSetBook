@@ -102,9 +102,9 @@ namespace GameSetBook.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<CourtScheduleViewModel>> GetAllCourtsScheduleAsync(int clubId, DateTime? date)
+        public async Task<IEnumerable<CourtScheduleViewModel>> GetAllCourtsScheduleAsync(int clubId, DateTime currentDate)
         {
-            DateTime currentDate = date ?? DateTime.Now;
+           // DateTime currentDate = date ?? DateTime.Now;
 
             var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Id == clubId);
 

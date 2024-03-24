@@ -8,6 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="AuthorizationHandlers\**" />
+    <Compile Remove="AuthorizationRequirements\**" />
+    <Content Remove="AuthorizationHandlers\**" />
+    <Content Remove="AuthorizationRequirements\**" />
+    <EmbeddedResource Remove="AuthorizationHandlers\**" />
+    <EmbeddedResource Remove="AuthorizationRequirements\**" />
+    <None Remove="AuthorizationHandlers\**" />
+    <None Remove="AuthorizationRequirements\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.26" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.26" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.26" />

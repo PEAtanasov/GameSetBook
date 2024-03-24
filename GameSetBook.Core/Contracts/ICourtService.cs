@@ -12,7 +12,7 @@ namespace GameSetBook.Core.Contracts
 
         Task Edit(CourtEditFormModel model);
 
-        Task<IEnumerable<CourtScheduleViewModel>> GetAllCourtsScheduleAsync(int clubId, DateTime? date);
+        Task<IEnumerable<CourtScheduleViewModel>> GetAllCourtsScheduleAsync(int clubId, DateTime date);
 
         Task<bool> CourtExist(int id);
 

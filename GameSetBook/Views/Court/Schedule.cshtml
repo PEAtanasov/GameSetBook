@@ -3,14 +3,15 @@
     var clubInfo = ViewData["ClubInfo"];
 
     DateTime? cuurentDate = ViewData["CurrentDate"] as DateTime?;
-    string displayDate = ViewData["CurrentDate"]?.ToString() ?? string.Empty;
     int WorkingTimeStart = Model.First().Bookings.Min(b => b.Hour);
     int WorkingTimeEnd = Model.First().Bookings.Max(b => b.Hour);
     int? clubId = ViewData["ClubId"] as int?;
     ViewBag.Title = "Courts Schedule";   
 }
-
-<h2 class="text-center">@ViewBag.Title for @DateTime.Parse(displayDate).ToShortDateString()</h2>
+@if (cuurentDate!=null)
+{
+    <h2 class="text-center">@ViewBag.Title for @cuurentDate.Value.ToShortDateString()</h2>
+}
 <hr/>
 
 <div class="container">
@@ -27,7 +28,7 @@
                     <div class="form-actions no-color col-auto">
                         <div class="row align-items-center">
                             <div class="col">
-                                <input asp class="form-control" type="date" id="date" name="date" value="@displayDate" />
+                                <input class="form-control" type="date" id="date" name="date" />
                             </div>
                             <div class="col">
                                 <input type="submit" value="Ok" class="btn btn-primary" />
@@ -36,7 +37,7 @@
                                 <!-- Arrow to move one day backwards -->
                                 @if (cuurentDate != null)
                                 {
-                                    <a asp-controller="Court" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(-1)" class="btn btn-primary">	&larr; Previous Day</a>
+                                    <a asp-controller="Court" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(-1)" class="btn btn-primary @(cuurentDate.Value.AddDays(-1)< DateTime.Now.Date ? "disabled" : string.Empty)">	&larr; Previous Day</a>
                                 }
                             </div>
                             <div class="col-auto">
@@ -57,7 +58,7 @@
                         <table class="table table table-hover table-bordered table-responsive-md">
                             <thead class="table-dark">
                                 <tr>
-                                    <th>@DateTime.Parse(displayDate).ToShortDateString()</th>
+                                    <th>@(cuurentDate.Value.ToShortDateString()?? string.Empty)</th>
                                     @foreach (var court in Model)
                                     {
                                         <th>
@@ -117,12 +118,15 @@
                                                     }
                                                     else
                                                     {
-                                                        <form asp-controller="Booking" asp-action="Book" method="get">
+                                                        @* <form asp-controller="Booking" asp-action="Book" method="get">
                                                             <input type="hidden" name="CourtId" value="@court.Id" />
                                                             <input type="hidden" name="Hour" value="@booking.Hour" />
                                                             <input type="hidden" name="BookingDate" value="@booking.BookingDate" />
                                                             <button type="submit" class="btn btn-sm btn-success">Book/<small>@(court.Price)BGN</small></button>
-                                                        </form>
+                                                        </form> *@
+
+                                                        <a asp-controller="Booking" asp-action="Book" asp-route-CourtId="@court.Id" asp-route-Hour="@booking.Hour" asp-route-BookingDate="@booking.BookingDate" class="btn btn-sm btn-success">Book/<small>@(court.Price)BGN</small></a>
+
                                                     }
                                                 }
                                                 else

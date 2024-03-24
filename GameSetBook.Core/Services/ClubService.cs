@@ -175,7 +175,7 @@ namespace GameSetBook.Core.Services
             return cities;
         }
 
-        public async Task<int> GetClubByIdByNameAsync(string name)
+        public async Task<int> GetClubIdByNameAsync(string name)
         {
             var club = await repository.GetAllReadOnly<Club>().FirstOrDefaultAsync(c => c.Name == name);
             if (club == null)
@@ -187,7 +187,7 @@ namespace GameSetBook.Core.Services
 
         public async Task<bool> ClubExsitAsync(int id)
         {
-            var club = await repository.GetByIdAsync<Club>(id);
+            var club = await repository.GetAllReadOnly<Club>().FirstOrDefaultAsync(c=>c.Id==id);
 
             if (club == null)//|| club.IsActive == false || club.IsAproovedByAdmin == false)
             {
@@ -278,9 +278,17 @@ namespace GameSetBook.Core.Services
             };
         }
 
-        public async Task<bool> HasClubWithOwnerId(string ownerId)
+        public async Task<bool> ClubWithOwnerIdExist(string ownerId)
         {
             return await repository.GetAllReadOnly<Club>().AnyAsync(c => c.ClubOwnerId == ownerId);
         }
+
+        public async Task<bool> IsTheOwnerOfTheClub(int clubId, string UserId)
+        {
+            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c=>c.Id==clubId);
+
+            return club.ClubOwnerId == UserId;
+        }
+
     }
 }

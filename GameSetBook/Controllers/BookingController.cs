@@ -3,6 +3,7 @@
 using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Booking;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameSetBook.Web.Controllers
 {
@@ -34,6 +35,11 @@ namespace GameSetBook.Web.Controllers
             var bookingDate = queryModel.BookingDate;
 
             if (!await bookingService.AreDateAndHourValidAsync(queryModel.BookingDate, queryModel.Hour, queryModel.CourtId))
+            {
+                return BadRequest();
+            }
+
+            if (await bookingService.BookingExistAsync(queryModel.BookingDate, queryModel.Hour, queryModel.CourtId))
             {
                 return BadRequest();
             }

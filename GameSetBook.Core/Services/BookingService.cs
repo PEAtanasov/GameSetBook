@@ -18,30 +18,28 @@ namespace GameSetBook.Core.Services
 
         public async Task<bool> AreDateAndHourValidAsync(DateTime date, int hour, int courtId)
         {
-            var bookingAlreadyExist = await repository.GetAllReadOnly<Booking>()
-                .Where(b => b.CourtId == courtId)
-                .AnyAsync(b => b.BookingDate.Date == date.Date && b.Hour == hour);
+            if (date.Date < DateTime.Now.Date || (date.Date == DateTime.Now.Date && hour <= date.Hour))
+            {
+                return false;
+            }
 
-            var club = await repository.GetAllReadOnly<Booking>()
-                .Where(b => b.CourtId == courtId)
-                .Select(b => b.Court.Club).FirstAsync();
+            var club = await repository.GetAllReadOnly<Court>()
+                .Where(b => b.Id == courtId)
+                .Select(b => b.Club).FirstAsync();
 
             if (hour < club.WorkingTimeStart || hour >= club.WorkingTimeEnd)
             {
                 return false;
             }
 
-            if (bookingAlreadyExist)
-            {
-                return false;
-            }
-
-            if (date.Date < DateTime.Now.Date || (date.Date == DateTime.Now.Date && hour <= date.Hour))
-            {
-                return false;
-            }
-
             return true;
+        }
+
+        public async Task<bool> BookingExistAsync(DateTime date, int hour, int courtId)
+        {
+            return await repository.GetAllReadOnly<Booking>()
+               .Where(b => b.CourtId == courtId)
+               .AnyAsync(b => b.BookingDate.Date == date.Date && b.Hour == hour && b.IsAvailable == false);
         }
 
         public async Task<int> AddBookingAsync(BookingCreateFormModel model)

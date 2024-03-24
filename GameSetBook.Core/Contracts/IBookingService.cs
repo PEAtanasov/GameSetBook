@@ -6,6 +6,8 @@ namespace GameSetBook.Core.Contracts
     {
         Task<bool> AreDateAndHourValidAsync(DateTime date, int hour, int courtId);
 
+        Task<bool> BookingExistAsync(DateTime date, int hour, int courtId);
+
         Task<int> AddBookingAsync(BookingCreateFormModel model);
     }
 }
