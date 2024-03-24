@@ -8,6 +8,7 @@ using GameSetBook.Core.Models.Club;
 using static GameSetBook.Common.ErrorMessageConstants;
 using static GameSetBook.Common.UserConstants;
 using Microsoft.AspNetCore.Authorization;
+using GameSetBook.Infrastructure.Models.Identity;
 
 namespace GameSetBook.Web.Controllers
 {
@@ -15,12 +16,12 @@ namespace GameSetBook.Web.Controllers
     {
         private readonly IClubService clubService;
         private readonly IWebHostEnvironment webHostEnvironment;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
 
         public ClubController(IClubService clubService,
             IWebHostEnvironment webHostEnvironment,
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             this.clubService = clubService;

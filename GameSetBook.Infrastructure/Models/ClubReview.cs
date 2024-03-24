@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GameSetBook.Infrastructure.Models.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -62,6 +63,6 @@ namespace GameSetBook.Infrastructure.Models
         [Comment("Current review's reviewer identifier")]
         public string ReviewerId { get; set; } = string.Empty;
 
-        public virtual IdentityUser Reviewer { get; set; } = null!;
+        public virtual ApplicationUser Reviewer { get; set; } = null!;
     }
 }

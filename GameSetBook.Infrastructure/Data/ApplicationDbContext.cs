@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 using GameSetBook.Infrastructure.Data.Configurations;
 using GameSetBook.Infrastructure.Models;
+using GameSetBook.Infrastructure.Models.Identity;
 
 namespace GameSetBook.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -27,7 +28,7 @@ namespace GameSetBook.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new IdentityUserConfiguration());
+            builder.ApplyConfiguration(new ApplicationUserUserConfiguration());
             builder.ApplyConfiguration(new RoleConfiguration());
             builder.ApplyConfiguration(new UserRoleConfiguration());
             builder.ApplyConfiguration(new CountryConfiguration());

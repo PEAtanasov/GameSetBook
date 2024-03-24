@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using GameSetBook.Infrastructure.Models.Contracts;
 
 using static GameSetBook.Common.ValidationConstatns.BookingConstants;
+using GameSetBook.Infrastructure.Models.Identity;
 
 namespace GameSetBook.Infrastructure.Models
 {
@@ -95,7 +95,7 @@ namespace GameSetBook.Infrastructure.Models
         [ForeignKey(nameof(Client))]
         public string ClientId { get; set; } = string.Empty;
 
-        public virtual IdentityUser Client { get; set; } = null!;
+        public virtual ApplicationUser Client { get; set; } = null!;
 
         /// <summary>
         /// Court identifier

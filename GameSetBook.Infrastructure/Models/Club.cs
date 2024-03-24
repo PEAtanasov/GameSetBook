@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using static GameSetBook.Common.ValidationConstatns.ClubConstants;
 using static GameSetBook.Common.ImageSource;
 using GameSetBook.Infrastructure.Models.Contracts;
+using GameSetBook.Infrastructure.Models.Identity;
 
 namespace GameSetBook.Infrastructure.Models
 {
@@ -194,7 +195,7 @@ namespace GameSetBook.Infrastructure.Models
         [Comment("Club owner's identifier")]
         public string ClubOwnerId { get; set; } = string.Empty;
 
-        public virtual IdentityUser ClubOwner { get; set; } = null!;
+        public virtual ApplicationUser ClubOwner { get; set; } = null!;
 
         public virtual ICollection<Court> Courts { get; set; }
 

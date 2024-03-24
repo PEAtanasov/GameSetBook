@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GameSetBook.Infrastructure.Models.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -9,21 +10,21 @@ using System.Threading.Tasks;
 
 namespace GameSetBook.Infrastructure.Data.Configurations
 {
-    internal class IdentityUserConfiguration : IEntityTypeConfiguration<IdentityUser>
+    internal class ApplicationUserUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
-        public void Configure(EntityTypeBuilder<IdentityUser> builder)
+        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
             builder.HasData(UserSeed());
         }
 
-        private IList<IdentityUser> UserSeed()
+        private IList<ApplicationUser> UserSeed()
         {
-            var users = new List<IdentityUser>();
-            var hasher = new PasswordHasher<IdentityUser>();
+            var users = new List<ApplicationUser>();
+            var hasher = new PasswordHasher<ApplicationUser>();
 
-            IdentityUser user;
+            ApplicationUser user;
 
-            user = new IdentityUser()
+            user = new ApplicationUser()
             {
                 Id = "65a12477-a9c9-48f1-a844-0ec223e1bca5",
                 UserName = "admin@mail.com",
@@ -36,7 +37,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                  hasher.HashPassword(user, "aaaaaa1");
             users.Add(user);
 
-            user = new IdentityUser()
+            user = new ApplicationUser()
             {
                 Id = "82cd50ca-b023-42e5-8344-227d5c45877c",
                 UserName = "clubowner@mail.com",
@@ -49,7 +50,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                  hasher.HashPassword(user, "aaaaaa1");
             users.Add(user);
 
-            user = user = new IdentityUser()
+            user = user = new ApplicationUser()
             {
                 Id = "83544abd-e9e2-4592-ad5e-23cd2f63e5a0",
                 UserName = "user@mail.com",
