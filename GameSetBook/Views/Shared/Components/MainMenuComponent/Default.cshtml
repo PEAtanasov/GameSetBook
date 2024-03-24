@@ -1,0 +1,46 @@
+﻿﻿
+@inject IClubService clubService
+
+@{
+    bool clubExist = await clubService.ClubWithOwnerIdExistAsync(User.Id());
+    bool isUserClubWoner = User.IsInRole("ClubOwner");
+    var clubId = 0;
+    if (clubExist)
+    {
+        clubId = await clubService.GetClubIdByOwnerId(User.Id());
+    }
+}
+
+<ul class="navbar-nav flex-grow-1">
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Club" asp-action="Index">All Clubs</a>
+    </li>
+    @if (this.User?.Identity?.IsAuthenticated ?? false)
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="House" asp-action="Mine">My Houses</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="House" asp-action="Index">Add House</a>
+        </li>
+
+        if (clubExist && isUserClubWoner)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Club" asp-action="MyClub" asp-route-id="@clubId">My Club</a>
+            </li>
+        }
+        else if (clubExist && !isUserClubWoner)
+        {
+            <li class="nav-item">
+                <a title="Your registered club is pending for aprooval" class="nav-link text-dark" asp-area="" asp-controller="Club" asp-action="MyClub" asp-route-id="@clubId">My Club<small class="text-danger">(pending aprooval)</small></a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Club" asp-action="Create">Register Club</a>
+            </li>
+        }
+    }
+</ul>
