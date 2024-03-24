@@ -107,7 +107,7 @@ namespace GameSetBook.Core.Models.Club
         /// <summary>
         /// Club's logo Url
         /// </summary>
-        public string? LogoUrl { get; set; } = DefaultClubLogoUrl;
+        public string LogoUrl { get; set; } = DefaultClubLogoUrl;
 
         /// <summary>
         /// Club's email

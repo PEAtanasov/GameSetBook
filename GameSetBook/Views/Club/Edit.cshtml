@@ -3,23 +3,7 @@
 @{
     IFormFile file = ViewBag.File;
     IEnumerable<SelectListItem> cities = ViewBag.Cities;
-    ViewBag.Title = "Create Club";
-}
-
-@if (TempData.ContainsKey("ImageSizeToBig"))
-{
-    <div class="alert alert-success alert-dismissible fade show text-center mx-auto col-xl-6" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        @TempData["ImageSizeToBig"]
-    </div>
-}
-
-@if (TempData.ContainsKey("WrongImageFormat"))
-{
-    <div class="alert alert-success alert-dismissible fade show text-center mx-auto col-xl-6" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        @TempData["WrongImageFormat"]
-    </div>
+    ViewBag.Title = "Edit Your Club Details";
 }
 
 @if (!ViewData.ModelState.IsValid)
@@ -36,7 +20,7 @@
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label asp-for="Name" class="form-label"></label>
                 <input asp-for="Name" class="form-control" aria-required="true" />
@@ -91,12 +75,6 @@
                 <span asp-validation-for="NumberOfCoaches" class="text-danger"></span>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="NumberOfCourts" class="form-label"></label>
-                <input asp-for="NumberOfCourts" class="form-control" aria-required="true" />
-                <span asp-validation-for="NumberOfCourts" class="text-danger"></span>
-            </div>
-
             <div class="row">
                 <div class="col-4">
                     <label>
@@ -126,9 +104,10 @@
                 <input type="file" name="file" class="form-control-file" accept="image/*" aria-describedby="file" />
                 <small id="file" class="form-text text-muted">Upload an image for your club logo.</small>
             </div>
-
-            <div class="mb-3 text-center">
-                <input class="btn btn-primary" type="submit" value="Create" />
+            <div class="row justify-content-center">
+                <div class="row col-3 text-center">
+                    <input class="btn btn-primary" type="submit" value="OK" />
+                </div>
             </div>
         </form>
     </div>

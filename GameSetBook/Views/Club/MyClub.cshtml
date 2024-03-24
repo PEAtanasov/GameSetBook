@@ -6,8 +6,8 @@
 }
 
 <div class="d-flex bd-highlight mb-3">
-    <div class="p-2 bd-highlight"><a class="btn  btn-primary @(isAprooved ? string.Empty : "disabled" )" asp-area="" asp-controller="Court" asp-action="Schedule" asp-route-id="Id">My courts schedule</a></div>
-    <div class="p-2 bd-highlight"><a class="btn btn-primary " asp-area="" asp-controller="Club" asp-action="Edit" asp-route-id="Id">Edit club information</a></div>
+    <div class="p-2 bd-highlight"><a class="btn  btn-primary @(isAprooved ? string.Empty : "disabled" )" asp-area="" asp-controller="Court" asp-action="Schedule" asp-route-id="@Model.ClubId">My courts schedule</a></div>
+    <div class="p-2 bd-highlight"><a class="btn btn-primary " asp-area="" asp-controller="Club" asp-action="Edit" asp-route-id="@Model.ClubId">Edit club information</a></div>
     <div class="p-2 bd-highlight"><a class="btn btn-primary @(isAprooved ? string.Empty : "disabled" )" asp-area="" asp-controller="Tournament" asp-action="Create">Create a tournament</a></div>
 </div>
 

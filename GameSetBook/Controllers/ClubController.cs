@@ -7,6 +7,7 @@ using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Club;
 using static GameSetBook.Common.ErrorMessageConstants;
 using static GameSetBook.Common.UserConstants;
+using static GameSetBook.Common.ImageSource;
 using Microsoft.AspNetCore.Authorization;
 using GameSetBook.Infrastructure.Models.Identity;
 
@@ -99,7 +100,7 @@ namespace GameSetBook.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ClubFormModel model, IFormFile? clubLogoImage)
+        public async Task<IActionResult> Create(ClubFormModel model, IFormFile? file)
         {
             if (User.IsInRole(ClubOwnerRole)|| await clubService.ClubWithOwnerIdExistAsync(User.Id()))
             {
@@ -118,11 +119,11 @@ namespace GameSetBook.Web.Controllers
                 return View(model);
             }
 
-            if (clubLogoImage != null && clubLogoImage.Length > 0)
+            if (file != null && file.Length > 0)
             {
                 try
                 {
-                    model.LogoUrl = GetLogoUrlPath(clubLogoImage,model.Name);
+                    model.LogoUrl = GetLogoUrlPath(file,model.Name);
                 }
                 catch (ArgumentException ex)
                 {
@@ -143,15 +144,64 @@ namespace GameSetBook.Web.Controllers
             return RedirectToAction("Create", "Court", new { clubId = id, numberOfCourts = model.NumberOfCourts });
         }
 
-        [ClubOwnerAuthorization]
-        public async Task<IActionResult> Test(int id)
+        [HttpGet]
+        [Authorize(Roles = ClubOwnerRole)]
+        public async Task<IActionResult> Edit(int id)
         {
+            if (!await clubService.ClubExsitAsync(id))
+            {
+                return BadRequest();
+            }
+            if (!await clubService.IsTheOwnerOfTheClub(id, User.Id()))
+            {
+                return Unauthorized();
+            }
 
-            var name = User.Identity.Name;
+            var cities = await clubService.GetAllCitiesAsync();
 
-            return RedirectToAction(nameof(Details), new {id});
+            ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+
+            var model = await clubService.GetEditFormModelAsync(id);
+
+            return View(model);
         }
 
+        [HttpPost]
+        [Authorize(Roles = ClubOwnerRole)]
+        public async Task<IActionResult> Edit(ClubFormModel model, IFormFile? file)
+        {
+            if (!await clubService.ClubExsitAsync(model.Id))
+            {
+                return BadRequest();
+            }
+            if (!await clubService.IsTheOwnerOfTheClub(model.Id, User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            if (file != null && file.Length > 0)
+            {
+                try
+                {                   
+                    model.LogoUrl = GetLogoUrlPath(file, model.Name);
+                }
+                catch (ArgumentException ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+
+                    var cities = await clubService.GetAllCitiesAsync();
+                    ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+
+                    return View(model);
+                }
+            }
+
+            await clubService.EditAsync(model);
+
+            return RedirectToAction(nameof(MyClub), new {id = model.Id});
+        }
+
+        [HttpGet]
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> MyClub(int id)
         {

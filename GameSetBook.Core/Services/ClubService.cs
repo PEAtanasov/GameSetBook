@@ -128,24 +128,23 @@ namespace GameSetBook.Core.Services
                 PhoneNumber = model.PhoneNumber,
                 WorkingTimeStart = model.WorkingTimeStart,
                 WorkingTimeEnd = model.WorkingTimeEnd,
-                LogoUrl = model.LogoUrl ?? Common.ImageSource.DefaultClubLogoUrl,
+                LogoUrl = model.LogoUrl,
                 RegisteredOn = DateTime.Now,
             };
+
+            if (String.IsNullOrWhiteSpace(model.LogoUrl))
+            {
+                model.LogoUrl = Common.ImageSource.DefaultClubLogoUrl;
+            }
 
             await repository.AddAsync(club);
             await repository.SaveChangesAsync();
         }
 
-        public async Task<ClubFormModel> EditAsync(int clubId)
+        public async Task<ClubFormModel> GetEditFormModelAsync(int clubId)
         {
-            if (!await ClubExsitAsync(clubId))
-            {
-                throw new ArgumentException(ClubDoesNotExist);
-            }
-
             var club = await repository.GetAllReadOnly<Club>()
                 .Where(c => c.Id == clubId)
-                .Include(c => c.Courts)
                 .Select(c => new ClubFormModel()
                 {
                     Id = c.Id,
@@ -160,25 +159,36 @@ namespace GameSetBook.Core.Services
                     ClubOwnerId = c.ClubOwnerId,
                     LogoUrl = c.LogoUrl,
                     NumberOfCoaches = c.NumberOfCoaches,
-                    NumberOfCourts = c.NumberOfCourts,
                     PhoneNumber = c.PhoneNumber,
                     WorkingTimeStart = c.WorkingTimeStart,
-                    WorkingTimeEnd = c.WorkingTimeEnd,
-                    Courts = c.Courts.Select(ct => new CourtEditFormModel()
-                    {
-                        Id = ct.Id,
-                        Name = ct.Name,
-                        ClubId = ct.ClubId,
-                        IsIndoor = ct.IsIndoor,
-                        IsLighted = ct.IsLighted,
-                        Surface = ct.Surface,
-                        PricePerHour = ct.PricePerHour,
-                        IsActive = ct.IsActive
-                    }).ToList()
+                    WorkingTimeEnd = c.WorkingTimeEnd
                 })
                 .FirstAsync();
 
             return club;
+        }
+
+        public async Task EditAsync(ClubFormModel model)
+        {
+            var club = await repository.GetAll<Club>()
+               .Where(c => c.Id == model.Id)
+               .FirstAsync();
+
+            club.Name = model.Name;
+            club.Description = model.Description;
+            club.Address = model.Address;
+            club.CityId = model.CityId;
+            club.HasParking = model.HasParking;
+            club.Email = model.Email;
+            club.HasShop = model.HasShop;
+            club.HasShower = model.HasShower; 
+            club.NumberOfCoaches = model.NumberOfCoaches;
+            club.PhoneNumber = model.PhoneNumber;
+            club.WorkingTimeStart = model.WorkingTimeStart;
+            club.WorkingTimeEnd = model.WorkingTimeEnd;
+            club.LogoUrl = model.LogoUrl;         
+
+            await repository.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<CityViewModel>> GetAllCitiesAsync()
