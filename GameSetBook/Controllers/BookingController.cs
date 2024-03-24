@@ -4,6 +4,8 @@ using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Booking;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using GameSetBook.Infrastructure.Models.Identity;
 
 namespace GameSetBook.Web.Controllers
 {
@@ -12,12 +14,14 @@ namespace GameSetBook.Web.Controllers
         private readonly IBookingService bookingService;
         private readonly ICourtService courtService;
         private readonly IClubService clubService;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public BookingController(IBookingService bookingService, ICourtService courtService, IClubService clubService)
+        public BookingController(IBookingService bookingService, ICourtService courtService, IClubService clubService, UserManager<ApplicationUser> userManager)
         {
             this.bookingService = bookingService;
             this.courtService = courtService;
             this.clubService = clubService;
+            this.userManager = userManager;
         }
 
         [HttpGet]
@@ -44,12 +48,17 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
+            var user = await userManager.FindByIdAsync(User.Id());
+
+
             var model = new BookingCreateFormModel()
             {
                 Hour = hour,
                 CourtId = courtId,
                 BookingDate = bookingDate,
                 Price = await courtService.GetPrice(courtId),
+                ClientName = user.FirstName + " " + user.LastName,
+                PhoneNumber = user.PhoneNumber
             };
 
             return View(model);
@@ -72,6 +81,7 @@ namespace GameSetBook.Web.Controllers
 
             if (!ModelState.IsValid)
             {
+                model.PhoneNumber = string.Empty;
                 return View(model);
             }
 

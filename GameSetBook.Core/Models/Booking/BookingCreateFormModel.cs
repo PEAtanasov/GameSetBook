@@ -24,6 +24,7 @@ namespace GameSetBook.Core.Models.Booking
         [Required(ErrorMessage = RequiredMessage)]
         [StringLength(ClientPhoneMaxLength, MinimumLength = ClientPhoneMinLength, ErrorMessage = StringLengthMessage)]
         [Phone]
+        [DataType(DataType.PhoneNumber)]
         [Display(Name ="Phone Number")]
         public string PhoneNumber { get; set; } = string.Empty;
 

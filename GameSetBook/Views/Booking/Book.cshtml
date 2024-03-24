@@ -16,17 +16,40 @@
             <input type="hidden" asp-for="BookingDate" />
             <input type="hidden" asp-for="CourtId" />
             <input type="hidden" asp-for="Hour" />
-            <div class="mb-3">
-                <label asp-for="ClientName" class="form-label"></label>
-                <input asp-for="ClientName" class="form-control" />
-                <span asp-validation-for="ClientName" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="PhoneNumber" class="form-label-add-edit"></label>
-                <input asp-for="PhoneNumber" class="form-control" placeholder="+359888000000" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
+            @if (!String.IsNullOrWhiteSpace(Model.ClientName))
+            {
+                <div class="mb-3">
+                    <label asp-for="ClientName" class="form-label-add-edit"></label>
+                    <input type="hidden" asp-for="ClientName" />
+                    <span class="form-control" readonly>@Model.ClientName</span>
+                    <span asp-validation-for="ClientName" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <div class="mb-3">
+                    <label asp-for="ClientName" class="form-label-add-edit"></label>
+                    <input asp-for="ClientName" class="form-control" placeholder="Jogn Doe" />
+                    <span asp-validation-for="ClientName" class="text-danger"></span>
+                </div>
+            }
+            @if (!String.IsNullOrWhiteSpace(Model.PhoneNumber))
+            {
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label-add-edit"></label>
+                    <input type="hidden" asp-for="PhoneNumber" />
+                    <span class="form-control" readonly>@Model.PhoneNumber</span>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label-add-edit"></label>
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="+359888000000" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            }
             <div class="mb-3 text-center">
                 <input class="btn btn-primary" type="submit" value="Book Now" />
             </div>
