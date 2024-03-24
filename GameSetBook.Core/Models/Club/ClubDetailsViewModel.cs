@@ -12,7 +12,6 @@
         public bool HasParking { get; set; }
         public bool HasShower { get; set; }
         public bool HasShop { get; set; }
-        public ClubInfoViewModel ClubInfo { get; set; } = null!;
         public double Rating { get; set; }
     }
 }

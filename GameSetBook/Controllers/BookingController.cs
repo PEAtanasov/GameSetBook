@@ -79,6 +79,11 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
+            if (await bookingService.BookingExistAsync(model.BookingDate, model.Hour, model.CourtId))
+            {
+                return BadRequest();
+            }
+
             if (!ModelState.IsValid)
             {
                 model.PhoneNumber = string.Empty;

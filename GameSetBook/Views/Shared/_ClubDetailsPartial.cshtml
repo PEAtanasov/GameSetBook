@@ -1,0 +1,52 @@
+﻿@model ClubDetailsViewModel
+
+<h2>@Model.Name</h2>
+<strong>Club's Description</strong>
+<p>@Model.Description</p>
+<p><strong>Working Time:</strong> @Model.WorkingTimeStart - @Model.WorkingTimeEnd</p>
+<p><strong>Number of Coaches:</strong> @Model.NumberOfCoaches</p>
+<p><strong>Number of Courts:</strong> @Model.NumberOfCourts</p>
+<p>
+    <strong>Parking:</strong>
+    @if (@Model.HasParking)
+    {
+        <span>Yes</span>
+    }
+    else
+    {
+        <span>No</span>
+    }
+</p>
+<p>
+    <strong>Shower:</strong>
+    @if (@Model.HasShower)
+    {
+        <span>Yes</span>
+    }
+    else
+    {
+        <span>No</span>
+    }
+</p>
+<p>
+    <strong>Shop:</strong>
+    @if (@Model.HasShop)
+    {
+        <span>Yes</span>
+    }
+    else
+    {
+        <span>No</span>
+    }
+</p>
+<p>
+    <strong>Rating:</strong>
+    @if (@Model.Rating > 0)
+    {
+        @Model.Rating
+    }
+    else
+    {
+        <span>No Rating</span>
+    }
+</p>

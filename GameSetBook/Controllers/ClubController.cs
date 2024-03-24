@@ -46,6 +46,7 @@ namespace GameSetBook.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index([FromQuery]AllClubsSortingModel model)
         {            
             var clubs = await clubService.GetClubSortingServiceModelAsync(
@@ -65,6 +66,7 @@ namespace GameSetBook.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
 
@@ -73,7 +75,7 @@ namespace GameSetBook.Web.Controllers
                 return NotFound();
             }
 
-            var model = await clubService.GetClubDetailsAsync(id);
+            var model = await clubService.GetClubDetailsAndInfoAsync(id);
 
             return View(model);
 
@@ -82,7 +84,7 @@ namespace GameSetBook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            if (User.IsInRole(ClubOwnerRole) || await clubService.ClubWithOwnerIdExist(User.Id()))
+            if (User.IsInRole(ClubOwnerRole) || await clubService.ClubWithOwnerIdExistAsync(User.Id()))
             {
                 TempData["Error"] = UsersAreAllowedToRegisterOnlyOneClub;
                 return RedirectToAction(nameof(Index), "Club");
@@ -99,7 +101,7 @@ namespace GameSetBook.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ClubFormModel model, IFormFile? clubLogoImage)
         {
-            if (User.IsInRole(ClubOwnerRole)|| await clubService.ClubWithOwnerIdExist(User.Id()))
+            if (User.IsInRole(ClubOwnerRole)|| await clubService.ClubWithOwnerIdExistAsync(User.Id()))
             {
                 return Unauthorized();
             }
@@ -140,11 +142,6 @@ namespace GameSetBook.Web.Controllers
 
             return RedirectToAction("Create", "Court", new { clubId = id, numberOfCourts = model.NumberOfCourts });
         }
-        [Authorize(Roles =ClubOwnerRole)]
-        public async Task<IActionResult> MyClub(int clubId)
-        {
-            return View();
-        }
 
         [ClubOwnerAuthorization]
         public async Task<IActionResult> Test(int id)
@@ -153,6 +150,26 @@ namespace GameSetBook.Web.Controllers
             var name = User.Identity.Name;
 
             return RedirectToAction(nameof(Details), new {id});
+        }
+
+        [Authorize(Roles = ClubOwnerRole)]
+        public async Task<IActionResult> MyClub(int id)
+        {
+            if (!await clubService.ClubExsitAsync(id))
+            {
+                return BadRequest();
+            }
+
+            if (!await clubService.IsTheOwnerOfTheClub(id,User.Id()))
+            {
+                return Unauthorized();
+            }
+            bool isAprooved = await clubService.IsClubAprooved(id);
+            ViewData["IsClubAprooved"] = isAprooved;
+
+            var model = await clubService.GetClubDetailsAndInfoAsync(id);
+
+            return View(model);
         }
 
         private string GetLogoUrlPath(IFormFile clubLogoImage, string modelName)

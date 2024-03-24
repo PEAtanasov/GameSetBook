@@ -32,12 +32,31 @@ namespace GameSetBook.Core.Services
                     Name = c.Name,
                     CityName = c.City.Name,
                     LogoUrl = c.LogoUrl,
-                    Prcie = c.Courts.Where(c => c.IsActive).OrderBy(c => c.PricePerHour).Select(c => c.PricePerHour).FirstOrDefault(),
+                    Prcie = c.Courts.Where(c => c.IsActive)
+                                    .OrderBy(c => c.PricePerHour)
+                                    .Select(c => c.PricePerHour)
+                                    .FirstOrDefault(),
                     NumberofCourts = c.NumberOfCourts,
                     WorkingTimeStart = c.WorkingTimeStart,
                     WorkingTimeEnd = c.WorkingTimeEnd,
                     Rating = c.Rating
                 }).ToListAsync();
+
+            return model;
+        }
+
+        public async Task<ClubDetailsAndInfoViewModel> GetClubDetailsAndInfoAsync(int id)
+        {           
+            var details= await GetClubDetailsAsync(id);
+
+            var info = await GetClubIfnoAsync(id);
+
+            var model = new ClubDetailsAndInfoViewModel()
+            {
+                ClubId = id,
+                Info = info,
+                Details = details
+            };
 
             return model;
         }
@@ -61,7 +80,6 @@ namespace GameSetBook.Core.Services
                 HasShop = club.HasShop,
                 WorkingTimeStart = club.WorkingTimeStart,
                 WorkingTimeEnd = club.WorkingTimeEnd,
-                ClubInfo = await GetClubIfnoAsync(club.Id),
                 Rating = club.Rating
             };
 
@@ -278,7 +296,7 @@ namespace GameSetBook.Core.Services
             };
         }
 
-        public async Task<bool> ClubWithOwnerIdExist(string ownerId)
+        public async Task<bool> ClubWithOwnerIdExistAsync(string ownerId)
         {
             return await repository.GetAllReadOnly<Club>().AnyAsync(c => c.ClubOwnerId == ownerId);
         }
@@ -290,5 +308,11 @@ namespace GameSetBook.Core.Services
             return club.ClubOwnerId == UserId;
         }
 
+        public async Task<int> GetClubIdByOwnerId(string ownerId)
+        {
+            var club= await repository.GetAllReadOnly<Club>().FirstAsync(c=>c.ClubOwnerId==ownerId);
+
+            return club.Id;
+        }
     }
 }
