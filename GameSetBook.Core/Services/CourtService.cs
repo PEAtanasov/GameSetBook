@@ -23,18 +23,11 @@ namespace GameSetBook.Core.Services
         {
             int clubId = model[0].ClubId;
 
-            var club = await repository.GetByIdAsync<Club>(clubId) ?? throw new ArgumentException(ClubDoesNotExist);
-
-            if (await ClubHasCourts(clubId))
-            {
-                throw new ArgumentException(ClubHasExistingCourts);
-            }
-
-            Court court;
+            var courts = new List<Court>();
 
             foreach (var c in model)
             {
-                court = new Court()
+                Court court = new Court()
                 {
                     Name = c.Name,
                     ClubId = clubId,
@@ -44,25 +37,19 @@ namespace GameSetBook.Core.Services
                     Surface = c.Surface,
                 };
 
-                club.Courts.Add(court);
+                courts.Add(court);
             }
 
-            await repository.SaveChangesAsync();
-        }
+            await repository.AddRangeAsync(courts);
 
-        public async Task<bool> ClubHasCourts(int clubId)
-        {
-            return await repository.GetAllReadOnly<Court>()
-                .Where(c => c.ClubId == clubId)
-                .AnyAsync();
+            await repository.SaveChangesAsync();
         }
 
         public async Task<CourtEditFormModel> GetCourtEditFormModelAsync(int courtId)
         {
             var court = await repository.GetAllReadOnly<Court>()
                 .Include(c => c.Club)
-                .FirstOrDefaultAsync(c => c.Id == courtId)
-                ?? throw new ArgumentException("The court does not exist");
+                .FirstAsync(c => c.Id == courtId);
 
             var model = new CourtEditFormModel()
             {
@@ -102,12 +89,7 @@ namespace GameSetBook.Core.Services
             var courtToEdit = await repository.GetAll<Court>()
                 .Where(c => c.Id == model.Id)
                 .Include(c => c.Club)
-                .FirstOrDefaultAsync();
-
-            if (courtToEdit == null)
-            {
-                throw new ArgumentException("The court does not exist");
-            }
+                .FirstAsync();
 
             courtToEdit.Name = model.Name;
             courtToEdit.PricePerHour = model.PricePerHour;
@@ -121,8 +103,6 @@ namespace GameSetBook.Core.Services
 
         public async Task<IEnumerable<CourtScheduleViewModel>> GetAllCourtsScheduleAsync(int clubId, DateTime currentDate)
         {
-            // DateTime currentDate = date ?? DateTime.Now;
-
             var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Id == clubId);
 
             int workingTimeStart = club.WorkingTimeStart;
@@ -179,6 +159,13 @@ namespace GameSetBook.Core.Services
             var court = await repository.GetAllReadOnly<Court>().FirstAsync(c => c.Id == id);
 
             return court.PricePerHour;
+        }
+
+        public async Task<bool> IsCourtInOwnerClub(int courtId, string UserId)
+        {
+            return await repository.GetAllReadOnly<Court>()
+                .Where(c => c.Club.ClubOwnerId == UserId)
+                .AnyAsync(c => c.Id == courtId);
         }
 
         private List<BookingScheduleViewModel> GetAvailableBookings(int start, int end, DateTime date, int courtId)

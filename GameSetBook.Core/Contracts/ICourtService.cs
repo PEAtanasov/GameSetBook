@@ -4,8 +4,6 @@ namespace GameSetBook.Core.Contracts
 {
     public interface ICourtService
     {
-        Task<bool> ClubHasCourts(int clubId);
-
         Task CreateInitialAsync(CourtCreateFormModel[] model);
 
         Task<CourtEditFormModel> GetCourtEditFormModelAsync(int courtId);
@@ -19,5 +17,7 @@ namespace GameSetBook.Core.Contracts
         Task<bool> CourtExist(int id);
 
         Task<decimal> GetPrice(int id);
+
+        Task<bool> IsCourtInOwnerClub(int courtId, string UserId);
     }
 }
