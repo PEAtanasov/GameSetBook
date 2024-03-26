@@ -1,13 +1,14 @@
-﻿@model ClubDetailsAndInfoViewModel
+﻿@model MyClubDetailsServiceModel
 
 @{
     ViewData["Title"] = "Club Details";
     bool isAprooved = (bool)(ViewData["IsClubAprooved"] ?? false);
+    var courtNumber = 1;
 }
 
 <div class="d-flex bd-highlight mb-3">
-    <div class="p-2 bd-highlight"><a class="btn  btn-primary @(isAprooved ? string.Empty : "disabled" )" asp-area="" asp-controller="Court" asp-action="Schedule" asp-route-id="@Model.ClubId">My courts schedule</a></div>
-    <div class="p-2 bd-highlight"><a class="btn btn-primary " asp-area="" asp-controller="Club" asp-action="Edit" asp-route-id="@Model.ClubId">Edit club information</a></div>
+    <div class="p-2 bd-highlight"><a class="btn  btn-primary @(isAprooved ? string.Empty : "disabled" )" asp-area="" asp-controller="Court" asp-action="MySchedule" asp-route-id="@Model.ClubDetailsAndInfo.ClubId">My courts schedule</a></div>
+    <div class="p-2 bd-highlight"><a class="btn btn-primary " asp-area="" asp-controller="Club" asp-action="Edit" asp-route-id="@Model.ClubDetailsAndInfo.ClubId">Edit club information</a></div>
     <div class="p-2 bd-highlight"><a class="btn btn-primary @(isAprooved ? string.Empty : "disabled" )" asp-area="" asp-controller="Tournament" asp-action="Create">Create a tournament</a></div>
 </div>
 
@@ -16,11 +17,70 @@
         <div class="col-md-3">
             <!-- Left part: Render _ClubInfoPartial.cshtml -->
             @* @await Html.PartialAsync("_ClubInfoPartial", Model.ClubInfo) *@
-            <partial name="_ClubInfoPartial" model="Model.Info" />
+            <partial name="_ClubInfoPartial" model="Model.ClubDetailsAndInfo.Info" />
         </div>
         <div class="col-md-9">
             <!-- Right part: Display other club details -->
-            <partial name="_ClubDetailsPartial" model="Model.Details" />
+            <partial name="_ClubDetailsPartial" model="Model.ClubDetailsAndInfo.Details" />
         </div>
     </div>
+</div>
+<hr />
+<h3 class="text-center"> Manage Your Courts</h3>
+<div class="container">
+    <div class="text-center row">
+        <table class="table table table-hover table-bordered table-responsive-md">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Surface</th>
+                    <th scope="col">Lighted</th>
+                    <th scope="col">Indoor</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                @foreach (var court in Model.Courts)
+                {
+                    <tr>
+                        <th scope="row">@(courtNumber++)</th>
+                        <td>@court.Name</td>
+                        <td>@court.Price</td>
+                        <td>@court.Surface</td>
+                        <td>
+                            @if (court.IsLighted)
+                            {
+                                <i class="fa fa-check"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-times"></i>
+                            }
+                        </td>
+                        <td>
+                            @if (court.IsIndoor)
+                            {
+                                <i class="fa fa-check"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-times"></i>
+                            }
+                        </td>
+                        <td>@(court.IsActive ? "Active" : "Not Active")</td>
+                        <td>
+                            <div class="d-flex flex-row justify-content-around">
+                                <a asp-controller="Court" asp-action="Edit" asp-route-id="@court.Id" class="btn btn-primary">Edit</a>
+                                <a asp-controller="Court" asp-action="ChangeStatus" asp-route-id="@court.Id" class="@(court.IsActive ? "btn btn-danger" : "btn btn-success")">@(court.IsActive ? "Deactivate" : "Activate")</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
 </div>

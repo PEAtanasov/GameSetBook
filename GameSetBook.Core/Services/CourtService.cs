@@ -80,6 +80,23 @@ namespace GameSetBook.Core.Services
             return model;
         }
 
+        public async Task<IEnumerable<CourtDetailsViewModel>> GetAllCourtsDetails(int clubId)
+        {
+            return await repository.GetAllReadOnly<Court>()
+                .Where(c => c.ClubId == clubId)
+                .Select(c => new CourtDetailsViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    IsActive = c.IsActive,
+                    IsIndoor = c.IsIndoor,
+                    IsLighted = c.IsLighted,
+                    Price = c.PricePerHour,
+                    Surface = c.Surface.GetDisplayName()
+                })
+                .ToListAsync();
+        }
+
         public async Task Edit(CourtEditFormModel model)
         {
             var courtToEdit = await repository.GetAll<Court>()
@@ -104,7 +121,7 @@ namespace GameSetBook.Core.Services
 
         public async Task<IEnumerable<CourtScheduleViewModel>> GetAllCourtsScheduleAsync(int clubId, DateTime currentDate)
         {
-           // DateTime currentDate = date ?? DateTime.Now;
+            // DateTime currentDate = date ?? DateTime.Now;
 
             var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Id == clubId);
 
@@ -124,6 +141,7 @@ namespace GameSetBook.Core.Services
                     Surface = c.Surface.GetDisplayName(),
                     Bookings = c.Bookings.Where(b => b.BookingDate.Date == currentDate.Date).Select(b => new BookingScheduleViewModel()
                     {
+                        Id = b.Id,
                         CourtId = b.CourtId,
                         Hour = b.Hour,
                         IsAvailable = b.IsAvailable,

@@ -128,7 +128,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            return RedirectToAction("Index", "Club");
+            return RedirectToAction("MyClub", "Club", new { id = model.ClubId });
         }
 
         [HttpGet]
@@ -149,6 +149,35 @@ namespace GameSetBook.Web.Controllers
             {
                 currentDate = DateTime.Now;
             }
+
+            var model = await courtService.GetAllCourtsScheduleAsync(clubId, currentDate);
+
+            ViewData["CurrentDate"] = currentDate;
+
+            ViewData["ClubInfo"] = await clubService.GetClubIfnoAsync(clubId);
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = ClubOwnerRole)]
+        public async Task<IActionResult> MySchedule(int id, DateTime? date)
+        {
+            int clubId = id;
+
+            ViewData["ClubId"] = clubId;
+
+            if (!await clubService.ClubExsitAsync(clubId))
+            {
+                return BadRequest();
+            }
+
+            if (!await clubService.IsTheOwnerOfTheClub(clubId, User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            DateTime currentDate = date ?? DateTime.Now;
 
             var model = await courtService.GetAllCourtsScheduleAsync(clubId, currentDate);
 
