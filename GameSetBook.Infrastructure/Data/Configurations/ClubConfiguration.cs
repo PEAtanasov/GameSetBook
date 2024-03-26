@@ -30,7 +30,6 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                     HasParking = true,
                     HasShop = true,
                     HasShower = true,
-                    IsActive = true,
                     NumberOfCoaches =2,
                     NumberOfCourts =2,
                     WorkingTimeStart = 8,

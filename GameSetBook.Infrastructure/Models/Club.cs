@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-using static GameSetBook.Common.ValidationConstatns.ClubConstants;
-using static GameSetBook.Common.ImageSource;
 using GameSetBook.Infrastructure.Models.Contracts;
 using GameSetBook.Infrastructure.Models.Identity;
+using static GameSetBook.Common.ImageSource;
+using static GameSetBook.Common.ValidationConstatns.ClubConstants;
 
 namespace GameSetBook.Infrastructure.Models
 {
@@ -135,13 +134,6 @@ namespace GameSetBook.Infrastructure.Models
         [Comment("Club's phone number")]
         [MaxLength(PhoneMaxLength)]
         public string PhoneNumber { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Is the club active
-        /// </summary>
-        [Required]
-        [Comment("Is the club active")]
-        public bool IsActive { get; set; }
 
         /// <summary>
         /// Is the record deleted

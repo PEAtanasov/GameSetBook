@@ -22,7 +22,7 @@ namespace GameSetBook.Core.Services
         public async Task<IEnumerable<ClubServiceViewModel>> GetAllClubsAsync()
         {
             var model = await repository.GetAllReadOnly<Club>()
-                .Where(c => c.IsActive && c.IsAproovedByAdmin)
+                .Where(c => c.IsAproovedByAdmin)
                 .Include(c => c.ClubReviews)
                 .Select(c => new ClubServiceViewModel()
                 {
@@ -31,9 +31,9 @@ namespace GameSetBook.Core.Services
                     CityName = c.City.Name,
                     LogoUrl = c.LogoUrl,
                     Prcie = c.Courts.Where(c => c.IsActive)
-                                    .OrderBy(c => c.PricePerHour)
-                                    .Select(c => c.PricePerHour)
-                                    .FirstOrDefault(),
+                        .OrderBy(c => c.PricePerHour)
+                        .Select(c => c.PricePerHour)
+                        .FirstOrDefault(),
                     NumberofCourts = c.NumberOfCourts,
                     WorkingTimeStart = c.WorkingTimeStart,
                     WorkingTimeEnd = c.WorkingTimeEnd,
@@ -44,8 +44,8 @@ namespace GameSetBook.Core.Services
         }
 
         public async Task<ClubDetailsAndInfoViewModel> GetClubDetailsAndInfoAsync(int id)
-        {           
-            var details= await GetClubDetailsAsync(id);
+        {
+            var details = await GetClubDetailsAsync(id);
 
             var info = await GetClubIfnoAsync(id);
 
@@ -62,7 +62,7 @@ namespace GameSetBook.Core.Services
         public async Task<ClubDetailsViewModel> GetClubDetailsAsync(int id)
         {
             var club = await repository.GetAllReadOnly<Club>()
-                .Where(c => c.IsAproovedByAdmin == true && c.IsActive == true)
+                .Where(c => c.IsAproovedByAdmin)
                 .Include(c => c.ClubReviews)
                 .FirstAsync(c => c.Id == id);
 
@@ -118,9 +118,7 @@ namespace GameSetBook.Core.Services
                 HasParking = model.HasParking,
                 Email = model.Email,
                 HasShop = model.HasShop,
-                IsActive = true,
                 HasShower = model.HasShower,
-                IsAproovedByAdmin = false,
                 NumberOfCoaches = model.NumberOfCoaches,
                 NumberOfCourts = model.NumberOfCourts,
                 PhoneNumber = model.PhoneNumber,
@@ -179,12 +177,12 @@ namespace GameSetBook.Core.Services
             club.HasParking = model.HasParking;
             club.Email = model.Email;
             club.HasShop = model.HasShop;
-            club.HasShower = model.HasShower; 
+            club.HasShower = model.HasShower;
             club.NumberOfCoaches = model.NumberOfCoaches;
             club.PhoneNumber = model.PhoneNumber;
             club.WorkingTimeStart = model.WorkingTimeStart;
             club.WorkingTimeEnd = model.WorkingTimeEnd;
-            club.LogoUrl = model.LogoUrl;         
+            club.LogoUrl = model.LogoUrl;
 
             await repository.SaveChangesAsync();
         }
@@ -213,9 +211,9 @@ namespace GameSetBook.Core.Services
 
         public async Task<bool> ClubExsitAsync(int id)
         {
-            var club = await repository.GetAllReadOnly<Club>().FirstOrDefaultAsync(c=>c.Id==id);
+            var club = await repository.GetAllReadOnly<Club>().FirstOrDefaultAsync(c => c.Id == id);
 
-            if (club == null)//|| club.IsActive == false || club.IsAproovedByAdmin == false)
+            if (club == null)
             {
                 return false;
             }
@@ -243,7 +241,7 @@ namespace GameSetBook.Core.Services
         {
 
             var clubsToSort = repository.GetAllReadOnly<Club>()
-                .Where(c => c.IsActive && c.IsAproovedByAdmin);
+                .Where(c => c.IsAproovedByAdmin);
 
 
             if (city != null)
@@ -311,14 +309,14 @@ namespace GameSetBook.Core.Services
 
         public async Task<bool> IsTheOwnerOfTheClub(int clubId, string UserId)
         {
-            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c=>c.Id==clubId);
+            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Id == clubId);
 
             return club.ClubOwnerId == UserId;
         }
 
         public async Task<int> GetClubIdByOwnerId(string ownerId)
         {
-            var club= await repository.GetAllReadOnly<Club>().FirstAsync(c=>c.ClubOwnerId==ownerId);
+            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.ClubOwnerId == ownerId);
 
             return club.Id;
         }

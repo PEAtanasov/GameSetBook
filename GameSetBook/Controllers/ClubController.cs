@@ -2,13 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Club;
 using static GameSetBook.Common.ErrorMessageConstants;
 using static GameSetBook.Common.UserConstants;
-using static GameSetBook.Common.ImageSource;
-using Microsoft.AspNetCore.Authorization;
 using GameSetBook.Infrastructure.Models.Identity;
 
 namespace GameSetBook.Web.Controllers
@@ -111,7 +110,7 @@ namespace GameSetBook.Web.Controllers
             {
                 try
                 {
-                    model.LogoUrl = GetLogoUrlPath(file, model.Name);
+                    model.LogoUrl = await GetLogoUrlPath(file, model.Name);
                 }
                 catch (ArgumentException ex)
                 {
@@ -171,7 +170,7 @@ namespace GameSetBook.Web.Controllers
             {
                 try
                 {
-                    model.LogoUrl = GetLogoUrlPath(file, model.Name);
+                    model.LogoUrl = await GetLogoUrlPath(file, model.Name);
                 }
                 catch (ArgumentException ex)
                 {
@@ -215,10 +214,8 @@ namespace GameSetBook.Web.Controllers
             return View(model);
         }
 
-        private string GetLogoUrlPath(IFormFile clubLogoImage, string modelName)
+        private async Task<string> GetLogoUrlPath(IFormFile clubLogoImage, string modelName)
         {
-            string relativePath = string.Empty;
-
             if (clubLogoImage.Length > 5242880)
             {
                 throw new ArgumentException(ImageSizeToBig);
@@ -246,11 +243,11 @@ namespace GameSetBook.Web.Controllers
             string uniqueFileName = $"{modelName.Replace(' ', '_')}_logo{Path.GetExtension(clubLogoImage.FileName)}";
 
             string filePath = Path.Combine(uploadPath, uniqueFileName);
-            relativePath = Path.Combine(imagePath, uniqueFileName).Replace('\\', '/');
+            var relativePath = Path.Combine(imagePath, uniqueFileName).Replace('\\', '/');
 
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                clubLogoImage.CopyTo(stream);
+                await clubLogoImage.CopyToAsync(stream);
             }
 
             return relativePath;
