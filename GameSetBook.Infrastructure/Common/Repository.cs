@@ -33,6 +33,17 @@ namespace GameSetBook.Infrastructure.Common
         }
 
         /// <summary>
+        /// Add range of entities to the DbSet
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        public async Task AddRangeAsync<T>(IList<T> entities) where T : class
+        {
+            await DbSet<T>().AddRangeAsync(entities);
+        }
+
+        /// <summary>
         /// Get all elements
         /// </summary>
         /// <typeparam name="T">Type of element</typeparam>

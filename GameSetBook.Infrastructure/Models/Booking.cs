@@ -31,25 +31,6 @@ namespace GameSetBook.Infrastructure.Models
         public decimal Price { get; set; }
 
         /// <summary>
-        /// is the the booking available
-        /// </summary>
-        [Required]
-        [Comment("is the the booking available")]
-        public bool IsAvailable { get; set; } = false;
-
-        /// <summary>
-        /// is the booking deleted/canceled
-        /// </summary>
-        [Comment("is the booking canceled")]
-        public bool IsDeleted { get; set; }
-
-        /// <summary>
-        /// Deleted on date and time
-        /// </summary>
-        [Comment("Deleted on date and time")]
-        public DateTime? DeletedOn { get; set; }
-
-        /// <summary>
         /// Date and time booking is created
         /// </summary>
         [Required]
@@ -86,6 +67,31 @@ namespace GameSetBook.Infrastructure.Models
         [Phone]
         [Comment("Client's phone number")]
         public string PhoneNumber { get; set; } = string.Empty;
+
+        /// <summary>
+        /// is the the booking available
+        /// </summary>
+        [Required]
+        [Comment("is the the booking available")]
+        public bool IsAvailable { get; set; } = false;
+
+        /// <summary>
+        /// is the booking deleted/canceled
+        /// </summary>
+        [Comment("is the booking canceled")]
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// Deleted on date and time
+        /// </summary>
+        [Comment("Deleted on date and time")]
+        public DateTime? DeletedOn { get; set; }
+
+        /// <summary>
+        /// Is the booking created by administrator or club owner
+        /// </summary>
+        [Comment("Is the booking created by administrator or club owner")]
+        public bool IsBookedByOwnerOrAdmin { get; set; }
 
         /// <summary>
         /// Client identifier

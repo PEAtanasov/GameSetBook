@@ -32,6 +32,14 @@ namespace GameSetBook.Infrastructure.Common
         Task AddAsync<T>(T entity) where T : class;
 
         /// <summary>
+        /// Add range of entities to the DbSet
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        Task AddRangeAsync<T>(IList<T> entities) where T : class;
+
+        /// <summary>
         /// Set item item to Deleted
         /// </summary>
         /// <typeparam name="T">type of item</typeparam>
