@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 using GameSetBook.Common.Enums;
 using GameSetBook.Common.Enums.EnumExtensions;
 using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Court;
 using static GameSetBook.Common.UserConstants;
-using System.Security.Claims;
 
 namespace GameSetBook.Web.Controllers
 {
@@ -58,6 +58,11 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
+            if (await clubService.ClubHasCourts(clubId))
+            {
+                return BadRequest();
+            }
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Surfaces = ViewBag.Surfaces = GetSurfaces();
@@ -65,14 +70,7 @@ namespace GameSetBook.Web.Controllers
                 return View(model);
             }
 
-            try
-            {
-                await courtService.CreateInitialAsync(model);
-            }
-            catch (ArgumentException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-            }
+            await courtService.CreateInitialAsync(model);
 
             return RedirectToAction("Index", "Club");
         }
@@ -81,21 +79,16 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Edit(int id)
         {
-            CourtEditFormModel model;
-            try
+            if (! await courtService.CourtExist(id))
             {
-                model = await courtService.GetCourtEditFormModelAsync(id);
-            }
-            catch (ArgumentException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
                 return BadRequest();
             }
-
-            if (model.ClubOwnerId != User.Id())
+            if (!await courtService.IsCourtInOwnerClub(id, User.Id()))
             {
                 return Unauthorized();
             }
+  
+            var model = await courtService.GetCourtEditFormModelAsync(id);
 
             ViewBag.Surfaces = GetSurfaces();
 
@@ -106,7 +99,17 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Edit(CourtEditFormModel model)
         {
+            if (!await courtService.CourtExist(model.Id))
+            {
+                return BadRequest();
+            }
+
             if (model.ClubOwnerId != User.Id())
+            {
+                return Unauthorized();
+            }
+
+            if (!await courtService.IsCourtInOwnerClub(model.Id, User.Id()))
             {
                 return Unauthorized();
             }
@@ -118,16 +121,8 @@ namespace GameSetBook.Web.Controllers
                 return View(model);
             }
 
-            try
-            {
-                await courtService.Edit(model);
-            }
-            catch (ArgumentException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return BadRequest();
-            }
-
+            await courtService.Edit(model);
+            
             return RedirectToAction("MyClub", "Club", new { id = model.ClubId });
         }
 
@@ -161,7 +156,7 @@ namespace GameSetBook.Web.Controllers
 
         [HttpGet]
         [Authorize(Roles = ClubOwnerRole)]
-        public async Task<IActionResult> MySchedule(int id, DateTime? date)
+        public async Task<IActionResult> OwnCourtsSchedule(int id, DateTime? date)
         {
             int clubId = id;
 

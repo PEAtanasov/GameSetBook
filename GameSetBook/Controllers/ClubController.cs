@@ -35,21 +35,6 @@ namespace GameSetBook.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index3(string searchString)
-        {
-            ViewData["CurrentFilter"] = searchString;
-
-            var clubs = await clubService.GetAllClubsAsync();
-
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                clubs = clubs.Where(c => c.Name.ToLower().Contains(searchString.ToLower()));
-            }
-
-            return View(clubs);
-        }
-
-        [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Index([FromQuery] AllClubsSortingModel model)
         {
@@ -76,7 +61,7 @@ namespace GameSetBook.Web.Controllers
 
             if (!await clubService.ClubExsitAsync(id))
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var model = await clubService.GetClubDetailsAndInfoAsync(id);
