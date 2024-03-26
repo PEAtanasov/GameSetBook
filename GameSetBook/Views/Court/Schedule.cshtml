@@ -10,9 +10,8 @@
 }
 @if (cuurentDate!=null)
 {
-    <h2 class="text-center">@ViewBag.Title for @cuurentDate.Value.ToShortDateString()</h2>
+    <h2 class="text-center">@ViewBag.Title for @cuurentDate.Value.ToShortDateString() @cuurentDate.GetValueOrDefault().DayOfWeek</h2>
 }
-<hr/>
 
 <div class="container">
     <div class="row">
@@ -37,14 +36,14 @@
                                 <!-- Arrow to move one day backwards -->
                                 @if (cuurentDate != null)
                                 {
-                                    <a asp-controller="Court" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(-1)" class="btn btn-primary @(cuurentDate.Value.AddDays(-1)< DateTime.Now.Date ? "disabled" : string.Empty)">	&larr; Previous Day</a>
+                                    <a asp-controller="Court" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(-1)" class="btn btn-primary @(cuurentDate.Value.AddDays(-1)< DateTime.Now.Date ? "disabled" : string.Empty)">	<i class="fa fa-arrow-circle-o-left"></i> Previous Day</a>
                                 }
                             </div>
                             <div class="col-auto">
                                 <!-- Arrow to move one day forwards -->
                                 @if (cuurentDate != null)
                                 {
-                                    <a asp-controller="Court" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(1)" class="btn btn-primary">Next Day 	&rarr;</a>
+                                    <a asp-controller="Court" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(1)" class="btn btn-primary">Next Day <i class="fa fa-arrow-circle-o-right"></i></a>
                                 }
                             </div>                           
                         </div>
@@ -58,7 +57,7 @@
                         <table class="table table table-hover table-bordered table-responsive-md">
                             <thead class="table-dark">
                                 <tr>
-                                    <th>@(cuurentDate.Value.ToShortDateString()?? string.Empty)</th>
+                                    <th><i class="fa fa-calendar" style="font-size:24px"></i><p>@(cuurentDate.Value.ToShortDateString() ?? string.Empty)</p></th>
                                     @foreach (var court in Model)
                                     {
                                         <th>
@@ -90,11 +89,11 @@
                                         <th>
                                             @if (i<10)
                                             {
-                                                <span>0@(i):00</span>
+                                                <span><i class="fa fa-clock-o"></i>0@(i):00</span>
                                             }
                                             else
                                             {
-                                                <span>@(i):00</span>
+                                                <span><i class="fa fa-clock-o"></i>@(i):00</span>
                                             }
                                         </th>
                                         @foreach (var court in Model)
@@ -118,15 +117,7 @@
                                                     }
                                                     else
                                                     {
-                                                        @* <form asp-controller="Booking" asp-action="Book" method="get">
-                                                            <input type="hidden" name="CourtId" value="@court.Id" />
-                                                            <input type="hidden" name="Hour" value="@booking.Hour" />
-                                                            <input type="hidden" name="BookingDate" value="@booking.BookingDate" />
-                                                            <button type="submit" class="btn btn-sm btn-success">Book/<small>@(court.Price)BGN</small></button>
-                                                        </form> *@
-
                                                         <a asp-controller="Booking" asp-action="Book" asp-route-CourtId="@court.Id" asp-route-Hour="@booking.Hour" asp-route-BookingDate="@booking.BookingDate" class="btn btn-sm btn-success">Book/<small>@(court.Price)BGN</small></a>
-
                                                     }
                                                 }
                                                 else
