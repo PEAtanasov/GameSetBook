@@ -2,21 +2,31 @@
 
 using static GameSetBook.Common.ErrorMessageConstants;
 using static GameSetBook.Common.ValidationConstatns.BookingConstants;
+using static GameSetBook.Common.ValidationConstatns.CourtConstants;
 
 namespace GameSetBook.Core.Models.Booking
 {
-    public class BookingCreateFormModel
+    public class BookingEditFormModel
     {
-        public int Hour { get; set; }
-        public int CourtId { get; set; }
-        public DateTime BookingDate { get; set; }
+        /// <summary>
+        /// Booking identitfier
+        /// </summary>
+        public int Id { get; set; }
 
+        /// <summary>
+        /// Client's name
+        /// </summary>
         [Required(ErrorMessage = RequiredMessage)]
         [StringLength(ClientNameMaxLength, MinimumLength = ClientNameMinLength, ErrorMessage = StringLengthMessage)]
         [Display(Name = "Name")]
         public string ClientName { get; set; } = string.Empty;
 
-        public decimal Price {  get; set; }
+        /// <summary>
+        /// Price of the booking
+        /// </summary>
+        [Display(Name = "Price")]
+        [Range(MinPricePerHour, MaxPricePerHour)]
+        public decimal? Price { get; set; }
 
         /// <summary>
         /// Client's phone number
@@ -25,14 +35,22 @@ namespace GameSetBook.Core.Models.Booking
         [StringLength(ClientPhoneMaxLength, MinimumLength = ClientPhoneMinLength, ErrorMessage = StringLengthMessage)]
         [Phone]
         [DataType(DataType.PhoneNumber)]
-        [Display(Name ="Phone Number")]
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; } = string.Empty;
 
         /// <summary>
-        /// Client identifier
+        /// Booking's hour
         /// </summary>
-        public string ClientId { get; set; } = string.Empty;
+        public int Hour { get; set; }
 
-        public bool IsBookedByOwnerOrAdmin { get; set; }
+        /// <summary>
+        /// Booking's date
+        /// </summary>
+        public DateTime BookingDate { get; set; }
+
+        /// <summary>
+        /// Booking's court identifier
+        /// </summary>
+        public int CourtId { get; set; }
     }
 }
