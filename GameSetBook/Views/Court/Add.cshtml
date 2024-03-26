@@ -1,0 +1,59 @@
+﻿@model CourtCreateFormModel
+@{
+    IEnumerable<SelectListItem> surfaces = ViewBag.Surfaces;
+    ViewBag.Title = "Add Courts";
+
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-action="Add" method="post">
+                <input type="hidden" asp-for="ClubId" />
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" aria-required="true" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PricePerHour" class="form-label"></label>
+                    <input asp-for="PricePerHour" class="form-control" aria-required="true" />
+                    <span asp-validation-for="PricePerHour" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Surface" class="form-label"></label>
+                    <select asp-for="Surface" class="form-select" asp-items="surfaces"></select>
+                    <span asp-validation-for="Surface" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <label>
+                            Lights
+                            <input type="checkbox" asp-for="IsLighted" />
+                            <span asp-validation-for="IsLighted" class="text-danger"></span>
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <label>
+                            Indoor
+                            <input type="checkbox" asp-for="IsIndoor" />
+                            <span asp-validation-for="IsIndoor" class="text-danger"></span>
+                        </label>
+                    </div>
+                </div>
+                <hr />
+            <div class="mb-3 text-center">
+                <input class="btn btn-primary mb-2 w-100 p-3 fw-bold" type="submit" value="Create" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

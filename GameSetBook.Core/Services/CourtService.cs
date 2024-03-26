@@ -21,8 +21,6 @@ namespace GameSetBook.Core.Services
 
         public async Task CreateInitialAsync(CourtCreateFormModel[] model)
         {
-            int clubId = model[0].ClubId;
-
             var courts = new List<Court>();
 
             foreach (var c in model)
@@ -30,7 +28,7 @@ namespace GameSetBook.Core.Services
                 Court court = new Court()
                 {
                     Name = c.Name,
-                    ClubId = clubId,
+                    ClubId = c.ClubId,
                     IsLighted = c.IsLighted,
                     IsIndoor = c.IsIndoor,
                     PricePerHour = c.PricePerHour,
@@ -41,6 +39,30 @@ namespace GameSetBook.Core.Services
             }
 
             await repository.AddRangeAsync(courts);
+
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task AddCourtAsync(CourtCreateFormModel model)
+        {
+            var court = new Court()
+            {
+                Name = model.Name,
+                ClubId = model.ClubId,
+                IsLighted = model.IsLighted,
+                IsIndoor = model.IsIndoor,
+                PricePerHour = model.PricePerHour,
+                Surface = model.Surface,
+                IsActive = true
+            };
+
+            var club = await repository
+                .GetAll<Club>()
+                .FirstAsync(c=>c.Id==model.ClubId);
+
+            club.NumberOfCourts += 1;
+
+            await repository.AddAsync(court);
 
             await repository.SaveChangesAsync();
         }

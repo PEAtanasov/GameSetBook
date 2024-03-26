@@ -6,9 +6,11 @@ namespace GameSetBook.Core.Contracts
     {
         Task CreateInitialAsync(CourtCreateFormModel[] model);
 
-        Task<CourtEditFormModel> GetCourtEditFormModelAsync(int courtId);
+        Task AddCourtAsync(CourtCreateFormModel model);
 
         Task Edit(CourtEditFormModel model);
+
+        Task<CourtEditFormModel> GetCourtEditFormModelAsync(int courtId);
 
         Task<IEnumerable<CourtScheduleViewModel>> GetAllCourtsScheduleAsync(int clubId, DateTime date);
 

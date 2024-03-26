@@ -65,7 +65,7 @@ namespace GameSetBook.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Surfaces = ViewBag.Surfaces = GetSurfaces();
+                ViewBag.Surfaces = GetSurfaces();
 
                 return View(model);
             }
@@ -181,6 +181,46 @@ namespace GameSetBook.Web.Controllers
             ViewData["ClubInfo"] = await clubService.GetClubIfnoAsync(clubId);
 
             return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = ClubOwnerRole)]
+        public async Task<IActionResult> Add()
+        {
+            var model = new CourtCreateFormModel()
+            {
+                ClubId = await clubService.GetClubIdByOwnerId(User.Id())
+            };
+
+            ViewBag.Surfaces = GetSurfaces();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = ClubOwnerRole)]
+        public async Task<IActionResult> Add(CourtCreateFormModel model)
+        {
+            if (!await clubService.ClubExsitAsync(model.ClubId))
+            {
+                return BadRequest();
+            }
+
+            if(!await clubService.IsTheOwnerOfTheClub(model.ClubId, User.Id()))
+            { 
+                return Unauthorized(); 
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Surfaces = GetSurfaces();
+
+                return View(model);
+            }
+
+            await courtService.AddCourtAsync(model);
+
+            return RedirectToAction("MyClub","Club", new {id=model.ClubId});
         }
 
         private static List<SelectListItem> GetSurfaces()
