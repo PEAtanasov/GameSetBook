@@ -73,8 +73,8 @@
                         <td>@(court.IsActive ? "Active" : "Not Active")</td>
                         <td>
                             <div class="d-flex flex-row justify-content-around">
-                                <a asp-controller="Court" asp-action="Edit" asp-route-id="@court.Id" class="btn btn-primary">Edit</a>
-                                <a asp-controller="Court" asp-action="ChangeStatus" asp-route-id="@court.Id" class="@(court.IsActive ? "btn btn-danger" : "btn btn-success")">@(court.IsActive ? "Deactivate" : "Activate")</a>
+                                <a asp-controller="Court" asp-action="Edit" asp-route-id="@court.Id" class="btn btn-primary w-100 fw-bold">Edit</a>
+                                <a asp-controller="Court" asp-action="ChangeStatus" asp-route-id="@court.Id" class="@(court.IsActive ? "btn btn-danger w-100 fw-bold" : "btn btn-success w-100 fw-bold")">@(court.IsActive ? "Deactivate" : "Activate")</a>
                             </div>
                         </td>
                     </tr>
