@@ -42,5 +42,7 @@ namespace GameSetBook.Core.Contracts
         Task<ClubFormModel> GetEditFormModelAsync(int clubId);
 
         Task EditAsync(ClubFormModel model);
+
+        Task<bool> ClubHasCourts(int clubId);
     }
 }

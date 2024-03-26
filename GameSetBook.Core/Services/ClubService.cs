@@ -23,8 +23,6 @@ namespace GameSetBook.Core.Services
         {
             var model = await repository.GetAllReadOnly<Club>()
                 .Where(c => c.IsActive && c.IsAproovedByAdmin)
-                //.Include(c => c.City)
-                //.Include(c => c.Courts)
                 .Include(c => c.ClubReviews)
                 .Select(c => new ClubServiceViewModel()
                 {
@@ -323,6 +321,13 @@ namespace GameSetBook.Core.Services
             var club= await repository.GetAllReadOnly<Club>().FirstAsync(c=>c.ClubOwnerId==ownerId);
 
             return club.Id;
+        }
+
+        public async Task<bool> ClubHasCourts(int clubId)
+        {
+            return await repository.GetAllReadOnly<Court>()
+                .Where(c => c.ClubId == clubId)
+                .AnyAsync();
         }
     }
 }
