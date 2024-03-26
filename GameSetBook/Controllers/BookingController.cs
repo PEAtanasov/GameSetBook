@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using GameSetBook.Infrastructure.Models.Identity;
 
+using static GameSetBook.Common.UserConstants;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
 namespace GameSetBook.Web.Controllers
 {
     public class BookingController : BaseController
@@ -95,6 +98,120 @@ namespace GameSetBook.Web.Controllers
             var clubId = await bookingService.AddBookingAsync(model);
 
             return RedirectToAction("Schedule", "Court", new { id = clubId, date = model.BookingDate});
+        }
+
+        [HttpGet]
+        [Authorize(Roles = ClubOwnerRole)]
+        public async Task<IActionResult> OwnerBook([FromQuery] BookingScheduleViewModel queryModel)
+        {
+
+            int courtId = queryModel.CourtId;
+
+            if (!await courtService.CourtExist(courtId))
+            {
+                return BadRequest();
+            }
+
+            if (!await courtService.IsCourtInOwnerClub(courtId, User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            int hour = queryModel.Hour;
+            var bookingDate = queryModel.BookingDate;
+
+            if (await bookingService.BookingExistAsync(queryModel.BookingDate, queryModel.Hour, queryModel.CourtId))
+            {
+                return BadRequest();
+            }
+
+            var model = new BookingCreateFormModel()
+            {
+                Hour = hour,
+                CourtId = courtId,
+                BookingDate = bookingDate,
+                Price = await courtService.GetPrice(courtId),
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = ClubOwnerRole)]
+        public async Task<IActionResult> OwnerBook(BookingCreateFormModel model)
+        {
+            int courtId = model.CourtId;
+
+            if (!await courtService.CourtExist(courtId))
+            {
+                return BadRequest();
+            }
+
+            if (await bookingService.BookingExistAsync(model.BookingDate, model.Hour, model.CourtId))
+            {
+                return BadRequest();
+            }
+
+            if (!await courtService.IsCourtInOwnerClub(courtId, User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            model.ClientId = User.Id();
+            model.IsBookedByOwnerOrAdmin= true;
+
+            var clubId = await bookingService.AddBookingAsync(model);
+
+            return RedirectToAction("OwnCourtsSchedule", "Court", new { id = clubId, date = model.BookingDate });
+        }
+
+        [HttpGet]
+        [Authorize(Roles = ClubOwnerRole)]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (!await bookingService.BookingExistById(id))
+            {
+                return BadRequest();
+            }
+
+            if (!await bookingService.IsOwnerAllowedToEdit(id,User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            var model = await bookingService.GetBookingToEditAsync(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = ClubOwnerRole)]
+        public async Task<IActionResult> Edit(BookingEditFormModel model)
+        {
+            if (!await bookingService.BookingExistById(model.Id))
+            {
+                return BadRequest();
+            }
+
+            if (!await bookingService.IsOwnerAllowedToEdit(model.Id, User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var clubId = await clubService.GetClubIdByOwnerId(User.Id());
+
+            await bookingService.EditAsync(model);
+
+            return RedirectToAction("OwnCourtsSchedule", "Court", new {id=clubId, date=model.BookingDate});
         }
 
         public async Task<IActionResult> MyBookings()

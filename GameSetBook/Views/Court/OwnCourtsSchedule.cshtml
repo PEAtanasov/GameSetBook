@@ -21,7 +21,7 @@
         <!-- Right part: Display court schedule -->
         <div class="col-md-9">
 
-            <form asp-action="MySchedule" method="get">
+            <form asp-action="OwnCourtsSchedule" method="get">
                 <div class="row">
                     <div class="form-actions no-color col-auto">
                         <div class="row align-items-center">
@@ -35,14 +35,14 @@
                                 <!-- Arrow to move one day backwards -->
                                 @if (cuurentDate != null)
                                 {
-                                    <a asp-controller="Court" asp-action="MySchedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(-1)" class="btn btn-primary"> <i class="fa fa-arrow-circle-o-left"></i> Previous Day</a>
+                                    <a asp-controller="Court" asp-action="OwnCourtsSchedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(-1)" class="btn btn-primary"> <i class="fa fa-arrow-circle-o-left"></i> Previous Day</a>
                                 }
                             </div>
                             <div class="col-auto">
                                 <!-- Arrow to move one day forwards -->
                                 @if (cuurentDate != null)
                                 {
-                                    <a asp-controller="Court" asp-action="MySchedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(1)" class="btn btn-primary">Next Day <i class="fa fa-arrow-circle-o-right"></i></a>
+                                    <a asp-controller="Court" asp-action="OwnCourtsSchedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(1)" class="btn btn-primary">Next Day <i class="fa fa-arrow-circle-o-right"></i></a>
                                 }
                             </div>
                         </div>
@@ -110,7 +110,7 @@
                                             <td>
                                                 @if (booking != null && booking.IsAvailable)
                                                 {
-                                                    <a asp-controller="Booking" asp-action="Book" asp-route-CourtId="@court.Id" asp-route-Hour="@booking.Hour" asp-route-BookingDate="@booking.BookingDate" class="btn btn-sm btn-success">Book/<small>@(court.Price)BGN</small></a>
+                                                    <a asp-controller="Booking" asp-action="OwnerBook" asp-route-CourtId="@court.Id" asp-route-Hour="@booking.Hour" asp-route-BookingDate="@booking.BookingDate" class="btn btn-sm btn-success">Book/<small>@(court.Price)BGN</small></a>
                                                 }
                                                 else
                                                 {

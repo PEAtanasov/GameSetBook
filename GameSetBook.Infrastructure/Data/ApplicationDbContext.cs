@@ -21,10 +21,8 @@ namespace GameSetBook.Infrastructure.Data
         public DbSet<ClubReview> ClubReviews { get; set; } = null!;
         public DbSet<Country> Countries { get; set; } = null!;
         public DbSet<Court> Courts { get; set; } = null!;
-        //public DbSet<GameSetMatchUpPlayerProfile> GameSetMatchUpPlayerProfiles { get; set; } = null!;
         //public DbSet<Message> Messages { get; set; } = null!;
         //public DbSet<Tournament>  Tournaments { get; set; } = null!;
-        //public DbSet<TournamentGSMUPlayerProfile> TournamentsGSMUPlayerProfiles { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -37,9 +35,7 @@ namespace GameSetBook.Infrastructure.Data
             builder.ApplyConfiguration(new CourtConfiguration());
             builder.ApplyConfiguration(new BookingConfiguration());
             builder.ApplyConfiguration(new ClubReviewConfiguration());
-            //builder.ApplyConfiguration(new GameSetMatchUpPlayerProfileConfiguration());
             //builder.ApplyConfiguration(new TournamentConfiguration());
-            //builder.ApplyConfiguration(new TournamentGSMUPlayerProfileConfiguration());
             //builder.ApplyConfiguration(new MessageConfiguration());
 
             base.OnModelCreating(builder);
