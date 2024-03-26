@@ -87,6 +87,17 @@ namespace GameSetBook.Core.Services
             await repository.SaveChangesAsync();
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            var booking = await repository.GetAll<Booking>()
+                .FirstAsync(b => b.Id == id);
+
+            booking.IsDeleted = true;
+            booking.DeletedOn = DateTime.Now;
+
+            await repository.SaveChangesAsync();
+        }
+
         public async Task<bool> BookingExistAsync(DateTime date, int hour, int courtId)
         {
             return await repository.GetAllReadOnly<Booking>()

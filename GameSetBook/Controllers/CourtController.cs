@@ -87,7 +87,7 @@ namespace GameSetBook.Web.Controllers
             {
                 return Unauthorized();
             }
-  
+
             var model = await courtService.GetCourtEditFormModelAsync(id);
 
             ViewBag.Surfaces = GetSurfaces();

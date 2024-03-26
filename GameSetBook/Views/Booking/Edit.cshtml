@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Edit Booking";
+    int clubId = (ViewData["ClubId"] as int?) ?? 0;
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
@@ -11,7 +12,6 @@
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
         <form asp-action="Edit" method="post">
-            <input type="hidden" asp-for="CourtId" />
             <input type="hidden" asp-for="BookingDate" />
             <div class="mb-3">
                 <label asp-for="ClientName" class="form-label-add-edit"></label>
@@ -25,8 +25,15 @@
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
             <div class="mb-3 text-center">
-                <input class="btn btn-primary" type="submit" value="Ok" />
+                <input class="btn btn-primary" type="submit" value="Edit" />
+                <a asp-controller="Court" asp-action="OwnCourtsSchedule" asp-route-id="@clubId" asp-route-date="@Model.BookingDate" class="btn btn-secondary">Back</a>
             </div>
+        </form>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CourtId" />
+            <input type="hidden" asp-for="BookingDate" />
+            <button type="submit" class="btn btn-danger">Cancel Booking</button>
         </form>
     </div>
 </div>

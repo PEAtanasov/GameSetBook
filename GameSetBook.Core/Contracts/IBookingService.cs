@@ -11,6 +11,8 @@ namespace GameSetBook.Core.Contracts
 
         Task EditAsync(BookingEditFormModel model);
 
+        Task DeleteAsync(int id);
+
         Task<bool> AreDateAndHourValidAsync(DateTime date, int hour, int courtId);
 
         Task<bool> BookingExistAsync(DateTime date, int hour, int courtId);

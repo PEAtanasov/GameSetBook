@@ -97,7 +97,7 @@ namespace GameSetBook.Web.Controllers
 
             var clubId = await bookingService.AddBookingAsync(model);
 
-            return RedirectToAction("Schedule", "Court", new { id = clubId, date = model.BookingDate});
+            return RedirectToAction("Schedule", "Court", new { id = clubId, date = model.BookingDate });
         }
 
         [HttpGet]
@@ -163,7 +163,7 @@ namespace GameSetBook.Web.Controllers
             }
 
             model.ClientId = User.Id();
-            model.IsBookedByOwnerOrAdmin= true;
+            model.IsBookedByOwnerOrAdmin = true;
 
             var clubId = await bookingService.AddBookingAsync(model);
 
@@ -179,10 +179,14 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if (!await bookingService.IsOwnerAllowedToEdit(id,User.Id()))
+            if (!await bookingService.IsOwnerAllowedToEdit(id, User.Id()))
             {
                 return Unauthorized();
             }
+
+            var clubId = await clubService.GetClubIdByOwnerId(User.Id());
+
+            ViewData["ClubId"] = clubId;
 
             var model = await bookingService.GetBookingToEditAsync(id);
 
@@ -211,7 +215,27 @@ namespace GameSetBook.Web.Controllers
 
             await bookingService.EditAsync(model);
 
-            return RedirectToAction("OwnCourtsSchedule", "Court", new {id=clubId, date=model.BookingDate});
+            return RedirectToAction("OwnCourtsSchedule", "Court", new { id = clubId, date = model.BookingDate });
+        }
+
+        public async Task<IActionResult> Delete(BookingEditFormModel model)
+        {
+            if (!await bookingService.BookingExistById(model.Id))
+            {
+                return BadRequest();
+            }
+
+            if (!await bookingService.IsOwnerAllowedToEdit(model.Id, User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            var clubId = await clubService.GetClubIdByOwnerId(User.Id());
+
+            await bookingService.DeleteAsync(model.Id);
+
+            return RedirectToAction("OwnCourtsSchedule", "Court", new { id = clubId, date = model.BookingDate });
+
         }
 
         public async Task<IActionResult> MyBookings()
