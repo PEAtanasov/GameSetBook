@@ -97,7 +97,7 @@ namespace GameSetBook.Web.Controllers
 
             var clubId = await bookingService.AddBookingAsync(model);
 
-            return RedirectToAction("Schedule", "Court", new { id = clubId, date = model.BookingDate });
+            return RedirectToAction("Schedule", "Club", new { id = clubId, date = model.BookingDate });
         }
 
         [HttpGet]
@@ -167,7 +167,7 @@ namespace GameSetBook.Web.Controllers
 
             var clubId = await bookingService.AddBookingAsync(model);
 
-            return RedirectToAction("OwnCourtsSchedule", "Court", new { id = clubId, date = model.BookingDate });
+            return RedirectToAction("MyClubSchedule", "Club", new { id = clubId, date = model.BookingDate });
         }
 
         [HttpGet]
@@ -215,7 +215,7 @@ namespace GameSetBook.Web.Controllers
 
             await bookingService.EditAsync(model);
 
-            return RedirectToAction("OwnCourtsSchedule", "Court", new { id = clubId, date = model.BookingDate });
+            return RedirectToAction("MyClubSchedule", "Club", new { id = clubId, date = model.BookingDate });
         }
 
         public async Task<IActionResult> Delete(BookingEditFormModel model)
@@ -234,7 +234,7 @@ namespace GameSetBook.Web.Controllers
 
             await bookingService.DeleteAsync(model.Id);
 
-            return RedirectToAction("OwnCourtsSchedule", "Court", new { id = clubId, date = model.BookingDate });
+            return RedirectToAction("MyClubSchedule", "Club", new { id = clubId, date = model.BookingDate });
 
         }
 

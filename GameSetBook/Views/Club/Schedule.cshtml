@@ -6,11 +6,12 @@
     int WorkingTimeStart = Model.First().Bookings.Min(b => b.Hour);
     int WorkingTimeEnd = Model.First().Bookings.Max(b => b.Hour);
     int? clubId = ViewData["ClubId"] as int?;
-    ViewBag.Title = "My Courts Schedule";
+    ViewBag.Title = "Club Schedule";   
 }
-
-<h2 class="text-center">@ViewBag.Title for @cuurentDate.Value.ToShortDateString() @cuurentDate.GetValueOrDefault().DayOfWeek</h2>
-<hr />
+@if (cuurentDate!=null)
+{
+    <h2 class="text-center">@ViewBag.Title for @cuurentDate.Value.ToShortDateString() @cuurentDate.GetValueOrDefault().DayOfWeek</h2>
+}
 
 <div class="container">
     <div class="row">
@@ -20,13 +21,13 @@
         </div>
         <!-- Right part: Display court schedule -->
         <div class="col-md-9">
-
-            <form asp-action="OwnCourtsSchedule" method="get">
+           
+            <form asp-action="Schedule" method="get">
                 <div class="row">
                     <div class="form-actions no-color col-auto">
                         <div class="row align-items-center">
                             <div class="col">
-                                <input class="form-control" type="date" id="date" name="date"/>
+                                <input class="form-control" type="date" id="date" name="date" />
                             </div>
                             <div class="col">
                                 <input type="submit" value="Ok" class="btn btn-primary" />
@@ -35,21 +36,21 @@
                                 <!-- Arrow to move one day backwards -->
                                 @if (cuurentDate != null)
                                 {
-                                    <a asp-controller="Court" asp-action="OwnCourtsSchedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(-1)" class="btn btn-primary"> <i class="fa fa-arrow-circle-o-left"></i> Previous Day</a>
+                                    <a asp-controller="Club" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(-1)" class="btn btn-primary @(cuurentDate.Value.AddDays(-1)< DateTime.Now.Date ? "disabled" : string.Empty)">	<i class="fa fa-arrow-circle-o-left"></i> Previous Day</a>
                                 }
                             </div>
                             <div class="col-auto">
                                 <!-- Arrow to move one day forwards -->
                                 @if (cuurentDate != null)
                                 {
-                                    <a asp-controller="Court" asp-action="OwnCourtsSchedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(1)" class="btn btn-primary">Next Day <i class="fa fa-arrow-circle-o-right"></i></a>
+                                    <a asp-controller="Club" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(1)" class="btn btn-primary">Next Day <i class="fa fa-arrow-circle-o-right"></i></a>
                                 }
-                            </div>
+                            </div>                           
                         </div>
                     </div>
                 </div>
             </form>
-
+          
             <div class=" row mt-4">
                 <div class="col-sm-10">
                     <div class="text-center">
@@ -86,13 +87,13 @@
                                 {
                                     <tr>
                                         <th>
-                                            @if (i < 10)
+                                            @if (i<10)
                                             {
-                                                <span>0@(i):00</span>
+                                                <span><i class="fa fa-clock-o"></i>0@(i):00</span>
                                             }
                                             else
                                             {
-                                                <span>@(i):00</span>
+                                                <span><i class="fa fa-clock-o"></i>@(i):00</span>
                                             }
                                         </th>
                                         @foreach (var court in Model)
@@ -110,14 +111,18 @@
                                             <td>
                                                 @if (booking != null && booking.IsAvailable)
                                                 {
-                                                    <a asp-controller="Booking" asp-action="OwnerBook" asp-route-CourtId="@court.Id" asp-route-Hour="@booking.Hour" asp-route-BookingDate="@booking.BookingDate" class="btn btn-sm btn-success">Book/<small>@(court.Price)BGN</small></a>
+                                                    if (booking.BookingDate.Date < DateTime.Now.Date || (booking.BookingDate.Date == DateTime.Now.Date && booking.Hour <= DateTime.Now.Hour))
+                                                    {
+                                                        <button class="btn btn-sm btn-danger disabled">Unavailable</button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a asp-controller="Booking" asp-action="Book" asp-route-CourtId="@court.Id" asp-route-Hour="@booking.Hour" asp-route-BookingDate="@booking.BookingDate" class="btn btn-sm btn-success">Book/<small>@(court.Price)BGN</small></a>
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    if (booking!=null)
-                                                    {
-                                                        <a asp-controller="Booking" asp-action="Edit" asp-route-id="@booking.Id" class="btn btn-sm btn-danger">Booked/<small>@(court.Price)BGN</small></a>
-                                                    }
+                                                    <button class="btn btn-sm btn-danger disabled">Booked</button>
                                                 }
                                             </td>
                                         }

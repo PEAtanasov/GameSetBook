@@ -127,63 +127,6 @@ namespace GameSetBook.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Schedule(int id, DateTime? date)
-        {
-            int clubId = id;
-
-            ViewData["ClubId"] = clubId;
-
-            if (!await clubService.ClubExsitAsync(clubId))
-            {
-                return BadRequest();
-            }
-            
-            DateTime currentDate = date ?? DateTime.Now;
-
-            if (currentDate.Date< DateTime.Now.Date)
-            {
-                currentDate = DateTime.Now;
-            }
-
-            var model = await courtService.GetAllCourtsScheduleAsync(clubId, currentDate);
-
-            ViewData["CurrentDate"] = currentDate;
-
-            ViewData["ClubInfo"] = await clubService.GetClubIfnoAsync(clubId);
-
-            return View(model);
-        }
-
-        [HttpGet]
-        [Authorize(Roles = ClubOwnerRole)]
-        public async Task<IActionResult> OwnCourtsSchedule(int id, DateTime? date)
-        {
-            int clubId = id;
-
-            ViewData["ClubId"] = clubId;
-
-            if (!await clubService.ClubExsitAsync(clubId))
-            {
-                return BadRequest();
-            }
-
-            if (!await clubService.IsTheOwnerOfTheClubAsync(clubId, User.Id()))
-            {
-                return Unauthorized();
-            }
-
-            DateTime currentDate = date ?? DateTime.Now;
-
-            var model = await courtService.GetAllCourtsScheduleAsync(clubId, currentDate);
-
-            ViewData["CurrentDate"] = currentDate;
-
-            ViewData["ClubInfo"] = await clubService.GetClubIfnoAsync(clubId);
-
-            return View(model);
-        }
-
-        [HttpGet]
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Add()
         {

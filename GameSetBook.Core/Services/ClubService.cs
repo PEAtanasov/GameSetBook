@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using GameSetBook.Core.Contracts;
+using GameSetBook.Core.Enums;
 using GameSetBook.Core.Models.City;
 using GameSetBook.Core.Models.Club;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
-using static GameSetBook.Common.ErrorMessageConstants;
-using GameSetBook.Core.Models.Court;
-using GameSetBook.Core.Enums;
 
 namespace GameSetBook.Core.Services
 {
