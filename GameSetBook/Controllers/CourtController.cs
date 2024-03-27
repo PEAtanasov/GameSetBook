@@ -167,7 +167,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if (!await clubService.IsTheOwnerOfTheClub(clubId, User.Id()))
+            if (!await clubService.IsTheOwnerOfTheClubAsync(clubId, User.Id()))
             {
                 return Unauthorized();
             }
@@ -189,7 +189,7 @@ namespace GameSetBook.Web.Controllers
         {
             var model = new CourtCreateFormModel()
             {
-                ClubId = await clubService.GetClubIdByOwnerId(User.Id())
+                ClubId = await clubService.GetClubIdByOwnerIdAsync(User.Id())
             };
 
             ViewBag.Surfaces = GetSurfaces();
@@ -206,7 +206,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if(!await clubService.IsTheOwnerOfTheClub(model.ClubId, User.Id()))
+            if(!await clubService.IsTheOwnerOfTheClubAsync(model.ClubId, User.Id()))
             { 
                 return Unauthorized(); 
             }

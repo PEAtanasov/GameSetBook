@@ -72,6 +72,17 @@ namespace GameSetBook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            if (User.IsInRole(ClubOwnerRole)==false && await clubService.ClubWithOwnerIdExistAsync(User.Id())==true)
+            {
+                var clubId = await clubService.GetClubIdByOwnerIdAsync(User.Id());
+                
+                if (!await clubService.ClubHasCourts(clubId))
+                {
+                    var numberOfCourts = await clubService.NumberOfCourtsAsync(clubId);
+                    return RedirectToAction("Create", "Court", new { clubId, numberOfCourts });
+                }
+            }
+
             if (User.IsInRole(ClubOwnerRole) || await clubService.ClubWithOwnerIdExistAsync(User.Id()))
             {
                 TempData["Error"] = UsersAreAllowedToRegisterOnlyOneClub;
@@ -126,6 +137,11 @@ namespace GameSetBook.Web.Controllers
             model.ClubOwnerId = User.Id();
             await clubService.CreateAsync(model);
 
+            if (!await clubService.ClubExsitByNameAsync(model.Name))
+            {
+                return BadRequest();
+            }
+
             var id = await clubService.GetClubIdByNameAsync(model.Name);
 
             return RedirectToAction("Create", "Court", new { clubId = id, numberOfCourts = model.NumberOfCourts });
@@ -139,7 +155,7 @@ namespace GameSetBook.Web.Controllers
             {
                 return BadRequest();
             }
-            if (!await clubService.IsTheOwnerOfTheClub(id, User.Id()))
+            if (!await clubService.IsTheOwnerOfTheClubAsync(id, User.Id()))
             {
                 return Unauthorized();
             }
@@ -161,7 +177,7 @@ namespace GameSetBook.Web.Controllers
             {
                 return BadRequest();
             }
-            if (!await clubService.IsTheOwnerOfTheClub(model.Id, User.Id()))
+            if (!await clubService.IsTheOwnerOfTheClubAsync(model.Id, User.Id()))
             {
                 return Unauthorized();
             }
@@ -197,7 +213,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if (!await clubService.IsTheOwnerOfTheClub(id, User.Id()))
+            if (!await clubService.IsTheOwnerOfTheClubAsync(id, User.Id()))
             {
                 return Unauthorized();
             }

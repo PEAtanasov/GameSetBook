@@ -40,7 +40,7 @@ public class ClubOwnerAuthorizationAttribute : AuthorizeAttribute, IAsyncAuthori
             return;
         }
 
-        if (!await clubService.IsTheOwnerOfTheClub(parsedClubId, userId))
+        if (!await clubService.IsTheOwnerOfTheClubAsync(parsedClubId, userId))
         {
             context.Result = new ForbidResult();
             return;

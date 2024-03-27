@@ -35,14 +35,16 @@ namespace GameSetBook.Core.Contracts
 
         Task<bool> ClubWithOwnerIdExistAsync(string ownerId);
 
-        Task<bool> IsTheOwnerOfTheClub(int clubId, string userId);
+        Task<bool> IsTheOwnerOfTheClubAsync(int clubId, string userId);
 
-        Task<int> GetClubIdByOwnerId(string ownerId);
+        Task<int> GetClubIdByOwnerIdAsync(string ownerId);
 
         Task<ClubFormModel> GetEditFormModelAsync(int clubId);
 
         Task EditAsync(ClubFormModel model);
 
         Task<bool> ClubHasCourts(int clubId);
+
+        Task<int> NumberOfCourtsAsync(int clubId);
     }
 }

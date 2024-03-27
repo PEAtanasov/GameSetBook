@@ -201,11 +201,8 @@ namespace GameSetBook.Core.Services
 
         public async Task<int> GetClubIdByNameAsync(string name)
         {
-            var club = await repository.GetAllReadOnly<Club>().FirstOrDefaultAsync(c => c.Name == name);
-            if (club == null)
-            {
-                throw new ArgumentException();
-            }
+            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Name == name);
+
             return club.Id;
         }
 
@@ -307,14 +304,14 @@ namespace GameSetBook.Core.Services
             return await repository.GetAllReadOnly<Club>().AnyAsync(c => c.ClubOwnerId == ownerId);
         }
 
-        public async Task<bool> IsTheOwnerOfTheClub(int clubId, string UserId)
+        public async Task<bool> IsTheOwnerOfTheClubAsync(int clubId, string UserId)
         {
             var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Id == clubId);
 
             return club.ClubOwnerId == UserId;
         }
 
-        public async Task<int> GetClubIdByOwnerId(string ownerId)
+        public async Task<int> GetClubIdByOwnerIdAsync(string ownerId)
         {
             var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.ClubOwnerId == ownerId);
 
@@ -326,6 +323,14 @@ namespace GameSetBook.Core.Services
             return await repository.GetAllReadOnly<Court>()
                 .Where(c => c.ClubId == clubId)
                 .AnyAsync();
+        }
+
+        public async Task<int> NumberOfCourtsAsync(int clubId)
+        {
+            var club = await repository.GetAllReadOnly<Club>()
+                .FirstAsync(c => c.Id == clubId);
+
+            return club.NumberOfCourts;
         }
     }
 }

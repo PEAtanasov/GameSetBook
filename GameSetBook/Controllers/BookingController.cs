@@ -184,7 +184,7 @@ namespace GameSetBook.Web.Controllers
                 return Unauthorized();
             }
 
-            var clubId = await clubService.GetClubIdByOwnerId(User.Id());
+            var clubId = await clubService.GetClubIdByOwnerIdAsync(User.Id());
 
             ViewData["ClubId"] = clubId;
 
@@ -211,7 +211,7 @@ namespace GameSetBook.Web.Controllers
             {
                 return View(model);
             }
-            var clubId = await clubService.GetClubIdByOwnerId(User.Id());
+            var clubId = await clubService.GetClubIdByOwnerIdAsync(User.Id());
 
             await bookingService.EditAsync(model);
 
@@ -230,7 +230,7 @@ namespace GameSetBook.Web.Controllers
                 return Unauthorized();
             }
 
-            var clubId = await clubService.GetClubIdByOwnerId(User.Id());
+            var clubId = await clubService.GetClubIdByOwnerIdAsync(User.Id());
 
             await bookingService.DeleteAsync(model.Id);
 
