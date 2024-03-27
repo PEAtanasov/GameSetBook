@@ -9,7 +9,7 @@ namespace GameSetBook.Core.Models.Court
     public class CourtDetailsViewModel
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public string Surface { get; set; } = string.Empty;
         public bool IsLighted { get; set; }

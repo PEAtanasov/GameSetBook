@@ -238,9 +238,9 @@ namespace GameSetBook.Web.Controllers
 
         }
 
-        public async Task<IActionResult> MyBookings()
-        {
-            return View();
-        }
+        //public async Task<IActionResult> MyBookings()
+        //{
+        //    return View();
+        //}
     }
 }

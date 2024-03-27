@@ -6,9 +6,9 @@
     int WorkingTimeStart = Model.First().Bookings.Min(b => b.Hour);
     int WorkingTimeEnd = Model.First().Bookings.Max(b => b.Hour);
     int? clubId = ViewData["ClubId"] as int?;
-    ViewBag.Title = "Club Schedule";   
+    ViewBag.Title = "Club Schedule";
 }
-@if (cuurentDate!=null)
+@if (cuurentDate != null)
 {
     <h2 class="text-center">@ViewBag.Title for @cuurentDate.Value.ToShortDateString() @cuurentDate.GetValueOrDefault().DayOfWeek</h2>
 }
@@ -21,7 +21,7 @@
         </div>
         <!-- Right part: Display court schedule -->
         <div class="col-md-9">
-           
+
             <form asp-action="Schedule" method="get">
                 <div class="row">
                     <div class="form-actions no-color col-auto">
@@ -45,19 +45,25 @@
                                 {
                                     <a asp-controller="Club" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(1)" class="btn btn-primary">Next Day <i class="fa fa-arrow-circle-o-right"></i></a>
                                 }
-                            </div>                           
+                            </div>
                         </div>
                     </div>
                 </div>
             </form>
-          
+
             <div class=" row mt-4">
                 <div class="col-sm-10">
                     <div class="text-center">
                         <table class="table table table-hover table-bordered table-responsive-md">
                             <thead class="table-dark">
                                 <tr>
-                                    <th><i class="fa fa-calendar" style="font-size:24px"></i><p>@(cuurentDate.Value.ToShortDateString() ?? string.Empty)</p></th>
+                                    <th>
+                                        <i class="fa fa-calendar" style="font-size:24px"></i>
+                                        @if (cuurentDate != null)
+                                        {
+                                            <p>@cuurentDate.Value.ToShortDateString()</p>
+                                        }
+                                    </th>
                                     @foreach (var court in Model)
                                     {
                                         <th>
@@ -87,7 +93,7 @@
                                 {
                                     <tr>
                                         <th>
-                                            @if (i<10)
+                                            @if (i < 10)
                                             {
                                                 <span><i class="fa fa-clock-o"></i>0@(i):00</span>
                                             }
