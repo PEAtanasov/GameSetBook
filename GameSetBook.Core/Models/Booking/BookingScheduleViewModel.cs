@@ -7,5 +7,6 @@
         public int Hour { get; set; }
         public int CourtId { get; set; }
         public DateTime BookingDate { get; set; }
+
     }
 }

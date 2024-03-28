@@ -4,6 +4,8 @@ using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Booking;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
+using GameSetBook.Core.Enums;
+using GameSetBook.Core.Models.Club;
 
 namespace GameSetBook.Core.Services
 {
@@ -116,6 +118,75 @@ namespace GameSetBook.Core.Services
             return await repository.GetAllReadOnly<Booking>()
                 .Where(c => c.Court.Club.ClubOwnerId == ownerId)
                 .AnyAsync(b => b.Id == id);
+        }
+
+        public async Task<AllBookingsSortingModel> GetBookingSortingServiceModelAsync(AllBookingsSortingModel queryModel, string userId)
+        {
+            var bookingToSort = repository.GetAllReadOnly<Booking>()
+                .Where(b => b.ClientId == userId && b.IsBookedByOwnerOrAdmin == false);
+
+            if (!string.IsNullOrEmpty(queryModel.SearchTerm))
+            {
+                bookingToSort = bookingToSort.Where(c => c.Court.Club.Name.ToLower().Contains(queryModel.SearchTerm.ToLower())
+                                                        || c.Court.Name.ToLower().Contains(queryModel.SearchTerm.ToLower()));
+            }
+
+            if (queryModel.BookingDateFrom != null)
+            {
+                bookingToSort = bookingToSort.Where(b => b.BookingDate.Date >= queryModel.BookingDateFrom.Value.Date);
+            }
+
+            if (queryModel.BookingDateTo != null)
+            {
+                bookingToSort = bookingToSort.Where(b => b.BookingDate.Date <= queryModel.BookingDateTo.Value.Date);
+            }
+
+            bookingToSort = queryModel.BookingSorting switch
+            {
+                BookingSorting.None => bookingToSort.OrderByDescending(b => b.BookedOn).ThenByDescending(b => b.Id),
+                BookingSorting.PriceAscending => bookingToSort.OrderBy(b => b.Price).ThenBy(b=>b.Id),
+                BookingSorting.PriceDescending => bookingToSort.OrderByDescending(b => b.Price).ThenByDescending(b => b.Id),
+                BookingSorting.BookingDateAscending => bookingToSort.OrderBy(c => c.BookingDate).ThenBy(b => b.Id),
+                BookingSorting.BookingDateDescending => bookingToSort.OrderByDescending(c => c.BookingDate).ThenByDescending(b => b.Id),
+                BookingSorting.HourAscending => bookingToSort.OrderBy(b => b.Hour).ThenBy(b => b.Id),
+                BookingSorting.HourDescending => bookingToSort.OrderByDescending(b => b.Hour).ThenByDescending(b => b.Id),
+                _ => bookingToSort.OrderByDescending(c => c.Id)
+            };
+
+            int totalBookings = await bookingToSort.CountAsync();
+            var maxPage = Math.Ceiling((double)totalBookings / queryModel.BookingsPerPage);
+
+            int currentPage = queryModel.CurrentPage;
+
+            if (currentPage > maxPage)
+            {
+                currentPage = (int)maxPage;
+            }
+            if (currentPage <= 0)
+            {
+                currentPage = 1;
+            }
+
+            var bookings = await bookingToSort
+                .Skip((currentPage - 1) * queryModel.BookingsPerPage)
+                .Take(queryModel.BookingsPerPage)
+                .Select(c => new BookingInfoServiceViewModel()
+                {
+                    Id = c.Id,
+                    ClubName = c.Court.Club.Name,
+                    CourtName = c.Court.Name,
+                    Date = c.BookingDate,
+                    Hour = c.Hour,
+                    Price = c.Price,
+                    BookdedOn = c.BookedOn
+                })
+                .ToListAsync();
+
+            queryModel.Bookings = bookings;
+            queryModel.TotalBookingCount = totalBookings;
+
+            return queryModel;
+
         }
     }
 }
