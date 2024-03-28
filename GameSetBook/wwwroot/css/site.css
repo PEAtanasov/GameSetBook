@@ -26,3 +26,17 @@ body {
     text-align: center;
     line-height: 60px; /* Center content vertically */
 }
+
+.left-column {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.club-name {
+    max-width: 200px; /* Set maximum width for club name */
+    overflow: hidden; /* Hide overflowing text */
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-overflow: ellipsis; /* Add ellipsis (...) for overflow */
+}
+

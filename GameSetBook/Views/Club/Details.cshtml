@@ -8,9 +8,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            <!-- Left part: Render _ClubInfoPartial.cshtml -->
-            @* @await Html.PartialAsync("_ClubInfoPartial", Model.ClubInfo) *@
-            <partial name="_ClubInfoPartial" model="Model.Info" />
+            <div class="left-column">
+                <!-- Left part: Render _ClubInfoPartial.cshtml -->
+                <partial name="_ClubInfoPartial" model="Model.Info" />
+            </div>
         </div>
         <div class="col-md-9">
             <!-- Right part: Display other club details -->

@@ -42,7 +42,7 @@ namespace GameSetBook.Web.Controllers
 
             if (statusCode == 401)
             {
-                return View("Error400");
+                return View("Error401");
             }
 
             return View();

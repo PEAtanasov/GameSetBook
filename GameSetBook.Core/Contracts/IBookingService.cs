@@ -20,5 +20,7 @@ namespace GameSetBook.Core.Contracts
         Task<bool> BookingExistById(int id);
 
         Task<bool> IsOwnerAllowedToEdit(int id, string ownerId);
+
+        Task<AllBookingsSortingModel> GetBookingSortingServiceModelAsync(AllBookingsSortingModel queryModel, string userId);
     }
 }

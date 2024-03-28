@@ -1,4 +1,5 @@
-﻿@model AllClubsSortingModel
+﻿﻿
+@model AllClubsSortingModel
 @{
     ViewBag.Title = "Explore All Clubs";
 }
@@ -117,7 +118,7 @@
 
 <div class="container col-sm-10">
     <div class="text-center row">
-        <table class="table table-striped">
+        <table class="table table-striped table-responsive-md">
             <thead class=" table-dark">
                 <tr>
                     <th scope="col"></th>
@@ -135,7 +136,7 @@
                 {
                     <tr>
                         <td><img src="~/@club.LogoUrl" style="max-width: 40px; max-height: 40px;" /></td>
-                        <td>@club.Name</td>
+                        <td class="club-name">@club.Name</td>
                         <td>@club.CityName</td>
                         <td>@club.WorkingTimeStart - @club.WorkingTimeEnd</td>
                         <td>@club.Prcie</td>

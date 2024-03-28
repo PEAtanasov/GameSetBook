@@ -1,8 +1,6 @@
 using GameSetBook.Web.Extensions;
 using GameSetBook.Web.ModelBinders;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using GameSetBook.Infrastructure.Data;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +10,7 @@ builder.Services.AddApplicationIdentity(builder.Configuration);
 builder.Services.AddControllersWithViews(options =>
 {
     options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
 });
 
 builder.Services.AddApplicationServices();
@@ -21,7 +20,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();   
+    app.UseDeveloperExceptionPage();
+    //app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
     app.UseMigrationsEndPoint();
 }
 else

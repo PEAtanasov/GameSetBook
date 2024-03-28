@@ -28,6 +28,14 @@ namespace GameSetBook.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Index([FromQuery] AllBookingsSortingModel model)
+        {
+            var currentModel = await bookingService.GetBookingSortingServiceModelAsync(model, User.Id());
+
+            return View(currentModel);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Book([FromQuery] BookingScheduleViewModel queryModel)
         {
 
@@ -236,11 +244,6 @@ namespace GameSetBook.Web.Controllers
 
             return RedirectToAction("MyClubSchedule", "Club", new { id = clubId, date = model.BookingDate });
 
-        }
-
-        //public async Task<IActionResult> MyBookings()
-        //{
-        //    return View();
-        //}
+        }      
     }
 }
