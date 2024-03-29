@@ -1,0 +1,46 @@
+﻿@inject IClubService clubService
+
+@{
+    bool clubExist = await clubService.ClubWithOwnerIdExistAsync(User.Id());
+    bool isUserClubWoner = User.IsInRole("ClubOwner");
+    bool isClubAprooved = false;
+    bool clubHasCourts = false;
+    var clubId = 0;
+    if (clubExist)
+    {
+        clubId = await clubService.GetClubIdByOwnerIdAsync(User.Id());
+        isClubAprooved = await clubService.IsClubAprooved(clubId);
+        clubHasCourts = await clubService.ClubHasCourts(clubId);
+    }
+}
+
+@if (this.User?.Identity?.IsAuthenticated ?? false)
+{
+
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-secondary border-bottom box-shadow mb-3" >
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav justify-content-start">
+                        @if (clubExist && isUserClubWoner && isClubAprooved)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Club" asp-action="MyClub" asp-route-id="@clubId">Club Detais</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Club" asp-action="Edit" asp-route-id="@clubId">Edit Club</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Club" asp-action="MyClubSchedule" asp-route-id="@clubId">Schedule</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Tournament" asp-action="Create" asp-route-id="@clubId">Create Tournament</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+}

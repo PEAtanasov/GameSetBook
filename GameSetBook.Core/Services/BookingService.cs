@@ -122,7 +122,7 @@ namespace GameSetBook.Core.Services
         public async Task<AllBookingsSortingModel> GetBookingSortingServiceModelAsync(AllBookingsSortingModel queryModel, string userId)
         {
             var bookingToSort = repository.GetAllReadOnly<Booking>()
-                .Where(b => b.ClientId == userId && b.IsBookedByOwnerOrAdmin == false);
+                .Where(b => b.ClientId == userId && b.IsBookedByOwnerOrAdmin == false && b.Court.IsActive==true);
 
             if (!string.IsNullOrEmpty(queryModel.SearchTerm))
             {

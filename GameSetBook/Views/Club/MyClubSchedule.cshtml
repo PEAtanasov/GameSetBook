@@ -8,12 +8,14 @@
     int? clubId = ViewData["ClubId"] as int?;
     ViewBag.Title = "My Club Schedule";
 }
+
+@await Component.InvokeAsync(nameof(ClubOwnerMenuComponent))
+
 @if (cuurentDate != null)
 {
     <h2 class="text-center">@ViewBag.Title for @cuurentDate.Value.ToShortDateString() @cuurentDate.GetValueOrDefault().DayOfWeek</h2>
 
 }
-<hr />
 
 <div class="container">
     <div class="row">

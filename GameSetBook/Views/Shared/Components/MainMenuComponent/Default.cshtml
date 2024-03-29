@@ -14,38 +14,38 @@
         clubHasCourts = await clubService.ClubHasCourts(clubId);
     }
 }
-
+@*  *@
 <ul class="navbar-nav flex-grow-1">
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Club" asp-action="Index">All Clubs</a>
+        <a class="nav-link text-light" asp-area="" asp-controller="Club" asp-action="Index">All Clubs</a>
     </li>
     @if (this.User?.Identity?.IsAuthenticated ?? false)
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Tournament" asp-action="Index">Tournaments</a>
+            <a class="nav-link text-light" asp-area="" asp-controller="Tournament" asp-action="Index">Tournaments</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="Index">My Bookings</a>
+            <a class="nav-link text-light" asp-area="" asp-controller="Booking" asp-action="Index">My Bookings</a>
         </li>
 
         if (clubExist && isUserClubWoner && isClubAprooved)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Club" asp-action="MyClub" asp-route-id="@clubId">My Club</a>
+                <a class="nav-link text-light" asp-area="" asp-controller="Club" asp-action="MyClub" asp-route-id="@clubId">My Club</a>
             </li>
         }
-        else if (clubExist && isClubAprooved==false)
+        else if (clubExist && isClubAprooved == false)
         {
             if (clubHasCourts)
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark disabled" asp-area="" asp-controller="Club" asp-action="MyClub" asp-route-id="@clubId">My Club<small class="text-danger">(pending aprooval)</small></a>
+                    <a class="nav-link text-light disabled" asp-area="" asp-controller="Club" asp-action="MyClub" asp-route-id="@clubId">My Club<small class="text-danger">(pending aprooval)</small></a>
                 </li>
             }
             else
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Club" asp-action="Create" >Register Courts</a>
+                    <a class="nav-link text-light" asp-area="" asp-controller="Club" asp-action="Create">Register Courts</a>
                 </li>
             }
         }
