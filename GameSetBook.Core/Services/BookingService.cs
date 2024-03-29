@@ -143,7 +143,7 @@ namespace GameSetBook.Core.Services
             bookingToSort = queryModel.BookingSorting switch
             {
                 BookingSorting.None => bookingToSort.OrderByDescending(b => b.BookedOn).ThenByDescending(b => b.Id),
-                BookingSorting.PriceAscending => bookingToSort.OrderBy(b => b.Price).ThenBy(b=>b.Id),
+                BookingSorting.PriceAscending => bookingToSort.OrderBy(b => b.Price).ThenBy(b => b.Id),
                 BookingSorting.PriceDescending => bookingToSort.OrderByDescending(b => b.Price).ThenByDescending(b => b.Id),
                 BookingSorting.BookingDateAscending => bookingToSort.OrderBy(c => c.BookingDate).ThenBy(b => b.Id),
                 BookingSorting.BookingDateDescending => bookingToSort.OrderByDescending(c => c.BookingDate).ThenByDescending(b => b.Id),
@@ -185,7 +185,35 @@ namespace GameSetBook.Core.Services
             queryModel.TotalBookingCount = totalBookings;
 
             return queryModel;
+        }
 
+        public async Task<bool> IsBookingClient(int bookingId, string userId)
+        {
+            return await repository.GetAllReadOnly<Booking>()
+                .AnyAsync(b => b.Id == bookingId &&
+                b.ClientId == userId &&
+                b.IsBookedByOwnerOrAdmin == false);
+        }
+
+        public async Task<bool> IsCancelable(int bookingId)
+        {
+            var booking = await repository.GetAllReadOnly<Booking>()
+                .FirstAsync(b => b.Id == bookingId);
+
+            if (booking.BookingDate.Date < DateTime.Now.Date)
+            {
+                return false;
+            }
+
+            if (booking.BookingDate.Date == DateTime.Now.Date)
+            {
+                if (booking.Hour - DateTime.Now.Hour <= 2)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

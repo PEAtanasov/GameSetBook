@@ -108,6 +108,29 @@ namespace GameSetBook.Web.Controllers
             return RedirectToAction("Schedule", "Club", new { id = clubId, date = model.BookingDate });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            if (!await bookingService.BookingExistById(id))
+            {
+                return BadRequest();
+            }
+
+            if (!await bookingService.IsBookingClient(id,User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            if(!await bookingService.IsCancelable(id))
+            {
+                return BadRequest();
+            }
+
+            await bookingService.DeleteAsync(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
         [HttpGet]
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> OwnerBook([FromQuery] BookingScheduleViewModel queryModel)
@@ -226,6 +249,8 @@ namespace GameSetBook.Web.Controllers
             return RedirectToAction("MyClubSchedule", "Club", new { id = clubId, date = model.BookingDate });
         }
 
+        [HttpPost]
+        [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Delete(BookingEditFormModel model)
         {
             if (!await bookingService.BookingExistById(model.Id))
@@ -243,7 +268,6 @@ namespace GameSetBook.Web.Controllers
             await bookingService.DeleteAsync(model.Id);
 
             return RedirectToAction("MyClubSchedule", "Club", new { id = clubId, date = model.BookingDate });
-
         }      
     }
 }

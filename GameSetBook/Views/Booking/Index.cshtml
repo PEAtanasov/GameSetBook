@@ -134,16 +134,16 @@
             <tbody class="table-group-divider">
                 @foreach (var booking in Model.Bookings)
                 {
-                    var isCanceble = true;
+                    var isCancelable = true;
                     if (booking.Date.Date < DateTime.Now.Date)
                     {
-                        isCanceble = false;
+                        isCancelable = false;
                     }
                     if (booking.Date.Date == DateTime.Now.Date)
                     {
                         if (booking.Hour - DateTime.Now.Hour <= 2)
                         {
-                            isCanceble = false;
+                            isCancelable = false;
                         }
                     }
                     <tr>
@@ -155,8 +155,13 @@
                         <td>@booking.CourtName</td>
                         @* <td>@booking.BookdedOn.ToShortDateString()</td> *@
                         <td>
-                            <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id" class="btn btn-primary">Details</a>
-                            <a asp-controller="Booking" asp-action="Cancel" asp-route-id="@booking.Id" class="btn btn-success @(isCanceble ? string.Empty : "disabled" )">Cancel</a>
+                            <div class="input-group">
+                                <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id" class="btn btn-primary">Details</a>
+                                <form asp-action="Cancel" method="post">
+                                    <input type="hidden" name="id" value="@booking.Id" />
+                                    <button type="submit" class="btn btn-danger @(isCancelable ? string.Empty : "disabled" ) data-bs-toggle="modal" data-bs-target="#deleteBookingModal">Cancel</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 }
@@ -164,3 +169,5 @@
         </table>
     </div>
 </div>
+
+
