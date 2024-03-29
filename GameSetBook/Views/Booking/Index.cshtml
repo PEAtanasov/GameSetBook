@@ -153,14 +153,35 @@
                         <td>@booking.Price</td>
                         <td class="club-name">@booking.ClubName</td>
                         <td>@booking.CourtName</td>
-                        @* <td>@booking.BookdedOn.ToShortDateString()</td> *@
                         <td>
-                            <div class="input-group">
-                                <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id" class="btn btn-primary">Details</a>
-                                <form asp-action="Cancel" method="post">
-                                    <input type="hidden" name="id" value="@booking.Id" />
-                                    <button type="submit" class="btn btn-danger @(isCancelable ? string.Empty : "disabled" ) data-bs-toggle="modal" data-bs-target="#deleteBookingModal">Cancel</button>
-                                </form>
+                            <div class="row btn-group">
+                                <div class="col">
+                                    <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id" class="btn btn-primary">Details</a>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-danger @(isCancelable ? string.Empty : "disabled" )" data-bs-toggle="modal" data-bs-target="#deleteBookingModal-@booking.Id">Cancel</button>
+                                </div>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="deleteBookingModal-@booking.Id" tabindex="-1" aria-labelledby="deleteBookingModalLabel-@booking.Id" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteBookingModalLabel-@booking.Id">Confirm Cancellation</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to cancel this booking?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <form asp-action="Cancel" method="post">
+                                                <input type="hidden" name="id" value="@booking.Id" />
+                                                <button type="submit" class="btn btn-danger">Confirm Cancel</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                     </tr>
