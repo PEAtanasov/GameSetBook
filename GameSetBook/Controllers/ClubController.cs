@@ -72,10 +72,10 @@ namespace GameSetBook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            if (User.IsInRole(ClubOwnerRole)==false && await clubService.ClubWithOwnerIdExistAsync(User.Id())==true)
+            if (User.IsInRole(ClubOwnerRole) == false && await clubService.ClubWithOwnerIdExistAsync(User.Id()) == true)
             {
                 var clubId = await clubService.GetClubIdByOwnerIdAsync(User.Id());
-                
+
                 if (!await clubService.ClubHasCourts(clubId))
                 {
                     var numberOfCourts = await clubService.NumberOfCourtsAsync(clubId);

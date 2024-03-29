@@ -48,6 +48,9 @@
         </div>
     </form>
 </div>
+<div class="text-center">
+    <a asp-action="Index" class="btn btn-secondary">Back to full list</a>
+</div>
 
 @{
     var previousPage = Model.CurrentPage - 1;
@@ -131,6 +134,18 @@
             <tbody class="table-group-divider">
                 @foreach (var booking in Model.Bookings)
                 {
+                    var isCanceble = true;
+                    if (booking.Date.Date < DateTime.Now.Date)
+                    {
+                        isCanceble = false;
+                    }
+                    if (booking.Date.Date == DateTime.Now.Date)
+                    {
+                        if (booking.Hour - DateTime.Now.Hour <= 2)
+                        {
+                            isCanceble = false;
+                        }
+                    }
                     <tr>
                         <td></td>
                         <td>@booking.Date.ToShortDateString()</td>
@@ -141,7 +156,7 @@
                         @* <td>@booking.BookdedOn.ToShortDateString()</td> *@
                         <td>
                             <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id" class="btn btn-primary">Details</a>
-                            <a asp-controller="Booking" asp-action="Cancel" asp-route-id="@booking.Id" class="btn btn-success">Cancel</a>
+                            <a asp-controller="Booking" asp-action="Cancel" asp-route-id="@booking.Id" class="btn btn-success @(isCanceble ? string.Empty : "disabled" )">Cancel</a>
                         </td>
                     </tr>
                 }

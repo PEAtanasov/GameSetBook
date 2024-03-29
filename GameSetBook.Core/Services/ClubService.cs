@@ -6,6 +6,7 @@ using GameSetBook.Core.Models.City;
 using GameSetBook.Core.Models.Club;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
+using GameSetBook.Core.Models.Court;
 
 namespace GameSetBook.Core.Services
 {

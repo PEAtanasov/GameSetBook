@@ -2,15 +2,15 @@
 @{
     var clubInfo = ViewData["ClubInfo"];
 
-    DateTime? cuurentDate = ViewData["CurrentDate"] as DateTime?;
+    DateTime? currentDate = ViewData["CurrentDate"] as DateTime?;
     int WorkingTimeStart = Model.First().Bookings.Min(b => b.Hour);
     int WorkingTimeEnd = Model.First().Bookings.Max(b => b.Hour);
     int? clubId = ViewData["ClubId"] as int?;
     ViewBag.Title = "Club Schedule";
 }
-@if (cuurentDate != null)
+@if (currentDate != null)
 {
-    <h2 class="text-center">@ViewBag.Title for @cuurentDate.Value.ToShortDateString() @cuurentDate.GetValueOrDefault().DayOfWeek</h2>
+    <h2 class="text-center">@ViewBag.Title for @currentDate.Value.ToShortDateString() @currentDate.GetValueOrDefault().DayOfWeek</h2>
 }
 
 <div class="container">
@@ -27,23 +27,23 @@
                     <div class="form-actions no-color col-auto">
                         <div class="row align-items-center">
                             <div class="col">
-                                <input class="form-control" type="date" id="date" name="date" />
+                                <input class="form-control" type="date" id="datepicker" name="date" valueAsDate="@currentDate" />
                             </div>
                             <div class="col">
                                 <input type="submit" value="Ok" class="btn btn-primary" />
                             </div>
                             <div class="col-auto">
                                 <!-- Arrow to move one day backwards -->
-                                @if (cuurentDate != null)
+                                @if (currentDate != null)
                                 {
-                                    <a asp-controller="Club" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(-1)" class="btn btn-primary @(cuurentDate.Value.AddDays(-1)< DateTime.Now.Date ? "disabled" : string.Empty)">	<i class="fa fa-arrow-circle-o-left"></i> Previous Day</a>
+                                    <a asp-controller="Club" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@currentDate.Value.AddDays(-1)" class="btn btn-primary @(currentDate.Value.AddDays(-1)< DateTime.Now.Date ? "disabled" : string.Empty)">	<i class="fa fa-arrow-circle-o-left"></i> Previous Day</a>
                                 }
                             </div>
                             <div class="col-auto">
                                 <!-- Arrow to move one day forwards -->
-                                @if (cuurentDate != null)
+                                @if (currentDate != null)
                                 {
-                                    <a asp-controller="Club" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(1)" class="btn btn-primary">Next Day <i class="fa fa-arrow-circle-o-right"></i></a>
+                                    <a asp-controller="Club" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@currentDate.Value.AddDays(1)" class="btn btn-primary">Next Day <i class="fa fa-arrow-circle-o-right"></i></a>
                                 }
                             </div>
                         </div>
@@ -59,9 +59,9 @@
                                 <tr>
                                     <th>
                                         <i class="fa fa-calendar" style="font-size:24px"></i>
-                                        @if (cuurentDate != null)
+                                        @if (currentDate != null)
                                         {
-                                            <p>@cuurentDate.Value.ToShortDateString()</p>
+                                            <p>@currentDate.Value.ToShortDateString()</p>
                                         }
                                     </th>
                                     @foreach (var court in Model)

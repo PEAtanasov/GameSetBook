@@ -5,7 +5,6 @@ using GameSetBook.Core.Models.Booking;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
 using GameSetBook.Core.Enums;
-using GameSetBook.Core.Models.Club;
 
 namespace GameSetBook.Core.Services
 {
