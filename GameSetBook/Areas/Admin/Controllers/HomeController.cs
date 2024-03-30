@@ -13,6 +13,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             this.statisticService = statisticService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var date = DateTime.Now;

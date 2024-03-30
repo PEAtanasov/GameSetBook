@@ -13,8 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Models\Admin\Booking\" />
-    <Folder Include="Models\Admin\Club\" />
-    <Folder Include="Models\Admin\Court\" />
   </ItemGroup>
 
 </Project>
