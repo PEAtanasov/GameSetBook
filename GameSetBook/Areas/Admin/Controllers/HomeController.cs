@@ -21,7 +21,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             var model = new StatisticsServiceViewModel()
             {
                 BookingsStatistics = statisticService.GetBookingStatistics(date),
-                ClubStatistics = await statisticService.GetClubsStatistics(),
+                ClubStatistics = await statisticService.GetClubsStatisticsAsync(),
                 CourtStatistics = statisticService.GetCourtStatistics(),
             };
 

@@ -16,7 +16,7 @@ namespace GameSetBook.Core.Services.Admin
             this.repository = repository;
         }
 
-        public async Task<ClubStatisticsViewModel> GetClubsStatistics()
+        public async Task<ClubStatisticsViewModel> GetClubsStatisticsAsync()
         {
             var clubs = await repository.GetAllWithDeletedReadOnly<Club>().Include(c => c.ClubReviews).ToListAsync();
 

@@ -13,7 +13,7 @@
         <div class="card card-row card-primary">
             <div class="card-header bg-danger">
                 <h4 class="card-title text-white">
-                    <strong>Important!</strong> Please review pending for approval clubs
+                    <strong>Important!</strong> Please review pending clubs for approval
                 </h4>
             </div>
             <div class="card-body">
@@ -24,7 +24,7 @@
                                 <h4 class="text-danger">Clubs waiting for approval: <strong>@Model.ClubStatistics.NumberOfClubsForApproval</strong></h4>
                             </div>
                             <div class="col col-3">
-                                <a asp-area="Admin" asp-controller="Club" asp-action="PendingClubs" class="btn btn-success">Approve Clubs</a>
+                                <a asp-area="Admin" asp-controller="Club" asp-action="PendingClubs" class="btn btn-success @(Model.ClubStatistics.NumberOfClubsForApproval>0 ? "" : "Disable")">Approve Clubs</a>
                             </div>
                         </div>
                     </div>

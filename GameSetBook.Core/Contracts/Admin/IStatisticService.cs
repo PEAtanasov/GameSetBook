@@ -4,7 +4,7 @@ namespace GameSetBook.Core.Contracts.Admin
 {
     public interface IStatisticService
     {
-        Task<ClubStatisticsViewModel> GetClubsStatistics();
+        Task<ClubStatisticsViewModel> GetClubsStatisticsAsync();
 
         BookingStatisticsViewModel GetBookingStatistics(DateTime date);
 

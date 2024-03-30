@@ -1,9 +1,4 @@
-﻿using GameSetBook.Infrastructure.Models.Identity;
-using GameSetBook.Infrastructure.Models;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using GameSetBook.Core.Models.Admin.Court;
+﻿using GameSetBook.Core.Models.Admin.Court;
 
 namespace GameSetBook.Core.Models.Admin.Club
 {
@@ -39,10 +34,6 @@ namespace GameSetBook.Core.Models.Admin.Club
 
         public string PhoneNumber { get; set; } = string.Empty;
 
-        public bool IsDeleted { get; set; }
-
-        public DateTime? DeletedOn { get; set; }
-
         public DateTime RegisteredOn { get; set; }
 
         public bool IsAproovedByAdmin { get; set; }
@@ -53,7 +44,7 @@ namespace GameSetBook.Core.Models.Admin.Club
 
         public string ClubOwner { get; set; } = string.Empty;
 
-        IEnumerable<PendingCourtViewModel> Courts = new List<PendingCourtViewModel>();
+        public IEnumerable<PendingCourtViewModel> Courts = new List<PendingCourtViewModel>();
     }
 }
 

@@ -48,9 +48,8 @@ namespace GameSetBook.Web.Extensions
                 options.Password.RequireDigit = false;
                 options.Password.RequireUppercase = false;
             })
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-                
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             return services;
         }

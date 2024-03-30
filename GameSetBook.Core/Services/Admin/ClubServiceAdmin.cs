@@ -1,8 +1,11 @@
-﻿using GameSetBook.Core.Contracts.Admin;
+﻿using Microsoft.EntityFrameworkCore;
+
+using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Models.Admin.Club;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
-using Microsoft.EntityFrameworkCore;
+using GameSetBook.Core.Models.Admin.Court;
+using GameSetBook.Common.Enums.EnumExtensions;
 
 namespace GameSetBook.Core.Services.Admin
 {
@@ -15,7 +18,7 @@ namespace GameSetBook.Core.Services.Admin
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<PendingClubViewModel>> AllPendingClubs()
+        public async Task<IEnumerable<PendingClubViewModel>> AllPendingClubsAsync()
         {
             return await repository.GetAllReadOnly<Club>()
                 .Where(c => c.IsAproovedByAdmin == false)
@@ -23,13 +26,87 @@ namespace GameSetBook.Core.Services.Admin
                 {
                     Id = c.Id,
                     Name = c.Name,
-                    NumberOfCourts = c.NumberOfCourts,
+                    NumberOfCourts = c.Courts.Count,
                     RegisteredOn = c.RegisteredOn,
                     City = c.City.Name,
                     ClubOwner = c.ClubOwner.UserName,
-                    ClubOwnerStatus = c.ClubOwner.UserName != null
+                    ClubOwnerStatus = !string.IsNullOrWhiteSpace(c.ClubOwner.UserName)
                 })
                 .ToListAsync();
+        }
+
+        public async Task<PendingClubDetailsViewModel> GetPendingClubDetailsAsync(int id)
+        {
+            var club = await repository.GetAllReadOnly<Club>()
+                .Where(c => c.Id == id && c.IsAproovedByAdmin == false)
+                .Select(c => new PendingClubDetailsViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Description = c.Description,
+                    Email = c.Email,
+                    HasParking = c.HasParking,
+                    HasShop = c.HasShop,
+                    HasShower = c.HasShower,
+                    ClubOwner = c.ClubOwner.UserName,
+                    Address = c.Address,
+                    City = c.City.Name,
+                    WorkingTimeStart = c.WorkingTimeStart,
+                    WorkingTimeEnd = c.WorkingTimeEnd,
+                    IsClubOwnerActive = !string.IsNullOrWhiteSpace(c.ClubOwner.UserName),
+                    LogoUrl = c.LogoUrl,
+                    PhoneNumber = c.PhoneNumber,
+                    NumberOfCoaches = c.NumberOfCoaches,
+                    NumberOfCourts = c.NumberOfCourts,
+                    RegisteredOn = c.RegisteredOn,
+                    ClubOwnerId = c.ClubOwnerId,
+                    IsAproovedByAdmin = c.IsAproovedByAdmin,
+                    Courts = c.Courts.Select(ct => new PendingCourtViewModel()
+                    {
+                        Id = ct.Id,
+                        ClubId = ct.ClubId,
+                        IsActive = ct.IsActive,
+                        IsIndoor = ct.IsIndoor,
+                        IsLighted = ct.IsLighted,
+                        Name = ct.Name,
+                        PricePerHour = ct.PricePerHour,
+                        Surface = ct.Surface.GetDisplayName()
+                    })
+                }).FirstAsync();
+
+            return club;
+        }
+
+        public async Task<bool> ClubExistAsync(int id)
+        {
+            return await repository.GetAllReadOnly<Club>().AnyAsync(c=>c.Id==id);
+        }
+
+        public async Task<bool> IsClubApproved(int id)
+        {
+            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c=>c.Id==id);
+
+            return club.IsAproovedByAdmin;
+        }
+
+        public async Task<string> ApproveAsync(int id)
+        {
+            var club = await repository.GetAll<Club>()
+                .Include(c=>c.Courts)
+                .FirstAsync(c=>c.Id==id);
+            
+            foreach (var court in club.Courts)
+            {
+                court.IsActive = true;
+            }
+
+            club.IsAproovedByAdmin = true;
+
+            string clubOwnerId = club.ClubOwnerId;
+
+            await repository.SaveChangesAsync();
+
+            return clubOwnerId;
         }
     }
 }

@@ -1,0 +1,163 @@
+﻿@model PendingClubDetailsViewModel
+
+@{
+    ViewBag.Title = "Pending Club Details";
+}
+
+<h1 class="text-center pb-3">@ViewBag.Title</h1>
+
+<h3 class="pb-3">@Model.Name</h3>
+<img src="~/@Model.LogoUrl" alt="@Model.Name Logo" class="img-fluid" style="max-width: 300px; max-height: 350px;" />
+<div>
+    <p><strong>Description:</strong> @Model.Description</p>
+    <p><strong>Working Time:</strong> @Model.WorkingTimeStart - @Model.WorkingTimeEnd</p>
+    <p><strong>Address:</strong> @Model.Address, @Model.City</p>
+    <p><strong>Number of Coaches:</strong> @Model.NumberOfCoaches</p>
+    <p><strong>Number of Courts:</strong> @Model.NumberOfCourts</p>
+    <p><strong>Facilities:</strong></p>
+    <ul>
+        <li>
+            Parking: @if (Model.HasParking)
+            {
+                <span>Yes</span>
+            }
+            else
+            {
+                <span>No</span>
+            }
+        </li>
+        <li>
+            Shower: @if (Model.HasShower)
+            {
+                <span>Yes</span>
+            }
+            else
+            {
+                <span>No</span>
+            }
+        </li>
+        <li>
+            Tennis Shop: @if (Model.HasShop)
+            {
+                <span>Yes</span>
+            }
+            else
+            {
+                <span>No</span>
+            }
+        </li>
+    </ul>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Phone Number:</strong> @Model.PhoneNumber</p>
+    <p><strong>Registered On:</strong> @Model.RegisteredOn.ToString("yyyy-MM-dd HH:mm:ss")</p>
+    <p>
+        <strong>Approved By Admin:</strong> @if (Model.IsAproovedByAdmin)
+        {
+            <span>Yes</span>
+        }
+        else
+        {
+            <span>No</span>
+        }
+    </p>
+    <p><strong>Club Owner:</strong> @Model.ClubOwner</p>
+    <p>
+        <strong>Club Owner Active:</strong> @if (Model.IsClubOwnerActive)
+        {
+            <span>Yes</span>
+        }
+        else
+        {
+            <span>No</span>
+        }
+    </p>
+</div>
+
+@if (Model.Courts.Any())
+{
+    <h2>Courts</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surface Type</th>
+                <th>Price Per Hour</th>
+                <th>Lighted</th>
+                <th>Indoor</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var court in Model.Courts)
+            {
+                <tr>
+                    <td>@court.Name</td>
+                    <td>@court.Surface</td>
+                    <td>@court.PricePerHour</td>
+                    <td>
+                        @if (court.IsLighted)
+                        {
+                            <span>Yes</span>
+                        }
+                        else
+                        {
+                            <span>No</span>
+                        }
+                    </td>
+                    <td>
+                        @if (court.IsIndoor)
+                        {
+                            <span>Yes</span>
+                        }
+                        else
+                        {
+                            <span>No</span>
+                        }
+                    </td>
+                    <td>
+                        @if (court.IsActive)
+                        {
+                            <span>Active</span>
+                        }
+                        else
+                        {
+                            <span>Not Active</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="row pt-3">
+        <div class="col col-4">
+            <form asp-area="Admin" asp-controller="Club" asp-action="ApproveClub" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="mb-3 text-center">
+                    <input class="btn btn-success mb-2 w-100 p-3 fw-bold" type="submit" value="Approve" />
+                </div>
+            </form>
+        </div>
+        <div class="col col-4">
+            <form asp-area="Admin" asp-controller="Club" asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="mb-3 text-center">
+                    <input class="btn btn-primary mb-2 w-100 p-3 fw-bold" type="submit" value="Edit" />
+                </div>
+            </form>
+        </div>
+        <div class="col col-4">
+            <form asp-area="Admin" asp-controller="Club" asp-action="Cancel Approval" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="mb-3 text-center">
+                    <input class="btn btn-danger mb-2 w-100 p-3 fw-bold" type="submit" value="Delete" />
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <h3>No courts available for this club.</h3>
+}
+
