@@ -1,5 +1,93 @@
-﻿@{
-    ViewBag.Title = "Admin Area";
+﻿@model StatisticsServiceViewModel
+
+@{
+    ViewBag.Title = "Administrator Panel";
 }
 
+<div class="text-center p-3">
 <h1>@ViewBag.Title</h1>
+</div>
+
+<section class="content pb-3">
+    <div class="container-fluid h-100">
+        <div class="card card-row card-primary">
+            <div class="card-header bg-danger">
+                <h4 class="card-title text-white">
+                    <strong>Important!</strong> Please review pending for approval clubs
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col col-4">
+                                <h4 class="text-danger">Clubs waiting for approval: <strong>@Model.ClubStatistics.NumberOfClubsForApproval</strong></h4>
+                            </div>
+                            <div class="col col-3">
+                                <a asp-area="Admin" asp-controller="Club" asp-action="Approve" class="btn btn-success">Approve Clubs</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-row card-primary">
+                <div class="card-header bg-dark text-center">
+                    <h4 class="card-title text-light">Statistics</h4>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col col-4">
+                                <div class="card" style="width: 22rem;">
+                                    <div class="card-header fw-bold">Club Statistics</div>
+                                    <div class="card" style="width: 22rem;">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Total registered clubs: <strong>@Model.ClubStatistics.NumberOfClubsRegistered</strong></li>
+                                            <li class="list-group-item">Total Active clubs: <strong>@Model.ClubStatistics.NumberOfActiveClubs</strong></li>
+                                            <li class="list-group-item">Total registered clubs: <strong>@Model.ClubStatistics.NumberOfNotActiveClubs</strong></li>
+                                            <li class="list-group-item text-danger">Total clubs with rating under <strong>5.0</strong> points: <strong>@Model.ClubStatistics.NumberOfClubsWithLowRating</strong></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-4">
+                                <div class="card" style="width: 22rem;">
+                                    <div class="card-header fw-bold">Booking Statistics</div>
+                                    <div class="card" style="width: 22rem;">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Total bookings: <strong>@Model.BookingsStatistics.NumberOfTotalBookings</strong></li>
+                                            <li class="list-group-item">Total bookings booked by users: <strong>@Model.BookingsStatistics.NumberOfBookinsBookedByUsers</strong></li>
+                                            <li class="list-group-item">Total bookings booked by club owners: <strong>@Model.BookingsStatistics.NumberOfBookingsBookedByClubOwners</strong></li>
+                                            <li class="list-group-item text-success fw-bold">Total bookings booked today: <strong>@Model.BookingsStatistics.NumberOfBookingsBookedToday</strong></li>
+                                            <li class="list-group-item text-danger">Total canceled bookings: <strong>@Model.BookingsStatistics.NumberOfCanceledBookings</strong></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-4">
+                                <div class="card" style="width: 22rem;">
+                                    <div class="card-header fw-bold">Court Statistics</div>
+                                    <div class="card" style="width: 22rem;">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Total courts in all clubs: <strong>@Model.CourtStatistics.TotalCourts</strong></li>
+                                            <li class="list-group-item text-danger">Total not active courts: <strong>@Model.CourtStatistics.TotalNotActiveCourts</strong></li>
+                                            <li class="list-group-item">Total clay courts: <strong>@Model.CourtStatistics.TotalClayCourts</strong></li>
+                                            <li class="list-group-item">Total hard courts: <strong>@Model.CourtStatistics.TotalHardCourts</strong></li>
+                                            <li class="list-group-item">Total artificial grass courts: <strong>@Model.CourtStatistics.TotalArtificialGrassCourts</strong></li>
+                                            <li class="list-group-item">Total grass courts: <strong>@Model.CourtStatistics.TotalGrassCourts</strong></li>
+                                            <li class="list-group-item">Total carpet courts: <strong>@Model.CourtStatistics.TotalCarpetCourts</strong></li>
+                                            <li class="list-group-item">Total indoor courts: <strong>@Model.CourtStatistics.TotalIndoorCourts</strong></li>
+                                            <li class="list-group-item">Total outdoor courts: <strong>@Model.CourtStatistics.TotalOutDoorCourts</strong></li>
+                                            <li class="list-group-item">Total courts with lights: <strong>@Model.CourtStatistics.TotalLightedCourts</strong></li>
+                                            <li class="list-group-item">Total courts without lights: <strong>@Model.CourtStatistics.TotalNotLighedCourts</strong></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
