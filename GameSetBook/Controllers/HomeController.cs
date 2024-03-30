@@ -20,6 +20,11 @@ namespace GameSetBook.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "Home", new { area = "Admin" });
+            }
+
             var firstNameClaim = HttpContext.User.FindFirst(ClaimTypes.GivenName)?.Value;
             
             var model = await clubService.GetAllClubsAsync();

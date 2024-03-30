@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace GameSetBook.Web.Components
+namespace GameSetBook.Web.Areas.Admin.Components
 {
-    public class MainMenuComponent : ViewComponent
+    public class AdminMainMenuComponent : ViewComponent
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
             return await Task.FromResult<IViewComponentResult>(View());
-        }   
+        }
     }
 }
