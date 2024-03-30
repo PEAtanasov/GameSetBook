@@ -1,5 +1,7 @@
 ﻿using GameSetBook.Core.Contracts;
+using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Services;
+using GameSetBook.Core.Services.Admin;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Data;
 using GameSetBook.Infrastructure.Models.Identity;
@@ -15,7 +17,11 @@ namespace GameSetBook.Web.Extensions
             services.AddScoped<ICourtService, CourtService>();
             services.AddScoped<IClubService, ClubService>();
             services.AddScoped<IBookingService, BookingService>();
-            
+            services.AddScoped<ICourtServiceAdmin, CourtServiceAdmin>();
+            services.AddScoped<IClubServiceAdmin, ClubServiceAdmin>();
+            services.AddScoped<IBookingServiceAdmin, BookingServiceAdmin>();
+            services.AddScoped<IStatisticService, StatisticService>();
+
             return services;
         }
 
