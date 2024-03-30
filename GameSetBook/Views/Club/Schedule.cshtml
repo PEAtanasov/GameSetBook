@@ -16,7 +16,7 @@
 <div class="container">
     <div class="row">
         <!-- Left part: Render _ClubInfoPartial.cshtml -->
-        <div class="col-md-3">
+        <div class="@(Model.Count()>5 ? "col-md-2" : "col-md-3")">
             <partial name="_ClubInfoPartial" model="@clubInfo" />
         </div>
         <!-- Right part: Display court schedule -->
@@ -54,7 +54,7 @@
             <div class=" row mt-4">
                 <div class="col-sm-10">
                     <div class="text-center">
-                        <table class="table table table-hover table-bordered table-responsive-md">
+                        <table class="table table-sm table-hover table-bordered table-responsive-md">
                             <thead class="table-dark">
                                 <tr>
                                     <th>
