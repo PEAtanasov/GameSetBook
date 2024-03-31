@@ -154,6 +154,7 @@ namespace GameSetBook.Core.Services
                     ClubOwnerId = c.ClubOwnerId,
                     LogoUrl = c.LogoUrl,
                     NumberOfCoaches = c.NumberOfCoaches,
+                    NumberOfCourts = c.NumberOfCourts,
                     PhoneNumber = c.PhoneNumber,
                     WorkingTimeStart = c.WorkingTimeStart,
                     WorkingTimeEnd = c.WorkingTimeEnd

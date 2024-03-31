@@ -24,7 +24,7 @@ namespace GameSetBook.Core.Services.Admin
             {
                 NumberOfClubsRegistered = clubs.Count(),
                 NumberOfActiveClubs = clubs.Where(c => c.IsDeleted == false).Count(),
-                NumberOfClubsForApproval = clubs.Where(c => c.IsAproovedByAdmin == false).Count(),
+                NumberOfClubsForApproval = clubs.Where(c => c.IsAproovedByAdmin == false && c.IsDeleted==false).Count(),
                 NumberOfNotActiveClubs = clubs.Where(c => c.IsDeleted == true).Count(),
                 NumberOfClubsWithLowRating = clubs.Where(c => c.Rating > 0 && c.Rating<6.00).Count(),
             };

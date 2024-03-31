@@ -110,13 +110,6 @@ namespace GameSetBook.Web.Controllers
                 ModelState.AddModelError(string.Empty, string.Format(ClubWithThatNameExist, model.Name));
             }
 
-            if (!ModelState.IsValid)
-            {
-                var cities = await clubService.GetAllCitiesAsync();
-                ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
-                return View(model);
-            }
-
             if (file != null && file.Length > 0)
             {
                 try
@@ -126,12 +119,14 @@ namespace GameSetBook.Web.Controllers
                 catch (ArgumentException ex)
                 {
                     ModelState.AddModelError(string.Empty, ex.Message);
-
-                    var cities = await clubService.GetAllCitiesAsync();
-                    ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
-
-                    return View(model);
                 }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var cities = await clubService.GetAllCitiesAsync();
+                ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+                return View(model);
             }
 
             model.ClubOwnerId = User.Id();
@@ -246,12 +241,15 @@ namespace GameSetBook.Web.Controllers
                 catch (ArgumentException ex)
                 {
                     ModelState.AddModelError(string.Empty, ex.Message);
-
-                    var cities = await clubService.GetAllCitiesAsync();
-                    ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
-
-                    return View(model);
                 }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var cities = await clubService.GetAllCitiesAsync();
+                ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+
+                return View(model);
             }
 
             await clubService.EditAsync(model);
