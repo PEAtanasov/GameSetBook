@@ -81,8 +81,35 @@
                         <td>@(court.IsActive ? "Active" : "Not Active")</td>
                         <td>
                             <div class="d-flex flex-row justify-content-around">
-                                <a asp-controller="Court" asp-action="Edit" asp-route-id="@court.Id" class="btn btn-primary w-100 fw-bold">Edit</a>
-                                <a asp-controller="Court" asp-action="ChangeStatus" asp-route-id="@court.Id" class="@(court.IsActive ? "btn btn-danger w-100 fw-bold" : "btn btn-success w-100 fw-bold")">@(court.IsActive ? "Deactivate" : "Activate")</a>
+                                <div class="col col-6">
+                                    <a asp-controller="Court" asp-action="Edit" asp-route-id="@court.Id" class="btn btn-primary w-100 fw-bold">Edit</a>
+                                </div>
+                                <div class="col col-6">
+                                    <button type="button" class="@(court.IsActive ? "btn btn-danger w-100 fw-bold" : "btn btn-success w-100 fw-bold")" data-bs-toggle="modal" data-bs-target="#confirmationModal_@court.Id">
+                                        @(court.IsActive ? "Deactivate" : "Activate")
+                                    </button>
+                                    <div class="modal fade" id="confirmationModal_@court.Id" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to @(court.IsActive ? "deactivate" : "activate") this court?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <form id="confirmationForm" asp-controller="Court" asp-action="ChangeStatus" method="post">
+                                                        <input type="hidden" name="id" value="@court.Id" />
+                                                        <button type="submit" class="@(court.IsActive ? "btn btn-danger" : "btn btn-success")">Confirm</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </td>
                     </tr>

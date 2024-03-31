@@ -190,6 +190,24 @@ namespace GameSetBook.Core.Services
                 .AnyAsync(c => c.Id == courtId);
         }
 
+        public async Task ChangeStatusAsync(int id)
+        {
+            var court = await repository.GetAll<Court>().FirstAsync(c=>c.Id==id);
+
+            var currentStatus = court.IsActive;
+
+            if (currentStatus == true)
+            {
+                court.IsActive = false;
+            }
+            else
+            {
+                court.IsActive = true;
+            }
+
+            await repository.SaveChangesAsync();
+        }
+
         private List<BookingScheduleViewModel> GetAvailableBookings(int start, int end, DateTime date, int courtId)
         {
             List<BookingScheduleViewModel> bookings = new List<BookingScheduleViewModel>();

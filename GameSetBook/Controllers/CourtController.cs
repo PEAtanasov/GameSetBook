@@ -166,6 +166,27 @@ namespace GameSetBook.Web.Controllers
             return RedirectToAction("MyClub","Club", new {id=model.ClubId});
         }
 
+        [HttpPost]
+        [Authorize(Roles = ClubOwnerRole)]
+        public async Task<IActionResult> ChangeStatus(int id)
+        {
+            if (!await courtService.CourtExist(id))
+            {
+                return BadRequest();
+            }
+
+            if (!await courtService.IsCourtInOwnerClub(id, User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            await courtService.ChangeStatusAsync(id);
+
+            var clubId = await clubService.GetClubIdByOwnerIdAsync(User.Id());
+
+            return RedirectToAction("MyClub", "Club", new {id=clubId});
+        }
+
         private static List<SelectListItem> GetSurfaces()
         {
             return Enum.GetValues(typeof(Surface)).Cast<Surface>().Select(v => new SelectListItem

@@ -21,5 +21,7 @@ namespace GameSetBook.Core.Contracts
         Task<decimal> GetPrice(int id);
 
         Task<bool> IsCourtInOwnerClub(int courtId, string UserId);
+
+        Task ChangeStatusAsync(int id);
     }
 }
