@@ -1,0 +1,133 @@
+﻿@model IEnumerable<CourtScheduleViewModel>
+@{
+    var clubInfo = ViewData["ClubInfo"];
+
+    DateTime? cuurentDate = ViewData["CurrentDate"] as DateTime?;
+    int WorkingTimeStart = Model.First().Bookings.Min(b => b.Hour);
+    int WorkingTimeEnd = Model.First().Bookings.Max(b => b.Hour);
+    int? clubId = ViewData["ClubId"] as int?;
+    ViewBag.Title = "My Courts Schedule";
+}
+
+<h2 class="text-center">@ViewBag.Title for @cuurentDate.Value.ToShortDateString() @cuurentDate.GetValueOrDefault().DayOfWeek</h2>
+<hr />
+
+<div class="container">
+    <div class="row">
+        <!-- Left part: Render _ClubInfoPartial.cshtml -->
+        <div class="col-md-3">
+            <partial name="_ClubInfoPartial" model="@clubInfo" />
+        </div>
+        <!-- Right part: Display court schedule -->
+        <div class="col-md-9">
+
+            <form asp-action="MySchedule" method="get">
+                <div class="row">
+                    <div class="form-actions no-color col-auto">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <input class="form-control" type="date" id="date" name="date"/>
+                            </div>
+                            <div class="col">
+                                <input type="submit" value="Ok" class="btn btn-primary" />
+                            </div>
+                            <div class="col-auto">
+                                <!-- Arrow to move one day backwards -->
+                                @if (cuurentDate != null)
+                                {
+                                    <a asp-controller="Court" asp-action="MySchedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(-1)" class="btn btn-primary"> <i class="fa fa-arrow-circle-o-left"></i> Previous Day</a>
+                                }
+                            </div>
+                            <div class="col-auto">
+                                <!-- Arrow to move one day forwards -->
+                                @if (cuurentDate != null)
+                                {
+                                    <a asp-controller="Court" asp-action="MySchedule" asp-route-id="@clubId" asp-route-date="@cuurentDate.Value.AddDays(1)" class="btn btn-primary">Next Day <i class="fa fa-arrow-circle-o-right"></i></a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class=" row mt-4">
+                <div class="col-sm-10">
+                    <div class="text-center">
+                        <table class="table table table-hover table-bordered table-responsive-md">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th><i class="fa fa-calendar" style="font-size:24px"></i><p>@(cuurentDate.Value.ToShortDateString() ?? string.Empty)</p></th>
+                                    @foreach (var court in Model)
+                                    {
+                                        <th>
+                                            <strong>@court.Name</strong>
+                                            <br />
+                                            <small class="text-sm-center">@court.Surface </small>
+                                            <br />
+
+                                            @if (court.IsIndoor)
+                                            {
+                                                <small class="text-sm-start">
+                                                    Indoor
+                                                </small>
+                                            }
+                                            @if (court.IsLighted)
+                                            {
+                                                <small class="text-sm-end">
+                                                    Lighted
+                                                </small>
+                                            }
+                                        </th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                @for (int i = @WorkingTimeStart; i <= WorkingTimeEnd; i++)
+                                {
+                                    <tr>
+                                        <th>
+                                            @if (i < 10)
+                                            {
+                                                <span>0@(i):00</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@(i):00</span>
+                                            }
+                                        </th>
+                                        @foreach (var court in Model)
+                                        {
+                                            var booking = null as BookingScheduleViewModel;
+                                            foreach (var booked in court.Bookings)
+                                            {
+
+                                                if (booked.Hour == i)
+                                                {
+                                                    booking = booked;
+                                                    break;
+                                                }
+                                            }
+                                            <td>
+                                                @if (booking != null && booking.IsAvailable)
+                                                {
+                                                    <a asp-controller="Booking" asp-action="OwnerBook" asp-route-CourtId="@court.Id" asp-route-Hour="@booking.Hour" asp-route-BookingDate="@booking.BookingDate" class="btn btn-sm btn-success">Book/<small>@(court.Price)BGN</small></a>
+                                                }
+                                                else
+                                                {
+                                                    if (booking!=null)
+                                                    {
+                                                        <a asp-controller="Booking" asp-action="Edit" asp-route-id="@booking.Id" class="btn btn-sm btn-danger">Booked/<small>@(court.Price)BGN</small></a>
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

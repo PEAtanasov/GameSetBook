@@ -125,7 +125,7 @@ namespace GameSetBook.Core.Services.Admin
                 court.IsActive = false;
             }
 
-            club.IsDeleted = true;
+            repository.Delete(club);
 
             await repository.SaveChangesAsync();
         }
@@ -134,7 +134,7 @@ namespace GameSetBook.Core.Services.Admin
         {
             var club = await repository.GetAllWithDeletedReadOnly<Club>()
                 .Where(c => c.Id == id)
-                .Include(c => c.ClubReviews)
+                .Include(c => c.Reviews)
                 .Select(c => new ClubEditFormModel()
                 {
                     Id = c.Id,
@@ -185,6 +185,17 @@ namespace GameSetBook.Core.Services.Admin
             club.HasShower = model.HasShower;
 
             await repository.SaveChangesAsync();
+        }
+
+        public void DeleteoImageFile(string path)
+        {
+
+            // Check if the file exists before attempting to delete
+            if (File.Exists(path))
+            {
+                // Delete the file
+                File.Delete(path);
+            }
         }
     }
 }

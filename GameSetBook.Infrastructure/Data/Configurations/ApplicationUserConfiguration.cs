@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GameSetBook.Infrastructure.Data.Configurations
 {
-    internal class ApplicationUserUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
+    internal class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {

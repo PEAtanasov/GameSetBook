@@ -19,18 +19,21 @@ namespace GameSetBook.Web.Controllers
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly ICityService cityService;
 
         public ClubController(IClubService clubService,
             ICourtService courtService,
             IWebHostEnvironment webHostEnvironment,
             UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            ICityService cityService)
         {
             this.clubService = clubService;
             this.courtService = courtService;
             this.webHostEnvironment = webHostEnvironment;
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.cityService = cityService;
         }
 
         [HttpGet]
@@ -45,7 +48,7 @@ namespace GameSetBook.Web.Controllers
                 model.ClubsPerPage
                 );
 
-            var cities = await clubService.GetAllCitiesAsync();
+            var cities = await cityService.GetAllCitiesAsync();
             model.Cities = cities.Select(c => c.Name);
             model.TotalClubCount = clubs.TotalClubCount;
             model.Clubs = clubs.Clubs;
@@ -90,7 +93,7 @@ namespace GameSetBook.Web.Controllers
             }
             var model = new ClubFormModel();
 
-            var cities = await clubService.GetAllCitiesAsync();
+            var cities = await cityService.GetAllCitiesAsync();
 
             ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 
@@ -124,7 +127,7 @@ namespace GameSetBook.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                var cities = await clubService.GetAllCitiesAsync();
+                var cities = await cityService.GetAllCitiesAsync();
                 ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
                 return View(model);
             }
@@ -210,7 +213,7 @@ namespace GameSetBook.Web.Controllers
                 return Unauthorized();
             }
 
-            var cities = await clubService.GetAllCitiesAsync();
+            var cities = await cityService.GetAllCitiesAsync();
 
             ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 
@@ -246,7 +249,7 @@ namespace GameSetBook.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                var cities = await clubService.GetAllCitiesAsync();
+                var cities = await cityService.GetAllCitiesAsync();
                 ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 
                 return View(model);

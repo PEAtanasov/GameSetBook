@@ -24,7 +24,7 @@
                                 <h4 class="text-danger">Clubs waiting for approval: <strong>@Model.ClubStatistics.NumberOfClubsForApproval</strong></h4>
                             </div>
                             <div class="col col-3">
-                                <a asp-area="Admin" asp-controller="Club" asp-action="PendingClubs" class="btn btn-success @(Model.ClubStatistics.NumberOfClubsForApproval>0 ? "" : "Disable")">Approve Clubs</a>
+                                <a asp-area="Admin" asp-controller="Club" asp-action="PendingClubs" class="btn btn-success mb-2 w-100 p-3 fw-bold @(Model.ClubStatistics.NumberOfClubsForApproval>0 ? "" : "Disable")">Approve Clubs</a>
                             </div>
                         </div>
                     </div>
@@ -38,9 +38,9 @@
                     <div class="container">
                         <div class="row">
                             <div class="col col-4">
-                                <div class="card" style="width: 22rem;">
+                                <div class="card" style="width: auto;">
                                     <div class="card-header fw-bold">Club Statistics</div>
-                                    <div class="card" style="width: 22rem;">
+                                    <div class="card" style="width: auto;">
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">Total registered clubs: <strong>@Model.ClubStatistics.NumberOfClubsRegistered</strong></li>
                                             <li class="list-group-item">Total active clubs: <strong>@Model.ClubStatistics.NumberOfActiveClubs</strong></li>
@@ -51,9 +51,9 @@
                                 </div>
                             </div>
                             <div class="col col-4">
-                                <div class="card" style="width: 22rem;">
+                                <div class="card" style="width: auto;">
                                     <div class="card-header fw-bold">Booking Statistics</div>
-                                    <div class="card" style="width: 22rem;">
+                                    <div class="card" style="width: auto;">
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">Total bookings: <strong>@Model.BookingsStatistics.NumberOfTotalBookings</strong></li>
                                             <li class="list-group-item">Total bookings booked by users: <strong>@Model.BookingsStatistics.NumberOfBookinsBookedByUsers</strong></li>
@@ -65,9 +65,9 @@
                                 </div>
                             </div>
                             <div class="col col-4">
-                                <div class="card" style="width: 22rem;">
+                                <div class="card" style="width: auto;">
                                     <div class="card-header fw-bold">Court Statistics</div>
-                                    <div class="card" style="width: 22rem;">
+                                    <div class="card" style="width: auto;">
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">Total courts in all clubs: <strong>@Model.CourtStatistics.TotalCourts</strong></li>
                                             <li class="list-group-item text-danger">Total not active courts: <strong>@Model.CourtStatistics.TotalNotActiveCourts</strong></li>

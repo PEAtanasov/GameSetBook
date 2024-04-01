@@ -31,6 +31,6 @@ namespace GameSetBook.Infrastructure.Models.Identity
 
         public Club? Club { get; set; }
 
-        public ICollection<ClubReview> Reviews { get; set; } = new List<ClubReview>();
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

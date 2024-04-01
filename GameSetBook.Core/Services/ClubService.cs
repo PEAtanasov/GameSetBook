@@ -22,7 +22,7 @@ namespace GameSetBook.Core.Services
         {
             var model = await repository.GetAllReadOnly<Club>()
                 .Where(c => c.IsAproovedByAdmin)
-                .Include(c => c.ClubReviews)
+                .Include(c => c.Reviews)
                 .Select(c => new ClubServiceViewModel()
                 {
                     Id = c.Id,
@@ -62,7 +62,7 @@ namespace GameSetBook.Core.Services
         {
             var club = await repository.GetAllReadOnly<Club>()
                 .Where(c => c.IsAproovedByAdmin)
-                .Include(c => c.ClubReviews)
+                .Include(c => c.Reviews)
                 .FirstAsync(c => c.Id == id);
 
             var model = new ClubDetailsViewModel()
@@ -187,18 +187,6 @@ namespace GameSetBook.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<CityViewModel>> GetAllCitiesAsync()
-        {
-            var cities = await repository.GetAllReadOnly<City>()
-                .Select(c => new CityViewModel()
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                }).ToListAsync();
-
-            return cities;
-        }
-
         public async Task<int> GetClubIdByNameAsync(string name)
         {
             var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Name == name);
@@ -257,8 +245,8 @@ namespace GameSetBook.Core.Services
                 ClubSorting.PriceDescending => clubsToSort.OrderByDescending(c => c.Courts.Select(c => c.PricePerHour).OrderBy(ct => ct).First()),
                 ClubSorting.NumberOfCourtsAscending => clubsToSort.OrderBy(c => c.NumberOfCourts),
                 ClubSorting.NumberOfCourtsDescending => clubsToSort.OrderByDescending(c => c.NumberOfCourts),
-                ClubSorting.RatingAscending => clubsToSort.OrderBy(c => c.ClubReviews.Any() ? c.ClubReviews.Average(r => r.Rate) : 0),
-                ClubSorting.RatingDescending => clubsToSort.OrderByDescending(c => c.ClubReviews.Any() ? c.ClubReviews.Average(r => r.Rate) : 0),
+                ClubSorting.RatingAscending => clubsToSort.OrderBy(c => c.Reviews.Any() ? c.Reviews.Average(r => r.Rate) : 0),
+                ClubSorting.RatingDescending => clubsToSort.OrderByDescending(c => c.Reviews.Any() ? c.Reviews.Average(r => r.Rate) : 0),
                 _ => clubsToSort.OrderByDescending(c => c.Id)
             };
 
@@ -275,7 +263,7 @@ namespace GameSetBook.Core.Services
             }
 
             var clubs = await clubsToSort
-                .Include(c => c.ClubReviews)
+                .Include(c => c.Reviews)
                 .Skip((currentPage - 1) * clubsPerPage)
                 .Take(clubsPerPage)
                 .Select(c => new ClubServiceViewModel()

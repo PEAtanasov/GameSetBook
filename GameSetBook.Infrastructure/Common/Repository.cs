@@ -80,7 +80,7 @@ namespace GameSetBook.Infrastructure.Common
         /// <returns></returns>
         public void Delete<T>(T entity) where T : class, IDeletable
         {
-            entity.IsDeleted = false;
+            entity.IsDeleted = true;
             entity.DeletedOn = DateTime.UtcNow;
         }
 
@@ -92,7 +92,7 @@ namespace GameSetBook.Infrastructure.Common
         /// <returns></returns>
         void IRepository.UnDelete<T>(T entity)
         {
-            entity.IsDeleted = true;
+            entity.IsDeleted = false;
             entity.DeletedOn = DateTime.UtcNow;
         }
 
@@ -132,18 +132,7 @@ namespace GameSetBook.Infrastructure.Common
         /// <typeparam name="T">type of item</typeparam>
         /// <param name="id">item identifier</param>
         /// <returns></returns>
-        public async Task<T?> GetByIdAsync<T>(int id) where T : class
-        {
-            return await DbSet<T>().FindAsync(id);
-        }
-
-        /// <summary>
-        /// Returns item with given id
-        /// </summary>
-        /// <typeparam name="T">type of item</typeparam>
-        /// <param name="id">item identifier</param>
-        /// <returns></returns>
-        public async Task<T?> GetByIdAsync<T>(string id) where T : class
+        public async Task<T?> GetByIdAsync<T>(object id) where T : class
         {
             return await DbSet<T>().FindAsync(id);
         }

@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.IO;
+using System;
+
 
 using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Models.Admin.Club;
@@ -186,6 +189,9 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             string uniqueFileName = $"{modelName.Replace(' ', '_')}_logo{Path.GetExtension(clubLogoImage.FileName)}";
 
             string filePath = Path.Combine(uploadPath, uniqueFileName);
+
+
+
             var relativePath = Path.Combine(imagePath, uniqueFileName).Replace('\\', '/');
 
             using (var stream = new FileStream(filePath, FileMode.Create))

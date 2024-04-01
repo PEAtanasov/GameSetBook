@@ -20,7 +20,7 @@ namespace GameSetBook.Infrastructure.Models
         {
 
             Courts = new List<Court>();
-            ClubReviews = new List<ClubReview>();
+            Reviews = new List<Review>();
         }
         /// <summary>
         /// Club identifier
@@ -170,12 +170,12 @@ namespace GameSetBook.Infrastructure.Models
         {
             get
             {
-                if (ClubReviews == null || !ClubReviews.Any())
+                if (Reviews == null || !Reviews.Any())
                 {
                     return 0;
                 }
 
-                return Math.Round(ClubReviews.Average(x => x.Rate), 1);
+                return Math.Round(Reviews.Average(x => x.Rate), 1);
             }
         }
 
@@ -191,7 +191,7 @@ namespace GameSetBook.Infrastructure.Models
 
         public virtual ICollection<Court> Courts { get; set; }
 
-        public virtual ICollection<ClubReview> ClubReviews { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
        
     }
 }

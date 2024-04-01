@@ -13,15 +13,7 @@ namespace GameSetBook.Infrastructure.Common
         /// <typeparam name="T">type of item</typeparam>
         /// <param name="id">item identifier</param>
         /// <returns></returns>
-        Task<T?> GetByIdAsync<T>(int id) where T : class;
-
-        /// <summary>
-        /// Returns item with given id
-        /// </summary>
-        /// <typeparam name="T">type of item</typeparam>
-        /// <param name="id">item identifier</param>
-        /// <returns></returns>
-        Task<T?> GetByIdAsync<T>(string id) where T : class;
+        Task<T?> GetByIdAsync<T>(object id) where T : class;
 
         /// <summary>
         /// Adding item in the database

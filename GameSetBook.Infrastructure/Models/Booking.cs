@@ -112,5 +112,7 @@ namespace GameSetBook.Infrastructure.Models
         public int CourtId { get; set; }
 
         public virtual Court Court { get; set; } = null!;
+
+        public virtual Review? Review { get; set; }
     }
 }

@@ -18,15 +18,13 @@ namespace GameSetBook.Infrastructure.Data
         public DbSet<Booking> Bookings { get; set; } = null!;
         public DbSet<City> Cities { get; set; } = null!;
         public DbSet<Club> Clubs { get; set; } = null!;
-        public DbSet<ClubReview> ClubReviews { get; set; } = null!;
+        public DbSet<Review> Reviews { get; set; } = null!;
         public DbSet<Country> Countries { get; set; } = null!;
         public DbSet<Court> Courts { get; set; } = null!;
-        //public DbSet<Message> Messages { get; set; } = null!;
-        //public DbSet<Tournament>  Tournaments { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new ApplicationUserUserConfiguration());
+            builder.ApplyConfiguration(new ApplicationUserConfiguration());
             builder.ApplyConfiguration(new RoleConfiguration());
             builder.ApplyConfiguration(new UserRoleConfiguration());
             builder.ApplyConfiguration(new CountryConfiguration());
@@ -34,9 +32,7 @@ namespace GameSetBook.Infrastructure.Data
             builder.ApplyConfiguration(new ClubConfiguration());  
             builder.ApplyConfiguration(new CourtConfiguration());
             builder.ApplyConfiguration(new BookingConfiguration());
-            builder.ApplyConfiguration(new ClubReviewConfiguration());
-            //builder.ApplyConfiguration(new TournamentConfiguration());
-            //builder.ApplyConfiguration(new MessageConfiguration());
+            builder.ApplyConfiguration(new ReviewConfiguration());
 
             base.OnModelCreating(builder);
         }

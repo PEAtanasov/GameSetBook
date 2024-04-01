@@ -12,7 +12,7 @@ namespace GameSetBook.Infrastructure.Models
     /// Club's review entity
     /// </summary>
     [Comment("Club's review entity")]
-    public class ClubReview
+    public class Review
     {
         /// <summary>
         /// Review identifier
@@ -64,5 +64,15 @@ namespace GameSetBook.Infrastructure.Models
         public string ReviewerId { get; set; } = string.Empty;
 
         public virtual ApplicationUser Reviewer { get; set; } = null!;
+
+        /// <summary>
+        /// Current review's booking identifier
+        /// </summary>
+        [Required]
+        [ForeignKey(nameof(Booking))]
+        [Comment("Current review's booking identifier")]
+        public int BookingId { get; set; }
+
+        public Booking Booking { get; set; } = null!;
     }
 }
