@@ -105,7 +105,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            await clubService.SoftDeleteAsync(id);
+            await clubService.DeleteAsync(id);
 
             return RedirectToAction("index", "Home");
         }

@@ -1,12 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-
+﻿using GameSetBook.Common.Enums.EnumExtensions;
 using GameSetBook.Core.Contracts;
+using GameSetBook.Core.Models.Booking;
 using GameSetBook.Core.Models.Court;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
-using static GameSetBook.Common.ErrorMessageConstants;
-using GameSetBook.Common.Enums.EnumExtensions;
-using GameSetBook.Core.Models.Booking;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace GameSetBook.Core.Services
 {

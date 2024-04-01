@@ -20,6 +20,8 @@ namespace GameSetBook.Core.Contracts.Admin
 
         Task<string> ApproveAsync(int id);
 
-        Task SoftDeleteAsync(int id);
+        Task DeleteAsync(int id);
+
+        Task HardDelete(int id);
     }
 }

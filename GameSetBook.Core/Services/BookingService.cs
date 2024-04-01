@@ -93,7 +93,7 @@ namespace GameSetBook.Core.Services
             var booking = await repository.GetAll<Booking>()
                 .FirstAsync(b => b.Id == id);
 
-           // booking.IsDeleted = true;
+            // booking.IsDeleted = true;
             //booking.DeletedOn = DateTime.Now;
             repository.Delete(booking);
 
@@ -113,7 +113,7 @@ namespace GameSetBook.Core.Services
                .AnyAsync(b => b.Id == id);
         }
 
-        public async Task<bool> IsOwnerAllowedToEdit(int id, string ownerId)
+        public async Task<bool> IsClubOwnerAllowedToEdit(int id, string ownerId)
         {
             return await repository.GetAllReadOnly<Booking>()
                 .Where(c => c.Court.Club.ClubOwnerId == ownerId)
@@ -123,7 +123,7 @@ namespace GameSetBook.Core.Services
         public async Task<AllBookingsSortingModel> GetBookingSortingServiceModelAsync(AllBookingsSortingModel queryModel, string userId)
         {
             var bookingToSort = repository.GetAllReadOnly<Booking>()
-                .Where(b => b.ClientId == userId && b.IsBookedByOwnerOrAdmin == false && b.Court.IsActive==true);
+                .Where(b => b.ClientId == userId && b.IsBookedByOwnerOrAdmin == false && b.Court.IsActive == true);
 
             if (!string.IsNullOrEmpty(queryModel.SearchTerm))
             {
@@ -215,6 +215,22 @@ namespace GameSetBook.Core.Services
             }
 
             return true;
+        }
+
+        public async Task<bool> IsUserClientOfBooking(string clientId, int id)
+        {
+            return await repository.GetAllReadOnly<Booking>()
+                .AnyAsync(b => b.ClientId == clientId && b.Id == id);
+        }
+
+        public async Task<bool> BookingHasReview(int bookingId)
+        {
+            var booking = await repository.GetAllReadOnly<Booking>()
+                .Where(b => b.Id == bookingId)
+                .Include(b => b.Review)
+                .FirstAsync();
+
+            return booking.Review != null;
         }
     }
 }

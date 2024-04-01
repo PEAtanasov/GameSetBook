@@ -44,5 +44,7 @@ namespace GameSetBook.Core.Contracts
         Task<bool> ClubHasCourts(int clubId);
 
         Task<int> NumberOfCourtsAsync(int clubId);
+
+        Task<int?> GetClubIdByBookingId(int bookingId);
     }
 }

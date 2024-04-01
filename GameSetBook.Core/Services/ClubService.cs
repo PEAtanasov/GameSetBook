@@ -1,12 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-using GameSetBook.Core.Contracts;
+﻿using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Enums;
-using GameSetBook.Core.Models.City;
 using GameSetBook.Core.Models.Club;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
-using GameSetBook.Core.Models.Court;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameSetBook.Core.Services
 {
@@ -127,7 +124,7 @@ namespace GameSetBook.Core.Services
                 RegisteredOn = DateTime.Now,
             };
 
-            if (String.IsNullOrWhiteSpace(model.LogoUrl))
+            if (string.IsNullOrWhiteSpace(model.LogoUrl))
             {
                 model.LogoUrl = Common.ImageSource.DefaultClubLogoUrl;
             }
@@ -319,6 +316,19 @@ namespace GameSetBook.Core.Services
                 .FirstAsync(c => c.Id == clubId);
 
             return club.NumberOfCourts;
+        }
+
+        public async Task<int?> GetClubIdByBookingId(int bookingId)
+        {
+            var club = await repository.GetAllReadOnly<Club>()
+                .FirstOrDefaultAsync(c => c.Courts.Any(ct => ct.Bookings.Any(b => b.Id == bookingId)));
+
+            if (club == null)
+            {
+                return null;
+            }
+
+            return club.Id;
         }
     }
 }

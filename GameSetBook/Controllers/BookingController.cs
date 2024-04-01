@@ -210,7 +210,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if (!await bookingService.IsOwnerAllowedToEdit(id, User.Id()))
+            if (!await bookingService.IsClubOwnerAllowedToEdit(id, User.Id()))
             {
                 return Unauthorized();
             }
@@ -233,7 +233,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if (!await bookingService.IsOwnerAllowedToEdit(model.Id, User.Id()))
+            if (!await bookingService.IsClubOwnerAllowedToEdit(model.Id, User.Id()))
             {
                 return Unauthorized();
             }
@@ -258,7 +258,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if (!await bookingService.IsOwnerAllowedToEdit(model.Id, User.Id()))
+            if (!await bookingService.IsClubOwnerAllowedToEdit(model.Id, User.Id()))
             {
                 return Unauthorized();
             }

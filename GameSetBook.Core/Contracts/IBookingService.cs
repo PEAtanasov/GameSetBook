@@ -19,12 +19,16 @@ namespace GameSetBook.Core.Contracts
 
         Task<bool> BookingExistById(int id);
 
-        Task<bool> IsOwnerAllowedToEdit(int id, string ownerId);
+        Task<bool> IsClubOwnerAllowedToEdit(int id, string ownerId);
 
         Task<AllBookingsSortingModel> GetBookingSortingServiceModelAsync(AllBookingsSortingModel queryModel, string userId);
 
         Task<bool> IsBookingClient(int bookingId, string userId);
 
         Task<bool> IsCancelable(int bookingId);
+
+        Task<bool> IsUserClientOfBooking(string clientId, int id);
+
+        Task<bool> BookingHasReview(int bookingId);
     }
 }

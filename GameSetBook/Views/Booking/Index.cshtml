@@ -127,8 +127,7 @@
                     <th scope="col">Price</th>
                     <th scope="col">Club Name</th>
                     <th scope="col">Court Name</th>
-                    @* <th scope="col">Booked On</th> *@
-                    <th scope="col"></th>
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
@@ -157,6 +156,9 @@
                             <div class="row btn-group">
                                 <div class="col">
                                     <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id" class="btn btn-primary">Details</a>
+                                </div>
+                                <div class="col">
+                                    <a asp-controller="Review" asp-action="AddReview" asp-route-bookingId="@booking.Id" class="btn btn-primary">Add Review</a>
                                 </div>
                                 <div class="col">
                                     <button type="button" class="btn btn-danger @(isCancelable ? string.Empty : "disabled" )" data-bs-toggle="modal" data-bs-target="#deleteBookingModal-@booking.Id">Cancel</button>

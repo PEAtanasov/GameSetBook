@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-
+﻿using GameSetBook.Common.Enums.EnumExtensions;
 using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Models.Admin.Club;
+using GameSetBook.Core.Models.Admin.Court;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
-using GameSetBook.Core.Models.Admin.Court;
-using GameSetBook.Common.Enums.EnumExtensions;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace GameSetBook.Core.Services.Admin
 {
@@ -114,7 +114,7 @@ namespace GameSetBook.Core.Services.Admin
             return clubOwnerId;
         }
 
-        public async Task SoftDeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             var club = await repository.GetAll<Club>()
                 .Include(c => c.Courts)
@@ -126,6 +126,19 @@ namespace GameSetBook.Core.Services.Admin
             }
 
             repository.Delete(club);
+
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task HardDelete(int id)
+        {
+            var club = await repository.GetAllWithDeleted<Club>()
+                .Include(c => c.Courts)
+                .ThenInclude(ct=>ct.Bookings)
+                .Include(c=>c.Reviews)
+                .FirstAsync(c => c.Id == id);
+
+            repository.HardDelete(club);
 
             await repository.SaveChangesAsync();
         }
