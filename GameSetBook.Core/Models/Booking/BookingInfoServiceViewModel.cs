@@ -15,5 +15,7 @@
         public string ClubName { get; set; } = string.Empty;
 
         public string CourtName {  get; set; } = string.Empty;
+
+        public int? ReviewId { get; set; } = int.MaxValue;
     }
 }

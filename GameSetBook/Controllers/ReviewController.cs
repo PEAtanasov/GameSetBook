@@ -96,5 +96,51 @@ namespace GameSetBook.Web.Controllers
 
             return RedirectToAction("Index","Booking");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Revise(int id)
+        {
+            if (!await reviewService.ExistAsync(id))
+            {
+                return BadRequest();
+            }
+
+            if (!await reviewService.IsTheReviewer(id,User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            var model = await reviewService.GetReviseModelAsync(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Revise(ReviewFormModel model)
+        {
+            if (!await reviewService.ExistAsync(model.Id))
+            {
+                return BadRequest();
+            }
+
+            if (model.ReviewerId!=User.Id())
+            {
+                return Unauthorized();
+            }
+
+            if (!await reviewService.IsTheReviewer(model.Id, User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await reviewService.ReviseAsync(model);
+
+            return RedirectToAction("Index", "Booking");
+        }
     }
 }

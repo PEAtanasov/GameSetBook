@@ -9,6 +9,11 @@ namespace GameSetBook.Core.Models.Review
     public class ReviewFormModel
     {
         /// <summary>
+        /// Review identifier
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Review title
         /// </summary>
         [Required(ErrorMessage = RequiredMessage)]

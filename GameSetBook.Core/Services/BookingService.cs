@@ -178,7 +178,8 @@ namespace GameSetBook.Core.Services
                     Date = c.BookingDate,
                     Hour = c.Hour,
                     Price = c.Price,
-                    BookdedOn = c.BookedOn
+                    BookdedOn = c.BookedOn,
+                    ReviewId = c.Review!=null ? c.Review.Id : null
                 })
                 .ToListAsync();
 

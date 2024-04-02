@@ -31,5 +31,50 @@ namespace GameSetBook.Core.Services
 
             await repository.SaveChangesAsync();
         }
+
+        public async Task<bool> ExistAsync(int reviewId)
+        {
+            return await repository.GetAllReadOnly<Review>()
+                .AnyAsync(r => r.Id == reviewId);
+        }
+
+        public async Task<bool> IsTheReviewer(int reviewId, string userId)
+        {
+            var review = await repository.GetAllReadOnly<Review>()
+                .FirstAsync(r => r.Id == reviewId);
+
+            return review.ReviewerId == userId;
+        }
+
+        public async Task<ReviewFormModel> GetReviseModelAsync(int reviewId)
+        {
+            var review = await repository.GetAllReadOnly<Review>()
+                .Where(r => r.Id == reviewId)
+                .Select(r => new ReviewFormModel()
+                {
+                    Id = r.Id,
+                    ReviewerId = r.ReviewerId,
+                    BookingId = r.BookingId,
+                    ClubId = r.ClubId,
+                    Description = r.Description,
+                    Rate = r.Rate,
+                    Title = r.Title
+                })
+                .FirstAsync();
+
+            return review;
+        }
+
+        public async Task ReviseAsync(ReviewFormModel model)
+        {
+            var review = await repository.GetAll<Review>()
+                .FirstAsync(r => r.Id == model.Id);
+
+            review.Title=model.Title;
+            review.Description=model.Description;
+            review.Rate = model.Rate;
+
+            await repository.SaveChangesAsync(); 
+        }
     }
 }
