@@ -2,15 +2,8 @@
 
 @{
     ViewData["Title"] = "Club Details";
-    bool isAprooved = (bool)(ViewData["IsClubAprooved"] ?? false);
     var courtNumber = 1;
 }
-
-@* <div class="d-flex bd-highlight mb-3">
-    <div class="p-2 bd-highlight"><a class="btn  btn-primary @(isAprooved ? string.Empty : "disabled" )" asp-area="" asp-controller="Club" asp-action="MyClubSchedule" asp-route-id="@Model.ClubDetailsAndInfo.ClubId">Club's schedule</a></div>
-    <div class="p-2 bd-highlight"><a class="btn btn-primary " asp-area="" asp-controller="Club" asp-action="Edit" asp-route-id="@Model.ClubDetailsAndInfo.ClubId">Edit club information</a></div>
-    <div class="p-2 bd-highlight"><a class="btn btn-primary @(isAprooved ? string.Empty : "disabled" )" asp-area="" asp-controller="Tournament" asp-action="Create">Create a tournament</a></div>
-</div> *@
 
 @await Component.InvokeAsync(nameof(ClubOwnerMenuComponent))
 
@@ -19,12 +12,12 @@
         <div class="col-md-3">
             <div class="left-column">
                 <!-- Left part: Render _ClubInfoPartial.cshtml -->
-                <partial name="_ClubInfoPartial" model="Model.ClubDetailsAndInfo.Info" />
+                <partial name="_ClubInfoPartial" model="Model.Info" />
             </div>
         </div>
         <div class="col-md-9">
             <!-- Right part: Display other club details -->
-            <partial name="_ClubDetailsPartial" model="Model.ClubDetailsAndInfo.Details" />
+            <partial name="_ClubDetailsPartial" model="Model.Details" />
         </div>
     </div>
 </div>

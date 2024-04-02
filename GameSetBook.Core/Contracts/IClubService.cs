@@ -17,8 +17,6 @@ namespace GameSetBook.Core.Contracts
 
         Task<int> GetClubIdByNameAsync(string name);
 
-        Task<ClubDetailsAndInfoViewModel> GetClubDetailsAndInfoAsync(int id);
-
         Task<ClubDetailsViewModel> GetClubDetailsAsync(int id);
 
         Task<ClubInfoViewModel> GetClubIfnoAsync(int id);

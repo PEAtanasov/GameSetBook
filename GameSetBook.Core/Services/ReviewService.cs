@@ -76,5 +76,22 @@ namespace GameSetBook.Core.Services
 
             await repository.SaveChangesAsync(); 
         }
+
+        public async Task<IEnumerable<ReviewViewModel>> GetClubReviews(int clubId)
+        {
+            var reviews = await repository.GetAllReadOnly<Review>()
+                .Where(r=>r.ClubId==clubId)
+                .OrderByDescending(r => r.Id)
+                .Select(r=> new ReviewViewModel()
+                {
+                    Rating = r.Rate,
+                    Title = r.Title,
+                    Description = r.Description,
+                    Author = r.Reviewer.FirstName + " " + r.Reviewer.LastName
+                })
+                .ToListAsync();
+
+            return reviews;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model ClubDetailsAndInfoViewModel
+﻿@model ClubIfnoDetailsReviewsServiceViewModel
 
 @{
     ViewData["Title"] = "Club Details";
@@ -10,12 +10,34 @@
         <div class="col-md-3">
             <div class="left-column">
                 <!-- Left part: Render _ClubInfoPartial.cshtml -->
-                <partial name="_ClubInfoPartial" model="Model.Info" />
+                <partial name="_ClubInfoPartial" model="Model.ClubInfo" />
             </div>
         </div>
         <div class="col-md-9">
             <!-- Right part: Display other club details -->
-            <partial name="_ClubDetailsPartial" model="Model.Details" />
+            <partial name="_ClubDetailsPartial" model="Model.ClubDetails" />
         </div>
     </div>
 </div>
+
+<hr />
+
+@if (Model.Reviews.Any())
+{
+    <h4 class="text-center pb-3">Reviews</h4>
+
+    foreach (var review in Model.Reviews)
+    {
+        <partial name="_ReviewDetailsPartial" model="@review" />
+    }
+
+    <div class="row text-center">
+        <div class="col-4 offset-4">
+            <a asp-controller="Review" asp-action="AllReviews" asp-route-clubId="@Model.ClubId" class="btn btn-primary mb-2 w-100 p-3 fw-bold">All Reviews</a>
+        </div>
+    </div>
+}
+else
+{
+    <h4 class="text-center pb-3">The Club Has No Reviews</h4>
+}

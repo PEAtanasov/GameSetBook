@@ -39,22 +39,6 @@ namespace GameSetBook.Core.Services
             return model;
         }
 
-        public async Task<ClubDetailsAndInfoViewModel> GetClubDetailsAndInfoAsync(int id)
-        {
-            var details = await GetClubDetailsAsync(id);
-
-            var info = await GetClubIfnoAsync(id);
-
-            var model = new ClubDetailsAndInfoViewModel()
-            {
-                ClubId = id,
-                Info = info,
-                Details = details
-            };
-
-            return model;
-        }
-
         public async Task<ClubDetailsViewModel> GetClubDetailsAsync(int id)
         {
             var club = await repository.GetAllReadOnly<Club>()

@@ -20,13 +20,15 @@ namespace GameSetBook.Web.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly ICityService cityService;
+        private readonly IReviewService reviewService;
 
         public ClubController(IClubService clubService,
             ICourtService courtService,
             IWebHostEnvironment webHostEnvironment,
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            ICityService cityService)
+            ICityService cityService,
+            IReviewService reviewService)
         {
             this.clubService = clubService;
             this.courtService = courtService;
@@ -34,6 +36,7 @@ namespace GameSetBook.Web.Controllers
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.cityService = cityService;
+            this.reviewService = reviewService;
         }
 
         [HttpGet]
@@ -66,10 +69,25 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            var model = await clubService.GetClubDetailsAndInfoAsync(id);
+            //var model = await clubService.GetClubDetailsAndInfoAsync(id);
+
+
+            // test
+            var info = await clubService.GetClubIfnoAsync(id);
+
+            var details = await clubService.GetClubDetailsAsync(id);
+
+            var reviews = await reviewService.GetClubReviews(id);
+
+            var model = new ClubIfnoDetailsReviewsServiceViewModel()
+            {
+                ClubId= id,
+                ClubDetails = details,
+                ClubInfo = info,
+                Reviews = reviews.Take(3)
+            };
 
             return View(model);
-
         }
 
         [HttpGet]
@@ -274,12 +292,15 @@ namespace GameSetBook.Web.Controllers
                 return Unauthorized();
             }
 
-            bool isAprooved = await clubService.IsClubAprooved(id);
-            ViewData["IsClubAprooved"] = isAprooved;
+            var details = await clubService.GetClubDetailsAsync(id);
+
+            var info = await clubService.GetClubIfnoAsync(id);
 
             var model = new MyClubDetailsServiceModel()
             {
-                ClubDetailsAndInfo = await clubService.GetClubDetailsAndInfoAsync(id),
+                ClubId = id,
+                Details = details,
+                Info = info,
                 Courts = await courtService.GetAllCourtsDetails(id),
             };
 

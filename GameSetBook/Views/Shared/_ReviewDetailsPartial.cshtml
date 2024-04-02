@@ -1,0 +1,15 @@
+﻿@model ReviewViewModel
+@{
+
+}
+<div class="pb-3">
+    <div class="card">
+        <div class="card-header">
+            Rating: <strong class="@(Model.Rating<=5 ? "text-danger" : "text-success")">@Model.Rating</strong><small> by @(string.IsNullOrWhiteSpace(@Model.Author) ? "Anonymous" : @Model.Author)</small>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">@Model.Title</h5>
+            <p class="card-text">@Model.Description</p>
+        </div>
+    </div>
+</div>
