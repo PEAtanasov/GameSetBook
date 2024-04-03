@@ -105,7 +105,14 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            await clubService.DeleteAsync(id);
+            string clubOwnerId = await clubService.DeleteAsync(id);
+
+            var user = await userManager.FindByIdAsync(clubOwnerId);
+
+            if (await userManager.IsInRoleAsync(user,ClubOwnerRole))
+            {
+                await userManager.RemoveFromRoleAsync(user, ClubOwnerRole);
+            }
 
             return RedirectToAction("index", "Home");
         }

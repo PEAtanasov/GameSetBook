@@ -114,7 +114,7 @@ namespace GameSetBook.Core.Services.Admin
             return clubOwnerId;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<string> DeleteAsync(int id)
         {
             var club = await repository.GetAll<Club>()
                 .Include(c => c.Courts)
@@ -125,9 +125,13 @@ namespace GameSetBook.Core.Services.Admin
                 court.IsActive = false;
             }
 
+            club.IsAproovedByAdmin = false;
+
             repository.Delete(club);
 
             await repository.SaveChangesAsync();
+
+            return club.ClubOwnerId;
         }
 
         public async Task HardDelete(int id)

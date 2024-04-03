@@ -11,6 +11,7 @@
             <div class="left-column">
                 <!-- Left part: Render _ClubInfoPartial.cshtml -->
                 <partial name="_ClubInfoPartial" model="Model.ClubInfo" />
+                <a asp-controller="Club" asp-action="Schedule" asp-route-id="@Model.ClubId" class="btn btn-primary mb-2 w-100 p-3 fw-bold">Book Now</a>
             </div>
         </div>
         <div class="col-md-9">
@@ -33,7 +34,7 @@
 
     <div class="row text-center">
         <div class="col-4 offset-4">
-            <a asp-controller="Review" asp-action="AllReviews" asp-route-clubId="@Model.ClubId" class="btn btn-primary mb-2 w-100 p-3 fw-bold">All Reviews</a>
+            <a asp-controller="Review" asp-action="AllReviews" asp-route-clubId="@Model.ClubId" asp-route-clubName="@Model.ClubInfo.Name" class="btn btn-primary mb-2 w-100 p-3 fw-bold">All Reviews</a>
         </div>
     </div>
 }

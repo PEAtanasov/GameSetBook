@@ -80,7 +80,7 @@ namespace GameSetBook.Core.Services
         public async Task<IEnumerable<ReviewViewModel>> GetClubReviews(int clubId)
         {
             var reviews = await repository.GetAllReadOnly<Review>()
-                .Where(r=>r.ClubId==clubId)
+                .Where(r=>r.ClubId==clubId && r.Booking.IsDeleted==false)
                 .OrderByDescending(r => r.Id)
                 .Select(r=> new ReviewViewModel()
                 {
@@ -92,6 +92,45 @@ namespace GameSetBook.Core.Services
                 .ToListAsync();
 
             return reviews;
+        }
+
+        public async Task<AllReviewsPagingServiceModel> GetReviewsPagingModel(AllReviewsPagingServiceModel model)
+        {
+            var reviews = repository.GetAllReadOnly<Review>()
+                .Where(r => r.ClubId == model.ClubId && r.Booking.IsDeleted==false)
+                .OrderByDescending(r=>r.Id);
+
+            int totalReviews = reviews.Count();
+
+            var maxPage = Math.Ceiling((double)totalReviews / model.ReviewsPerPage);
+
+            int currentPage = model.CurrentPage;
+
+            if (currentPage > maxPage)
+            {
+                currentPage = (int)maxPage;
+            }
+            if (currentPage <= 0)
+            {
+                currentPage = 1;
+            }
+
+            var reviewsToPass = await reviews
+                .Skip((currentPage - 1) * model.ReviewsPerPage)
+                .Take(model.ReviewsPerPage)
+                .Select(r => new ReviewViewModel()
+                {
+                    Rating = r.Rate,
+                    Title = r.Title,
+                    Description = r.Description,
+                    Author = r.Reviewer.FirstName + " " + r.Reviewer.LastName
+                })
+                .ToListAsync();
+
+            model.Reviews = reviewsToPass;
+            model.TotalReviewCount = totalReviews;
+
+            return model;
         }
     }
 }
