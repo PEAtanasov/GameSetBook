@@ -34,9 +34,13 @@ body {
 }
 
 .club-name {
-    max-width: 200px; /* Set maximum width for club name */
+    max-width: 150px; /* Set maximum width for club name */
     overflow: hidden; /* Hide overflowing text */
     white-space: nowrap; /* Prevent text from wrapping */
     text-overflow: ellipsis; /* Add ellipsis (...) for overflow */
+}
+
+.text-12 {
+    font-size: 12px !important;
 }
 
