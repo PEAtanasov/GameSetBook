@@ -15,7 +15,21 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 
 <div class="container col-sm-10 mb-4">
-    <form method="get" class="row g-3">
+    <form id="filterForm" method="get" class="row g-3">
+
+        <div class="col-md-3">
+            <label class="form-label">Sort By</label>
+            <select asp-for="BookingSorting" class="form-select">
+                <option value="0"></option>
+                <option value="1">Hour (Earliest -> Latest)</option>
+                <option value="2">Hour (Latest -> Earliest)</option>
+                <option value="3">Date (Earliest -> Latest)</option>
+                <option value="4">Date (Latest -> Earliest)</option>
+                <option value="5">Price (Low -> High)</option>
+                <option value="6">Price (High -> Low)</option>
+            </select>
+        </div>
+
         <div class="col-md-3">
             <label class="form-label">Date From</label>
             <input asp-for="BookingDateFrom" type="date" class="form-control">
@@ -24,19 +38,6 @@
         <div class="col-md-3">
             <label class="form-label">Date To</label>
             <input asp-for="BookingDateTo" type="date" class="form-control">
-        </div>
-
-        <div class="col-md-3">
-            <label class="form-label">Sort By</label>
-            <select asp-for="BookingSorting" class="form-select">
-                <option value="0">None</option>
-                <option value="1">Hour (Earliest -> Latest)</option>
-                <option value="2">Hour (Latest -> Earliest)</option>
-                <option value="3">Date (Earliest -> Latest)</option>
-                <option value="4">Date (Latest -> Earliest)</option>
-                <option value="5">Price (Low -> High)</option>
-                <option value="6">Price (High -> Low)</option>
-            </select>
         </div>
 
         <div class="col-md-3">

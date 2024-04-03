@@ -23,7 +23,7 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 
 <div class="container col-sm-10 mb-4">
-    <form method="get" class="row g-3">
+    <form id="filterForm" method="get" class="row g-3">
         <div class="col-md-3">
             <label class="form-label">Country</label>
             <select asp-for="Country" class="form-select">
@@ -47,8 +47,16 @@
         </div>
 
         <div class="col-md-3">
-            <label class="form-label">Club Name</label>
-            <input asp-for="SearchTerm" class="form-control" placeholder="Search...">
+            <label class="form-label">Sort By</label>
+            <select asp-for="ClubSorting" class="form-select">
+                <option value="0">Newest</option>
+                <option value="1">Price (Low -> High)</option>
+                <option value="2">Price (High -> Low)</option>
+                <option value="3">Rating (Low -> High)</option>
+                <option value="4">Rating (High -> Low)</option>
+                <option value="5">Number of Courts (Low -> High)</option>
+                <option value="6">Number of Courts (High -> Low)</option>
+            </select>
         </div>
 
         <div class="col-md-3">
@@ -63,19 +71,6 @@
         </div>
 
         <div class="col-md-3">
-            <label class="form-label">Sort By</label>
-            <select asp-for="ClubSorting" class="form-select">
-                <option value="0">Newest</option>
-                <option value="1">Price (Low -> High)</option>
-                <option value="2">Price (High -> Low)</option>
-                <option value="3">Rating (Low -> High)</option>
-                <option value="4">Rating (High -> Low)</option>
-                <option value="5">Number of Courts (Low -> High)</option>
-                <option value="6">Number of Courts (High -> Low)</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
             <label class="form-label">Show Clubs Per Page</label>
             <select asp-for="ClubsPerPage" class="form-select">
                 <option value="5">5</option>
@@ -84,6 +79,12 @@
                 <option value="50">50</option>
                 <option value="100">100</option>
             </select>
+        </div>
+
+
+        <div class="col-md-3">
+            <label class="form-label">Club Name</label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Search...">
         </div>
 
         <div class="col-md-3 d-flex align-items-end">

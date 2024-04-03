@@ -22,7 +22,7 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 
 <div class="container col-sm-10 mb-4">
-    <form method="get" class="row g-3">
+    <form id="filterForm" method="get" class="row g-3">
         <div class="col-md-2">
             <label class="form-label">Country</label>
             <select asp-for="Country" class="form-select">
@@ -45,11 +45,6 @@
         </div>
 
         <div class="col-md-2">
-            <label class="form-label">Club Name</label>
-            <input asp-for="SearchTerm" class="form-control" placeholder="Search...">
-        </div>
-
-        <div class="col-md-2">
             <label class="form-label">Sort By</label>
             <select asp-for="ClubSorting" class="form-select">
                 <option value="0">Newest</option>
@@ -61,12 +56,15 @@
                 <option value="6">Number of Courts (High -> Low)</option>
             </select>
         </div>
-
-        <div class="col-md-3 d-flex align-items-end">
-            <div class="form-group mt-3">
+        <div class="col-md-3">
+            <label class="form-label">Club Name</label>
+            <div class="input-group">
+                <input asp-for="SearchTerm" class="form-control" placeholder="Search...">
                 <button type="submit" class="btn btn-primary me-2">Search</button>
-                <a asp-action="Index" class="btn btn-secondary">Back to full list</a>
             </div>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <a asp-action="Index" class="btn btn-secondary">Back to full list</a>
         </div>
         <div class="row">
             <div class="col-md-2">
@@ -135,8 +133,6 @@ else
         </div>
     </div>
 
-
-
     <div class="d-flex justify-content-center mt-4">
         <nav>
             <ul class="pagination">
@@ -146,6 +142,7 @@ else
                        asp-action="Index"
                        asp-route-currentPage="@previousPage"
                        asp-route-city="@Model.City"
+                       asp-route-country="@Model.Country"
                        asp-route-searchTerm="@Model.SearchTerm"
                        asp-route-clubsPerPage="@Model.ClubsPerPage"
                        asp-route-clubSorting="@((int)Model.ClubSorting)">Previous</a>
@@ -159,6 +156,7 @@ else
                            asp-action="Index"
                            asp-route-currentPage="@i"
                            asp-route-city="@Model.City"
+                           asp-route-country="@Model.Country"
                            asp-route-searchTerm="@Model.SearchTerm"
                            asp-route-clubsPerPage="@Model.ClubsPerPage"
                            asp-route-clubSorting="@((int)Model.ClubSorting)">
@@ -178,6 +176,7 @@ else
                        asp-action="Index"
                        asp-route-currentPage="@(Model.CurrentPage+1)"
                        asp-route-city="@Model.City"
+                       asp-route-country="@Model.Country"
                        asp-route-searchTerm="@Model.SearchTerm"
                        asp-route-clubsPerPage="@Model.ClubsPerPage"
                        asp-route-clubSorting="@((int)Model.ClubSorting)">Next</a>
@@ -187,3 +186,16 @@ else
     </div>
 }
 
+@* <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var selectElements = document.querySelectorAll('#filterForm select');
+
+        selectElements.forEach(function (select) {
+            select.addEventListener('change', function () {
+                document.getElementById('filterForm').submit();
+            });
+        });
+    });
+</script> *@
+
+@* <script src="~/js/filter.js"></script> *@

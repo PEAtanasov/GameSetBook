@@ -125,6 +125,7 @@
                             <span>Not Active</span>
                         }
                     </td>
+                    <td><a asp-area="Admin" asp-controller="Court" asp-action="Edit" asp-route-id="@court.Id" class="btn btn-primary mb-2 w-100 p-2 fw-bold">Edit</a></td>
                 </tr>
             }
         </tbody>
@@ -157,7 +158,6 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <!-- Form for submitting -->
                             <form asp-area="Admin" asp-controller="Club" asp-action="Delete" method="post">
                                 <input type="hidden" asp-for="Id" />
                                 <button type="submit" class="btn btn-danger">Delete</button>
@@ -166,13 +166,6 @@
                     </div>
                 </div>
             </div>
-
-            @* <form asp-area="Admin" asp-controller="Club" asp-action="Delete" method="post">
-        <input type="hidden" asp-for="Id" />
-        <div class="mb-3 text-center">
-        <input class="btn btn-danger mb-2 w-100 p-3 fw-bold" type="submit" value="Delete" />
-        </div>
-        </form> *@
         </div>
     </div>
 }

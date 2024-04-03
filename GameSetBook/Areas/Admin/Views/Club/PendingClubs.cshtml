@@ -38,7 +38,7 @@
                         <td>@(club.ClubOwnerStatus ? "Active" : "Not Active")</td>
                         <td>@club.RegisteredOn.ToShortDateString() @club.RegisteredOn.Date.ToShortTimeString()</td>
                         <td>
-                            <a asp-area="Admin" asp-controller="Club" asp-action="Approve" asp-route-id="@club.Id" class="btn btn-primary">Approve</a>
+                            <a asp-area="Admin" asp-controller="Club" asp-action="Approve" asp-route-id="@club.Id" class="btn btn-primary mb-2 w-100 p-2 fw-bold">Approve</a>
                         </td>
                     </tr>
                 }
