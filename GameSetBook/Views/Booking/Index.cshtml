@@ -2,15 +2,15 @@
 @model AllBookingsSortingModel
 @{
     ViewBag.Title = "Your Bookings";
+
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+    var maxPage = Math.Ceiling((double)Model.TotalBookingCount / Model.BookingsPerPage);
 }
 
-@* @if (TempData.ContainsKey("Error"))
-{
-    <div class="alert alert-danger alert-dismissible fade show text-center mx-auto col-xl-6" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        @TempData["Error"]
-    </div>
-} *@
 
 <h2 class="text-center">@ViewBag.Title</h2>
 
@@ -47,152 +47,146 @@
             </div>
         </div>
     </form>
-</div>
-<div class="text-center">
-    <a asp-action="Index" class="btn btn-secondary">Back to full list</a>
-</div>
-
-@{
-    var previousPage = Model.CurrentPage - 1;
-    if (previousPage < 1)
-    {
-        previousPage = 1;
-    }
-    var maxPage = Math.Ceiling((double)Model.TotalBookingCount / Model.BookingsPerPage);
-}
-
-
-<div class="d-flex justify-content-center mt-4">
-    <nav>
-        <ul class="pagination">
-            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : string.Empty)">
-                <a class="page-link"
-                   asp-controller="Booking"
-                   asp-action="Index"
-                   asp-route-CurrentPage="@previousPage"
-                   asp-route-BookingDateFrom="@Model.BookingDateFrom"
-                   asp-route-BookingDateTo="@Model.BookingDateTo"
-                   asp-route-SearchTerm="@Model.SearchTerm"
-                   asp-route-BookingSorting="@((int)Model.BookingSorting)">Previous</a>
-            </li>
-
-            @for (int i = 1; i <= maxPage; i++)
-            {
-                <li class="page-item">
-                    <a class="page-link @(Model.CurrentPage == i ? "active" : string.Empty)"
-                       asp-controller="Booking"
-                       asp-action="Index"
-                       asp-route-CurrentPage="@i"
-                       asp-route-BookingDateFrom="@Model.BookingDateFrom"
-                       asp-route-BookingDateTo="@Model.BookingDateTo"
-                       asp-route-SearchTerm="@Model.SearchTerm"
-                       asp-route-BookingSorting="@((int)Model.BookingSorting)">
-                        @i
-                    </a>
-                </li>
-            }
-
-            @{
-                var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
-                !Model.Bookings.Any();
-            }
-
-            <li class="page-item @(shouldButtonBeDisabled ? "disabled" : string.Empty)">
-                <a class="page-link"
-                   asp-controller="Booking"
-                   asp-action="Index"
-                   asp-route-CurrentPage="@(Model.CurrentPage+1)"
-                   asp-route-BookingDateFrom="@Model.BookingDateFrom"
-                   asp-route-BookingDateTo="@Model.BookingDateTo"
-                   asp-route-SearchTerm="@Model.SearchTerm"
-                   asp-route-BookingSorting="@((int)Model.BookingSorting)">Next</a>
-            </li>
-        </ul>
-    </nav>
+    <div class="text-center mt-3">
+        <a asp-action="Index" class="btn btn-secondary">Back to full list</a>
+    </div>
 </div>
 
 @if (!Model.Bookings.Any())
 {
     <h2 class="text-center">No bookings found by the given criteria!</h2>
 }
-
-<div class="container col-sm-10">
-    <div class="text-center row">
-        <table class="table table-striped table-responsive-md">
-            <thead class=" table-dark">
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Hour</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Club Name</th>
-                    <th scope="col">Court Name</th>
-                    <th scope="col">Action</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                @foreach (var booking in Model.Bookings)
-                {
-                    var isCancelable = true;
-                    if (booking.Date.Date < DateTime.Now.Date)
+else
+{
+    <div class="container col-sm-10">
+        <div class="text-center row">
+            <table class="table table-striped table-responsive-md">
+                <thead class=" table-dark">
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Hour</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Club Name</th>
+                        <th scope="col">Court Name</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    @foreach (var booking in Model.Bookings)
                     {
-                        isCancelable = false;
-                    }
-                    if (booking.Date.Date == DateTime.Now.Date)
-                    {
-                        if (booking.Hour - DateTime.Now.Hour <= 2)
+                        var isCancelable = true;
+                        if (booking.Date.Date < DateTime.Now.Date)
                         {
                             isCancelable = false;
                         }
-                    }
-                    <tr>
-                        <td></td>
-                        <td>@booking.Date.ToShortDateString()</td>
-                        <td>@booking.Hour</td>
-                        <td>@booking.Price</td>
-                        <td class="club-name">@booking.ClubName</td>
-                        <td>@booking.CourtName</td>
-                        <td>
-                            <div class="d-flex flex-row justify-content-around">
-                                <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id" class="btn btn-sm btn-primary fw-bold">Details</a>
-                                @if (booking.ReviewId == null)
-                                {
-                                    <a asp-controller="Review" asp-action="AddReview" asp-route-bookingId="@booking.Id" class="btn btn-sm btn-success fw-bold">Add Review</a>
-                                }
-                                else
-                                {
+                        if (booking.Date.Date == DateTime.Now.Date)
+                        {
+                            if (booking.Hour - DateTime.Now.Hour <= 2)
+                            {
+                                isCancelable = false;
+                            }
+                        }
+                        <tr>
+                            <td></td>
+                            <td>@booking.Date.ToShortDateString()</td>
+                            <td>@booking.Hour</td>
+                            <td>@booking.Price</td>
+                            <td class="club-name">@booking.ClubName</td>
+                            <td>@booking.CourtName</td>
+                            <td>
+                                <div class="d-flex flex-row justify-content-around">
+                                    <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id" class="btn btn-sm btn-primary fw-bold">Details</a>
+                                    @if (booking.ReviewId == null)
+                                    {
+                                        <a asp-controller="Review" asp-action="AddReview" asp-route-bookingId="@booking.Id" class="btn btn-sm btn-success fw-bold">Add Review</a>
+                                    }
+                                    else
+                                    {
 
-                                    <a asp-controller="Review" asp-action="Revise" asp-route-id="@booking.ReviewId" class="btn btn-sm btn-success fw-bold">Revise Review</a>
-                                }
-                                <button type="button" class="btn btn-sm btn-danger @(isCancelable ? string.Empty : "disabled" )" data-bs-toggle="modal" data-bs-target="#deleteBookingModal-@booking.Id">Cancel</button>
-                            </div>
-                            <!-- Modal -->
-                            <div class="modal fade" id="deleteBookingModal-@booking.Id" tabindex="-1" aria-labelledby="deleteBookingModalLabel-@booking.Id" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteBookingModalLabel-@booking.Id">Confirm Cancellation</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure you want to cancel this booking?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <form asp-action="Cancel" method="post">
-                                                <input type="hidden" name="id" value="@booking.Id" />
-                                                <button type="submit" class="btn btn-danger">Confirm Cancel</button>
-                                            </form>
+                                        <a asp-controller="Review" asp-action="Revise" asp-route-id="@booking.ReviewId" class="btn btn-sm btn-success fw-bold">Revise Review</a>
+                                    }
+                                    <button type="button" class="btn btn-sm btn-danger @(isCancelable ? string.Empty : "disabled" )" data-bs-toggle="modal" data-bs-target="#deleteBookingModal-@booking.Id">Cancel</button>
+                                </div>
+                                <!-- Modal -->
+                                <div class="modal fade" id="deleteBookingModal-@booking.Id" tabindex="-1" aria-labelledby="deleteBookingModalLabel-@booking.Id" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteBookingModalLabel-@booking.Id">Confirm Cancellation</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to cancel this booking?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <form asp-action="Cancel" method="post">
+                                                    <input type="hidden" name="id" value="@booking.Id" />
+                                                    <button type="submit" class="btn btn-danger">Confirm Cancel</button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+
+    <div class="d-flex justify-content-center mt-4">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : string.Empty)">
+                    <a class="page-link"
+                       asp-controller="Booking"
+                       asp-action="Index"
+                       asp-route-CurrentPage="@previousPage"
+                       asp-route-BookingDateFrom="@Model.BookingDateFrom"
+                       asp-route-BookingDateTo="@Model.BookingDateTo"
+                       asp-route-SearchTerm="@Model.SearchTerm"
+                       asp-route-BookingSorting="@((int)Model.BookingSorting)">Previous</a>
+                </li>
+
+                @for (int i = 1; i <= maxPage; i++)
+                {
+                    <li class="page-item">
+                        <a class="page-link @(Model.CurrentPage == i ? "active" : string.Empty)"
+                           asp-controller="Booking"
+                           asp-action="Index"
+                           asp-route-CurrentPage="@i"
+                           asp-route-BookingDateFrom="@Model.BookingDateFrom"
+                           asp-route-BookingDateTo="@Model.BookingDateTo"
+                           asp-route-SearchTerm="@Model.SearchTerm"
+                           asp-route-BookingSorting="@((int)Model.BookingSorting)">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                @{
+                    var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
+                    !Model.Bookings.Any();
+                }
+
+                <li class="page-item @(shouldButtonBeDisabled ? "disabled" : string.Empty)">
+                    <a class="page-link"
+                       asp-controller="Booking"
+                       asp-action="Index"
+                       asp-route-CurrentPage="@(Model.CurrentPage+1)"
+                       asp-route-BookingDateFrom="@Model.BookingDateFrom"
+                       asp-route-BookingDateTo="@Model.BookingDateTo"
+                       asp-route-SearchTerm="@Model.SearchTerm"
+                       asp-route-BookingSorting="@((int)Model.BookingSorting)">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}
+
+
 
 

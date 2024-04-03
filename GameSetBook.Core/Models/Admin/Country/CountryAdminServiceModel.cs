@@ -1,6 +1,6 @@
 ﻿namespace GameSetBook.Core.Models.Admin.Country
 {
-    public class CountryViewModel
+    public class CountryAdminServiceModel
     {
         public int Id { get; set; }
 

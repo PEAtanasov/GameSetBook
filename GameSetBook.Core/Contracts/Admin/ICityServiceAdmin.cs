@@ -5,6 +5,6 @@ namespace GameSetBook.Core.Contracts.Admin
 {
     public interface ICityServiceAdmin
     {
-        Task<IEnumerable<CityAdminViewModel>> GetAllCitiesAsync();
+        Task<IEnumerable<CityAdminServiceModel>> GetAllCitiesAsync();
     }
 }

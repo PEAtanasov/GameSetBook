@@ -198,29 +198,29 @@ namespace GameSetBook.Core.Services
             return club.IsAproovedByAdmin;
         }
 
-        public async Task<ClubSortingServiceModel> GetClubSortingServiceModelAsync(
-            string? city = null,
-            string? searchTerm = null,
-            ClubSorting clubSorting = ClubSorting.Newest,
-            int currentPage = 1,
-            int clubsPerPage = 1)
+        public async Task<AllClubsSortingModel> GetClubSortingServiceModelAsync(AllClubsSortingModel model)
         {
 
             var clubsToSort = repository.GetAllReadOnly<Club>()
                 .Where(c => c.IsAproovedByAdmin);
 
 
-            if (city != null)
+            if (model.Country != null)
             {
-                clubsToSort = clubsToSort.Where(c => c.City.Name == city);
+                clubsToSort = clubsToSort.Where(c => c.City.Country.Name == model.Country);
             }
 
-            if (!string.IsNullOrEmpty(searchTerm))
+            if (model.City != null)
             {
-                clubsToSort = clubsToSort.Where(c => c.Name.ToLower().Contains(searchTerm.ToLower()));
+                clubsToSort = clubsToSort.Where(c => c.City.Name == model.City);
             }
 
-            clubsToSort = clubSorting switch
+            if (!string.IsNullOrEmpty(model.SearchTerm))
+            {
+                clubsToSort = clubsToSort.Where(c => c.Name.ToLower().Contains(model.SearchTerm.ToLower()));
+            }
+
+            clubsToSort = model.ClubSorting switch
             {
                 ClubSorting.PriceAscending => clubsToSort.OrderBy(c => c.Courts.Select(c => c.PricePerHour).OrderBy(ct => ct).First()),
                 ClubSorting.PriceDescending => clubsToSort.OrderByDescending(c => c.Courts.Select(c => c.PricePerHour).OrderBy(ct => ct).First()),
@@ -232,7 +232,10 @@ namespace GameSetBook.Core.Services
             };
 
             int totalClubs = await clubsToSort.CountAsync();
-            var maxPage = Math.Ceiling((double)totalClubs / clubsPerPage);
+            var maxPage = Math.Ceiling((double)totalClubs / model.ClubsPerPage);
+
+            var currentPage = model.CurrentPage;
+
 
             if (currentPage > maxPage)
             {
@@ -245,8 +248,8 @@ namespace GameSetBook.Core.Services
 
             var clubs = await clubsToSort
                 .Include(c => c.Reviews)
-                .Skip((currentPage - 1) * clubsPerPage)
-                .Take(clubsPerPage)
+                .Skip((currentPage - 1) * model.ClubsPerPage)
+                .Take(model.ClubsPerPage)
                 .Select(c => new ClubServiceViewModel()
                 {
                     Id = c.Id,
@@ -261,11 +264,11 @@ namespace GameSetBook.Core.Services
                 })
                 .ToListAsync();
 
-            return new ClubSortingServiceModel()
-            {
-                Clubs = clubs,
-                TotalClubCount = totalClubs
-            };
+            model.Clubs = clubs;
+            model.TotalClubCount = totalClubs;
+
+            return model;
+
         }
 
         public async Task<bool> ClubWithOwnerIdExistAsync(string ownerId)

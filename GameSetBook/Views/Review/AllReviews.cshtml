@@ -4,7 +4,15 @@
 @{
     ViewBag.Title = "All Reviews";
     bool isTheClubOwner = await clubservice.IsTheOwnerOfTheClubAsync(Model.ClubId, User.Id());
+
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+    var maxPage = Math.Ceiling((double)Model.TotalReviewCount / Model.ReviewsPerPage);
 }
+
 
 <h2 class="text-center">@Model.ClubName @ViewBag.Title</h2>
 
@@ -28,6 +36,46 @@
                 {
                     <partial name="_ReviewDetailsPartial" model="@review" />
                 }
+
+                <div class="d-flex justify-content-center mt-4">
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : string.Empty)">
+                                <a class="page-link"
+                                   asp-controller="Review"
+                                   asp-action="AllReviews"
+                                   asp-route-currentPage="@previousPage"
+                                   asp-route-clubId="@Model.ClubId">Previous</a>
+                            </li>
+
+                            @for (int i = 1; i <= maxPage; i++)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link @(Model.CurrentPage == i ? "active" : string.Empty)"
+                                       asp-controller="Review"
+                                       asp-action="AllReviews"
+                                       asp-route-currentPage="@i"
+                                       asp-route-clubId="@Model.ClubId">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+
+                            @{
+                                var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
+                                !Model.Reviews.Any();
+                            }
+
+                            <li class="page-item @(shouldButtonBeDisabled ? "disabled" : string.Empty)">
+                                <a class="page-link"
+                                   asp-controller="Review"
+                                   asp-action="AllReviews"
+                                   asp-route-currentPage="@(Model.CurrentPage+1)"
+                                   asp-route-clubId="@Model.ClubId">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             }
             else
             {
@@ -35,57 +83,6 @@
             }
         </div>
     </div>
-</div>
-
-
-
-@{
-    var previousPage = Model.CurrentPage - 1;
-    if (previousPage < 1)
-    {
-        previousPage = 1;
-    }
-    var maxPage = Math.Ceiling((double)Model.TotalReviewCount / Model.ReviewsPerPage);
-}
-
-<div class="d-flex justify-content-center mt-4">
-    <nav>
-        <ul class="pagination">
-            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : string.Empty)">
-                <a class="page-link"
-                   asp-controller="Review"
-                   asp-action="AllReviews"
-                   asp-route-currentPage="@previousPage"
-                   asp-route-clubId="@Model.ClubId">Previous</a>
-            </li>
-
-            @for (int i = 1; i <= maxPage; i++)
-            {
-                <li class="page-item">
-                    <a class="page-link @(Model.CurrentPage == i ? "active" : string.Empty)"
-                       asp-controller="Review"
-                       asp-action="AllReviews"
-                       asp-route-currentPage="@i"
-                       asp-route-clubId="@Model.ClubId">
-                        @i
-                    </a>
-                </li>
-            }
-
-            @{
-                var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
-                !Model.Reviews.Any();
-            }
-
-            <li class="page-item @(shouldButtonBeDisabled ? "disabled" : string.Empty)">
-                <a class="page-link"
-                   asp-controller="Review"
-                   asp-action="AllReviews"
-                   asp-route-currentPage="@(Model.CurrentPage+1)"
-                   asp-route-clubId="@Model.ClubId">Next</a>
-            </li>
-        </ul>
-    </nav>
 </div>
 
 

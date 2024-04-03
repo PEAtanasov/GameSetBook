@@ -8,12 +8,7 @@ namespace GameSetBook.Core.Contracts
     {
         Task<IEnumerable<ClubServiceViewModel>> GetAllClubsAsync();
 
-        Task<ClubSortingServiceModel> GetClubSortingServiceModelAsync(
-            string? city = null,
-            string? searchTearm = null,
-            ClubSorting clubSorting = ClubSorting.Newest,
-            int currentPage = 1,
-            int clubsPerPage = 1);
+        Task<AllClubsSortingModel> GetClubSortingServiceModelAsync(AllClubsSortingModel model);
 
         Task<int> GetClubIdByNameAsync(string name);
 

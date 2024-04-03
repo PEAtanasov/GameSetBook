@@ -30,9 +30,9 @@ namespace GameSetBook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] AllBookingsSortingModel model)
         {
-            var currentModel = await bookingService.GetBookingSortingServiceModelAsync(model, User.Id());
+            model = await bookingService.GetBookingSortingServiceModelAsync(model, User.Id());
 
-            return View(currentModel);
+            return View(model);
         }
 
         [HttpGet]

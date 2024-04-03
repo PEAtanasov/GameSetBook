@@ -19,6 +19,7 @@ namespace GameSetBook.Web.Extensions
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<ICityService, CityService>();
+            services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<ICourtServiceAdmin, CourtServiceAdmin>();
             services.AddScoped<IClubServiceAdmin, ClubServiceAdmin>();
             services.AddScoped<IBookingServiceAdmin, BookingServiceAdmin>();

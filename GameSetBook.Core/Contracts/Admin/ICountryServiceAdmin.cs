@@ -4,6 +4,6 @@ namespace GameSetBook.Core.Contracts.Admin
 {
     public interface ICountryServiceAdmin
     {
-        Task<IEnumerable<CountryViewModel>> GetAllCountriesAsync();
+        Task<IEnumerable<CountryAdminServiceModel>> GetAllCountriesAsync();
     }
 }

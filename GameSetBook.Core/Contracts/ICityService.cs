@@ -4,6 +4,6 @@ namespace GameSetBook.Core.Contracts
 {
     public interface ICityService
     {
-        Task<IEnumerable<CityViewModel>> GetAllCitiesAsync();
+        Task<IEnumerable<CityServiceModel>> GetAllCitiesAsync();
     }
 }

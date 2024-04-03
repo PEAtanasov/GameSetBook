@@ -16,13 +16,14 @@ namespace GameSetBook.Core.Services
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<CityViewModel>> GetAllCitiesAsync()
+        public async Task<IEnumerable<CityServiceModel>> GetAllCitiesAsync()
         {
             var cities = await repository.GetAllReadOnly<City>()
-                .Select(c => new CityViewModel()
+                .Select(c => new CityServiceModel()
                 {
                     Id = c.Id,
                     Name = c.Name,
+                    CountryName = c.Country.Name
                 }).ToListAsync();
 
             return cities;

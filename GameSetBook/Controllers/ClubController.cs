@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using GameSetBook.Core.Contracts;
+using GameSetBook.Core.Models.Club;
+using GameSetBook.Infrastructure.Models.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-
-using GameSetBook.Core.Contracts;
-using GameSetBook.Core.Models.Club;
 using static GameSetBook.Common.ErrorMessageConstants;
 using static GameSetBook.Common.UserConstants;
-using GameSetBook.Infrastructure.Models.Identity;
 
 namespace GameSetBook.Web.Controllers
 {
@@ -20,6 +19,7 @@ namespace GameSetBook.Web.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly ICityService cityService;
+        private readonly ICountryService countryService;
         private readonly IReviewService reviewService;
 
         public ClubController(IClubService clubService,
@@ -28,6 +28,7 @@ namespace GameSetBook.Web.Controllers
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             ICityService cityService,
+            ICountryService countryService,
             IReviewService reviewService)
         {
             this.clubService = clubService;
@@ -36,6 +37,7 @@ namespace GameSetBook.Web.Controllers
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.cityService = cityService;
+            this.countryService = countryService;
             this.reviewService = reviewService;
         }
 
@@ -43,18 +45,21 @@ namespace GameSetBook.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index([FromQuery] AllClubsSortingModel model)
         {
-            var clubs = await clubService.GetClubSortingServiceModelAsync(
-                model.City,
-                model.SearchTerm,
-                model.ClubSorting,
-                model.CurrentPage,
-                model.ClubsPerPage
-                );
+            model = await clubService.GetClubSortingServiceModelAsync(model);
 
+            var countries = await countryService.GetAllCountriesAsync();
             var cities = await cityService.GetAllCitiesAsync();
-            model.Cities = cities.Select(c => c.Name);
-            model.TotalClubCount = clubs.TotalClubCount;
-            model.Clubs = clubs.Clubs;
+
+            model.Countries = countries.Select(c => c.Name);
+
+            if (model.Country != null)
+            {
+                model.Cities = cities.Where(c => c.CountryName == model.Country).Select(c => c.Name);
+            }
+            else
+            {
+                model.Cities = cities.Select(c => c.Name);
+            }
 
             return View(model);
         }
@@ -81,7 +86,7 @@ namespace GameSetBook.Web.Controllers
 
             var model = new ClubIfnoDetailsReviewsServiceViewModel()
             {
-                ClubId= id,
+                ClubId = id,
                 ClubDetails = details,
                 ClubInfo = info,
                 Reviews = reviews.Take(3)

@@ -16,10 +16,10 @@ namespace GameSetBook.Core.Services.Admin
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<CityAdminViewModel>> GetAllCitiesAsync()
+        public async Task<IEnumerable<CityAdminServiceModel>> GetAllCitiesAsync()
         {
             var cities = await repository.GetAllReadOnly<City>()
-                .Select(c => new CityAdminViewModel()
+                .Select(c => new CityAdminServiceModel()
                 {
                     Id = c.Id,
                     Name = c.Name,
