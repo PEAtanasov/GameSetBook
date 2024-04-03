@@ -1,4 +1,5 @@
 ﻿using GameSetBook.Core.Contracts.Admin;
+using GameSetBook.Core.Models.Admin.City;
 using GameSetBook.Core.Models.City;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
@@ -15,13 +16,14 @@ namespace GameSetBook.Core.Services.Admin
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<CityViewModel>> GetAllCitiesAsync()
+        public async Task<IEnumerable<CityAdminViewModel>> GetAllCitiesAsync()
         {
             var cities = await repository.GetAllReadOnly<City>()
-                .Select(c => new CityViewModel()
+                .Select(c => new CityAdminViewModel()
                 {
                     Id = c.Id,
                     Name = c.Name,
+                    CountryName = c.Country.Name
                 })
                 .ToListAsync();
 

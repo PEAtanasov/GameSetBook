@@ -23,5 +23,7 @@ namespace GameSetBook.Core.Contracts.Admin
         Task<string> DeleteAsync(int id);
 
         Task HardDelete(int id);
+
+        Task<AllClubsAdminSortingModel> GetClubSortingModel(AllClubsAdminSortingModel model);
     }
 }

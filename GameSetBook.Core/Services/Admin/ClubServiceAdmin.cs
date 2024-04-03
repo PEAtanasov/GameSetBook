@@ -1,7 +1,9 @@
 ﻿using GameSetBook.Common.Enums.EnumExtensions;
 using GameSetBook.Core.Contracts.Admin;
+using GameSetBook.Core.Enums;
 using GameSetBook.Core.Models.Admin.Club;
 using GameSetBook.Core.Models.Admin.Court;
+using GameSetBook.Core.Models.Club;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
 
@@ -138,8 +140,8 @@ namespace GameSetBook.Core.Services.Admin
         {
             var club = await repository.GetAllWithDeleted<Club>()
                 .Include(c => c.Courts)
-                .ThenInclude(ct=>ct.Bookings)
-                .Include(c=>c.Reviews)
+                .ThenInclude(ct => ct.Bookings)
+                .Include(c => c.Reviews)
                 .FirstAsync(c => c.Id == id);
 
             repository.HardDelete(club);
@@ -204,15 +206,87 @@ namespace GameSetBook.Core.Services.Admin
             await repository.SaveChangesAsync();
         }
 
-        public void DeleteoImageFile(string path)
+        public async Task<AllClubsAdminSortingModel> GetClubSortingModel(AllClubsAdminSortingModel model)
         {
+            var clubsToSort = repository.GetAllWithDeletedReadOnly<Club>();
 
-            // Check if the file exists before attempting to delete
-            if (File.Exists(path))
+            if (model.Country != null)
             {
-                // Delete the file
-                File.Delete(path);
+                clubsToSort = clubsToSort.Where(c => c.City.Country.Name == model.Country);
             }
+
+            if (model.City != null)
+            {
+                clubsToSort = clubsToSort.Where(c => c.City.Name == model.City);
+            }
+
+            if (!string.IsNullOrEmpty(model.SearchTerm))
+            {
+                clubsToSort = clubsToSort.Where(c => c.Name.ToLower().Contains(model.SearchTerm.ToLower()));
+            }
+
+            clubsToSort = model.ClubSorting switch
+            {
+                ClubSorting.PriceAscending => clubsToSort.OrderBy(c => c.Courts.Select(c => c.PricePerHour).OrderBy(ct => ct).First()),
+                ClubSorting.PriceDescending => clubsToSort.OrderByDescending(c => c.Courts.Select(c => c.PricePerHour).OrderBy(ct => ct).First()),
+                ClubSorting.NumberOfCourtsAscending => clubsToSort.OrderBy(c => c.NumberOfCourts),
+                ClubSorting.NumberOfCourtsDescending => clubsToSort.OrderByDescending(c => c.NumberOfCourts),
+                ClubSorting.RatingAscending => clubsToSort.OrderBy(c => c.Reviews.Any() ? c.Reviews.Average(r => r.Rate) : 0),
+                ClubSorting.RatingDescending => clubsToSort.OrderByDescending(c => c.Reviews.Any() ? c.Reviews.Average(r => r.Rate) : 0),
+                _ => clubsToSort.OrderByDescending(c => c.Id)
+            };
+
+            clubsToSort = model.ClubStatusSorting switch
+            {
+                ClubStatusSorting.OnlyDeleted => clubsToSort.Where(c => c.IsDeleted == true),
+                ClubStatusSorting.OnlyNotDeleted => clubsToSort.Where(c => c.IsDeleted == false),
+                ClubStatusSorting.OnlyApproved => clubsToSort.Where(c => c.IsAproovedByAdmin == true),
+                ClubStatusSorting.OnlyNotAprooved => clubsToSort.Where(c => c.IsAproovedByAdmin == false),
+                _ => clubsToSort
+            };
+
+            int totalClubs = await clubsToSort.CountAsync();
+            var maxPage = Math.Ceiling((double)totalClubs / model.ClubsPerPage);
+
+            var currentPage = model.CurrentPage;
+
+            if (currentPage > maxPage)
+            {
+                currentPage = (int)maxPage;
+            }
+            if (currentPage <= 0)
+            {
+                currentPage = 1;
+            }
+
+            var clubs = await clubsToSort
+                .Include(c => c.Reviews)
+                .Skip((currentPage - 1) * model.ClubsPerPage)
+                .Take(model.ClubsPerPage)
+                .Select(c => new ClubAdminServiceViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    CityName = c.City.Name,
+                    LogoUrl = c.LogoUrl,
+                    Price = c.Courts.OrderBy(c => c.PricePerHour).Select(c => c.PricePerHour).FirstOrDefault(),
+                    NumberofCourts = c.NumberOfCourts,
+                    WorkingTimeStart = c.WorkingTimeStart,
+                    WorkingTimeEnd = c.WorkingTimeEnd,
+                    Rating = c.Rating,
+                    ClubOwner = c.ClubOwner.UserName,
+                    CountryName = c.City.Country.Name,
+                    IsApproved = c.IsAproovedByAdmin,
+                    IsDeleted = c.IsDeleted,
+                    RegisteredOn = c.RegisteredOn,
+                })
+                .ToListAsync();
+
+            model.Clubs = clubs;
+            model.TotalClubCount = totalClubs;
+
+            return model;
+
         }
     }
 }

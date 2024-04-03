@@ -19,25 +19,44 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ICityServiceAdmin cityService;
+        private readonly ICountryServiceAdmin countryService;
         private readonly IWebHostEnvironment webHostEnvironment;
 
         public ClubController(IClubServiceAdmin clubService,
             RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager,
             ICityServiceAdmin cityService,
-            IWebHostEnvironment webHostEnvironment)
+            ICountryServiceAdmin countryService,
+        IWebHostEnvironment webHostEnvironment)
         {
             this.clubService = clubService;
             this.roleManager = roleManager;
             this.userManager = userManager;
             this.cityService = cityService;
+            this.countryService = countryService;
             this.webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index([FromQuery]AllClubsAdminSortingModel model)
         {
-            return View();
+            model = await clubService.GetClubSortingModel(model);
+
+            var cities = await cityService.GetAllCitiesAsync();
+            var countries = await countryService.GetAllCountriesAsync();
+
+            if (model.Country!=null)
+            {
+                model.Cities = cities.Where(c=>c.CountryName==model.Country).Select(c => c.Name);
+            }
+            else
+            {
+                model.Cities = cities.Select(c => c.Name);
+            }
+
+            model.Countries = countries.Select(c => c.Name);
+
+            return View(model);
         }
 
         [HttpGet]
