@@ -11,8 +11,4 @@
     <ProjectReference Include="..\GameSetBook.Infrastructure\GameSetBook.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Admin\Booking\" />
-  </ItemGroup>
-
 </Project>

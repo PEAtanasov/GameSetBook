@@ -1,6 +1,11 @@
-﻿namespace GameSetBook.Core.Contracts.Admin
+﻿using GameSetBook.Core.Models.Admin.Booking;
+
+namespace GameSetBook.Core.Contracts.Admin
 {
     public interface IBookingServiceAdmin
     {
+        //Task<IEnumerable<BookingAdminServiceViewModel>> GetAllBookingsAsync();
+
+        Task<AllBookingsAdminSortingModel> GetBookingSortingServiceModelAsync(AllBookingsAdminSortingModel queryModel);
     }
 }

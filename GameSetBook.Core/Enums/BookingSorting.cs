@@ -9,5 +9,7 @@
         BookingDateDescending = 4,
         PriceAscending = 5,
         PriceDescending = 6,
+        BookedOnAscending = 7,
+        BookedOnDescending = 8,
     }
 }
