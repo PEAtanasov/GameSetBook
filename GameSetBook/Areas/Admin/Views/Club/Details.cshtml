@@ -1,29 +1,21 @@
 ﻿@model ClubDetailsAdminViewModel
 
 @{
-    ViewBag.Title = "Pending Club Details";
+    ViewBag.Title = $"Manage Club {Model.Name}";
 }
 
 <h1 class="text-center pb-3">@ViewBag.Title</h1>
 
-<partial name="_ClubDetailsPartial" model="Model"/>
+<partial name="_ClubDetailsPartial" model="Model" />
 
 <div class="row pt-3">
-    <div class="col col-3">
-        <form asp-area="Admin" asp-controller="Club" asp-action="ApproveClub" method="post">
-            <input type="hidden" asp-for="Id" />
-            <div class="mb-3 text-center">
-                <input class="btn btn-success mb-2 w-100 p-3 fw-bold" type="submit" value="Approve" />
-            </div>
-        </form>
-    </div>
-    <div class="col col-3">
+    <div class="col col-4">
         <a asp-area="Admin" asp-controller="Club" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary mb-2 w-100 p-3 fw-bold">Edit</a>
     </div>
-    <div class="col col-3">
+    <div class="col col-4">
         <a asp-area="Admin" asp-controller="Court" asp-action="Add" asp-route-clubId="@Model.Id" class="btn btn-primary mb-2 w-100 p-3 fw-bold">Add Court</a>
     </div>
-    <div class="col col-3">
+    <div class="col col-4">
         <button type="button" class="btn btn-danger mb-2 w-100 p-3 fw-bold" data-bs-toggle="modal" data-bs-target="#confirmationModal">
             Delete
         </button>

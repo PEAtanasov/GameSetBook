@@ -1,6 +1,4 @@
-﻿using GameSetBook.Core.Enums;
-using GameSetBook.Core.Models.City;
-using GameSetBook.Core.Models.Club;
+﻿using GameSetBook.Core.Models.Club;
 
 namespace GameSetBook.Core.Contracts
 {

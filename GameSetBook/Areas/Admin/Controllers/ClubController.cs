@@ -38,16 +38,16 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery]AllClubsAdminSortingModel model)
+        public async Task<IActionResult> Index([FromQuery] AllClubsAdminSortingModel model)
         {
             model = await clubService.GetClubSortingModel(model);
 
             var cities = await cityService.GetAllCitiesAsync();
             var countries = await countryService.GetAllCountriesAsync();
 
-            if (model.Country!=null)
+            if (model.Country != null)
             {
-                model.Cities = cities.Where(c=>c.CountryName==model.Country).Select(c => c.Name);
+                model.Cities = cities.Where(c => c.CountryName == model.Country).Select(c => c.Name);
             }
             else
             {
@@ -77,6 +77,9 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 
             var model = await clubService.GetPendingClubDetailsAsync(id);
 
+            model.ReturnUrl = Url.Action("Approve", "Club", new { id = id });
+
+
             return View(model);
         }
 
@@ -99,7 +102,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 
             var user = await userManager.FindByIdAsync(userId);
 
-            if (user==null)
+            if (user == null)
             {
                 return BadRequest();
             }
@@ -128,7 +131,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 
             var user = await userManager.FindByIdAsync(clubOwnerId);
 
-            if (await userManager.IsInRoleAsync(user,ClubOwnerRole))
+            if (await userManager.IsInRoleAsync(user, ClubOwnerRole))
             {
                 await userManager.RemoveFromRoleAsync(user, ClubOwnerRole);
             }
@@ -152,7 +155,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 
             return View(model);
         }
-            
+
         [HttpPost]
         public async Task<IActionResult> Edit(ClubEditFormModel model, IFormFile? file)
         {
@@ -184,6 +187,22 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             await clubService.EditAsync(model);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            if (!await clubService.ClubExistAsync(id))
+            {
+                return BadRequest();
+            }
+
+            var model = await clubService.GetClubDetailsAsync(id);
+
+            model.ReturnUrl = Url.Action("Details", "Club", new { id = id });
+
+
+            return View(model);
         }
 
         private async Task<string> GetLogoUrlPath(IFormFile clubLogoImage, string modelName)

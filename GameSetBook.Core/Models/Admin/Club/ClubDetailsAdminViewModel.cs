@@ -2,7 +2,7 @@
 
 namespace GameSetBook.Core.Models.Admin.Club
 {
-    public class PendingClubDetailsViewModel
+    public class ClubDetailsAdminViewModel
     {
         public int Id { get; set; }
 
@@ -44,7 +44,9 @@ namespace GameSetBook.Core.Models.Admin.Club
 
         public string ClubOwner { get; set; } = string.Empty;
 
-        public IEnumerable<PendingCourtViewModel> Courts = new List<PendingCourtViewModel>();
+        public string? ReturnUrl {  get; set; }
+
+        public IEnumerable<CourtAdminViewModel> Courts = new List<CourtAdminViewModel>();
     }
 }
 

@@ -37,11 +37,11 @@ namespace GameSetBook.Core.Services.Admin
                 .ToListAsync();
         }
 
-        public async Task<PendingClubDetailsViewModel> GetPendingClubDetailsAsync(int id)
+        public async Task<ClubDetailsAdminViewModel> GetPendingClubDetailsAsync(int id)
         {
             var club = await repository.GetAllReadOnly<Club>()
                 .Where(c => c.Id == id && c.IsAproovedByAdmin == false)
-                .Select(c => new PendingClubDetailsViewModel()
+                .Select(c => new ClubDetailsAdminViewModel()
                 {
                     Id = c.Id,
                     Name = c.Name,
@@ -63,7 +63,49 @@ namespace GameSetBook.Core.Services.Admin
                     RegisteredOn = c.RegisteredOn,
                     ClubOwnerId = c.ClubOwnerId,
                     IsAproovedByAdmin = c.IsAproovedByAdmin,
-                    Courts = c.Courts.Select(ct => new PendingCourtViewModel()
+                    Courts = c.Courts.Select(ct => new CourtAdminViewModel()
+                    {
+                        Id = ct.Id,
+                        ClubId = ct.ClubId,
+                        IsActive = ct.IsActive,
+                        IsIndoor = ct.IsIndoor,
+                        IsLighted = ct.IsLighted,
+                        Name = ct.Name,
+                        PricePerHour = ct.PricePerHour,
+                        Surface = ct.Surface.GetDisplayName()
+                    })
+                }).FirstAsync();
+
+            return club;
+        }
+
+        public async Task<ClubDetailsAdminViewModel> GetClubDetailsAsync(int id)
+        {
+            var club = await repository.GetAllWithDeletedReadOnly<Club>()
+                .Where(c => c.Id == id)
+                .Select(c => new ClubDetailsAdminViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Description = c.Description,
+                    Email = c.Email,
+                    HasParking = c.HasParking,
+                    HasShop = c.HasShop,
+                    HasShower = c.HasShower,
+                    ClubOwner = c.ClubOwner.UserName,
+                    Address = c.Address,
+                    City = c.City.Name,
+                    WorkingTimeStart = c.WorkingTimeStart,
+                    WorkingTimeEnd = c.WorkingTimeEnd,
+                    IsClubOwnerActive = !string.IsNullOrWhiteSpace(c.ClubOwner.UserName),
+                    LogoUrl = c.LogoUrl,
+                    PhoneNumber = c.PhoneNumber,
+                    NumberOfCoaches = c.NumberOfCoaches,
+                    NumberOfCourts = c.NumberOfCourts,
+                    RegisteredOn = c.RegisteredOn,
+                    ClubOwnerId = c.ClubOwnerId,
+                    IsAproovedByAdmin = c.IsAproovedByAdmin,
+                    Courts = c.Courts.Select(ct => new CourtAdminViewModel()
                     {
                         Id = ct.Id,
                         ClubId = ct.ClubId,

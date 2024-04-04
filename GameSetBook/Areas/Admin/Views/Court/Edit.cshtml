@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = $"Court Edit {Model.Name} registered in Club {Model.ClubName}";
     IEnumerable<SelectListItem> surfaces = ViewBag.Surfaces;
+    var returnUrl = ViewData["returnUrl"];
 }
 
 <h2 class="text-center"></h2>
@@ -11,6 +12,7 @@
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
         <form asp-action="Edit" method="post">
             <input type="hidden" asp-for="ClubId" />
+            <input type="hidden" name="returnUrl" value="@returnUrl" />
             <div class="mb-3">
                 <label asp-for="Name" class="form-label"></label>
                 <input asp-for="Name" class="form-control" aria-required="true" />

@@ -22,12 +22,14 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, string? returnUrl)
         {
             if (!await courtService.ExistAsync(id))
             {
                 return BadRequest();
             }
+
+            ViewData["returnUrl"] = returnUrl;
 
             var model = await courtService.GetEditModelAsync(id);
 
@@ -37,7 +39,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(CourtAdminFormModel model)
+        public async Task<IActionResult> Edit(CourtAdminFormModel model, string? returnUrl)
         {
             if (!await courtService.ExistAsync(model.Id))
             {
@@ -48,6 +50,13 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             {
                 ViewBag.Surfaces = GetSurfaces();
                 return View(model);
+            }
+
+            await courtService.EditAsync(model);
+
+            if (returnUrl != null)
+            {
+                return Redirect(returnUrl);
             }
 
             return RedirectToAction("Index", "Court");

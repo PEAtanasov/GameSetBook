@@ -41,5 +41,20 @@ namespace GameSetBook.Core.Services.Admin
             return await repository.GetAllReadOnly<Court>()
                 .AnyAsync(c => c.Id == id);
         }
+
+        public async Task EditAsync(CourtAdminFormModel model)
+        {
+            var court = await repository.GetAll<Court>()
+                .FirstAsync(c => c.Id == model.Id);
+            
+            court.Name= model.Name;
+            court.PricePerHour = model.PricePerHour;
+            court.Surface= model.Surface;
+            court.IsLighted = model.IsLighted;
+            court.IsIndoor = model.IsIndoor;
+            court.IsActive = model.IsActive;
+            
+            await repository.SaveChangesAsync();           
+        }
     }
 }

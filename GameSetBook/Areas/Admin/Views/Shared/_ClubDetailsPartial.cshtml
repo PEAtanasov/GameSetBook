@@ -1,0 +1,136 @@
+﻿@model ClubDetailsAdminViewModel
+@{
+    var courtNumber = 1;
+}
+
+<h3 class="pb-3">@Model.Name</h3>
+<img src="~/@Model.LogoUrl" alt="@Model.Name Logo" class="img-fluid" style="max-width: 300px; max-height: 350px;" />
+<div>
+    <p><strong>Description:</strong> @Model.Description</p>
+    <p><strong>Working Time:</strong> @Model.WorkingTimeStart - @Model.WorkingTimeEnd</p>
+    <p><strong>Address:</strong> @Model.Address, @Model.City</p>
+    <p><strong>Number of Coaches:</strong> @Model.NumberOfCoaches</p>
+    <p><strong>Number of Courts:</strong> @Model.NumberOfCourts</p>
+    <p><strong>Facilities:</strong></p>
+    <ul>
+        <li>
+            Parking: @if (Model.HasParking)
+            {
+                <span>Yes</span>
+            }
+            else
+            {
+                <span>No</span>
+            }
+        </li>
+        <li>
+            Shower: @if (Model.HasShower)
+            {
+                <span>Yes</span>
+            }
+            else
+            {
+                <span>No</span>
+            }
+        </li>
+        <li>
+            Tennis Shop: @if (Model.HasShop)
+            {
+                <span>Yes</span>
+            }
+            else
+            {
+                <span>No</span>
+            }
+        </li>
+    </ul>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Phone Number:</strong> @Model.PhoneNumber</p>
+    <p><strong>Registered On:</strong> @Model.RegisteredOn.ToString("yyyy-MM-dd HH:mm:ss")</p>
+    <p>
+        <strong>Approved By Admin:</strong> @if (Model.IsAproovedByAdmin)
+        {
+            <span>Yes</span>
+        }
+        else
+        {
+            <span>No</span>
+        }
+    </p>
+    <p><strong>Club Owner:</strong> @Model.ClubOwner</p>
+    <p>
+        <strong>Club Owner Active:</strong> @if (Model.IsClubOwnerActive)
+        {
+            <span>Yes</span>
+        }
+        else
+        {
+            <span>No</span>
+        }
+    </p>
+</div>
+
+@if (Model.Courts.Any())
+{
+    <h2>Courts</h2>
+    <div class="container">
+        <div class="text-center row">
+            <div class="col-12 mb-3">
+            </div>
+            <table class="table table table-hover table-bordered table-responsive-md">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Surface</th>
+                        <th scope="col">Lighted</th>
+                        <th scope="col">Indoor</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    @foreach (var court in Model.Courts)
+                    {
+                        <tr>
+                            <th scope="row">@(courtNumber++)</th>
+                            <td>@court.Name</td>
+                            <td>@court.PricePerHour</td>
+                            <td>@court.Surface</td>
+                            <td>
+                                @if (court.IsLighted)
+                                {
+                                    <i class="fa fa-check"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-times"></i>
+                                }
+                            </td>
+                            <td>
+                                @if (court.IsIndoor)
+                                {
+                                    <i class="fa fa-check"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-times"></i>
+                                }
+                            </td>
+                            <td>@(court.IsActive ? "Active" : "Not Active")</td>
+                            <td>
+                                <a asp-area="Admin" asp-controller="Court" asp-action="Edit" asp-route-id="@court.Id" asp-route-returnUrl="@Model.ReturnUrl" class="btn btn-primary mb-2 w-100 p-2 fw-bold">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+}
+else
+{
+    <h3>No courts available for this club.</h3>
+}

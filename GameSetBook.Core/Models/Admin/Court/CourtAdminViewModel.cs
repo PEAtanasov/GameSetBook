@@ -1,6 +1,6 @@
 ﻿namespace GameSetBook.Core.Models.Admin.Court
 {
-    public class PendingCourtViewModel
+    public class CourtAdminViewModel
     {
     
         public int Id { get; set; }
@@ -18,5 +18,8 @@
         public bool IsActive { get; set; }
 
         public int ClubId { get; set; }
+
+        public string? ReturnUrl { get; set; }
+
     }
 }

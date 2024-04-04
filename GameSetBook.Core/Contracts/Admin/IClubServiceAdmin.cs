@@ -6,7 +6,9 @@ namespace GameSetBook.Core.Contracts.Admin
     {
         Task<IEnumerable<PendingClubViewModel>> AllPendingClubsAsync();
 
-        Task<PendingClubDetailsViewModel> GetPendingClubDetailsAsync(int id);
+        Task<ClubDetailsAdminViewModel> GetPendingClubDetailsAsync(int id);
+
+        Task<ClubDetailsAdminViewModel> GetClubDetailsAsync(int id);
 
         Task<ClubEditFormModel> GetClubForEditAsync(int id);
 

@@ -7,5 +7,7 @@ namespace GameSetBook.Core.Contracts.Admin
         Task<CourtAdminFormModel> GetEditModelAsync(int id);
 
         Task<bool> ExistAsync(int id);
+
+        Task EditAsync(CourtAdminFormModel model);
     }
 }

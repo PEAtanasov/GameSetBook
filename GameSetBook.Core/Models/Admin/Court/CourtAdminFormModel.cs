@@ -61,5 +61,6 @@ namespace GameSetBook.Core.Models.Admin.Court
         /// Current court's club name
         /// </summary>
         public string ClubName { get; set; } = string.Empty;
+
     }
 }
