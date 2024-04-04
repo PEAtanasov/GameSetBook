@@ -6,6 +6,9 @@
 
 <h1 class="text-center pb-3">@ViewBag.Title</h1>
 
+<a asp-area="Admin" asp-controller="Booking" asp-action="Index" asp-route-ClubId="@Model.Id" class="btn btn-primary mb-2 w-100 p-3 fw-bold">Edit</a>
+
+
 <partial name="_ClubDetailsPartial" model="Model" />
 
 <div class="row pt-3">

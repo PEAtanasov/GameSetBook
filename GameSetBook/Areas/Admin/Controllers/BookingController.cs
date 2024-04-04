@@ -17,6 +17,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index([FromQuery]AllBookingsAdminSortingModel model)
         {
             model = await bookingService.GetBookingSortingServiceModelAsync(model);
@@ -24,6 +25,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> ClubBookings(int clubId)
         {
             if (!await clubService.ClubExistAsync(clubId))
@@ -32,6 +34,16 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             }
 
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Cancel(int id, AllBookingsAdminSortingModel filters)
+        {
+            // await bookingService.CancelAsync(id);
+
+            int bit = 0;
+
+            return RedirectToAction("Index", "Booking", filters);
         }
     }
 }
