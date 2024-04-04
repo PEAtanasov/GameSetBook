@@ -1,11 +1,12 @@
 ﻿using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Enums;
 using GameSetBook.Core.Models.Admin.Booking;
-using GameSetBook.Core.Models.Booking;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using System.Globalization;
+
+using static GameSetBook.Common.ValidationConstatns.DateTimeFormats;
 
 namespace GameSetBook.Core.Services.Admin
 {
@@ -18,72 +19,70 @@ namespace GameSetBook.Core.Services.Admin
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<BookingAdminServiceViewModel>> GetAllBookingsAsync()
-        {
-            var bookings = await repository.GetAllWithDeletedReadOnly<Booking>()
-                .Select(b => new BookingAdminServiceViewModel()
-                {
-                    Id = b.Id,
-                    ClientEmail = b.Client.Email,
-                    ClientName = b.ClientName,
-                    ClubName = b.Court.Club.Name,
-                    BookedOn = b.BookedOn,
-                    BookingDate = b.BookingDate,
-                    CourtName = b.Court.Name,
-                    IsDeleted = b.IsDeleted,
-                    DeletedOn = b.DeletedOn,
-                    Hour = b.Hour,
-                    IsBookedByOwnerOrAdmin = b.IsBookedByOwnerOrAdmin,
-                    PhoneNumber = b.PhoneNumber,
-                    Price = b.Price,
-                    ReviewId = b.Review != null ? b.Review.Id : null
-                })
-                .ToListAsync();
-
-            return bookings;
-        }
-
         public async Task<AllBookingsAdminSortingModel> GetBookingSortingServiceModelAsync(AllBookingsAdminSortingModel queryModel)
         {
             var bookingToSort = repository.GetAllWithDeletedReadOnly<Booking>();
 
-            if (queryModel.ClubId!=null)
+            if (queryModel.ClubId != null)
             {
                 bookingToSort = bookingToSort.Where(b => b.Court.ClubId == queryModel.ClubId);
             }
-               
-            if (!string.IsNullOrEmpty(queryModel.SearchTerm))
+
+            if (queryModel.ClubId == null)
             {
-                bookingToSort = bookingToSort.Where(c => c.Court.Club.Name.ToLower().Contains(queryModel.SearchTerm.ToLower())
-                                                        || c.ClientName.ToLower().Contains(queryModel.SearchTerm.ToLower())
-                                                        || c.PhoneNumber.ToLower().Contains(queryModel.SearchTerm.ToLower())
-                                                        || c.Client.NormalizedEmail.Contains(queryModel.SearchTerm.ToUpper()));
+                if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
+                {
+                    bookingToSort = bookingToSort.Where(c => c.Court.Club.Name.ToLower().Contains(queryModel.SearchTerm.ToLower())
+                                                            || c.ClientName.ToLower().Contains(queryModel.SearchTerm.ToLower())
+                                                            || c.PhoneNumber.ToLower().Contains(queryModel.SearchTerm.ToLower())
+                                                            || c.Client.NormalizedEmail.Contains(queryModel.SearchTerm.ToUpper()));
+                }
             }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
+                {
+                    bookingToSort = bookingToSort.Where(c => c.ClientName.ToLower().Contains(queryModel.SearchTerm.ToLower())
+                                                            || c.PhoneNumber.ToLower().Contains(queryModel.SearchTerm.ToLower())
+                                                            || c.Client.NormalizedEmail.Contains(queryModel.SearchTerm.ToUpper()));
+                }
+            }
+
+
 
             if (queryModel.BookingDateFrom != null)
             {
-                bookingToSort = bookingToSort.Where(b => b.BookingDate.Date >= queryModel.BookingDateFrom.Value.Date);
+                DateTime bookingDateFrom = DateTime.ParseExact(queryModel.BookingDateFrom, DateOnlyFormat, CultureInfo.InvariantCulture);
+                bookingToSort = bookingToSort.Where(b => b.BookingDate.Date >= bookingDateFrom);
+                queryModel.BookingDateFrom = bookingDateFrom.ToString(DateOnlyFormat, CultureInfo.InvariantCulture);
             }
 
             if (queryModel.BookingDateTo != null)
             {
-                bookingToSort = bookingToSort.Where(b => b.BookingDate.Date <= queryModel.BookingDateTo.Value.Date);
+                DateTime bookingDateTo = DateTime.ParseExact(queryModel.BookingDateTo, DateOnlyFormat, CultureInfo.InvariantCulture);
+                bookingToSort = bookingToSort.Where(b => b.BookingDate.Date <= bookingDateTo);
+                queryModel.BookingDateTo = bookingDateTo.ToString(DateOnlyFormat, CultureInfo.InvariantCulture);
+
             }
 
             if (queryModel.BookedOnDateFrom != null)
             {
-                bookingToSort = bookingToSort.Where(b => b.BookedOn.Date >= queryModel.BookedOnDateFrom.Value.Date);
+                DateTime bookedOnDateFrom = DateTime.ParseExact(queryModel.BookedOnDateFrom, DateOnlyFormat, CultureInfo.InvariantCulture);
+                bookingToSort = bookingToSort.Where(b => b.BookedOn.Date >= bookedOnDateFrom);
+                queryModel.BookedOnDateFrom = bookedOnDateFrom.ToString(DateOnlyFormat, CultureInfo.InvariantCulture);
             }
 
             if (queryModel.BookedOnDateTo != null)
             {
-                bookingToSort = bookingToSort.Where(b => b.BookedOn.Date <= queryModel.BookedOnDateTo.Value.Date);
+                DateTime bookedOnDateTo = DateTime.ParseExact(queryModel.BookedOnDateTo, DateOnlyFormat, CultureInfo.InvariantCulture);
+                bookingToSort = bookingToSort.Where(b => b.BookedOn.Date <= bookedOnDateTo);
+                queryModel.BookedOnDateTo = bookedOnDateTo.ToString(DateOnlyFormat, CultureInfo.InvariantCulture);
             }
 
             bookingToSort = queryModel.StatusSorting switch
             {
                 //BookingStatusSorting.All => bookingToSort.OrderByDescending(c => c.Id),
-                BookingStatusSorting.Active => bookingToSort.Where(b=>b.IsDeleted==false),
+                BookingStatusSorting.Active => bookingToSort.Where(b => b.IsDeleted == false),
                 BookingStatusSorting.Canceled => bookingToSort.Where(b => b.IsDeleted == true),
                 _ => bookingToSort.OrderBy(b => b.ClientName).ThenByDescending(b => b.Id),
             };
@@ -97,9 +96,9 @@ namespace GameSetBook.Core.Services.Admin
                 BookingSorting.BookingDateDescending => bookingToSort.OrderByDescending(c => c.BookingDate).ThenByDescending(b => b.ClientId),
                 BookingSorting.HourAscending => bookingToSort.OrderBy(b => b.Hour).ThenByDescending(b => b.ClientId),
                 BookingSorting.HourDescending => bookingToSort.OrderByDescending(b => b.Hour).ThenByDescending(b => b.ClientId),
-                BookingSorting.BookedOnAscending => bookingToSort.OrderBy(b=>b.BookedOn).ThenByDescending(b => b.ClientId),
+                BookingSorting.BookedOnAscending => bookingToSort.OrderBy(b => b.BookedOn).ThenByDescending(b => b.ClientId),
                 BookingSorting.BookedOnDescending => bookingToSort.OrderByDescending(b => b.BookedOn).ThenByDescending(b => b.ClientId),
-                _ => bookingToSort.OrderBy(b=>b.ClientName).ThenByDescending(b => b.Id),
+                _ => bookingToSort.OrderBy(b => b.ClientName).ThenByDescending(b => b.Id),
             };
 
             int totalBookings = await bookingToSort.CountAsync();
@@ -144,5 +143,21 @@ namespace GameSetBook.Core.Services.Admin
             return queryModel;
         }
 
+        public async Task<bool> ExistAsync(int id)
+        {
+            return await repository.GetAllWithDeletedReadOnly<Booking>()
+                .AnyAsync(b => b.Id == id);
+        }
+
+        public async Task CancelAsync(int id)
+        {
+            var booking = await repository.GetAllWithDeleted<Booking>()
+                .Where(b => b.Id == id)
+                .FirstAsync();
+
+            repository.Delete(booking);
+
+            await repository.SaveChangesAsync();
+        }
     }
 }

@@ -10,7 +10,7 @@
 }
 @if (currentDate != null)
 {
-    <h2 class="text-center">@ViewBag.Title for @currentDate.Value.ToShortDateString() @currentDate.GetValueOrDefault().DayOfWeek</h2>
+    <h2 class="text-center">@ViewBag.Title</h2>
 }
 
 <div class="container">
@@ -30,11 +30,11 @@
                                 <!-- Arrow to move one day backwards -->
                                 @if (currentDate != null)
                                 {
-                                    <a asp-controller="Club" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@currentDate.Value.AddDays(-1)" class="btn btn-primary @(currentDate.Value.AddDays(-1)< DateTime.Now.Date ? "disabled" : string.Empty)">	<i class="fa fa-arrow-circle-o-left"></i> Previous Day</a>
+                                    <a asp-controller="Club" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@currentDate.Value.AddDays(-1).ToString("yyyy-MM-dd")" class="btn btn-primary @(currentDate.Value.AddDays(-1)< DateTime.Now.Date ? "disabled" : string.Empty)">	<i class="fa fa-arrow-circle-o-left"></i> Previous Day</a>
                                 }
                             </div>
                             <div class="col">
-                                <input class="form-control" type="date" id="datepicker" name="date" valueAsDate="@currentDate" />
+                                <input class="form-control" type="date" id="datepicker" name="date" value="@(currentDate!=null ? currentDate.Value.ToString("yyyy-MM-dd") : null)" />
                             </div>
                            @*  <div class="col">
                                 <input type="submit" value="Ok" class="btn btn-primary" />
@@ -44,7 +44,7 @@
                                 <!-- Arrow to move one day forwards -->
                                 @if (currentDate != null)
                                 {
-                                    <a asp-controller="Club" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@currentDate.Value.AddDays(1)" class="btn btn-primary">Next Day <i class="fa fa-arrow-circle-o-right"></i></a>
+                                    <a asp-controller="Club" asp-action="Schedule" asp-route-id="@clubId" asp-route-date="@currentDate.Value.AddDays(1).ToString("yyy-MM-dd")" class="btn btn-primary">Next Day <i class="fa fa-arrow-circle-o-right"></i></a>
                                 }
                             </div>
                         </div>

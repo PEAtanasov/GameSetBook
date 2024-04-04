@@ -20,9 +20,9 @@ namespace GameSetBook.Core.Models.Booking
 
         public int TotalBookingCount { get; set; }
 
-        public DateTime? BookingDateFrom { get; set; }
+        public string? BookingDateFrom { get; set; }
 
-        public DateTime? BookingDateTo { get; set; }
+        public string? BookingDateTo { get; set; }
 
         public IEnumerable<BookingInfoServiceViewModel> Bookings { get; set; }
     }

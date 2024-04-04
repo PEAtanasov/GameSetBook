@@ -1,6 +1,5 @@
 ﻿using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Models.Admin.Booking;
-using GameSetBook.Core.Models.Booking;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameSetBook.Web.Areas.Admin.Controllers
@@ -20,6 +19,19 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery]AllBookingsAdminSortingModel model)
         {
+            var clubName = string.Empty;
+            if (model.ClubId!=null)
+            {
+                if (!await clubService.ClubExistAsync(model.ClubId.Value))
+                {
+                    return BadRequest();
+                }
+
+                clubName= await clubService.GetClubNameAsync(model.ClubId.Value);
+            }
+
+            ViewData["ClubName"] = clubName;
+
             model = await bookingService.GetBookingSortingServiceModelAsync(model);
 
             return View(model);
@@ -39,9 +51,14 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Cancel(int id, AllBookingsAdminSortingModel filters)
         {
-            // await bookingService.CancelAsync(id);
+            if (!await bookingService.ExistAsync(id))
+            {
+                return BadRequest();
+            }
 
-            int bit = 0;
+            filters = await bookingService.GetBookingSortingServiceModelAsync(filters);
+
+            await bookingService.CancelAsync(id);
 
             return RedirectToAction("Index", "Booking", filters);
         }

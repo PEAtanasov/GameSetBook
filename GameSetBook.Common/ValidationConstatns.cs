@@ -103,8 +103,8 @@
 
         public static class DateTimeFormats
         {
-            public const string DateTimeFormat = "dd-MM-yyy HH:mm";
-            public const string DateOnlyFormat = "dd-MM-yyy";
+            public const string DateTimeFormat = "yyyy-MM-dd HH:mm";
+            public const string DateOnlyFormat = "yyyy-MM-dd";
         }
 
         public static class ImageSizeConstants

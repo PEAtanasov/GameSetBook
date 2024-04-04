@@ -5,6 +5,8 @@ using GameSetBook.Core.Models.Booking;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
 using GameSetBook.Core.Enums;
+using static GameSetBook.Common.ValidationConstatns.DateTimeFormats;
+using System.Globalization;
 
 namespace GameSetBook.Core.Services
 {
@@ -133,12 +135,17 @@ namespace GameSetBook.Core.Services
 
             if (queryModel.BookingDateFrom != null)
             {
-                bookingToSort = bookingToSort.Where(b => b.BookingDate.Date >= queryModel.BookingDateFrom.Value.Date);
+                DateTime bookingDateFrom = DateTime.ParseExact(queryModel.BookingDateFrom, DateOnlyFormat, CultureInfo.InvariantCulture);
+                bookingToSort = bookingToSort.Where(b => b.BookingDate.Date >= bookingDateFrom);
+                queryModel.BookingDateFrom = bookingDateFrom.ToString(DateOnlyFormat, CultureInfo.InvariantCulture);
+
             }
 
             if (queryModel.BookingDateTo != null)
             {
-                bookingToSort = bookingToSort.Where(b => b.BookingDate.Date <= queryModel.BookingDateTo.Value.Date);
+                DateTime bookingDateTo = DateTime.ParseExact(queryModel.BookingDateTo, DateOnlyFormat, CultureInfo.InvariantCulture);
+                bookingToSort = bookingToSort.Where(b => b.BookingDate.Date <= bookingDateTo);
+                queryModel.BookingDateTo = bookingDateTo.ToString(DateOnlyFormat, CultureInfo.InvariantCulture);
             }
 
             bookingToSort = queryModel.BookingSorting switch

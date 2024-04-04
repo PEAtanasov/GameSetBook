@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
 
-        public AllBookingsAdminSortingModel ReturnUrlParameters { get; set; } = null!;
+        public AllBookingsAdminSortingModel filters { get; set; } = null!;
     }
 }

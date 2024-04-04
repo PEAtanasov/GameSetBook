@@ -330,5 +330,13 @@ namespace GameSetBook.Core.Services.Admin
             return model;
 
         }
+
+        public async Task<string> GetClubNameAsync(int clubId)
+        {
+            var club = await repository.GetAllReadOnly<Club>()
+                .FirstAsync(c=>c.Id==clubId);
+
+            return club.Name;
+        }
     }
 }

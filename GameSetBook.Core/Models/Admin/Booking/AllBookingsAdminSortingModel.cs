@@ -1,5 +1,4 @@
 ﻿using GameSetBook.Core.Enums;
-using GameSetBook.Core.Models.Admin.Club;
 using System.ComponentModel.DataAnnotations;
 
 namespace GameSetBook.Core.Models.Admin.Booking
@@ -21,14 +20,13 @@ namespace GameSetBook.Core.Models.Admin.Booking
 
         public BookingStatusSorting StatusSorting { get; init; }
 
-        public DateTime? BookingDateFrom { get; set; }
+        public string? BookingDateFrom { get; set; }
 
-        public DateTime? BookingDateTo { get; set; }
+        public string? BookingDateTo { get; set; }
 
-        public DateTime? BookedOnDateFrom { get; set; }
+        public string? BookedOnDateFrom { get; set; }
 
-        public DateTime? BookedOnDateTo { get; set; }
-
+        public string? BookedOnDateTo { get; set; }
 
         public int CurrentPage { get; init; } = 1;
 

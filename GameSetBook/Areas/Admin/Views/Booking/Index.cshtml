@@ -1,7 +1,17 @@
 ﻿﻿
 @model AllBookingsAdminSortingModel
 @{
-    ViewBag.Title = "All Bookings";
+
+    var clubName = ViewData["ClubName"] as string;
+    
+    if (!string.IsNullOrWhiteSpace(clubName))
+    {
+        ViewBag.Title = clubName + " " + "All Bookings";
+    }
+    else
+    {
+        ViewBag.Title = "All Bookings";
+    }
 
     var previousPage = Model.CurrentPage - 1;
     if (previousPage < 1)
@@ -29,7 +39,7 @@
         <div class="col-md-3">
             <label class="form-label">Sort By</label>
             <select asp-for="BookingSorting" class="form-select">
-                <option value="0"></option>
+                <option value="0">-</option>
                 <option value="1">Hour (Earliest -> Latest)</option>
                 <option value="2">Hour (Latest -> Earliest)</option>
                 <option value="3">Date (Earliest -> Latest)</option>
@@ -42,7 +52,7 @@
         </div>
 
         <div class="col-md-3">
-            <label class="form-label">Booking Date From</label>
+            <label asp-for="BookingDateFrom" class="form-label">Booking Date From</label>
             <input asp-for="BookingDateFrom" type="date" class="form-control">
         </div>
 
@@ -60,15 +70,27 @@
             <label class="form-label">Booked On Date To</label>
             <input asp-for="BookedOnDateTo" type="date" class="form-control">
         </div>
-
-        <div class="col-md-3">
-            <label class="form-label">Search by Club/Client/Client Email/Phone Number</label>
-            <div class="input-group">
-                <input asp-for="SearchTerm" class="form-control" placeholder="Search...">
-                <button type="submit" class="btn btn-primary">Search</button>
+        @if (Model.ClubId==null)
+        {
+            <div class="col-md-3">
+                <label class="form-label">Search by Club/Client/Client Email/Phone Number</label>
+                <div class="input-group">
+                    <input asp-for="SearchTerm" class="form-control" placeholder="Search...">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
             </div>
-        </div>
-
+        }
+        else
+        {
+            <div class="col-md-3">
+                <label class="form-label">Search by Name/Email/Phone</label>
+                <div class="input-group">
+                    <input asp-for="SearchTerm" class="form-control" placeholder="Search...">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        }
+  
         <div class="col-md-3">
             <label class="form-label">Bookings Per Page</label>
             <select asp-for="BookingsPerPage" class="form-select">
@@ -80,7 +102,7 @@
         </div>
     </form>
     <div class="text-center mt-3">
-        <a asp-action="Index" class="btn btn-secondary">Back to full list</a>
+        <a asp-action="Index" asp-route-ClubId="@(Model.ClubId!=null ? Model.ClubId : null)" class="btn btn-secondary">Back to full list</a>
     </div>
 </div>
 
@@ -90,119 +112,121 @@
 }
 else
 {
-    <div class="container col-sm-10">
-        <div class="text-center row">
-            <table class="table table-striped table-responsive-md">
-                <thead class=" table-dark">
-                    <tr>
-                        <th scope="col">Client Email</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Hour</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Club Name</th>
-                        <th scope="col">Court Name</th>
-                        <th scope="col">Client</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Booked By</th>
-                        <th scope="col">Booked On</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Reviewed</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                    @foreach (var booking in Model.Bookings)
-                    {
+    <div class="container col-sm-12">
+        <div class="text-center row text-12">
+            <div class="table-responsive">
+                <table class="table table-sm table-hoover table-striped table-bordered table-responsive-md">
+                    <thead class=" table-dark">
                         <tr>
-                            <td>@booking.ClientEmail</td>
-                            <td>@booking.BookingDate.ToShortDateString()</td>
-                            <td>@booking.Hour</td>
-                            <td>@booking.Price</td>
-                            <td class="club-name">@booking.ClubName</td>
-                            <td>@booking.CourtName</td>
-                            <td>@booking.ClientName</td>
-                            <td>@booking.PhoneNumber</td>
-                            <td>
-                                @if (booking.IsBookedByOwnerOrAdmin==true)
-                                {
-                                    <span>Admin</span>
-                                }
-                                else
-                                {
-                                    <span>User</span>
-                                }
-                            </td>
-                            <td>@booking.BookedOn.ToShortDateString()</td>
-                            <td>
-                                @if (booking.IsDeleted == true)
-                                {
-                                    <span>Canceled</span>
-                                }
-                                else
-                                {
-                                    <span>Active</span>
-                                }
-                            </td>
-                            <td>
-                                @if (booking.ReviewId != null)
-                                {
-                                    <span>Yes</span>
-                                }
-                                else
-                                {
-                                    <span>No</span>
-                                }
-                            </td>   
-                            <td>
-                                <div class="d-flex flex-row justify-content-around">
-                                    <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id" class="btn btn-sm btn-primary fw-bold">Details</a>
-                                    @if (booking.ReviewId == null)
+                            <th scope="col">Club</th>
+                            <th scope="col">Court</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Hour</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Client</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Client Email</th>
+                            <th scope="col">Booked By</th>
+                            <th scope="col">Booked On</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Reviewed</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                        @foreach (var booking in Model.Bookings)
+                        {
+                            <tr>
+                                <td class="club-name">@booking.ClubName</td>
+                                <td>@booking.CourtName</td>
+                                <td>@booking.BookingDate.ToShortDateString()</td>
+                                <td>@booking.Hour</td>
+                                <td>@booking.Price</td>
+                                <td>@booking.ClientName</td>
+                                <td>@booking.PhoneNumber</td>
+                                <td>@booking.ClientEmail</td>
+                                <td>
+                                    @if (booking.IsBookedByOwnerOrAdmin == true)
                                     {
-                                        <a asp-area="Admin" asp-controller="Review" asp-action="AddReview" asp-route-bookingId="@booking.Id" class="btn btn-sm btn-success fw-bold">Add Review</a>
+                                        <span>Admin</span>
                                     }
                                     else
                                     {
-
-                                        <a asp-area="Admin" asp-controller="Review" asp-action="Revise" asp-route-id="@booking.ReviewId" class="btn btn-sm btn-success fw-bold">Revise Review</a>
+                                        <span>User</span>
                                     }
-                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteBookingModal-@booking.Id">Cancel</button>
-                                </div>
-                                <!-- Modal -->
-                                <div class="modal fade" id="deleteBookingModal-@booking.Id" tabindex="-1" aria-labelledby="deleteBookingModalLabel-@booking.Id" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="deleteBookingModalLabel-@booking.Id">Confirm Cancellation</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Are you sure you want to cancel this booking?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <form asp-area="Admin" asp-controller="Booking" asp-action="Cancel" method="post">
-                                                    <input type="hidden" name="id" value="@booking.Id" />
-                                                    <input type="hidden" name="ClubId" value="@Model.ClubId" />
-                                                    <input type="hidden" name="BookingDateFrom" value="@Model.BookingDateFrom" />
-                                                    <input type="hidden" name="BookingDateTo" value="@Model.BookingDateTo" />
-                                                    <input type="hidden" name="BookedOnDateFrom" value="@Model.BookedOnDateFrom" />
-                                                    <input type="hidden" name="BookedOnDateTo" value="@Model.BookedOnDateTo" />
-                                                    <input type="hidden" name="SearchTerm" value="@Model.SearchTerm" />
-                                                    <input type="hidden" name="BookingsPerPage" value="@Model.BookingsPerPage" />
-                                                    <input type="hidden" name="StatusSorting" value="@Model.StatusSorting" />
-                                                    <input type="hidden" name="BookingSorting" value="@Model.BookingSorting" />
+                                </td>
+                                <td>@booking.BookedOn.ToShortDateString()</td>
+                                <td>
+                                    @if (booking.IsDeleted == true)
+                                    {
+                                        <span>Canceled</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Active</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (booking.ReviewId != null)
+                                    {
+                                        <span>Yes</span>
+                                    }
+                                    else
+                                    {
+                                        <span>No</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-row justify-content-around">
+                                        @if (booking.ReviewId == null)
+                                        {
+                                            <a asp-area="Admin" asp-controller="Review" asp-action="AddReview" asp-route-bookingId="@booking.Id" class="btn btn-sm btn-primary fw-bold">Add Review</a>
+                                        }
+                                        else
+                                        {
 
-                                                    <button type="submit" class="btn btn-danger">Confirm Cancel</button>
-                                                </form>
+                                            <a asp-area="Admin" asp-controller="Review" asp-action="Revise" asp-route-id="@booking.ReviewId" class="btn btn-sm btn-success fw-bold">Revise Review</a>
+                                        }
+                                        <button type="button" class="btn btn-sm btn-danger fw-bold" data-bs-toggle="modal" data-bs-target="#deleteBookingModal-@booking.Id">Cancel</button>
+                                    </div>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="deleteBookingModal-@booking.Id" tabindex="-1" aria-labelledby="deleteBookingModalLabel-@booking.Id" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteBookingModalLabel-@booking.Id">Confirm Cancellation</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to cancel this booking?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <form asp-area="Admin" asp-controller="Booking" asp-action="Cancel" method="post">
+                                                        <input type="hidden" name="id" value="@booking.Id" />
+                                                        <input type="hidden" asp-for="ClubId" value="@Model.ClubId" />
+                                                        <input type="hidden" asp-for="CurrentPage" value="@Model.CurrentPage" />
+                                                        <input type="hidden" asp-for="BookingDateFrom" value="@Model.BookingDateFrom" />
+                                                        <input type="hidden" asp-for="BookingDateTo" value="@Model.BookingDateTo" />
+                                                        <input type="hidden" asp-for="BookedOnDateFrom" value="@Model.BookedOnDateFrom" />
+                                                        <input type="hidden" asp-for="BookedOnDateTo" value="@Model.BookedOnDateTo" />
+                                                        <input type="hidden" asp-for="SearchTerm" value="@Model.SearchTerm" />
+                                                        <input type="hidden" asp-for="BookingsPerPage" value="@Model.BookingsPerPage" />
+                                                        <input type="hidden" asp-for="StatusSorting" value="@Model.StatusSorting" />
+                                                        <input type="hidden" asp-for="BookingSorting" value="@Model.BookingSorting" />
+
+                                                        <button type="submit" class="btn btn-danger">Confirm Cancel</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -221,7 +245,7 @@ else
                        asp-route-BookedOnDateTo="@Model.BookedOnDateTo"
                        asp-route-SearchTerm="@Model.SearchTerm"
                        asp-route-BookingsPerPage="@Model.BookingsPerPage"
-                       asp-route-StatusSorting="@((int)Model.StatusSorting)" 
+                       asp-route-StatusSorting="@((int)Model.StatusSorting)"
                        asp-route-BookingSorting="@((int)Model.BookingSorting)">Previous</a>
                 </li>
 

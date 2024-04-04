@@ -7,5 +7,9 @@ namespace GameSetBook.Core.Contracts.Admin
         //Task<IEnumerable<BookingAdminServiceViewModel>> GetAllBookingsAsync();
 
         Task<AllBookingsAdminSortingModel> GetBookingSortingServiceModelAsync(AllBookingsAdminSortingModel queryModel);
+
+        Task<bool> ExistAsync(int id);
+
+        Task CancelAsync(int id);
     }
 }
