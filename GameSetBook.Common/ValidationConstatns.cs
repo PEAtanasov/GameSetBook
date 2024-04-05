@@ -73,7 +73,7 @@
             public const int ReviewtTitleMaxLength = 20;
 
             public const int ReviewDescriptionMinLength = 1;
-            public const int ReviewDescriptionMaxLength = 100;
+            public const int ReviewDescriptionMaxLength = 500;
 
             public const int ReviewMinRate = 1;
             public const int ReviewtMaxRate = 10;

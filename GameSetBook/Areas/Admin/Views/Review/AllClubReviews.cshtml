@@ -1,0 +1,18 @@
+﻿@model IEnumerable<ReviewAdminViewModel>
+
+@{
+    var clubName = ViewData["ClubName"] as string;
+
+    ViewBag.Title = $"{clubName} All Reviews";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+
+@if (Model.Any())
+{
+    @foreach (var r in Model)
+    {
+        <partial name="_ReviewDetailsPartial" model="@r"/>
+    }
+}
+

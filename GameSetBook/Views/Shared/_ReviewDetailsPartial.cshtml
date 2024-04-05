@@ -1,11 +1,10 @@
 ﻿@model ReviewViewModel
-@{
 
-}
 <div class="pb-3">
     <div class="card">
         <div class="card-header">
-            Rating: <strong class="@(Model.Rating<=5 ? "text-danger" : "text-success")">@Model.Rating</strong><small> by @(string.IsNullOrWhiteSpace(@Model.Author) ? "Anonymous" : @Model.Author)</small>
+            Rating: <strong class="@(Model.Rating<=5 ? "text-danger" : "text-success")">@Model.Rating</strong>
+            <p class="text-muted"><small>Added on: @Model.CreatedOn by @(string.IsNullOrWhiteSpace(@Model.Author) ? "Anonymous" : @Model.Author)</small></p>
         </div>
         <div class="card-body">
             <h5 class="card-title">@Model.Title</h5>

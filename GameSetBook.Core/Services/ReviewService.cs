@@ -3,6 +3,8 @@ using GameSetBook.Core.Models.Review;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using static GameSetBook.Common.ValidationConstatns.DateTimeFormats;
 
 namespace GameSetBook.Core.Services
 {
@@ -24,7 +26,8 @@ namespace GameSetBook.Core.Services
                 Rate = model.Rate,
                 ClubId = model.ClubId,
                 ReviewerId = model.ReviewerId,
-                BookingId = model.BookingId
+                BookingId = model.BookingId,
+                CreatedOn = DateTime.Now
             };
 
             await repository.AddAsync(review);
@@ -70,24 +73,25 @@ namespace GameSetBook.Core.Services
             var review = await repository.GetAll<Review>()
                 .FirstAsync(r => r.Id == model.Id);
 
-            review.Title=model.Title;
-            review.Description=model.Description;
+            review.Title = model.Title;
+            review.Description = model.Description;
             review.Rate = model.Rate;
 
-            await repository.SaveChangesAsync(); 
+            await repository.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<ReviewViewModel>> GetClubReviews(int clubId)
         {
             var reviews = await repository.GetAllReadOnly<Review>()
-                .Where(r=>r.ClubId==clubId && r.Booking.IsDeleted==false)
+                .Where(r => r.ClubId == clubId && r.Booking.IsDeleted == false)
                 .OrderByDescending(r => r.Id)
-                .Select(r=> new ReviewViewModel()
+                .Select(r => new ReviewViewModel()
                 {
                     Rating = r.Rate,
                     Title = r.Title,
                     Description = r.Description,
-                    Author = r.Reviewer.FirstName + " " + r.Reviewer.LastName
+                    Author = r.Reviewer.FirstName + " " + r.Reviewer.LastName,
+                    CreatedOn = r.CreatedOn.ToString(DateTimeFormat, CultureInfo.InvariantCulture)
                 })
                 .ToListAsync();
 
@@ -97,8 +101,8 @@ namespace GameSetBook.Core.Services
         public async Task<AllReviewsPagingServiceModel> GetReviewsPagingModel(AllReviewsPagingServiceModel model)
         {
             var reviews = repository.GetAllReadOnly<Review>()
-                .Where(r => r.ClubId == model.ClubId && r.Booking.IsDeleted==false)
-                .OrderByDescending(r=>r.Id);
+                .Where(r => r.ClubId == model.ClubId && r.Booking.IsDeleted == false)
+                .OrderByDescending(r => r.CreatedOn).ThenBy(r=>r.Id);
 
             int totalReviews = reviews.Count();
 
@@ -123,7 +127,8 @@ namespace GameSetBook.Core.Services
                     Rating = r.Rate,
                     Title = r.Title,
                     Description = r.Description,
-                    Author = r.Reviewer.FirstName + " " + r.Reviewer.LastName
+                    Author = r.Reviewer.FirstName + " " + r.Reviewer.LastName,
+                    CreatedOn = r.CreatedOn.ToString(DateTimeFormat, CultureInfo.InvariantCulture)
                 })
                 .ToListAsync();
 

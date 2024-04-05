@@ -27,8 +27,29 @@
 <div class="container col-sm-10 mb-4">
     <form id="filterForm" method="get" class="row g-3">
         <input type="hidden" asp-for="ClubId" />
+
         <div class="col-md-3">
-            <label class="form-label">Sort By</label>
+            <label asp-for="BookingDateFrom" class="form-label">Booking Date From</label>
+            <input asp-for="BookingDateFrom" type="date" class="form-control">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Booking Date To</label>
+            <input asp-for="BookingDateTo" type="date" class="form-control">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Booked On Date From</label>
+            <input asp-for="BookedOnDateFrom" type="date" class="form-control">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Booked On Date To</label>
+            <input asp-for="BookedOnDateTo" type="date" class="form-control">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Filter By Status</label>
             <select asp-for="StatusSorting" class="form-select">
                 <option value="0">All</option>
                 <option value="1">Active</option>
@@ -51,38 +72,19 @@
             </select>
         </div>
 
-        <div class="col-md-3">
-            <label asp-for="BookingDateFrom" class="form-label">Booking Date From</label>
-            <input asp-for="BookingDateFrom" type="date" class="form-control">
-        </div>
-
-        <div class="col-md-3">
-            <label class="form-label">Booking Date To</label>
-            <input asp-for="BookingDateTo" type="date" class="form-control">
-        </div>
-
-        <div class="col-md-3">
-            <label class="form-label">Booked On Date From</label>
-            <input asp-for="BookedOnDateFrom" type="date" class="form-control">
-        </div>
-
-        <div class="col-md-3">
-            <label class="form-label">Booked On Date To</label>
-            <input asp-for="BookedOnDateTo" type="date" class="form-control">
-        </div>
         @if (Model.ClubId==null)
         {
-            <div class="col-md-3">
-                <label class="form-label">Search by Club/Client/Client Email/Phone Number</label>
+            <div class="col-md-4">
+                <label class="form-label">Search by</label>
                 <div class="input-group">
-                    <input asp-for="SearchTerm" class="form-control" placeholder="Search...">
+                    <input asp-for="SearchTerm" class="form-control" placeholder="Club/Client/Email/Phone">
                     <button type="submit" class="btn btn-primary">Search</button>
                 </div>
             </div>
         }
         else
         {
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label">Search by Name/Email/Phone</label>
                 <div class="input-group">
                     <input asp-for="SearchTerm" class="form-control" placeholder="Search...">
@@ -91,7 +93,7 @@
             </div>
         }
   
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label class="form-label">Bookings Per Page</label>
             <select asp-for="BookingsPerPage" class="form-select">
                 <option value="20">20</option>

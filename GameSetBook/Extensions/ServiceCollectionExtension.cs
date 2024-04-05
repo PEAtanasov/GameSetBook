@@ -26,6 +26,7 @@ namespace GameSetBook.Web.Extensions
             services.AddScoped<IStatisticService, StatisticService>();
             services.AddScoped<ICityServiceAdmin, CityServiceAdmin>();
             services.AddScoped<ICountryServiceAdmin, CountryServiceAdmin>();
+            services.AddScoped<IReviewServiceAdmin, ReviewServiceAdmin>();
 
             return services;
         }

@@ -1,5 +1,4 @@
 ﻿using GameSetBook.Infrastructure.Models.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -44,6 +43,13 @@ namespace GameSetBook.Infrastructure.Models
         [Range(ReviewMinRate, ReviewtMaxRate)]
         [Comment("Review rating")]
         public int Rate { get; set; }
+
+        /// <summary>
+        /// Date the reviews was added
+        /// </summary>
+        [Required]
+        [Comment("Date the reviews was added")]
+        public DateTime CreatedOn { get; set; }
 
         /// <summary>
         /// Current review's club identifier
