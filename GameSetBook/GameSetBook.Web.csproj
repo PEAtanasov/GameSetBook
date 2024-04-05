@@ -10,12 +10,16 @@
   <ItemGroup>
     <Compile Remove="AuthorizationHandlers\**" />
     <Compile Remove="AuthorizationRequirements\**" />
+    <Compile Remove="wwwroot\images\profile\**" />
     <Content Remove="AuthorizationHandlers\**" />
     <Content Remove="AuthorizationRequirements\**" />
+    <Content Remove="wwwroot\images\profile\**" />
     <EmbeddedResource Remove="AuthorizationHandlers\**" />
     <EmbeddedResource Remove="AuthorizationRequirements\**" />
+    <EmbeddedResource Remove="wwwroot\images\profile\**" />
     <None Remove="AuthorizationHandlers\**" />
     <None Remove="AuthorizationRequirements\**" />
+    <None Remove="wwwroot\images\profile\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,10 +38,6 @@
   <ItemGroup>
     <ProjectReference Include="..\GameSetBook.Core\GameSetBook.Core.csproj" />
     <ProjectReference Include="..\GameSetBook.Infrastructure\GameSetBook.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\profile\" />
   </ItemGroup>
 
 </Project>

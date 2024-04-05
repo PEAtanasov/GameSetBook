@@ -58,19 +58,6 @@
             public const int MaxPricePerHour = 500;
         }
 
-        public static class GameSetMatchUpProfileGConstants
-        {
-            public const int FirstNameMinLength = 1;
-            public const int FirstNameMaxLength = 50;
-
-            public const int LastNameMinLength = 1;
-            public const int LastNameMaxLength = 50;
-
-            public const int DescriptionMaxLength = 30;
-
-            public const int ProfileImageUrlMaxLength = 1024;
-        }
-
         public static class BookingConstants
         {
             public const int ClientNameMinLength = 2;
@@ -90,15 +77,6 @@
 
             public const int ReviewMinRate = 1;
             public const int ReviewtMaxRate = 10;
-        }
-
-        public static class MessageConstants
-        {
-            public const int TitleMinLength = 1;
-            public const int TitleMaxLength = 50;
-
-            public const int ContentMinLength = 1;
-            public const int ContentMaxLength = 2000;
         }
 
         public static class DateTimeFormats
