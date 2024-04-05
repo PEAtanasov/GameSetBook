@@ -10,15 +10,62 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
     public class CourtController : BaseController
     {
         private readonly ICourtServiceAdmin courtService;
+        private readonly IClubServiceAdmin clubService;
 
-        public CourtController(ICourtServiceAdmin courtService)
+        public CourtController(ICourtServiceAdmin courtService, IClubServiceAdmin clubService)
         {
             this.courtService = courtService;
+            this.clubService = clubService;
+
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Add(int clubId, string? returnUrl)
+        {
+            if (!await clubService.ExistAsync(clubId))
+            {
+                return BadRequest();
+            }
+
+            ViewData["returnUrl"] = returnUrl;
+
+            ViewBag.Surfaces = GetSurfaces();
+
+            var model = new CourtAdminCreateFormModel()
+            {
+                ClubId = clubId,
+                ClubName = await clubService.GetClubNameAsync(clubId)
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(CourtAdminCreateFormModel model, string? returnUrl)
+        {
+            if (!await clubService.ExistAsync(model.ClubId))
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            await courtService.AddAsync(model);
+
+            if (returnUrl!=null)
+            {
+                return Redirect(returnUrl);
+            }
+
+            return RedirectToAction("Details", "Club", new {id = model.ClubId});
         }
 
         [HttpGet]
@@ -39,7 +86,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(CourtAdminFormModel model, string? returnUrl)
+        public async Task<IActionResult> Edit(CourtAdminEditFormModel model, string? returnUrl)
         {
             if (!await courtService.ExistAsync(model.Id))
             {
@@ -59,7 +106,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 return Redirect(returnUrl);
             }
 
-            return RedirectToAction("Index", "Court");
+            return RedirectToAction("Details", "Club", new { id = model.ClubId });
         }
 
         private static List<SelectListItem> GetSurfaces()
@@ -68,7 +115,8 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             {
                 Text = v.GetDisplayName(),
                 Value = ((int)v).ToString()
-            }).ToList();
+            })
+            .ToList();
         }
     }
 }

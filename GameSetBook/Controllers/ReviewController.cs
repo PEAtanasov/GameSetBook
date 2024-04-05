@@ -1,5 +1,6 @@
 ﻿using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Review;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -149,6 +150,7 @@ namespace GameSetBook.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> AllReviews([FromQuery] AllReviewsSortingServiceModel model)
         {
             if (!await clubService.ClubExsitAsync(model.ClubId))

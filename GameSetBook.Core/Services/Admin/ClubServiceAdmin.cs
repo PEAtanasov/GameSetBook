@@ -121,7 +121,7 @@ namespace GameSetBook.Core.Services.Admin
             return club;
         }
 
-        public async Task<bool> ClubExistAsync(int id)
+        public async Task<bool> ExistAsync(int id)
         {
             return await repository.GetAllReadOnly<Club>().AnyAsync(c => c.Id == id);
         }

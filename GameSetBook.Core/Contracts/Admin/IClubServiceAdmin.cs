@@ -14,7 +14,7 @@ namespace GameSetBook.Core.Contracts.Admin
 
         Task EditAsync(ClubEditFormModel model);
 
-        Task<bool> ClubExistAsync(int id);
+        Task<bool> ExistAsync(int id);
 
         Task<bool> ClubExistIncludingSoftDeletedAsync(int id);
 

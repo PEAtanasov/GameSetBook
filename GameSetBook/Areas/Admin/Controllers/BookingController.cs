@@ -22,7 +22,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             var clubName = string.Empty;
             if (model.ClubId!=null)
             {
-                if (!await clubService.ClubExistAsync(model.ClubId.Value))
+                if (!await clubService.ExistAsync(model.ClubId.Value))
                 {
                     return BadRequest();
                 }
@@ -40,7 +40,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> ClubBookings(int clubId)
         {
-            if (!await clubService.ClubExistAsync(clubId))
+            if (!await clubService.ExistAsync(clubId))
             {
                 return BadRequest();
             }

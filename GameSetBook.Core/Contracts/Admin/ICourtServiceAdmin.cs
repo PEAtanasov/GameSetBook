@@ -4,10 +4,12 @@ namespace GameSetBook.Core.Contracts.Admin
 {
     public interface ICourtServiceAdmin
     {
-        Task<CourtAdminFormModel> GetEditModelAsync(int id);
+        Task<CourtAdminEditFormModel> GetEditModelAsync(int id);
 
         Task<bool> ExistAsync(int id);
 
-        Task EditAsync(CourtAdminFormModel model);
+        Task EditAsync(CourtAdminEditFormModel model);
+
+        Task AddAsync(CourtAdminCreateFormModel model);
     }
 }

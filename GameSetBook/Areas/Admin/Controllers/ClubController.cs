@@ -70,7 +70,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Approve(int id)
         {
-            if (!await clubService.ClubExistAsync(id))
+            if (!await clubService.ExistAsync(id))
             {
                 return BadRequest();
             }
@@ -79,14 +79,13 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 
             model.ReturnUrl = Url.Action("Approve", "Club", new { id = id });
 
-
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> ApproveClub(int id)
         {
-            if (!await clubService.ClubExistAsync(id))
+            if (!await clubService.ExistAsync(id))
             {
                 return BadRequest();
             }
@@ -120,9 +119,9 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, string? returnUrl)
         {
-            if (!await clubService.ClubExistAsync(id))
+            if (!await clubService.ExistAsync(id))
             {
                 return BadRequest();
             }
@@ -136,16 +135,18 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 await userManager.RemoveFromRoleAsync(user, ClubOwnerRole);
             }
 
-            return RedirectToAction("index", "Home");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, string? returnUrl)
         {
             if (!await clubService.ClubExistIncludingSoftDeletedAsync(id))
             {
                 return BadRequest();
             }
+
+            ViewData["returnUrl"] = returnUrl;
 
             var model = await clubService.GetClubForEditAsync(id);
 
@@ -157,7 +158,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ClubEditFormModel model, IFormFile? file)
+        public async Task<IActionResult> Edit(ClubEditFormModel model, IFormFile? file, string? returnUrl)
         {
             if (!await clubService.ClubExistIncludingSoftDeletedAsync(model.Id))
             {
@@ -186,21 +187,25 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 
             await clubService.EditAsync(model);
 
-            return RedirectToAction(nameof(Index));
+            if (returnUrl != null)
+            {
+                return Redirect(returnUrl);
+            }
+
+            return RedirectToAction(nameof(Details), new { id = model.Id });
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            if (!await clubService.ClubExistAsync(id))
+            if (!await clubService.ExistAsync(id))
             {
                 return BadRequest();
             }
 
             var model = await clubService.GetClubDetailsAsync(id);
 
-            model.ReturnUrl = Url.Action("Details", "Club", new { id = id });
-
+            //model.ReturnUrl = Url.Action("Details", "Club", new { id = id });
 
             return View(model);
         }

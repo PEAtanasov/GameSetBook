@@ -3,10 +3,11 @@
 @{
     IFormFile file = ViewBag.File;
     IEnumerable<SelectListItem> cities = ViewBag.Cities;
-    ViewBag.Title = $"Edit {Model.Name} Details";
+    ViewBag.Title = $"Edit Details";
+    var returnUrl = ViewData["returnUrl"];
 }
 
-<h2 class="text-center pb-3">@ViewBag.Title</h2>
+<h2 class="text-center pb-3">@Model.Name @ViewBag.Title</h2>
 
 <div class="container-fluid align-content-center text-center pb-3">
     <img src="~/@Model.LogoUrl" alt="@Model.Name Logo" class="img-fluid" style="max-width: 300px; max-height: 300px;" />
@@ -34,6 +35,7 @@
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
         <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="LogoUrl" />
+            <input type="hidden" name="returnUrl" value="@returnUrl" />
             <div class="mb-3">
                 <label asp-for="Name" class="form-label"></label>
                 <input asp-for="Name" class="form-control" aria-required="true" />

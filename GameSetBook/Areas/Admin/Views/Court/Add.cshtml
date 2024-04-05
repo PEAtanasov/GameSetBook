@@ -1,16 +1,18 @@
-﻿@model CourtAdminEditFormModel
+﻿@model CourtAdminCreateFormModel
 
 @{
-    ViewBag.Title = $"Court Edit {Model.Name} registered in Club {Model.ClubName}";
+    ViewBag.Title = $"Add Court";
     IEnumerable<SelectListItem> surfaces = ViewBag.Surfaces;
     var returnUrl = ViewData["returnUrl"];
 }
 
-<h2 class="text-center"></h2>
+
+
+<h2 class="text-center">@ViewBag.Title To @Model.ClubName</h2>
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form asp-action="Edit" method="post">
+        <form asp-action="Add" method="post">
             <input type="hidden" asp-for="ClubId" />
             <input type="hidden" name="returnUrl" value="@returnUrl" />
             <div class="mb-3">
@@ -44,15 +46,6 @@
                         Indoor:
                         <input type="checkbox" asp-for="IsIndoor" />
                         <span asp-validation-for="IsIndoor" class="text-danger"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-10 text-danger">
-                    <label>
-                        <strong>Status(uncheck to deactivate):</strong>
-                        <input type="checkbox" asp-for="IsActive" />
-                        <span asp-validation-for="IsActive" class="text-danger"></span>
                     </label>
                 </div>
             </div>

@@ -122,13 +122,13 @@
                                             <td>
                                                 @if (booking != null && booking.IsAvailable)
                                                 {
-                                                    <a asp-controller="Booking" asp-action="OwnerBook" asp-route-CourtId="@court.Id" asp-route-Hour="@booking.Hour" asp-route-BookingDate="@booking.BookingDate" class="btn btn-sm btn-success">Book/<small>@(court.Price)BGN</small></a>
+                                                    <a asp-controller="Booking" asp-action="OwnerBook" asp-route-CourtId="@court.Id" asp-route-Hour="@booking.Hour" asp-route-BookingDate="@booking.BookingDate" class="btn btn-sm btn-success w-100">Book/<small>@(court.Price)BGN</small></a>
                                                 }
                                                 else
                                                 {
                                                     if (booking != null)
                                                     {
-                                                        <a asp-controller="Booking" asp-action="Edit" asp-route-id="@booking.Id" class="btn btn-sm btn-danger">Booked/<small>@(court.Price)BGN</small></a>
+                                                        <a asp-controller="Booking" asp-action="Edit" asp-route-id="@booking.Id" class="btn btn-sm btn-danger w-100">Booked/<small>@(court.Price)BGN</small></a>
                                                     }
                                                 }
                                             </td>

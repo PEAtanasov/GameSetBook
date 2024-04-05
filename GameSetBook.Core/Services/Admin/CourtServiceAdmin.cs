@@ -15,11 +15,11 @@ namespace GameSetBook.Core.Services.Admin
             this.repository = repository;
         }
 
-        public async Task<CourtAdminFormModel> GetEditModelAsync(int id)
+        public async Task<CourtAdminEditFormModel> GetEditModelAsync(int id)
         {
             var court = await repository.GetAllReadOnly<Court>()
                 .Where(c => c.Id == id)
-                .Select(c => new CourtAdminFormModel()
+                .Select(c => new CourtAdminEditFormModel()
                 {
                     Id = c.Id,
                     ClubId = c.ClubId,
@@ -42,19 +42,42 @@ namespace GameSetBook.Core.Services.Admin
                 .AnyAsync(c => c.Id == id);
         }
 
-        public async Task EditAsync(CourtAdminFormModel model)
+        public async Task EditAsync(CourtAdminEditFormModel model)
         {
             var court = await repository.GetAll<Court>()
                 .FirstAsync(c => c.Id == model.Id);
-            
-            court.Name= model.Name;
+
+            court.Name = model.Name;
             court.PricePerHour = model.PricePerHour;
-            court.Surface= model.Surface;
+            court.Surface = model.Surface;
             court.IsLighted = model.IsLighted;
             court.IsIndoor = model.IsIndoor;
             court.IsActive = model.IsActive;
-            
-            await repository.SaveChangesAsync();           
+
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task AddAsync(CourtAdminCreateFormModel model)
+        {
+            var court = new Court()
+            {
+                Name = model.Name,
+                PricePerHour = model.PricePerHour,
+                Surface = model.Surface,
+                IsLighted = model.IsLighted,
+                ClubId = model.ClubId,
+                IsIndoor = model.IsIndoor,
+            };
+
+            var club = await repository
+               .GetAllWithDeleted<Club>()
+               .FirstAsync(c => c.Id == model.ClubId);
+
+            club.NumberOfCourts += 1;
+
+            await repository.AddAsync(court);
+
+            await repository.SaveChangesAsync();
         }
     }
 }

@@ -17,14 +17,14 @@
 
     <div class="row pt-3">
         <div class="col col-4">
-            <a asp-area="Admin" asp-controller="Club" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary mb-2 w-100 p-3 fw-bold">Edit</a>
+            <a asp-area="Admin" asp-controller="Club" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary mb-2 w-100 p-3 fw-bold">Edit CLub Details</a>
         </div>
         <div class="col col-4">
             <a asp-area="Admin" asp-controller="Court" asp-action="Add" asp-route-clubId="@Model.Id" class="btn btn-primary mb-2 w-100 p-3 fw-bold">Add Court</a>
         </div>
         <div class="col col-4">
             <button type="button" class="btn btn-danger mb-2 w-100 p-3 fw-bold" data-bs-toggle="modal" data-bs-target="#confirmationModal">
-                Delete
+                Delete Club
             </button>
         </div>
     </div>

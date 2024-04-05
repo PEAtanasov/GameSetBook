@@ -21,7 +21,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> AllClubReviews(int clubId)
         {
-            if (!await clubService.ClubExistAsync(clubId))
+            if (!await clubService.ExistAsync(clubId))
             {
                 return BadRequest();
             }
