@@ -15,7 +15,7 @@ namespace GameSetBook.Core.Services.Admin
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<ReviewAdminViewModel>> AllClubReviews(int clubId)
+        public async Task<IEnumerable<ReviewAdminViewModel>> AllClubReviewsAsync(int clubId)
         {
             var reviews = await repository.GetAllReadOnly<Review>()
                 .Where(r => r.ClubId == clubId)
@@ -32,6 +32,22 @@ namespace GameSetBook.Core.Services.Admin
                 .ToListAsync();
 
             return reviews;
+        }
+
+        public async Task<bool> ExistAsync(int id)
+        {
+            return await repository.GetAllReadOnly<Review>()
+                .AnyAsync(r => r.Id == id);
+        }
+
+        public async Task HardDeleteAsync(int id)
+        {
+            var review = await repository.GetAll<Review>()
+                .FirstAsync(r => r.Id == id);
+
+            repository.HardDelete(review);
+
+            await repository.SaveChangesAsync();
         }
     }
 }

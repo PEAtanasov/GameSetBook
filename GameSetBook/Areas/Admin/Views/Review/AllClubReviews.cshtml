@@ -2,7 +2,6 @@
 
 @{
     var clubName = ViewData["ClubName"] as string;
-
     ViewBag.Title = $"{clubName} All Reviews";
 }
 
@@ -12,7 +11,57 @@
 {
     @foreach (var r in Model)
     {
-        <partial name="_ReviewDetailsPartial" model="@r"/>
+        <div class="pb-3">
+            <div class="card">
+                <div class="card-header">
+                    Rating: <strong class="@(r.Rate <= 5 ? "text-danger" : "text-success")">@r.Rate</strong><small> by @(string.IsNullOrWhiteSpace(@r.ReviewerName) ? "Anonymous" : @r.ReviewerName)</small>
+                    <p><small>User email: @r.ReviewerEmail</small></p>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@r.Title</h5>
+                    <p class="card-text">@r.Description</p>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col col-2">
+                            <a asp-area="Admin" asp-controller="Review" asp-action="Revise" asp-route-id="@r.Id" class="btn btn-primary w-100 fw-bold">Revise</a>
+                        </div>
+                        <div class="col col-2">
+                            <button type="button" class="btn btn-danger w-100 fw-bold" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal_@r.Id">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="confirmDeleteModal_@r.Id" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this review?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form asp-area="Admin" asp-controller="Review" asp-action="Delete" method="post">
+                            <input type="hidden" name="id" value="@r.Id" />
+                            <input type="hidden" name="clubId" value="@r.ClubId" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
 }
+else
+{
+    <h3 class="text-center">The Club Has No Reviews</h3>
+}
+
 

@@ -1,8 +1,9 @@
-﻿using GameSetBook.Core.Models.Club;
+﻿using GameSetBook.Core.Enums;
+using GameSetBook.Core.Models.Club;
 
 namespace GameSetBook.Core.Models.Review
 {
-    public class AllReviewsPagingServiceModel
+    public class AllReviewsSortingServiceModel
     {
         public int ClubId { get; set; }
 
@@ -13,6 +14,8 @@ namespace GameSetBook.Core.Models.Review
         public int CurrentPage { get; init; } = 1;
 
         public int TotalReviewCount { get; set; }
+
+        public ReviewSorting ReviewSorting { get; set; }
 
         public IEnumerable<ReviewViewModel> Reviews { get; set; } = new List<ReviewViewModel>();
 

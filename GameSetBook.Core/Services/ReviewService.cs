@@ -1,4 +1,5 @@
 ﻿using GameSetBook.Core.Contracts;
+using GameSetBook.Core.Enums;
 using GameSetBook.Core.Models.Review;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
@@ -98,11 +99,19 @@ namespace GameSetBook.Core.Services
             return reviews;
         }
 
-        public async Task<AllReviewsPagingServiceModel> GetReviewsPagingModel(AllReviewsPagingServiceModel model)
+        public async Task<AllReviewsSortingServiceModel> GetReviewsPagingModel(AllReviewsSortingServiceModel model)
         {
             var reviews = repository.GetAllReadOnly<Review>()
-                .Where(r => r.ClubId == model.ClubId && r.Booking.IsDeleted == false)
-                .OrderByDescending(r => r.CreatedOn).ThenBy(r=>r.Id);
+                .Where(r => r.ClubId == model.ClubId && r.Booking.IsDeleted == false);
+
+            reviews = model.ReviewSorting switch
+            {
+                ReviewSorting.CreatedOnAscending => reviews.OrderBy(r => r.CreatedOn).ThenBy(r => r.Id),
+                ReviewSorting.CreatedOnDescending => reviews.OrderByDescending(r => r.CreatedOn).ThenBy(r => r.Id),
+                ReviewSorting.RatingAscending => reviews.OrderBy(r => r.Rate).ThenBy(r => r.Id),
+                ReviewSorting.RatingDescending => reviews.OrderByDescending(r => r.Rate).ThenBy(r => r.Id),
+                _ => reviews.OrderByDescending(r => r.CreatedOn).ThenByDescending(r => r.Id),
+            };
 
             int totalReviews = reviews.Count();
 

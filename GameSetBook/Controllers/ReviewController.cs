@@ -149,7 +149,7 @@ namespace GameSetBook.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AllReviews([FromQuery] AllReviewsPagingServiceModel model)
+        public async Task<IActionResult> AllReviews([FromQuery] AllReviewsSortingServiceModel model)
         {
             if (!await clubService.ClubExsitAsync(model.ClubId))
             {

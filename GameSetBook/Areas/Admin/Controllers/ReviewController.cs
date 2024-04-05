@@ -28,9 +28,22 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 
             ViewData["ClubName"] = await clubService.GetClubNameAsync(clubId);
 
-            var model = await reviewService.AllClubReviews(clubId);
+            var model = await reviewService.AllClubReviewsAsync(clubId);
 
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, int clubId)
+        {
+            if (!await reviewService.ExistAsync(id))
+            {
+                return BadRequest();
+            }
+
+            await reviewService.HardDeleteAsync(id);
+
+            return RedirectToAction(nameof(AllClubReviews), new { clubId });
         }
     }
 }
