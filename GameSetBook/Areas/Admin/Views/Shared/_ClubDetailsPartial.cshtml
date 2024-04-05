@@ -96,7 +96,7 @@
                         <tr>
                             <th scope="row">@(courtNumber++)</th>
                             <td>@court.Name</td>
-                            <td>@court.PricePerHour</td>
+                            <td>@court.PricePerHour BGN</td>
                             <td>@court.Surface</td>
                             <td>
                                 @if (court.IsLighted)
@@ -120,7 +120,14 @@
                             </td>
                             <td>@(court.IsActive ? "Active" : "Not Active")</td>
                             <td>
-                                <a asp-area="Admin" asp-controller="Court" asp-action="Edit" asp-route-id="@court.Id" asp-route-returnUrl="@Model.ReturnUrl" class="btn btn-primary mb-2 w-100 p-2 fw-bold">Edit</a>
+                                <div class="row">
+                                    <div class="col col-6">
+                                        <a asp-area="Admin" asp-controller="Court" asp-action="Edit" asp-route-id="@court.Id" asp-route-returnUrl="@Model.ReturnUrl" class="btn btn-primary mb-2 w-100 p-2 fw-bold">Edit</a>
+                                    </div>
+                                    <div class="col col-6">
+                                        <a asp-area="Admin" asp-controller="Court" asp-action="Delete" asp-route-id="@court.Id" asp-route-returnUrl="@Model.ReturnUrl" class="btn btn-danger mb-2 w-100 p-2 fw-bold">Delete</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -128,7 +135,6 @@
             </table>
         </div>
     </div>
-
 }
 else
 {

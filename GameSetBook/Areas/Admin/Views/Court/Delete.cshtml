@@ -1,0 +1,48 @@
+﻿@model CourtAdminViewModel
+
+@{
+    ViewBag.Title = "Confirm Court Delete";
+}
+
+<h1 class="text-center">@ViewBag.Title</h1>
+
+<div class="row">
+    <div class="col-sm-12">
+        <dl class="row justify-content-center">
+            <dt class="col-sm-4">Court Name:</dt>
+            <dd class="col-sm-8">@Model.Name</dd>
+
+            <dt class="col-sm-4">Surface Type:</dt>
+            <dd class="col-sm-8">@Model.Surface</dd>
+
+            <dt class="col-sm-4">Price Per Hour:</dt>
+            <dd class="col-sm-8">@Model.PricePerHour.ToString() BGN</dd>
+
+            <dt class="col-sm-4">Has Lighting:</dt>
+            <dd class="col-sm-8">@(Model.IsIndoor==true ? "Yes" : "No")</dd>
+
+            <dt class="col-sm-4">Is Indoor:</dt>
+            <dd class="col-sm-8">@(Model.IsIndoor==true ? "Yes" : "No")</dd>
+
+            <dt class="col-sm-4">Is Active:</dt>
+            <dd class="col-sm-8">@(Model.IsActive==true ? "Yes;" : "No")</dd>
+        </dl>
+        <form asp-area="Admin" asp-controller="Court" asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ClubId" />
+            <input type="hidden" asp-for="ReturnUrl" />
+
+            <div class="form-group">
+                <input type="submit" value="Delete" class="btn btn-danger mb-2 w-100 p-3 fw-bold" />
+                @if (!string.IsNullOrWhiteSpace(Model.ReturnUrl))
+                {
+                    <a href="@Model.ReturnUrl" class="btn btn-secondary mb-2 w-100 p-3 fw-bold">Cancel</a>
+                }
+                else
+                {
+                    <a asp-area="Admin" asp-controller="Club" asp-action="Details" asp-route-id="@Model.ClubId" class="btn btn-secondary mb-2 w-100 p-3 fw-bold">Cancel</a>
+                }
+            </div>
+        </form>
+    </div>
+</div>

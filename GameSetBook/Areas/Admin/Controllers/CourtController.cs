@@ -109,6 +109,39 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             return RedirectToAction("Details", "Club", new { id = model.ClubId });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id, string? returnUrl) 
+        {
+            if (!await courtService.ExistAsync(id))
+            {
+                return BadRequest();
+            }
+
+            var model = await courtService.GetViewModelForDeleteAsync(id);
+
+            model.ReturnUrl=returnUrl;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(CourtAdminViewModel model)
+        {
+            if (!await courtService.ExistAsync(model.Id))
+            {
+                return BadRequest();
+            }
+
+            await courtService.DeleteAsync(model.Id, model.ClubId);
+
+            if (!string.IsNullOrWhiteSpace(model.ReturnUrl))
+            {
+                return Redirect(model.ReturnUrl);
+            }
+
+            return RedirectToAction("Details", "Club", new { id = model.ClubId });
+        }
+
         private static List<SelectListItem> GetSurfaces()
         {
             return Enum.GetValues(typeof(Surface)).Cast<Surface>().Select(v => new SelectListItem

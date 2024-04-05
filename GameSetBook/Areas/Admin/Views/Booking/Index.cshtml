@@ -143,7 +143,7 @@ else
                                 <td>@booking.CourtName</td>
                                 <td>@booking.BookingDate.ToShortDateString()</td>
                                 <td>@booking.Hour</td>
-                                <td>@booking.Price</td>
+                                <td>@booking.Price <small>BGN</small></td>
                                 <td>@booking.ClientName</td>
                                 <td>@booking.PhoneNumber</td>
                                 <td>@booking.ClientEmail</td>
@@ -171,25 +171,26 @@ else
                                 <td>
                                     @if (booking.ReviewId != null)
                                     {
-                                        <span>Yes</span>
+                                        <i class="fa fa-check"></i>
                                     }
                                     else
                                     {
-                                        <span>No</span>
+                                        <i class="fa fa-times"></i>
                                     }
                                 </td>
                                 <td>
                                     <div class="d-flex flex-row justify-content-around">
                                         @if (booking.ReviewId == null)
                                         {
-                                            <a asp-area="Admin" asp-controller="Review" asp-action="AddReview" asp-route-bookingId="@booking.Id" class="btn btn-sm btn-primary fw-bold">Add Review</a>
+                                            <a asp-area="Admin" asp-controller="Review" asp-action="AddReview" asp-route-bookingId="@booking.Id" class="btn btn-sm btn-success fw-bold"><small>Add Review</small></a>
                                         }
                                         else
                                         {
 
-                                            <a asp-area="Admin" asp-controller="Review" asp-action="Revise" asp-route-id="@booking.ReviewId" class="btn btn-sm btn-success fw-bold">Revise Review</a>
+                                            <a asp-area="Admin" asp-controller="Review" asp-action="Revise" asp-route-id="@booking.ReviewId" class="btn btn-sm btn-secondary fw-bold"><small>Revise Review</small></a>
                                         }
-                                        <button type="button" class="btn btn-sm btn-danger fw-bold" data-bs-toggle="modal" data-bs-target="#deleteBookingModal-@booking.Id">Cancel</button>
+                                        <a asp-area="Admin" asp-controller="Booking" asp-action="Edit" asp-route-Id="@booking.Id" class="btn btn-sm btn-primary fw-bold"><small>Edit Booking</small></a>
+                                        <button type="button" class="btn btn-sm btn-danger fw-bold" data-bs-toggle="modal" data-bs-target="#deleteBookingModal-@booking.Id"><small>Cancel Booking</small></button>
                                     </div>
                                     <!-- Modal -->
                                     <div class="modal fade" id="deleteBookingModal-@booking.Id" tabindex="-1" aria-labelledby="deleteBookingModalLabel-@booking.Id" aria-hidden="true">

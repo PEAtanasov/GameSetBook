@@ -11,5 +11,9 @@ namespace GameSetBook.Core.Contracts.Admin
         Task EditAsync(CourtAdminEditFormModel model);
 
         Task AddAsync(CourtAdminCreateFormModel model);
+
+        Task<CourtAdminViewModel> GetViewModelForDeleteAsync(int id);
+
+        Task DeleteAsync(int id, int clubId);
     }
 }

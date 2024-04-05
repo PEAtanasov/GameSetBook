@@ -1,8 +1,10 @@
-﻿using GameSetBook.Core.Contracts.Admin;
+﻿using GameSetBook.Common.Enums.EnumExtensions;
+using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Models.Admin.Court;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace GameSetBook.Core.Services.Admin
 {
@@ -78,6 +80,44 @@ namespace GameSetBook.Core.Services.Admin
             await repository.AddAsync(court);
 
             await repository.SaveChangesAsync();
+        }
+
+
+
+        public async Task DeleteAsync(int id, int clubId)
+        {
+            var court = await repository.GetAll<Court>()
+                .FirstAsync(c=>c.Id==id);
+
+            var club = await repository
+              .GetAllWithDeleted<Club>()
+              .FirstAsync(c => c.Id == clubId);
+
+            club.NumberOfCourts -= 1;
+
+            repository.HardDelete(court);
+
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task<CourtAdminViewModel> GetViewModelForDeleteAsync(int id)
+        {
+            var court = await repository.GetAllReadOnly<Court>()
+                .Where(c => c.Id == id)
+                .Select(c => new CourtAdminViewModel()
+                {
+                    Id = c.Id,
+                    ClubId = c.ClubId,
+                    IsActive = c.IsActive,
+                    IsIndoor = c.IsIndoor,
+                    IsLighted = c.IsLighted,
+                    Name = c.Name,
+                    PricePerHour = c.PricePerHour,
+                    Surface = c.Surface.GetDisplayName()
+                })
+                .FirstAsync();
+
+            return court;
         }
     }
 }
