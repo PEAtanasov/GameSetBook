@@ -87,11 +87,20 @@ namespace GameSetBook.Core.Services.Admin
         public async Task DeleteAsync(int id, int clubId)
         {
             var court = await repository.GetAll<Court>()
-                .FirstAsync(c=>c.Id==id);
+                .FirstAsync(c => c.Id == id);
+
+            var bookings = await repository.GetAll<Booking>()
+                .Where(b => b.CourtId == id)
+                .ToListAsync();
 
             var club = await repository
               .GetAllWithDeleted<Club>()
               .FirstAsync(c => c.Id == clubId);
+           
+            if (bookings.Any())
+            {
+                repository.HardRemoveRange(bookings);
+            }
 
             club.NumberOfCourts -= 1;
 
