@@ -110,7 +110,7 @@ namespace GameSetBook.Infrastructure.Common
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entities"></param>
-        public void HardRemoveRange<T>(IList<T> entities) where T : class
+        public void RemoveRange<T>(IList<T> entities) where T : class
         {
             DbSet<T>().RemoveRange(entities);
         }

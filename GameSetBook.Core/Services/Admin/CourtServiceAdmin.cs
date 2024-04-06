@@ -102,7 +102,7 @@ namespace GameSetBook.Core.Services.Admin
            
             if (bookings.Any())
             {
-                repository.HardRemoveRange(bookings);
+                repository.RemoveRange(bookings);
             }
 
             club.NumberOfCourts -= 1;

@@ -119,16 +119,54 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id, string? returnUrl)
+        public async Task<IActionResult> Delete(int id, string clubOwnerId, string? returnUrl)
         {
             if (!await clubService.ExistAsync(id))
             {
                 return BadRequest();
             }
 
-            string clubOwnerId = await clubService.DeleteAsync(id);
+            await clubService.DeleteAsync(id);
 
             var user = await userManager.FindByIdAsync(clubOwnerId);
+
+            if (await userManager.IsInRoleAsync(user, ClubOwnerRole))
+            {
+                await userManager.RemoveFromRoleAsync(user, ClubOwnerRole);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> HardDelete(int id)
+        {
+            if (!await clubService.ExistAsync(id))
+            {
+                return BadRequest();
+            }
+
+            var model = await clubService.GetHardDeleteModelAsync(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> HardDelete(ClubHardDeleteAdminServiceModel model)
+        {
+            if (!await clubService.ExistAsync(model.Id))
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            await clubService.HardDelete(model.Id);
+
+            var user = await userManager.FindByIdAsync(model.ClubOwnerId);
 
             if (await userManager.IsInRoleAsync(user, ClubOwnerRole))
             {

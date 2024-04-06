@@ -158,7 +158,7 @@ namespace GameSetBook.Core.Services.Admin
             return clubOwnerId;
         }
 
-        public async Task<string> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             var club = await repository.GetAll<Club>()
                 .Include(c => c.Courts)
@@ -174,17 +174,28 @@ namespace GameSetBook.Core.Services.Admin
             repository.Delete(club);
 
             await repository.SaveChangesAsync();
-
-            return club.ClubOwnerId;
         }
 
         public async Task HardDelete(int id)
         {
             var club = await repository.GetAllWithDeleted<Club>()
-                .Include(c => c.Courts)
-                .ThenInclude(ct => ct.Bookings)
-                .Include(c => c.Reviews)
                 .FirstAsync(c => c.Id == id);
+
+            var courts = await repository.GetAll<Court>()
+                .Where(c => c.ClubId == id)
+                .ToListAsync();
+
+            var bookings = await repository.GetAllWithDeleted<Booking>().
+                Where(b=>b.Court.ClubId==id)
+                .ToListAsync();
+
+            var reviews = await repository.GetAll<Review>()
+                .Where(r=>r.ClubId==id)
+                .ToListAsync();
+
+            repository.RemoveRange(reviews);
+            repository.RemoveRange(bookings);
+            repository.RemoveRange(courts);
 
             repository.HardDelete(club);
 
@@ -331,10 +342,30 @@ namespace GameSetBook.Core.Services.Admin
 
         }
 
+        public async Task<ClubHardDeleteAdminServiceModel> GetHardDeleteModelAsync(int id)
+        {
+            var model = await repository.GetAllWithDeletedReadOnly<Club>()
+                .Where(c => c.Id == id)
+                .Select(c => new ClubHardDeleteAdminServiceModel()
+                {
+                    Id = c.Id,
+                    ClubOwnerEmail = c.ClubOwner.Email,
+                    ClubOwnerId = c.ClubOwnerId,
+                    LogoUrl = c.LogoUrl,
+                    Name = c.Name,
+                    TotalCourtsCount = c.Courts.Count(),
+                    TotalReviewsCount = c.Reviews.Count(),
+                    TotalBookingsCount = c.Courts.SelectMany(ct => ct.Bookings).Count()
+                })
+                .FirstAsync();
+
+            return model;
+        }
+
         public async Task<string> GetClubNameAsync(int clubId)
         {
             var club = await repository.GetAllReadOnly<Club>()
-                .FirstAsync(c=>c.Id==clubId);
+                .FirstAsync(c => c.Id == clubId);
 
             return club.Name;
         }
