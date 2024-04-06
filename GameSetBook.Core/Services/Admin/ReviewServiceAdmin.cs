@@ -3,6 +3,8 @@ using GameSetBook.Core.Models.Admin.Review;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using static GameSetBook.Common.ValidationConstatns.DateTimeFormats;
 
 namespace GameSetBook.Core.Services.Admin
 {
@@ -28,10 +30,32 @@ namespace GameSetBook.Core.Services.Admin
                     Title = r.Title,
                     ReviewerName = r.Reviewer.FirstName + " " + r.Reviewer.LastName,
                     ReviewerEmail = r.Reviewer.Email,
+                    AddedDateOn = r.CreatedOn.ToString(DateTimeFormat, CultureInfo.InvariantCulture)
                 })
                 .ToListAsync();
 
             return reviews;
+        }
+
+        public async Task<ReviewAdminViewModel> GetDetailsViewModel(int id)
+        {
+            var model = await repository.GetAllReadOnly<Review>()
+                .Where(r => r.Id == id)
+                .Select(r => new ReviewAdminViewModel()
+                {
+                    Id = r.Id,
+                    ClubId = r.ClubId,
+                    Description = r.Description,
+                    Rate = r.Rate,
+                    Title = r.Title,
+                    ReviewerName = r.Reviewer.FirstName + " " + r.Reviewer.LastName,
+                    ReviewerEmail = r.Reviewer.Email,
+                    ClubName = r.Club.Name,
+                    AddedDateOn = r.CreatedOn.ToString(DateTimeFormat, CultureInfo.InvariantCulture)                   
+                })
+                .FirstAsync();
+
+            return model;
         }
 
         public async Task<bool> ExistAsync(int id)

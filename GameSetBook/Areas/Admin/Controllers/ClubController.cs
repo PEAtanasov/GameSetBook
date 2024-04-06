@@ -1,15 +1,11 @@
-﻿using GameSetBook.Infrastructure.Models.Identity;
+﻿using GameSetBook.Core.Contracts.Admin;
+using GameSetBook.Core.Models.Admin.Club;
+using GameSetBook.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.IO;
-using System;
-
-
-using GameSetBook.Core.Contracts.Admin;
-using GameSetBook.Core.Models.Admin.Club;
-using static GameSetBook.Common.UserConstants;
 using static GameSetBook.Common.ErrorMessageConstants;
+using static GameSetBook.Common.UserConstants;
 
 namespace GameSetBook.Web.Areas.Admin.Controllers
 {

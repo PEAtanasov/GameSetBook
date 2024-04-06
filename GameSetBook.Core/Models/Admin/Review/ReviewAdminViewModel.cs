@@ -45,5 +45,17 @@ namespace GameSetBook.Core.Models.Admin.Review
         /// </summary>
         [Comment("Reviewer email")]
         public string ReviewerEmail { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Current review's reviewer identifier
+        /// </summary>
+        [Comment("Current review's club name")]
+        public string ClubName {  get; set; } = string.Empty;
+
+        /// <summary>
+        /// Date review has been created
+        /// </summary>
+        [Comment("Current review's club name")]
+        public string AddedDateOn { get; set; } = string.Empty;
     }
 }

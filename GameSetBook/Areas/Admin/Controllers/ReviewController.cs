@@ -33,6 +33,18 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> Details(int id)
+        {
+            if (!await reviewService.ExistAsync(id))
+            {
+                return BadRequest();
+            }
+
+            var model = await reviewService.GetDetailsViewModel(id);
+
+            return View(model);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Delete(int id, int clubId)
         {

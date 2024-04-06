@@ -14,7 +14,7 @@
         <div class="pb-3">
             <div class="card">
                 <div class="card-header">
-                    Rating: <strong class="@(r.Rate <= 5 ? "text-danger" : "text-success")">@r.Rate</strong><small> by @(string.IsNullOrWhiteSpace(@r.ReviewerName) ? "Anonymous" : @r.ReviewerName)</small>
+                    Rating: <strong class="@(r.Rate <= 5 ? "text-danger" : "text-success")">@r.Rate</strong><small> by @(string.IsNullOrWhiteSpace(@r.ReviewerName) ? "Anonymous" : @r.ReviewerName) on @r.AddedDateOn</small>
                     <p><small>User email: @r.ReviewerEmail</small></p>
                 </div>
                 <div class="card-body">

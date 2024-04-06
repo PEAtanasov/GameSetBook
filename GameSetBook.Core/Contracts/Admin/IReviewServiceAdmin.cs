@@ -9,5 +9,7 @@ namespace GameSetBook.Core.Contracts.Admin
         Task<bool> ExistAsync(int id);
 
         Task HardDeleteAsync(int id);
+
+        Task<ReviewAdminViewModel> GetDetailsViewModel(int id);
     }
 }

@@ -182,12 +182,11 @@ else
                                     <div class="d-flex flex-row justify-content-around">
                                         @if (booking.ReviewId == null)
                                         {
-                                            <a asp-area="Admin" asp-controller="Review" asp-action="AddReview" asp-route-bookingId="@booking.Id" class="btn btn-sm btn-success fw-bold"><small>Add Review</small></a>
+                                            <a asp-area="Admin" asp-controller="Review" asp-action="Details" asp-route-id="@booking.ReviewId" class="btn btn-sm btn-secondary disabled fw-bold"><small>Review Details</small></a>
                                         }
                                         else
                                         {
-
-                                            <a asp-area="Admin" asp-controller="Review" asp-action="Revise" asp-route-id="@booking.ReviewId" class="btn btn-sm btn-secondary fw-bold"><small>Revise Review</small></a>
+                                            <a asp-area="Admin" asp-controller="Review" asp-action="Details" asp-route-id="@booking.ReviewId" class="btn btn-sm btn-success fw-bold"><small>Review Details</small></a>
                                         }
                                         <a asp-area="Admin" asp-controller="Booking" asp-action="Edit" asp-route-Id="@booking.Id" class="btn btn-sm btn-primary fw-bold"><small>Edit Booking</small></a>
                                         <button type="button" class="btn btn-sm btn-danger fw-bold" data-bs-toggle="modal" data-bs-target="#deleteBookingModal-@booking.Id"><small>Cancel Booking</small></button>
