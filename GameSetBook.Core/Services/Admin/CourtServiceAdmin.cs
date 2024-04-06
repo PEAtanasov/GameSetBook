@@ -75,6 +75,11 @@ namespace GameSetBook.Core.Services.Admin
                .GetAllWithDeleted<Club>()
                .FirstAsync(c => c.Id == model.ClubId);
 
+            if (club.IsAproovedByAdmin==true && club.IsDeleted==false)
+            {
+                court.IsActive = true;
+            }
+
             club.NumberOfCourts += 1;
 
             await repository.AddAsync(court);
@@ -82,14 +87,12 @@ namespace GameSetBook.Core.Services.Admin
             await repository.SaveChangesAsync();
         }
 
-
-
         public async Task DeleteAsync(int id, int clubId)
         {
             var court = await repository.GetAll<Court>()
                 .FirstAsync(c => c.Id == id);
 
-            var bookings = await repository.GetAll<Booking>()
+            var bookings = await repository.GetAllWithDeleted<Booking>()
                 .Where(b => b.CourtId == id)
                 .ToListAsync();
 

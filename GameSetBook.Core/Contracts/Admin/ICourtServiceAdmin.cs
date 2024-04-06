@@ -14,6 +14,12 @@ namespace GameSetBook.Core.Contracts.Admin
 
         Task<CourtAdminViewModel> GetViewModelForDeleteAsync(int id);
 
+        /// <summary>
+        /// Hard delete court and its bookings from database. Sets club NumberOfCourts.
+        /// </summary>
+        /// <param name="id">Court identifier</param>
+        /// <param name="clubId">Club identifier where the current court belongs</param>
+        /// <returns></returns>
         Task DeleteAsync(int id, int clubId);
     }
 }
