@@ -105,6 +105,15 @@ namespace GameSetBook.Infrastructure.Common
         {
              this.DbSet<T>().Remove(entity);
         }
+        /// <summary>
+        /// Deletes set of items form database
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entities"></param>
+        public void HardRemoveRange<T>(IList<T> entities) where T : class
+        {
+            DbSet<T>().RemoveRange(entities);
+        }
 
         /// <summary>
         /// Get all elements including deleted items

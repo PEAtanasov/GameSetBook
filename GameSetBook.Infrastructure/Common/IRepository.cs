@@ -88,5 +88,12 @@ namespace GameSetBook.Infrastructure.Common
         /// <returns></returns>
         Task<int> SaveChangesAsync();
 
+        /// <summary>
+        /// Deletes set of items form database
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entities"></param>
+        void HardRemoveRange<T>(IList<T> entities) where T : class;
+
     }
 }
