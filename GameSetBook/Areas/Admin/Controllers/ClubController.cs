@@ -222,8 +222,11 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 }
                 catch (ArgumentException ex)
                 {
-                    var cities = await cityService.GetAllCitiesAsync();
                     ModelState.AddModelError(string.Empty, ex.Message);
+
+                    var cities = await cityService.GetAllCitiesAsync();
+                    ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+
                     return View(model);
                 }
             }
@@ -255,7 +258,10 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         {
             if (await clubService.ExistByNameAsync(model.Name))
             {
+                var cities = await cityService.GetAllCitiesAsync();
+                ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
                 ModelState.AddModelError(string.Empty, string.Format(ClubWithThatNameExist, model.Name));
+
                 return View(model);
             }
 
@@ -291,8 +297,11 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 }
                 catch (ArgumentException ex)
                 {
-                    var cities = await cityService.GetAllCitiesAsync();
                     ModelState.AddModelError(string.Empty, ex.Message);
+
+                    var cities = await cityService.GetAllCitiesAsync();
+                    ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+
                     return View(model);
                 }
             }

@@ -128,7 +128,7 @@ namespace GameSetBook.Core.Services.Admin
 
         public async Task<bool> ExistByNameAsync(string name)
         {
-            return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Name == name);
+            return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Name.ToLower() == name.ToLower());
         }
 
         public async Task<bool> IsClubApproved(int id)
