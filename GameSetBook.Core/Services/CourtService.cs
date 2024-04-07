@@ -170,7 +170,7 @@ namespace GameSetBook.Core.Services
             return courts;
         }
 
-        public async Task<bool> CourtExist(int id)
+        public async Task<bool> ExistAsync(int id)
         {
             return await repository.GetAllReadOnly<Court>().AnyAsync(c => c.Id == id);
         }

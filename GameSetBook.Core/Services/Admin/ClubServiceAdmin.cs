@@ -132,11 +132,20 @@ namespace GameSetBook.Core.Services.Admin
             return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Name.ToLower() == name.ToLower());
         }
 
-        public async Task<bool> IsClubApproved(int id)
+        public async Task<bool> IsClubApprovedAsync(int id)
         {
             var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Id == id);
 
             return club.IsAproovedByAdmin;
+        }
+
+        public async Task<bool> IsDeletedAsync(int id)
+        {
+            var club = await repository.GetAllWithDeletedReadOnly<Club>()
+                .Where(c => c.Id == id)
+                .FirstAsync();
+
+            return club.IsDeleted;
         }
 
         public async Task<string> ApproveAsync(int id)
@@ -420,7 +429,7 @@ namespace GameSetBook.Core.Services.Admin
                 .Select(c => new ClubScheduleAdminServiceModel()
                 {
                     Id = c.Id,
-                    Name=c.Name,
+                    Name = c.Name,
                     Date = date,
                     WorkingHourEnd = c.WorkingTimeEnd,
                     WorkingHourStart = c.WorkingTimeStart,

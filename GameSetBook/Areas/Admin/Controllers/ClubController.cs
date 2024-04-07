@@ -92,7 +92,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            if (await clubService.IsClubApproved(id))
+            if (await clubService.IsClubApprovedAsync(id))
             {
                 return BadRequest();
             }
@@ -338,7 +338,17 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             if (!await clubService.ExistAsync(model.Id))
             {
                 return BadRequest();
-            }   
+            }
+
+            if (!await clubService.IsClubApprovedAsync(model.Id))
+            {
+                return BadRequest();
+            }
+
+            if (await clubService.IsDeletedAsync(model.Id))
+            {
+                return BadRequest();
+            }
 
             DateTime currentDate = model.Date ?? DateTime.Now;
 

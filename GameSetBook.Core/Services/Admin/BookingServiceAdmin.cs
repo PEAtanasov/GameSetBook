@@ -159,5 +159,64 @@ namespace GameSetBook.Core.Services.Admin
 
             await repository.SaveChangesAsync();
         }
+
+        public async Task<bool> BookingExistAsync(DateTime date, int hour, int courtId)
+        {
+            return await repository.GetAllReadOnly<Booking>()
+               .Where(b => b.CourtId == courtId)
+               .AnyAsync(b => b.BookingDate.Date == date.Date && b.Hour == hour && b.IsAvailable == false);
+        }
+
+        public async Task CreateAsync(BookingCreateAdminFormModel model)
+        {
+            var booking = new Booking()
+            {
+                CourtId = model.CourtId,
+                BookingDate = model.BookingDate,
+                BookedOn = DateTime.Now,
+                ClientId = model.ClientId,
+                ClientName = model.ClientName,
+                Hour = model.Hour,
+                IsAvailable = false,
+                PhoneNumber = model.PhoneNumber,
+                Price = model.Price,
+                IsBookedByOwnerOrAdmin = model.IsBookedByOwnerOrAdmin,
+            };
+
+            await repository.AddAsync(booking);
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task<BookingEditAdminFormModel> GetEditModelAsync(int id)
+        {
+            var model = await repository.GetAllWithDeletedReadOnly<Booking>()
+                .Where(b => b.Id == id)
+                .Select(b => new BookingEditAdminFormModel()
+                {
+                    Id = b.Id,
+                    BookingDate = b.BookingDate,
+                    ClientName = b.ClientName,
+                    ClubId = b.Court.Club.Id,
+                    Hour = b.Hour,
+                    PhoneNumber = b.PhoneNumber,
+                    Price = b.Price,
+                    IsDeleted = b.IsDeleted ? "Yes" : "No"
+                })
+                .FirstAsync();
+
+            return model;
+        }
+
+        public async Task EditAsync(BookingEditAdminFormModel model)
+        {
+            var booking = await repository.GetAllWithDeleted<Booking>()
+                .Where(b => b.Id == model.Id)
+                .FirstAsync();
+
+            booking.PhoneNumber = model.PhoneNumber;
+            booking.ClientName = model.ClientName;
+
+            await repository.SaveChangesAsync();
+        }
     }
 }

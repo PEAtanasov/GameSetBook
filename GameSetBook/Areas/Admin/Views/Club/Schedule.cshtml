@@ -31,7 +31,7 @@
                                 }
                             </div>
                             <div class="col">
-                                <input asp-for="Date" class="form-control" type="date" />
+                                <input asp-for="Date" class="form-control" type="date" value="@(Model.Date!=null ? Model.Date.Value.ToString("yyy-MM-dd") : null)" />
                             </div>
                             @* <div class="col">
                             <input type="submit" value="Ok" class="btn btn-primary" />
@@ -115,7 +115,7 @@
                                             <td>
                                                 @if (booking != null && booking.IsAvailable)
                                                 {
-                                                    <a asp-area="Admin" asp-controller="Booking" asp-action="Book" asp-route-CourtId="@court.Id" asp-route-Hour="@booking.Hour" asp-route-BookingDate="@booking.BookingDate" class="btn btn-sm btn-success w-100">Book/<small>@(court.Price)BGN</small></a>
+                                                    <a asp-area="Admin" asp-controller="Booking" asp-action="Book" asp-route-CourtId="@court.Id" asp-route-Hour="@booking.Hour" asp-route-BookingDate="@booking.BookingDate" asp-route-price="@court.Price" asp-route-clubId="@clubId" class="btn btn-sm btn-success w-100">Book/<small>@(court.Price)BGN</small></a>
                                                 }
                                                 else
                                                 {

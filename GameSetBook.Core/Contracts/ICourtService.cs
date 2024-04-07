@@ -16,7 +16,7 @@ namespace GameSetBook.Core.Contracts
 
         Task<IEnumerable<CourtDetailsViewModel>> GetAllCourtsDetails(int clubId);
 
-        Task<bool> CourtExist(int id);
+        Task<bool> ExistAsync(int id);
 
         Task<decimal> GetPrice(int id);
 

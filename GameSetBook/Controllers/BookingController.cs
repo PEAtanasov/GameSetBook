@@ -41,7 +41,7 @@ namespace GameSetBook.Web.Controllers
 
             int courtId = queryModel.CourtId;
 
-            if (!await courtService.CourtExist(courtId))
+            if (!await courtService.ExistAsync(courtId))
             {
                 return BadRequest();
             }
@@ -80,7 +80,7 @@ namespace GameSetBook.Web.Controllers
         {
             int courtId = model.CourtId;
 
-            if (!await courtService.CourtExist(courtId))
+            if (!await courtService.ExistAsync(courtId))
             {
                 return BadRequest();
             }
@@ -135,10 +135,9 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> OwnerBook([FromQuery] BookingScheduleViewModel queryModel)
         {
-
             int courtId = queryModel.CourtId;
 
-            if (!await courtService.CourtExist(courtId))
+            if (!await courtService.ExistAsync(courtId))
             {
                 return BadRequest();
             }
@@ -173,7 +172,7 @@ namespace GameSetBook.Web.Controllers
         {
             int courtId = model.CourtId;
 
-            if (!await courtService.CourtExist(courtId))
+            if (!await courtService.ExistAsync(courtId))
             {
                 return BadRequest();
             }

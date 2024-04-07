@@ -151,7 +151,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            if (await clubService.IsClubApproved(clubId))
+            if (await clubService.IsClubApprovedAsync(clubId))
             {
                 return BadRequest();
             }

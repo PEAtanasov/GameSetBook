@@ -79,7 +79,7 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Edit(int id)
         {
-            if (! await courtService.CourtExist(id))
+            if (! await courtService.ExistAsync(id))
             {
                 return BadRequest();
             }
@@ -99,7 +99,7 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Edit(CourtEditFormModel model)
         {
-            if (!await courtService.CourtExist(model.Id))
+            if (!await courtService.ExistAsync(model.Id))
             {
                 return BadRequest();
             }
@@ -170,7 +170,7 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> ChangeStatus(int id)
         {
-            if (!await courtService.CourtExist(id))
+            if (!await courtService.ExistAsync(id))
             {
                 return BadRequest();
             }
