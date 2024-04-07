@@ -1,0 +1,41 @@
+﻿@model BookingEditAdminFormModel
+
+@{
+    ViewBag.Title = "Edit Booking";
+    string returnUrl = ViewData["ReturnUrl"] as string ?? string.Empty;
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+
+<p class=" text-center">Date: @Model.BookingDate.ToShortDateString()</p>
+<p class=" text-center">Hour: @(Model.Hour):00h</p>
+<p class=" text-center">Price: @(Model.Price)BGN</p>
+<p class=" text-center">Is Deleted: @Model.IsDeleted</p>
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-area="Admin" asp-controller="Booking" asp-action="Edit" method="post">
+            <input type="hidden" asp-for="BookingDate" />
+            <input type="hidden" asp-for="ClubId" />
+            <input type="hidden" name="returnUrl" value="@returnUrl" />
+            <div class="mb-3">
+                <label asp-for="ClientName" class="form-label-add-edit"></label>
+                <input asp-for="ClientName" class="form-control" placeholder="John Doe" />
+                <span asp-validation-for="ClientName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PhoneNumber" class="form-label-add-edit"></label>
+                <input asp-for="PhoneNumber" class="form-control" placeholder="+359888000000" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="mb-3 text-center">
+                <input class="btn btn-primary mb-2 w-100 p-3 fw-bold" type="submit" value="Save Changes" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
