@@ -2,8 +2,8 @@
 
 @{
     ViewBag.Title = "Review Details";
+    string returnUrl = ViewData["returnUrl"] as string;
 }
-
 
 <div class="pb-3">
     <div class="card">
@@ -20,7 +20,7 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col col-2">
-                    <a asp-area="Admin" asp-controller="Review" asp-action="Revise" asp-route-id="@Model.Id" class="btn btn-primary w-100 fw-bold">Revise</a>
+                    <a asp-area="Admin" asp-controller="Review" asp-action="Revise" asp-route-id="@Model.Id" asp-route-returnUrl="@returnUrl" class="btn btn-primary w-100 fw-bold">Revise</a>
                 </div>
                 <div class="col col-2">
                     <button type="button" class="btn btn-danger w-100 fw-bold" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal_@Model.Id">

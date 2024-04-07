@@ -19,7 +19,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         {
             return View();
         }
-
+        [HttpGet]
         public async Task<IActionResult> AllClubReviews(int clubId)
         {
             if (!await clubService.ExistAsync(clubId))
@@ -34,11 +34,17 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Details(int id)
+        [HttpGet]
+        public async Task<IActionResult> Details(int id, string? returnUrl)
         {
             if (!await reviewService.ExistAsync(id))
             {
                 return BadRequest();
+            }
+
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+            {
+                ViewData["returnUrl"] = returnUrl;
             }
 
             var model = await reviewService.GetDetailsViewModel(id);
@@ -47,11 +53,16 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Revise(int id)
+        public async Task<IActionResult> Revise(int id ,string? returnUrl )
         {
             if (!await reviewService.ExistAsync(id))
             {
                 return BadRequest();
+            }
+
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+            {
+                ViewData["returnUrl"] = returnUrl;
             }
 
             var model = await reviewService.GetReviewReviseModelAsync(id);
@@ -60,7 +71,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Revise(ReviewReviseAdminFormModel model)
+        public async Task<IActionResult> Revise(ReviewReviseAdminFormModel model, string? returnUrl)
         {
             if (!await reviewService.ExistAsync(model.Id))
             {
@@ -69,10 +80,16 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
+                ViewData["returnUrl"] = returnUrl;
                 return View(model);
             }
 
             await reviewService.ReviseAsync(model);
+
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
 
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }

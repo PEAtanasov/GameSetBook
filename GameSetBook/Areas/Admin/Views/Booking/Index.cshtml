@@ -3,7 +3,7 @@
 @{
 
     var clubName = ViewData["ClubName"] as string;
-    
+
     if (!string.IsNullOrWhiteSpace(clubName))
     {
         ViewBag.Title = clubName + " " + "All Bookings";
@@ -72,7 +72,7 @@
             </select>
         </div>
 
-        @if (Model.ClubId==null)
+        @if (Model.ClubId == null)
         {
             <div class="col-md-4">
                 <label class="form-label">Search by</label>
@@ -92,7 +92,7 @@
                 </div>
             </div>
         }
-  
+
         <div class="col-md-2">
             <label class="form-label">Bookings Per Page</label>
             <select asp-for="BookingsPerPage" class="form-select">
@@ -186,7 +186,25 @@ else
                                         }
                                         else
                                         {
-                                            <a asp-area="Admin" asp-controller="Review" asp-action="Details" asp-route-id="@booking.ReviewId" class="btn btn-sm btn-success fw-bold"><small>Review Details</small></a>
+                                            <a asp-area="Admin"
+                                               asp-controller="Review"
+                                               asp-action="Details"
+                                               asp-route-id="@booking.ReviewId"
+                                               asp-route-returnUrl="@Url.Action("Index", "Booking",
+                                               new { 
+                                                   ClubId = Model.ClubId,
+                                                   CurrentPage = Model.CurrentPage,
+                                                   BookingDateFrom = Model.BookingDateFrom,
+                                                   BookingDateTo = Model.BookingDateTo,
+                                                   BookedOnDateFrom=Model.BookedOnDateFrom,
+                                                   BookedOnDateTo = Model.BookedOnDateTo,
+                                                   SearchTerm = Model.SearchTerm ,
+                                                   BookingsPerPage = Model.BookingsPerPage,
+                                                   StatusSorting= Model.StatusSorting,
+                                                   BookingSorting = Model.BookingSorting
+                                                    })"
+
+                                               class="btn btn-sm btn-success fw-bold"><small>Review Details</small></a>
                                         }
                                         <a asp-area="Admin" asp-controller="Booking" asp-action="Edit" asp-route-Id="@booking.Id" class="btn btn-sm btn-primary fw-bold"><small>Edit Booking</small></a>
                                         <button type="button" class="btn btn-sm btn-danger fw-bold" data-bs-toggle="modal" data-bs-target="#deleteBookingModal-@booking.Id"><small>Cancel Booking</small></button>

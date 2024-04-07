@@ -1,6 +1,8 @@
 ﻿@model ReviewReviseAdminFormModel
 @{
     ViewBag.Title = "Revise Review";
+
+    string returnUrl = ViewData["returnUrl"] as string;
 }
 
 <h2 class="text-center">ViewBag.Title</h2>
@@ -23,6 +25,7 @@
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
         <form asp-area="Admin" asp-controller="Review" asp-action="Revise" method="post">
             <input type="hidden" asp-for="Id" />
+            <input type = "hidden" name="returnUrl" value="@returnUrl"/>
             <div class="mb-3">
                 <label asp-for="Title" class="form-label"></label>
                 <input asp-for="Title" class="form-control" aria-required="true" />

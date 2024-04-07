@@ -24,7 +24,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col col-2">
-                            <a asp-area="Admin" asp-controller="Review" asp-action="Revise" asp-route-id="@r.Id" class="btn btn-primary w-100 fw-bold">Revise</a>
+                            <a asp-area="Admin" asp-controller="Review" asp-action="Revise" asp-route-id="@r.Id" asp-route-returnUrl="@Url.Action("AllClubReviews","Review", new {clubId=r.ClubId})" class="btn btn-primary w-100 fw-bold">Revise</a>
                         </div>
                         <div class="col col-2">
                             <button type="button" class="btn btn-danger w-100 fw-bold" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal_@r.Id">
