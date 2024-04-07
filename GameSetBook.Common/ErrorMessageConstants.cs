@@ -11,6 +11,7 @@
         public const string ClubDoesNotExist = "The club does not exist";
         public const string ClubHasExistingCourts = "The club has existing courts";
         public const string ClubWithThatNameExist = "Club with the name {0} already exist";
+        public const string UserWithEmailDoesNotExist = "User with {0} email addres does not exist";
         public const string UsersAreAllowedToRegisterOnlyOneClub = "Users are not allowed to register more than one club";
 
         public static string ImageSizeToBig = $"The file size must not exceed {ValidationConstatns.ImageSizeConstants.ClubLogoMaxLength / 1024 / 1024} MB.";

@@ -4,6 +4,8 @@ using GameSetBook.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Cryptography.X509Certificates;
 using static GameSetBook.Common.ErrorMessageConstants;
 using static GameSetBook.Common.UserConstants;
 
@@ -175,7 +177,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id, string? returnUrl)
         {
-            if (!await clubService.ClubExistIncludingSoftDeletedAsync(id))
+            if (!await clubService.ExistAsync(id))
             {
                 return BadRequest();
             }
@@ -194,21 +196,14 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(ClubEditFormModel model, IFormFile? file, string? returnUrl)
         {
-            if (!await clubService.ClubExistIncludingSoftDeletedAsync(model.Id))
+            if (!await clubService.ExistAsync(model.Id))
             {
                 return BadRequest();
             }
 
-            if (file != null && file.Length > 0)
+            if (await clubService.ExistByNameAsync(model.Name))
             {
-                try
-                {
-                    model.LogoUrl = await GetLogoUrlPath(file, model.Name);
-                }
-                catch (ArgumentException ex)
-                {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                }
+                ModelState.AddModelError(string.Empty, string.Format(ClubWithThatNameExist, model.Name));
             }
 
             if (!ModelState.IsValid)
@@ -219,6 +214,20 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 return View(model);
             }
 
+            if (file != null && file.Length > 0)
+            {
+                try
+                {
+                    model.LogoUrl = await GetLogoUrlPath(file, model.Name);
+                }
+                catch (ArgumentException ex)
+                {
+                    var cities = await cityService.GetAllCitiesAsync();
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return View(model);
+                }
+            }
+
             await clubService.EditAsync(model);
 
             if (returnUrl != null)
@@ -227,6 +236,72 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             }
 
             return RedirectToAction(nameof(Details), new { id = model.Id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            var model = new ClubAdminCreateFormModel();
+
+            var cities = await cityService.GetAllCitiesAsync();
+
+            ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(ClubAdminCreateFormModel model, IFormFile? file)
+        {
+            if (await clubService.ExistByNameAsync(model.Name))
+            {
+                ModelState.AddModelError(string.Empty, string.Format(ClubWithThatNameExist, model.Name));
+                return View(model);
+            }
+
+            var user = await userManager.FindByEmailAsync(model.ClubOwnerEmail);
+
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, string.Format(UserWithEmailDoesNotExist, model.ClubOwnerEmail));
+            }
+            else
+            {
+                if (await userManager.IsInRoleAsync(user, ClubOwnerRole))
+                {
+                    return BadRequest();
+                }
+
+                model.ClubOwnerId = user.Id;
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var cities = await cityService.GetAllCitiesAsync();
+                ViewBag.Cities = cities.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+
+                return View(model);
+            }
+
+            if (file != null && file.Length > 0)
+            {
+                try
+                {
+                    model.LogoUrl = await GetLogoUrlPath(file, model.Name);
+                }
+                catch (ArgumentException ex)
+                {
+                    var cities = await cityService.GetAllCitiesAsync();
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return View(model);
+                }
+            }
+
+            await clubService.CreateAsync(model);
+
+            var id = await clubService.GetClubIdByNameAsync(model.Name);
+
+            return RedirectToAction("Create", "Court", new { clubId = id, numberOfCourts = model.NumberOfCourts });
         }
 
         [HttpGet]

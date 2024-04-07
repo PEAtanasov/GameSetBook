@@ -2,6 +2,7 @@
 using GameSetBook.Common.Enums.EnumExtensions;
 using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Models.Admin.Court;
+using GameSetBook.Core.Models.Court;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -140,6 +141,67 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             }
 
             return RedirectToAction("Details", "Club", new { id = model.ClubId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create(int clubId, int numberOfCourts)
+        {
+            if(!await clubService.ExistAsync(clubId))
+            {
+                return BadRequest();
+            }
+
+            if (await clubService.IsClubApproved(clubId))
+            {
+                return BadRequest();
+            }
+
+            if (numberOfCourts <= 0)
+            {
+                return BadRequest();
+            }
+
+            CourtAdminCreateFormModel[] model = new CourtAdminCreateFormModel[numberOfCourts];
+
+            ViewBag.Surfaces = GetSurfaces(); ;
+
+            for (int i = 0; i < numberOfCourts; i++)
+            {
+                model[i] = new CourtAdminCreateFormModel()
+                {
+                    ClubId = clubId,
+                };
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CourtAdminCreateFormModel[] model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Surfaces = GetSurfaces();
+
+                return View(model);
+            }
+
+            var clubId = model[0].ClubId;
+
+            if (!await clubService.ExistAsync(clubId))
+            {
+                return BadRequest();
+            }
+
+            //if (await clubService.ClubHasCourts(clubId))
+            //{
+            //    return BadRequest();
+            //}
+
+           
+
+            await courtService.CreateInitialAsync(model);
+
+            return RedirectToAction("Index", "Club");
         }
 
         private static List<SelectListItem> GetSurfaces()

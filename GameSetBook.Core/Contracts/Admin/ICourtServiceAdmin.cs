@@ -1,4 +1,5 @@
 ﻿using GameSetBook.Core.Models.Admin.Court;
+using GameSetBook.Core.Models.Court;
 
 namespace GameSetBook.Core.Contracts.Admin
 {
@@ -21,5 +22,7 @@ namespace GameSetBook.Core.Contracts.Admin
         /// <param name="clubId">Club identifier where the current court belongs</param>
         /// <returns></returns>
         Task DeleteAsync(int id, int clubId);
+
+        Task CreateInitialAsync(CourtAdminCreateFormModel[] model);
     }
 }

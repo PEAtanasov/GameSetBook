@@ -1,4 +1,5 @@
 ﻿using GameSetBook.Core.Contracts.Admin;
+using GameSetBook.Core.Models.Admin.Review;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameSetBook.Web.Areas.Admin.Controllers
@@ -45,17 +46,53 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id, int clubId)
+        [HttpGet]
+        public async Task<IActionResult> Revise(int id)
         {
             if (!await reviewService.ExistAsync(id))
             {
                 return BadRequest();
             }
 
-            await reviewService.HardDeleteAsync(id);
+            var model = await reviewService.GetReviewReviseModelAsync(id);
 
-            return RedirectToAction(nameof(AllClubReviews), new { clubId });
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Revise(ReviewReviseAdminFormModel model)
+        {
+            if (!await reviewService.ExistAsync(model.Id))
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await reviewService.ReviseAsync(model);
+
+            return RedirectToAction(nameof(Details), new { id = model.Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(ReviewReviseAdminFormModel model)
+        {
+            if (!await reviewService.ExistAsync(model.Id))
+            {
+                return BadRequest();
+            }
+
+            await reviewService.HardDeleteAsync(model.Id);
+
+            if (model.ClubId==null)
+            {
+                return RedirectToAction("Index", "Booking");
+            }
+
+            return RedirectToAction(nameof(AllClubReviews), new { model.ClubId });
         }
     }
 }

@@ -16,7 +16,7 @@ namespace GameSetBook.Core.Contracts.Admin
 
         Task<bool> ExistAsync(int id);
 
-        Task<bool> ClubExistIncludingSoftDeletedAsync(int id);
+        Task<bool> ExistByNameAsync(string name);
 
         Task<bool> IsClubApproved(int id);
 
@@ -31,5 +31,9 @@ namespace GameSetBook.Core.Contracts.Admin
         Task<string> GetClubNameAsync(int clubId);
 
         Task<ClubHardDeleteAdminServiceModel> GetHardDeleteModelAsync(int id);
+
+        Task CreateAsync(ClubAdminCreateFormModel model);
+
+        Task<int> GetClubIdByNameAsync(string name);
     }
 }

@@ -1,14 +1,13 @@
-﻿using GameSetBook.Core.Models.Court;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
+using static GameSetBook.Common.ValidationConstatns.ClubConstants;
 using static GameSetBook.Common.ErrorMessageConstants;
 using static GameSetBook.Common.ImageSource;
-using static GameSetBook.Common.ValidationConstatns.ClubConstants;
 
-namespace GameSetBook.Core.Models.Club
+namespace GameSetBook.Core.Models.Admin.Club
 {
-    public class ClubFormModel
+    public class ClubAdminCreateFormModel
     {
         /// <summary>
         /// Club identifier
@@ -66,7 +65,7 @@ namespace GameSetBook.Core.Models.Club
         /// <summary>
         /// Number of coaches in the club
         /// </summary> 
-        [Range(MinCoaches,MaxCoaches, ErrorMessage = RangeMessage)]
+        [Range(MinCoaches, MaxCoaches, ErrorMessage = RangeMessage)]
         [Display(Name = "Number Of Coaches (optional)")]
         public int? NumberOfCoaches { get; set; }
 
@@ -77,7 +76,7 @@ namespace GameSetBook.Core.Models.Club
         [Range(MinCourts, MaxCourts, ErrorMessage = RangeMessage)]
         [Display(Name = "Number Of Courts The Club Have")]
         public int NumberOfCourts { get; set; }
-         
+
         /// <summary>
         /// Is car parking for clients available
         /// </summary>
@@ -120,9 +119,16 @@ namespace GameSetBook.Core.Models.Club
         public string PhoneNumber { get; set; } = string.Empty;
 
         /// <summary>
+        /// Club owner email
+        /// </summary>
+        [Required(ErrorMessage = RequiredMessage)]
+        [StringLength(EmailMaxLength, MinimumLength = EmailMinLength, ErrorMessage = StringLengthMessage)]
+        [Display(Name= "Club Owner Email")]
+        public string ClubOwnerEmail { get; set; } = string.Empty;
+
+        /// <summary>
         /// Club owner identifier
         /// </summary>
         public string ClubOwnerId { get; set; } = string.Empty;
-
     }
 }

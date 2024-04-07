@@ -58,6 +58,38 @@ namespace GameSetBook.Core.Services.Admin
             return model;
         }
 
+        public async Task<ReviewReviseAdminFormModel> GetReviewReviseModelAsync(int id)
+        {
+            var model = await repository.GetAllReadOnly<Review>()
+                .Where(r => r.Id == id)
+                .Select(r => new ReviewReviseAdminFormModel()
+                {
+                    Id = r.Id,
+                    ClubId = r.ClubId,
+                    Description = r.Description,
+                    Rating = r.Rate,
+                    Title = r.Title,
+                    ReviewerEmail = r.Reviewer.Email,
+                    ClubName = r.Club.Name,
+                    DateAddedOn = r.CreatedOn.ToString(DateTimeFormat, CultureInfo.InvariantCulture)
+                })
+                .FirstAsync();
+
+            return model;
+        }
+
+        public async Task ReviseAsync(ReviewReviseAdminFormModel model)
+        {
+            var review = await repository.GetAll<Review>()
+                .FirstAsync(r => r.Id == model.Id);
+
+            review.Title=model.Title;
+            review.Description=model.Description;
+            review.Rate = model.Rating;
+
+            await repository.SaveChangesAsync();
+        }
+
         public async Task<bool> ExistAsync(int id)
         {
             return await repository.GetAllReadOnly<Review>()

@@ -1,0 +1,53 @@
+﻿@model ReviewReviseAdminFormModel
+@{
+    ViewBag.Title = "Revise Review";
+}
+
+<h2 class="text-center">ViewBag.Title</h2>
+
+<div class="row">
+    <div class="row">
+        <div class="col-sm-12">
+            <dl class="row justify-content-center">
+                <dt class="col-sm-4">Club name:</dt>
+                <dd class="col-sm-8">@Model.ClubName</dd>
+
+                <dt class="col-sm-4">Reviewer email:</dt>
+                <dd class="col-sm-8">@Model.ReviewerEmail</dd>
+
+                <dt class="col-sm-4">Date:</dt>
+                <dd class="col-sm-8">@Model.DateAddedOn</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-area="Admin" asp-controller="Review" asp-action="Revise" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" aria-required="true" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <input asp-for="Description" class="form-control" aria-required="true" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Rating" class="form-label"></label>
+                <input asp-for="Rating" class="form-control" aria-required="true" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+            <div class="mb-3 text-center">
+                <input class="btn btn-primary mb-2 w-100 p-3 fw-bold" type="submit" value="Save Changes" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+

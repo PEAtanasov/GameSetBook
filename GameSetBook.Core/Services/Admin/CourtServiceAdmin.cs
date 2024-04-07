@@ -1,6 +1,7 @@
 ﻿using GameSetBook.Common.Enums.EnumExtensions;
 using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Models.Admin.Court;
+using GameSetBook.Core.Models.Court;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
@@ -130,6 +131,30 @@ namespace GameSetBook.Core.Services.Admin
                 .FirstAsync();
 
             return court;
+        }
+
+        public async Task CreateInitialAsync(CourtAdminCreateFormModel[] model)
+        {
+            var courts = new List<Court>();
+
+            foreach (var c in model)
+            {
+                Court court = new Court()
+                {
+                    Name = c.Name,
+                    ClubId = c.ClubId,
+                    IsLighted = c.IsLighted,
+                    IsIndoor = c.IsIndoor,
+                    PricePerHour = c.PricePerHour,
+                    Surface = c.Surface,
+                };
+
+                courts.Add(court);
+            }
+
+            await repository.AddRangeAsync(courts);
+
+            await repository.SaveChangesAsync();
         }
     }
 }

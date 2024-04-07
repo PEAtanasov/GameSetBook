@@ -123,12 +123,12 @@ namespace GameSetBook.Core.Services.Admin
 
         public async Task<bool> ExistAsync(int id)
         {
-            return await repository.GetAllReadOnly<Club>().AnyAsync(c => c.Id == id);
+            return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Id == id);
         }
 
-        public async Task<bool> ClubExistIncludingSoftDeletedAsync(int id)
+        public async Task<bool> ExistByNameAsync(string name)
         {
-            return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Id == id);
+            return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Name == name);
         }
 
         public async Task<bool> IsClubApproved(int id)
@@ -369,5 +369,45 @@ namespace GameSetBook.Core.Services.Admin
 
             return club.Name;
         }
+
+        public async Task CreateAsync(ClubAdminCreateFormModel model)
+        {
+            var club = new Club()
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Address = model.Address,
+                CityId = model.CityId,
+                ClubOwnerId = model.ClubOwnerId,
+                HasParking = model.HasParking,
+                Email = model.Email,
+                HasShop = model.HasShop,
+                HasShower = model.HasShower,
+                NumberOfCoaches = model.NumberOfCoaches,
+                NumberOfCourts = model.NumberOfCourts,
+                PhoneNumber = model.PhoneNumber,
+                WorkingTimeStart = model.WorkingTimeStart,
+                WorkingTimeEnd = model.WorkingTimeEnd,
+                LogoUrl = model.LogoUrl,
+                RegisteredOn = DateTime.Now,
+                IsAproovedByAdmin = false
+            };
+
+            if (string.IsNullOrWhiteSpace(model.LogoUrl))
+            {
+                model.LogoUrl = Common.ImageSource.DefaultClubLogoUrl;
+            }
+
+            await repository.AddAsync(club);
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task<int> GetClubIdByNameAsync(string name) 
+        {
+            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Name == name);
+
+            return club.Id;
+        }
+
     }
 }
