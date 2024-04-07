@@ -74,7 +74,6 @@ namespace GameSetBook.Core.Services
                     Price = b.Price,
                     BookingDate = b.BookingDate,
                     Hour = b.Hour,
-                    CourtId = b.CourtId,
                 })
                 .FirstAsync();
         }

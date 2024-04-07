@@ -78,7 +78,7 @@ namespace GameSetBook.Web.Controllers
                 return Unauthorized();
             }
 
-            if (!await clubService.ClubExsitAsync(model.ClubId))
+            if (!await clubService.ExsitAsync(model.ClubId))
             {
                 return BadRequest();
             }
@@ -153,7 +153,7 @@ namespace GameSetBook.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AllReviews([FromQuery] AllReviewsSortingServiceModel model)
         {
-            if (!await clubService.ClubExsitAsync(model.ClubId))
+            if (!await clubService.ExsitAsync(model.ClubId))
             {
                 return BadRequest();
             }

@@ -205,7 +205,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            if (await clubService.ExistByNameAsync(model.Name))
+            if (await clubService.ExistByNameAsync(model.Id, model.Name))
             {
                 ModelState.AddModelError(string.Empty, string.Format(ClubWithThatNameExist, model.Name));
             }
@@ -326,8 +326,6 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             }
 
             var model = await clubService.GetClubDetailsAsync(id);
-
-            //model.ReturnUrl = Url.Action("Details", "Club", new { id = id });
 
             return View(model);
         }

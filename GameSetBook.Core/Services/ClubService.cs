@@ -175,7 +175,7 @@ namespace GameSetBook.Core.Services
             return club.Id;
         }
 
-        public async Task<bool> ClubExsitAsync(int id)
+        public async Task<bool> ExsitAsync(int id)
         {
             var club = await repository.GetAllReadOnly<Club>().FirstOrDefaultAsync(c => c.Id == id);
 
@@ -186,9 +186,14 @@ namespace GameSetBook.Core.Services
             return true;
         }
 
-        public async Task<bool> ClubExsitByNameAsync(string name)
+        public async Task<bool> ExsitByNameAsync(string name)
         {
             return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Name.ToLower() == name.ToLower());
+        }
+
+        public async Task<bool> ExsitByNameAsync(int id, string name)
+        {
+            return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Name.ToLower() == name.ToLower() && c.Id!=id);
         }
 
         public async Task<bool> IsClubAprooved(int id)

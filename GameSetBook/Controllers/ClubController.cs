@@ -69,7 +69,7 @@ namespace GameSetBook.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
 
-            if (!await clubService.ClubExsitAsync(id))
+            if (!await clubService.ExsitAsync(id))
             {
                 return BadRequest();
             }
@@ -131,7 +131,7 @@ namespace GameSetBook.Web.Controllers
                 return Unauthorized();
             }
 
-            if (await clubService.ClubExsitByNameAsync(model.Name))
+            if (await clubService.ExsitByNameAsync(model.Name))
             {
                 ModelState.AddModelError(string.Empty, string.Format(ClubWithThatNameExist, model.Name));
             }
@@ -172,7 +172,7 @@ namespace GameSetBook.Web.Controllers
 
             ViewData["ClubId"] = id;
 
-            if (!await clubService.ClubExsitAsync(id))
+            if (!await clubService.ExsitAsync(id))
             {
                 return BadRequest();
             }
@@ -200,7 +200,7 @@ namespace GameSetBook.Web.Controllers
 
             ViewData["ClubId"] = id;
 
-            if (!await clubService.ClubExsitAsync(id))
+            if (!await clubService.ExsitAsync(id))
             {
                 return BadRequest();
             }
@@ -225,7 +225,7 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Edit(int id)
         {
-            if (!await clubService.ClubExsitAsync(id))
+            if (!await clubService.ExsitAsync(id))
             {
                 return BadRequest();
             }
@@ -247,7 +247,7 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Edit(ClubFormModel model, IFormFile? file)
         {
-            if (!await clubService.ClubExsitAsync(model.Id))
+            if (!await clubService.ExsitAsync(model.Id))
             {
                 return BadRequest();
             }
@@ -256,7 +256,7 @@ namespace GameSetBook.Web.Controllers
                 return Unauthorized();
             }
 
-            if (await clubService.ClubExsitByNameAsync(model.Name))
+            if (await clubService.ExsitByNameAsync(model.Id, model.Name))
             {
                 ModelState.AddModelError(string.Empty, string.Format(ClubWithThatNameExist, model.Name));
             }
@@ -292,7 +292,7 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> MyClub(int id)
         {
-            if (!await clubService.ClubExsitAsync(id))
+            if (!await clubService.ExsitAsync(id))
             {
                 return BadRequest();
             }

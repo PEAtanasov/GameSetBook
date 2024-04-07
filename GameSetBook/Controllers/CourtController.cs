@@ -24,7 +24,7 @@ namespace GameSetBook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(int clubId, int numberOfCourts)
         {
-            if (!await clubService.ClubExsitAsync(clubId))
+            if (!await clubService.ExsitAsync(clubId))
             {
                 return BadRequest();
             }
@@ -53,7 +53,7 @@ namespace GameSetBook.Web.Controllers
         {
             var clubId = model[0].ClubId;
 
-            if (!await clubService.ClubExsitAsync(clubId))
+            if (!await clubService.ExsitAsync(clubId))
             {
                 return BadRequest();
             }
@@ -144,7 +144,7 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Add(CourtCreateFormModel model)
         {
-            if (!await clubService.ClubExsitAsync(model.ClubId))
+            if (!await clubService.ExsitAsync(model.ClubId))
             {
                 return BadRequest();
             }

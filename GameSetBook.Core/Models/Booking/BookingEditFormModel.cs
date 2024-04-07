@@ -47,10 +47,5 @@ namespace GameSetBook.Core.Models.Booking
         /// Booking's date
         /// </summary>
         public DateTime BookingDate { get; set; }
-
-        /// <summary>
-        /// Booking's court identifier
-        /// </summary>
-        public int CourtId { get; set; }
     }
 }

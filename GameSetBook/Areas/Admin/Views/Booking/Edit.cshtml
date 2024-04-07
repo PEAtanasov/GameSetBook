@@ -30,6 +30,20 @@
             <div class="mb-3 text-center">
                 <input class="btn btn-primary mb-2 w-100 p-3 fw-bold" type="submit" value="Save Changes" />
             </div>
+            <div class="col">
+                @if (!string.IsNullOrWhiteSpace(returnUrl))
+                {
+                    <div class="col">
+                        <a class="btn btn-secondary mb-2 w-100 p-3 fw-bold" href="@returnUrl">Back</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="col">
+                        <a asp-area="Admin" asp-controller="Club" asp-action="Schedule" asp-route-id="@Model.ClubId" asp-route-date="@Model.BookingDate" class="btn btn-secondary mb-2 w-100 p-3 fw-bold">Back</a>
+                    </div>
+                }
+            </div>
         </form>
     </div>
 </div>

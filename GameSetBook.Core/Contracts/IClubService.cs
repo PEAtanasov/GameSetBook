@@ -14,11 +14,13 @@ namespace GameSetBook.Core.Contracts
 
         Task<ClubInfoViewModel> GetClubIfnoAsync(int id);
 
-        Task<bool> ClubExsitAsync(int id);
+        Task<bool> ExsitAsync(int id);
 
         Task CreateAsync(ClubFormModel model);
 
-        Task<bool> ClubExsitByNameAsync(string name);
+        Task<bool> ExsitByNameAsync(string name);
+
+        Task<bool> ExsitByNameAsync(int id, string name);
 
         Task<bool> IsClubAprooved(int id);
 
