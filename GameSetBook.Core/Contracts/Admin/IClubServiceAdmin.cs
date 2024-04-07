@@ -35,5 +35,7 @@ namespace GameSetBook.Core.Contracts.Admin
         Task CreateAsync(ClubAdminCreateFormModel model);
 
         Task<int> GetClubIdByNameAsync(string name);
+
+        public Task<ClubScheduleAdminServiceModel> GetClubScheduleModelAsync(int id, DateTime date);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using GameSetBook.Common.Enums.EnumExtensions;
 using GameSetBook.Core.Contracts.Admin;
+using GameSetBook.Core.Models.Admin.Booking;
 using GameSetBook.Core.Models.Admin.Court;
+using GameSetBook.Core.Models.Booking;
 using GameSetBook.Core.Models.Court;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
@@ -156,5 +158,69 @@ namespace GameSetBook.Core.Services.Admin
 
             await repository.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<CourtScheduleAdminViewModel>> GetCourtScheduleAsync (int clubId, DateTime date, int workingHourStart, int workingHourEnd)
+        {
+            var courts = await repository.GetAllReadOnly<Court>()
+                .Where(c => c.ClubId == clubId && c.IsActive == true)
+                .Select(c => new CourtScheduleAdminViewModel()
+                {
+                    Id = c.Id,
+                    ClubId = c.ClubId,
+                    IsIndoor = c.IsIndoor,
+                    IsLighted = c.IsLighted,
+                    Name = c.Name,
+                    Price = c.PricePerHour,
+                    Surface = c.Surface.GetDisplayName(),
+                    Bookings = c.Bookings.Where(b => b.BookingDate.Date == date.Date).Select(b => new BookingScheduleAdminServiceModel()
+                    {
+                        Id = b.Id,
+                        CourtId = b.CourtId,
+                        Hour = b.Hour,
+                        IsAvailable = b.IsAvailable,
+                        BookingDate = b.BookingDate
+                    }).ToList(),
+                })
+                .ToListAsync();
+
+            for (int i = 0; i < courts.Count; i++)
+            {
+                List<BookingScheduleAdminServiceModel> bookings = GetAvailableBookings(workingHourStart, workingHourEnd, date, courts[i].Id);
+                foreach (var booking in courts[i].Bookings)
+                {
+                    for (int n = 0; n < bookings.Count; n++)
+                    {
+                        if (bookings[n].Hour == booking.Hour)
+                        {
+                            bookings[n] = booking;
+                        }
+                    }
+                }
+                courts[i].Bookings = bookings;
+            }
+
+            return courts;
+        }
+
+        private List<BookingScheduleAdminServiceModel> GetAvailableBookings(int start, int end, DateTime date, int courtId)
+        {
+            List<BookingScheduleAdminServiceModel> bookings = new List<BookingScheduleAdminServiceModel>();
+
+            BookingScheduleAdminServiceModel booking;
+
+            for (int i = start; i < end; i++)
+            {
+                booking = new BookingScheduleAdminServiceModel()
+                {
+                    Hour = i,
+                    BookingDate = date,
+                    CourtId = courtId,
+                };
+                bookings.Add(booking);
+            }
+
+            return bookings;
+        }
+
     }
 }

@@ -12,6 +12,9 @@
     <div class="col col-3">
         <a asp-area="Admin" asp-controller="Review" asp-action="AllClubReviews" asp-route-ClubId="@Model.Id" class="btn btn-primary mb-2 w-100 p-3 fw-bold">All Reviews</a>
     </div>
+    <div class="col col-3">
+        <a asp-area="Admin" asp-controller="Club" asp-action="Schedule" asp-route-Id="@Model.Id" class="btn btn-primary mb-2 w-100 p-3 fw-bold">Schedule</a>
+    </div>
 </div>
 <partial name="_ClubDetailsPartial" model="Model" />
 

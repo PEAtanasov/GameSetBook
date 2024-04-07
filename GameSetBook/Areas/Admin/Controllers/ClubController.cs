@@ -1,5 +1,6 @@
 ﻿using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Models.Admin.Club;
+using GameSetBook.Core.Services;
 using GameSetBook.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,13 +20,15 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         private readonly ICityServiceAdmin cityService;
         private readonly ICountryServiceAdmin countryService;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly ICourtServiceAdmin courtService;
 
         public ClubController(IClubServiceAdmin clubService,
             RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager,
             ICityServiceAdmin cityService,
             ICountryServiceAdmin countryService,
-        IWebHostEnvironment webHostEnvironment)
+        IWebHostEnvironment webHostEnvironment,
+        ICourtServiceAdmin courtService)
         {
             this.clubService = clubService;
             this.roleManager = roleManager;
@@ -33,6 +36,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             this.cityService = cityService;
             this.countryService = countryService;
             this.webHostEnvironment = webHostEnvironment;
+            this.courtService = courtService;
         }
 
         [HttpGet]
@@ -324,6 +328,23 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             var model = await clubService.GetClubDetailsAsync(id);
 
             //model.ReturnUrl = Url.Action("Details", "Club", new { id = id });
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Schedule(ClubScheduleAdminServiceModel model)
+        {
+            if (!await clubService.ExistAsync(model.Id))
+            {
+                return BadRequest();
+            }   
+
+            DateTime currentDate = model.Date ?? DateTime.Now;
+
+            model = await clubService.GetClubScheduleModelAsync(model.Id, currentDate);
+
+            model.Courts = await courtService.GetCourtScheduleAsync(model.Id, currentDate, model.WorkingHourStart, model.WorkingHourEnd);
 
             return View(model);
         }

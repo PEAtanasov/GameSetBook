@@ -1,5 +1,4 @@
 ﻿using GameSetBook.Core.Models.Admin.Court;
-using GameSetBook.Core.Models.Court;
 
 namespace GameSetBook.Core.Contracts.Admin
 {
@@ -24,5 +23,7 @@ namespace GameSetBook.Core.Contracts.Admin
         Task DeleteAsync(int id, int clubId);
 
         Task CreateInitialAsync(CourtAdminCreateFormModel[] model);
+
+        Task<IEnumerable<CourtScheduleAdminViewModel>> GetCourtScheduleAsync(int clubId, DateTime date, int workingHourStart, int workingHourEnd);
     }
 }

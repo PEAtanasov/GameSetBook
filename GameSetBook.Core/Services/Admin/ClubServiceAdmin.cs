@@ -3,11 +3,12 @@ using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Enums;
 using GameSetBook.Core.Models.Admin.Club;
 using GameSetBook.Core.Models.Admin.Court;
-using GameSetBook.Core.Models.Club;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
+using static GameSetBook.Common.ValidationConstatns.DateTimeFormats;
 
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace GameSetBook.Core.Services.Admin
 {
@@ -186,11 +187,11 @@ namespace GameSetBook.Core.Services.Admin
                 .ToListAsync();
 
             var bookings = await repository.GetAllWithDeleted<Booking>().
-                Where(b=>b.Court.ClubId==id)
+                Where(b => b.Court.ClubId == id)
                 .ToListAsync();
 
             var reviews = await repository.GetAll<Review>()
-                .Where(r=>r.ClubId==id)
+                .Where(r => r.ClubId == id)
                 .ToListAsync();
 
             repository.RemoveRange(reviews);
@@ -402,11 +403,31 @@ namespace GameSetBook.Core.Services.Admin
             await repository.SaveChangesAsync();
         }
 
-        public async Task<int> GetClubIdByNameAsync(string name) 
+        public async Task<int> GetClubIdByNameAsync(string name)
         {
             var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Name == name);
 
             return club.Id;
+        }
+
+        public async Task<ClubScheduleAdminServiceModel> GetClubScheduleModelAsync(int id, DateTime date)
+        {
+            string parsedDate = date.ToString(DateOnlyFormat);
+            date = DateTime.ParseExact(parsedDate, DateOnlyFormat, CultureInfo.InvariantCulture);
+
+            var club = await repository.GetAllReadOnly<Club>()
+                .Where(c => c.Id == id)
+                .Select(c => new ClubScheduleAdminServiceModel()
+                {
+                    Id = c.Id,
+                    Name=c.Name,
+                    Date = date,
+                    WorkingHourEnd = c.WorkingTimeEnd,
+                    WorkingHourStart = c.WorkingTimeStart,
+                })
+                .FirstAsync();
+
+            return club;
         }
 
     }
