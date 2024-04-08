@@ -1,12 +1,9 @@
 ﻿using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Models.Admin.Club;
-using GameSetBook.Core.Services;
 using GameSetBook.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Cryptography.X509Certificates;
 using static GameSetBook.Common.ErrorMessageConstants;
 using static GameSetBook.Common.UserConstants;
 

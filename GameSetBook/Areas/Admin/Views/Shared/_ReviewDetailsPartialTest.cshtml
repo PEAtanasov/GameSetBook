@@ -1,0 +1,47 @@
+﻿@model ReviewAdminViewModel
+
+<div class="pb-3">
+    <div class="card">
+        <div class="card-header">
+            Rating: <strong class="@(Model.Rate<=5 ? "text-danger" : "text-success")">@Model.Rate</strong><small> by @(string.IsNullOrWhiteSpace(@Model.ReviewerName) ? "Anonymous" : @Model.ReviewerName)</small>
+            <p><small>User email: @Model.ReviewerEmail</small></p>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">@Model.Title</h5>
+            <p class="card-text">@Model.Description</p>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col col-2">
+                    <a asp-area="Admin" asp-controller="Review" asp-action="Revise" asp-route-id="@Model.Id" class="btn btn-primary w-100 fw-bold">Revise</a>
+                </div>
+                <div class="col col-2">
+                    <button type="button" class="btn btn-danger w-100 fw-bold" data-bs-toggle="modal" data-bs-target="#confirmationModal" data-review-id="@Model.Id">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this review?
+            </div>
+            <div class="modal-footer">
+                <form asp-area="Admin" asp-controller="Review" asp-action="Delete" method="post">
+                    <input type="hidden" name="Id" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

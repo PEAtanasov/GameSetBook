@@ -9,6 +9,5 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
     [Authorize(Roles = UserConstants.AdminRole)]
     public class BaseController : Controller
     {
-
     }
 }

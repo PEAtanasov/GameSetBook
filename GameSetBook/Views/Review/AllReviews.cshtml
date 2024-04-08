@@ -13,14 +13,12 @@
     var maxPage = Math.Ceiling((double)Model.TotalReviewCount / Model.ReviewsPerPage);
 }
 
-
 <h2 class="text-center">@Model.ClubName @ViewBag.Title</h2>
 
 <div class="container">
     <div class="row">
         <div class="col-md-3">
             <div class="left-column">
-                <!-- Left part: Render _ClubInfoPartial.cshtml -->
                 <partial name="_ClubInfoPartial" model="Model.ClubInfo" />
                 @if (!isTheClubOwner)
                 {
@@ -29,8 +27,6 @@
             </div>
         </div>
         <div class="col-md-9">
-            <!-- Right part: Display other club details -->
-
             <div class="container col-sm-12 mb-4">
                 <form id="filterForm" asp-controller="Review" asp-action="AllReviews" method="get" class="row g-3 align-items-end">
                     <input type="hidden" asp-for="ClubId" />
@@ -45,7 +41,6 @@
                             <option value="4">Rating (High -> Low)</option>
                         </select>
                     </div>
-
                     <div class="col-md-3">
                         <label class="form-label">Reviews Per Page</label>
                         <select asp-for="ReviewsPerPage" class="form-select">
@@ -56,7 +51,6 @@
                             <option value="100">100</option>
                         </select>
                     </div>
-
                     <div class="col-md-3">
                         <button type="submit" class="btn btn-primary w-100">Apply</button>
                     </div>
@@ -65,14 +59,12 @@
                     </div>
                 </form>
             </div>
-
             @if (Model.Reviews.Any())
             {
                 foreach (var review in Model.Reviews)
                 {
                     <partial name="_ReviewDetailsPartial" model="@review" />
                 }
-
                 <div class="d-flex justify-content-center mt-4">
                     <nav>
                         <ul class="pagination">
@@ -85,7 +77,6 @@
                                    asp-route-reviewsPerPage="@Model.ReviewsPerPage"
                                    asp-route-clubId="@Model.ClubId">Previous</a>
                             </li>
-
                             @for (int i = 1; i <= maxPage; i++)
                             {
                                 <li class="page-item">
@@ -100,12 +91,10 @@
                                     </a>
                                 </li>
                             }
-
                             @{
                                 var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
                                 !Model.Reviews.Any();
                             }
-
                             <li class="page-item @(shouldButtonBeDisabled ? "disabled" : string.Empty)">
                                 <a class="page-link"
                                    asp-controller="Review"

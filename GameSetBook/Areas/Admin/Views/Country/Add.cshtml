@@ -1,0 +1,36 @@
+﻿@model GameSetBook.Core.Models.Admin.Country.CountryAddAdminFormModel
+
+@{
+    ViewBag.Title = $"Add Country";
+}
+
+<h1 class="text-center">@ViewBag.Title</h1>
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-area="Admin" asp-controller="Country" asp-action="Add" method="post">
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" aria-required="true" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3 text-center">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <input class="btn btn-primary mb-2 w-100 p-3 fw-bold" type="submit" value="Add" />
+                    </div>
+                    <div class="col">
+                        <a asp-action="Index" class="btn btn-secondary mb-2 w-100 p-3 fw-bold">Back</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+

@@ -14,6 +14,25 @@ namespace GameSetBook.Core.Services.Admin
         {
             this.repository = repository;
         }
+
+        public async Task<bool> ExistByNameAsync(string name)
+        {
+            return await repository.GetAllReadOnly<Country>()
+                .AnyAsync(c => c.Name.ToUpper() == name.ToUpper());
+        }
+
+        public async Task AddAsync(CountryAddAdminFormModel model)
+        {
+            var country = new Country()
+            {
+                Name = model.Name,
+            };
+
+            await repository.AddAsync(country);
+
+            await repository.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<CountryAdminServiceModel>> GetAllCountriesAsync()
         {
             var countries = await repository.GetAllReadOnly<Country>()
