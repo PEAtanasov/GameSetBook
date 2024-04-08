@@ -29,5 +29,25 @@ namespace GameSetBook.Core.Services.Admin
 
             return cities;
         }
+
+        public async Task<bool> ExystByNameAsync(string name, int countryId)
+        {
+            return await repository.GetAllReadOnly<City>()
+                .Where(c => c.CountryId == countryId)
+                .AnyAsync(c => c.Name.ToUpper() == name.ToUpper());              
+        }
+
+        public async Task AddAsync(CityAddAdminFormModel model)
+        {
+            var city = new City()
+            {
+                Name = model.Name,
+                CountryId = model.CountryId
+            };
+
+            await repository.AddAsync(city);
+
+            await repository.SaveChangesAsync();
+        }
     }
 }
