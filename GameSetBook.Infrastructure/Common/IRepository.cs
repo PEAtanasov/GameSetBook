@@ -93,7 +93,7 @@ namespace GameSetBook.Infrastructure.Common
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entities"></param>
-        void RemoveRange<T>(IList<T> entities) where T : class;
+        public void RemoveRange<T>(IEnumerable<T> entities) where T : class;
 
     }
 }

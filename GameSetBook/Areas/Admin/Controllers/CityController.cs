@@ -38,7 +38,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CityAddAdminFormModel model)
         {
-            if (await cityService.ExystByNameAsync(model.Name,model.CountryId))
+            if (await cityService.ExystByNameAsync(model.Name, model.CountryId))
             {
                 ModelState.AddModelError(string.Empty, string.Format(CityWithNameExist, model.Name));
             }
@@ -51,6 +51,19 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             }
 
             await cityService.AddAsync(model);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!await cityService.ExistById(id))
+            {
+                return BadRequest();
+            }
+
+            await cityService.DeleteAsync(id);
 
             return RedirectToAction(nameof(Index));
         }

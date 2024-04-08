@@ -90,27 +90,18 @@ namespace GameSetBook.Core.Services.Admin
             await repository.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id, int clubId)
+        public async Task DeleteAsync(int id)
         {
-            var court = await repository.GetAll<Court>()
-                .FirstAsync(c => c.Id == id);
+            var court1=await repository.GetAll<Court>()
+                .Where(c=>c.Id==id)
+                .Include(c=>c.Club)
+                .Include(c=>c.Bookings)
+                .IgnoreQueryFilters()
+                .FirstAsync();
 
-            var bookings = await repository.GetAllWithDeleted<Booking>()
-                .Where(b => b.CourtId == id)
-                .ToListAsync();
-
-            var club = await repository
-              .GetAllWithDeleted<Club>()
-              .FirstAsync(c => c.Id == clubId);
-           
-            if (bookings.Any())
-            {
-                repository.RemoveRange(bookings);
-            }
-
-            club.NumberOfCourts -= 1;
-
-            repository.HardDelete(court);
+            repository.RemoveRange(court1.Bookings);
+            repository.HardDelete(court1);
+            court1.Club.NumberOfCourts -= 1;
 
             await repository.SaveChangesAsync();
         }

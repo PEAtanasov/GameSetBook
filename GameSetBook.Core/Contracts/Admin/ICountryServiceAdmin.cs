@@ -9,5 +9,9 @@ namespace GameSetBook.Core.Contracts.Admin
         Task<bool> ExistByNameAsync(string name);
 
         Task AddAsync(CountryAddAdminFormModel model);
+
+        Task<bool> ExistById(int id);
+
+        Task DeleteAsync(int id);
     }
 }

@@ -45,5 +45,36 @@ namespace GameSetBook.Core.Services.Admin
 
             return countries;
         }
+
+        public async Task<bool> ExistById(int id)
+        {
+            return await repository.GetAllReadOnly<Country>()
+                .AnyAsync(c => c.Id == id);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var coutnry = await repository.GetAll<Country>()
+                 .Where(country => country.Id == id)
+                 .Include(country => country.Cities)
+                 .ThenInclude(city => city.Clubs)
+                 .ThenInclude(club=>club.Courts)
+                 .ThenInclude(court=>court.Bookings)
+                 .Include(country=>country.Cities)
+                 .ThenInclude(city => city.Clubs)
+                 .ThenInclude(club => club.Reviews)
+                 .IgnoreQueryFilters()
+                 .FirstAsync();
+
+            repository.RemoveRange(coutnry.Cities.SelectMany(c => c.Clubs.SelectMany(cl => cl.Reviews)));
+            repository.RemoveRange(coutnry.Cities.SelectMany(c => c.Clubs.SelectMany(cl => cl.Courts.SelectMany(ct=>ct.Bookings))));
+            repository.RemoveRange(coutnry.Cities.SelectMany(c => c.Clubs.SelectMany(cl=>cl.Courts)));
+            repository.RemoveRange(coutnry.Cities.SelectMany(c => c.Clubs));
+            repository.RemoveRange(coutnry.Cities);
+
+            repository.HardDelete(coutnry);
+
+            await repository.SaveChangesAsync();
+        }
     }
 }

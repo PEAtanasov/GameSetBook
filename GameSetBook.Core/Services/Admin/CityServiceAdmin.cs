@@ -39,6 +39,7 @@ namespace GameSetBook.Core.Services.Admin
 
         public async Task AddAsync(CityAddAdminFormModel model)
         {
+
             var city = new City()
             {
                 Name = model.Name,
@@ -48,6 +49,34 @@ namespace GameSetBook.Core.Services.Admin
             await repository.AddAsync(city);
 
             await repository.SaveChangesAsync();
+        }
+
+        public async Task<bool> ExistById(int id)
+        {
+            return await repository.GetAllReadOnly<City>()
+                .AnyAsync(c => c.Id == id);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var city = await repository.GetAll<City>()
+                .Where(c => c.Id == id)
+                .Include(c => c.Clubs)
+                .ThenInclude(club => club.Reviews)
+                .Include(c => c.Clubs)
+                .ThenInclude(club => club.Courts)
+                .ThenInclude(court => court.Bookings)
+                .IgnoreQueryFilters()
+                .FirstAsync();
+
+                repository.RemoveRange(city.Clubs.SelectMany(club => club.Reviews));
+                repository.RemoveRange(city.Clubs.SelectMany(club => club.Courts.SelectMany(court => court.Bookings)));
+                repository.RemoveRange(city.Clubs.SelectMany(club => club.Courts));
+                repository.RemoveRange(city.Clubs);
+                repository.HardDelete(city);
+
+                await repository.SaveChangesAsync();
+            }
         }
     }
 }

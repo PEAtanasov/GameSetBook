@@ -191,26 +191,18 @@ namespace GameSetBook.Core.Services.Admin
             await repository.SaveChangesAsync();
         }
 
-        public async Task HardDelete(int id)
+        public async Task HardDeleteAsync(int id)
         {
             var club = await repository.GetAllWithDeleted<Club>()
-                .FirstAsync(c => c.Id == id);
+               .Include(c => c.Reviews)
+               .Include(c => c.Courts)
+               .ThenInclude(ct => ct.Bookings)
+               .IgnoreQueryFilters()
+               .FirstAsync(c => c.Id == id);
 
-            var courts = await repository.GetAll<Court>()
-                .Where(c => c.ClubId == id)
-                .ToListAsync();
-
-            var bookings = await repository.GetAllWithDeleted<Booking>().
-                Where(b => b.Court.ClubId == id)
-                .ToListAsync();
-
-            var reviews = await repository.GetAll<Review>()
-                .Where(r => r.ClubId == id)
-                .ToListAsync();
-
-            repository.RemoveRange(reviews);
-            repository.RemoveRange(bookings);
-            repository.RemoveRange(courts);
+            repository.RemoveRange(club.Reviews);
+            repository.RemoveRange(club.Courts.SelectMany(ct => ct.Bookings));
+            repository.RemoveRange(club.Courts);
 
             repository.HardDelete(club);
 

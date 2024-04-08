@@ -20,7 +20,7 @@ namespace GameSetBook.Core.Contracts.Admin
         /// <param name="id">Court identifier</param>
         /// <param name="clubId">Club identifier where the current court belongs</param>
         /// <returns></returns>
-        Task DeleteAsync(int id, int clubId);
+        Task DeleteAsync(int id);
 
         Task CreateInitialAsync(CourtAdminCreateFormModel[] model);
 

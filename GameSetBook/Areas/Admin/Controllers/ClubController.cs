@@ -163,7 +163,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            await clubService.HardDelete(model.Id);
+            await clubService.HardDeleteAsync(model.Id);
 
             var user = await userManager.FindByIdAsync(model.ClubOwnerId);
 

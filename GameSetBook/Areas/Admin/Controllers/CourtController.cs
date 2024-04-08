@@ -133,7 +133,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            await courtService.DeleteAsync(model.Id, model.ClubId);
+            await courtService.DeleteAsync(model.Id);
 
             if (!string.IsNullOrWhiteSpace(model.ReturnUrl))
             {

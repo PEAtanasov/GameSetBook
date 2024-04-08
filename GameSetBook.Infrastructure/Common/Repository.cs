@@ -105,15 +105,6 @@ namespace GameSetBook.Infrastructure.Common
         {
              this.DbSet<T>().Remove(entity);
         }
-        /// <summary>
-        /// Deletes set of items form database
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="entities"></param>
-        public void RemoveRange<T>(IList<T> entities) where T : class
-        {
-            DbSet<T>().RemoveRange(entities);
-        }
 
         /// <summary>
         /// Get all elements including deleted items
@@ -144,6 +135,16 @@ namespace GameSetBook.Infrastructure.Common
         public async Task<T?> GetByIdAsync<T>(object id) where T : class
         {
             return await DbSet<T>().FindAsync(id);
+        }
+
+        /// <summary>
+        /// Deletes set of items form database
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entities"></param>
+        public void RemoveRange<T>(IEnumerable<T> entities) where T : class
+        {
+            DbSet<T>().RemoveRange(entities);
         }
     }
 }
