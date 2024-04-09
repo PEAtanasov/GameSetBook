@@ -16,9 +16,11 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var model = await countryService.GetAllCountriesAsync();
+
+            return View(model);
         }
 
         [HttpGet]
@@ -32,12 +34,12 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CountryAddAdminFormModel model)
         {
-            if (!await countryService.ExistByNameAsync(model.Name))
+            if (await countryService.ExistByNameAsync(model.Name))
             {
                 ModelState.AddModelError(string.Empty, string.Format(CountryWithNameExist, model.Name));
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }

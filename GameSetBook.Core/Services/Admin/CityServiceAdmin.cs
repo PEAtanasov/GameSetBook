@@ -1,6 +1,5 @@
 ﻿using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Models.Admin.City;
-using GameSetBook.Core.Models.City;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
@@ -69,14 +68,13 @@ namespace GameSetBook.Core.Services.Admin
                 .IgnoreQueryFilters()
                 .FirstAsync();
 
-                repository.RemoveRange(city.Clubs.SelectMany(club => club.Reviews));
-                repository.RemoveRange(city.Clubs.SelectMany(club => club.Courts.SelectMany(court => court.Bookings)));
-                repository.RemoveRange(city.Clubs.SelectMany(club => club.Courts));
-                repository.RemoveRange(city.Clubs);
-                repository.HardDelete(city);
+            repository.RemoveRange(city.Clubs.SelectMany(club => club.Reviews));
+            repository.RemoveRange(city.Clubs.SelectMany(club => club.Courts.SelectMany(court => court.Bookings)));
+            repository.RemoveRange(city.Clubs.SelectMany(club => club.Courts));
+            repository.RemoveRange(city.Clubs);
+            repository.HardDelete(city);
 
-                await repository.SaveChangesAsync();
-            }
+            await repository.SaveChangesAsync();
         }
     }
 }

@@ -94,8 +94,6 @@ namespace GameSetBook.Core.Services
             var booking = await repository.GetAll<Booking>()
                 .FirstAsync(b => b.Id == id);
 
-            // booking.IsDeleted = true;
-            //booking.DeletedOn = DateTime.Now;
             repository.Delete(booking);
 
             await repository.SaveChangesAsync();

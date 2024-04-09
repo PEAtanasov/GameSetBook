@@ -92,16 +92,21 @@ namespace GameSetBook.Core.Services.Admin
 
         public async Task DeleteAsync(int id)
         {
-            var court1=await repository.GetAll<Court>()
+            var court=await repository.GetAll<Court>()
                 .Where(c=>c.Id==id)
                 .Include(c=>c.Club)
                 .Include(c=>c.Bookings)
                 .IgnoreQueryFilters()
                 .FirstAsync();
 
-            repository.RemoveRange(court1.Bookings);
-            repository.HardDelete(court1);
-            court1.Club.NumberOfCourts -= 1;
+            var review = await repository.GetAll<Review>()
+                .Where(r=>r.Booking.CourtId==id)
+                .ToListAsync();
+
+            repository.RemoveRange(review);
+            repository.RemoveRange(court.Bookings);
+            repository.HardDelete(court);
+            court.Club.NumberOfCourts -= 1;
 
             await repository.SaveChangesAsync();
         }
