@@ -19,9 +19,25 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var model = await cityService.GetAllCitiesAsync();
+
+            model=model.OrderBy(c=>c.CountryName).ToList();
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            if (!await cityService.ExistById(id))
+            {
+                return BadRequest();
+            }
+
+            var mdoel = await cityService.GetCityDetailsAsync(id);
+
+            return View(mdoel);
         }
 
         [HttpGet]

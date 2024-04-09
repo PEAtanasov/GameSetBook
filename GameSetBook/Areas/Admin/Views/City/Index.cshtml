@@ -1,11 +1,40 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<CityAdminServiceModel>
 @{
     ViewBag.Title = "All Cities";
 }
 
 <h1 class="text-center">@ViewBag.Title</h1>
 
-<a asp-area="Admin" asp-controller="City" asp-action="Add" class="nav-link">Add Country</a>
+<div class="text-center mb-3">
+    <a asp-area="Admin" asp-controller="City" asp-action="Add" class="btn btn-success">
+        <i class="fa fa-plus-circle"></i> Add City
+    </a>
+</div>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var city in Model)
+        {
+            <tr>
+                <td>@city.Id</td>
+                <td>@city.Name</td>
+                <td>@city.CountryName</td>
+                <td>
+                    <a asp-controller="City" asp-action="Details" asp-route-id="@city.Id" class="btn btn-info">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

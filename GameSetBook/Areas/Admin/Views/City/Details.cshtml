@@ -1,37 +1,17 @@
-﻿@model CountryDetailsAdminViewModel
+﻿@model CityDetailsAdminViewModel
 @{
     ViewBag.Title = $"{Model.Name} Details";
 }
 
 <h1>@ViewBag.Title</h1>
 
-<h2>Cities</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Details</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var city in Model.Cities)
-        {
-            <tr>
-                <td>@city.Name</td>
-                <td>
-                    <a asp-controller="City" asp-action="Details" asp-route-id="@city.Id" class="btn btn-info">Details</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<h4>Country: <a asp-controller="Country" asp-action="Details" asp-route-id="@Model.Country.Id" class="link-info text-decoration-none">@Model.Country.Name</a></h4>
 
 <h2>Clubs</h2>
 <table class="table">
     <thead>
         <tr>
             <th>Name</th>
-            <th>City</th>
             <th>Details</th>
         </tr>
     </thead>
@@ -40,7 +20,6 @@
         {
             <tr>
                 <td>@club.Name</td>
-                <td>@club.City</td>
                 <td>
                     <a asp-controller="Club" asp-action="Details" asp-route-id="@club.Id" class="btn btn-info">Details</a>
                 </td>
@@ -51,11 +30,11 @@
 
 <div class="form-group">
     <button type="button" class="btn btn-danger mb-2 w-25 p-3 fw-bold" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
-        Delete Country
+        Delete City
     </button>
 </div>
 
-<form asp-controller="Country" asp-action="Delete" method="post">
+<form asp-controller="City" asp-action="Delete1" method="post">
     <input type="hidden" asp-for="Id" />
     <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -65,7 +44,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <strong class="text-danger">Are you sure you want to delete this country? This action cannot be undone and all data related to this country will be permanently deleted!!!</strong>
+                    <strong class="text-danger">Are you sure you want to delete this city? This action cannot be undone and all data related to this city will be permanently deleted!!!</strong>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>

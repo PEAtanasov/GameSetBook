@@ -1,8 +1,11 @@
 ﻿using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Models.Admin.City;
+using GameSetBook.Core.Models.Admin.Club;
+using GameSetBook.Core.Models.Admin.Country;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace GameSetBook.Core.Services.Admin
 {
@@ -33,7 +36,7 @@ namespace GameSetBook.Core.Services.Admin
         {
             return await repository.GetAllReadOnly<City>()
                 .Where(c => c.CountryId == countryId)
-                .AnyAsync(c => c.Name.ToUpper() == name.ToUpper());              
+                .AnyAsync(c => c.Name.ToUpper() == name.ToUpper());
         }
 
         public async Task AddAsync(CityAddAdminFormModel model)
@@ -75,6 +78,30 @@ namespace GameSetBook.Core.Services.Admin
             repository.HardDelete(city);
 
             await repository.SaveChangesAsync();
+        }
+
+        public async Task<CityDetailsAdminViewModel> GetCityDetailsAsync(int id)
+        {
+            var city = await repository.GetAll<City>()
+                .Where(c => c.Id == id)
+                .Select(c => new CityDetailsAdminViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Clubs = c.Clubs.Select(cl => new ClubSimpleAdminViewModel()
+                    {
+                        Id = cl.Id,
+                        Name = cl.Name,
+                    }),
+                    Country = new CountryAdminServiceModel()
+                    {
+                        Id = c.CountryId,
+                        Name = c.Country.Name
+                    }
+                })
+                .FirstAsync();
+
+            return city;
         }
     }
 }
