@@ -96,18 +96,21 @@ else
                             <td class="club-name">@booking.ClubName</td>
                             <td>@booking.CourtName</td>
                             <td>
-                                <div class="d-flex flex-row justify-content-around">
-                                    <a asp-controller="Booking" asp-action="Details" asp-route-id="@booking.Id" class="btn btn-sm btn-primary fw-bold">Details</a>
-                                    @if (booking.ReviewId == null)
-                                    {
-                                        <a asp-controller="Review" asp-action="AddReview" asp-route-bookingId="@booking.Id" class="btn btn-sm btn-success fw-bold">Add Review</a>
-                                    }
-                                    else
-                                    {
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        @if (booking.ReviewId == null)
+                                        {
+                                            <a asp-controller="Review" asp-action="AddReview" asp-route-bookingId="@booking.Id" class="btn btn-success fw-bold w-100 fw-bold">Add Review</a>
+                                        }
+                                        else
+                                        {
 
-                                        <a asp-controller="Review" asp-action="Revise" asp-route-id="@booking.ReviewId" class="btn btn-sm btn-success fw-bold">Revise Review</a>
-                                    }
-                                    <button type="button" class="btn btn-sm btn-danger @(isCancelable ? string.Empty : "disabled" )" data-bs-toggle="modal" data-bs-target="#deleteBookingModal-@booking.Id">Cancel</button>
+                                            <a asp-controller="Review" asp-action="Revise" asp-route-id="@booking.ReviewId" class="btn btn-primary fw-bold w-100 fw-bold">Revise Review</a>
+                                        }
+                                    </div>
+                                    <div class="col">
+                                        <button type="button" class="btn btn-danger w-100 fw-bold @(isCancelable ? string.Empty : "disabled" )" data-bs-toggle="modal" data-bs-target="#deleteBookingModal-@booking.Id">Cancel</button>
+                                    </div>
                                 </div>
                                 <!-- Modal -->
                                 <div class="modal fade" id="deleteBookingModal-@booking.Id" tabindex="-1" aria-labelledby="deleteBookingModalLabel-@booking.Id" aria-hidden="true">
