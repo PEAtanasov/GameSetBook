@@ -13,5 +13,7 @@ namespace GameSetBook.Core.Contracts.Admin
         Task<bool> ExistById(int id);
 
         Task DeleteAsync(int id);
+
+        Task<CountryDetailsAdminViewModel> GetCountryDetailAsync(int id);
     }
 }

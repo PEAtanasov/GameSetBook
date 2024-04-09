@@ -48,5 +48,31 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            if (!await countryService.ExistById(id))
+            {
+                return BadRequest();
+            }
+
+            var model = await countryService.GetCountryDetailAsync(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!await countryService.ExistById(id))
+            {
+                return BadRequest();
+            }
+
+            await countryService.DeleteAsync(id);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

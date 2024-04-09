@@ -1,4 +1,6 @@
 ﻿using GameSetBook.Core.Contracts.Admin;
+using GameSetBook.Core.Models.Admin.City;
+using GameSetBook.Core.Models.Admin.Club;
 using GameSetBook.Core.Models.Admin.Country;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
@@ -58,23 +60,49 @@ namespace GameSetBook.Core.Services.Admin
                  .Where(country => country.Id == id)
                  .Include(country => country.Cities)
                  .ThenInclude(city => city.Clubs)
-                 .ThenInclude(club=>club.Courts)
-                 .ThenInclude(court=>court.Bookings)
-                 .Include(country=>country.Cities)
+                 .ThenInclude(club => club.Courts)
+                 .ThenInclude(court => court.Bookings)
+                 .Include(country => country.Cities)
                  .ThenInclude(city => city.Clubs)
                  .ThenInclude(club => club.Reviews)
                  .IgnoreQueryFilters()
                  .FirstAsync();
 
             repository.RemoveRange(coutnry.Cities.SelectMany(c => c.Clubs.SelectMany(cl => cl.Reviews)));
-            repository.RemoveRange(coutnry.Cities.SelectMany(c => c.Clubs.SelectMany(cl => cl.Courts.SelectMany(ct=>ct.Bookings))));
-            repository.RemoveRange(coutnry.Cities.SelectMany(c => c.Clubs.SelectMany(cl=>cl.Courts)));
+            repository.RemoveRange(coutnry.Cities.SelectMany(c => c.Clubs.SelectMany(cl => cl.Courts.SelectMany(ct => ct.Bookings))));
+            repository.RemoveRange(coutnry.Cities.SelectMany(c => c.Clubs.SelectMany(cl => cl.Courts)));
             repository.RemoveRange(coutnry.Cities.SelectMany(c => c.Clubs));
             repository.RemoveRange(coutnry.Cities);
 
             repository.HardDelete(coutnry);
 
             await repository.SaveChangesAsync();
+        }
+
+        public async Task<CountryDetailsAdminViewModel> GetCountryDetailAsync(int id)
+        {
+            var model = await repository.GetAllReadOnly<Country>()
+                .Where(c => c.Id == id)
+                .Select(c => new CountryDetailsAdminViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Cities = c.Cities.Select(ct => new CityAdminServiceModel()
+                    {
+                        Id = ct.Id,
+                        Name = ct.Name,
+                        CountryName = c.Name
+                    }),
+                    Clubs = c.Cities.SelectMany(ct => ct.Clubs.Select(cl => new ClubSimpleAdminViewModel()
+                    {
+                        Id = cl.Id,
+                        Name = cl.Name,
+                        City = cl.City.Name
+                    })),
+                })
+                .FirstAsync();
+
+            return model;
         }
     }
 }
