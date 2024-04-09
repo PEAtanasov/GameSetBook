@@ -17,7 +17,7 @@
 @if (this.User?.Identity?.IsAuthenticated ?? false)
 {
 
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-secondary border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -25,16 +25,16 @@
                         @if (clubExist && isUserClubWoner && isClubAprooved)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Club" asp-action="MyClub" asp-route-id="@clubId">Club Detais</a>
+                                <a class="nav-link nav-link-gradient-bs" asp-area="" asp-controller="Club" asp-action="MyClub" asp-route-id="@clubId">Club Detais</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Club" asp-action="Edit" asp-route-id="@clubId">Edit Club</a>
+                                <a class="nav-link nav-link-gradient-bs" asp-area="" asp-controller="Club" asp-action="Edit" asp-route-id="@clubId">Edit Club</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Club" asp-action="MyClubSchedule" asp-route-id="@clubId">Schedule</a>
+                                <a class="nav-link nav-link-gradient-bs" asp-area="" asp-controller="Club" asp-action="MyClubSchedule" asp-route-id="@clubId">Schedule</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-controller="Review" asp-action="AllReviews" asp-route-clubId="@clubId">All Reviews</a>
+                                <a class="nav-link nav-link-gradient-bs" asp-controller="Review" asp-action="AllReviews" asp-route-clubId="@clubId">All Reviews</a>
                             </li>
                         }
                     </ul>

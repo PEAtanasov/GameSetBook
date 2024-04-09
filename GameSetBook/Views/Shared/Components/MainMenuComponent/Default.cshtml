@@ -18,18 +18,18 @@
 @*  *@
 <ul class="navbar-nav flex-grow-1">
     <li class="nav-item">
-        <a class="nav-link text-light" asp-area="" asp-controller="Club" asp-action="Index">All Clubs</a>
+        <a class="nav-link nav-link-gradient" asp-area="" asp-controller="Club" asp-action="Index">All Clubs</a>
     </li>
     @if (this.User?.Identity?.IsAuthenticated ?? false)
     {
         <li class="nav-item">
-            <a class="nav-link text-light" asp-area="" asp-controller="Booking" asp-action="Index">My Bookings</a>
+            <a class="nav-link nav-link-gradient" asp-area="" asp-controller="Booking" asp-action="Index">My Bookings</a>
         </li>
 
         if (clubExist && isUserClubWoner && isClubAprooved)
         {
             <li class="nav-item">
-                <a class="nav-link text-light" asp-area="" asp-controller="Club" asp-action="MyClub" asp-route-id="@clubId">My Club</a>
+                <a class="nav-link nav-link-gradient" asp-area="" asp-controller="Club" asp-action="MyClub" asp-route-id="@clubId">My Club</a>
             </li>
         }
         else if (clubExist && isClubAprooved == false)
@@ -37,26 +37,26 @@
             if (clubHasCourts)
             {
                 <li class="nav-item">
-                    <a class="nav-link text-light disabled" asp-area="" asp-controller="Club" asp-action="MyClub" asp-route-id="@clubId">My Club<small class="text-danger">(pending aprooval)</small></a>
+                    <a class="nav-link nav-link-gradient disabled" asp-area="" asp-controller="Club" asp-action="MyClub" asp-route-id="@clubId">My Club<small class="text-danger">(pending aprooval)</small></a>
                 </li>
             }
             else
             {
                 <li class="nav-item">
-                    <a class="nav-link text-light" asp-area="" asp-controller="Club" asp-action="Create">Register Courts</a>
+                    <a class="nav-link nav-link-gradient" asp-area="" asp-controller="Club" asp-action="Create">Register Courts</a>
                 </li>
             }
         }
         else if(isUserAdmin)
         {
             <li class="nav-item">
-                <a class="nav-link text-light" asp-area="Admin" asp-controller="Home" asp-action="Index">Go To Admin Panel</a>
+                <a class="nav-link nav-link-gradient" asp-area="Admin" asp-controller="Home" asp-action="Index">Go To Admin Panel</a>
             </li>
         }
         else
         {
             <li class="nav-item">
-                <a class="nav-link text-light" asp-area="" asp-controller="Club" asp-action="Create">Register Club</a>
+                <a class="nav-link nav-link-gradient" asp-area="" asp-controller="Club" asp-action="Create">Register Club</a>
             </li>
         }
     }

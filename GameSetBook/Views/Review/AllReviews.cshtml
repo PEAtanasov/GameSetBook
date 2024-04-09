@@ -13,6 +13,8 @@
     var maxPage = Math.Ceiling((double)Model.TotalReviewCount / Model.ReviewsPerPage);
 }
 
+@await Component.InvokeAsync(nameof(ClubOwnerMenuComponent))
+
 <h2 class="text-center">@Model.ClubName @ViewBag.Title</h2>
 
 <div class="container">
