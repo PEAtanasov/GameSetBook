@@ -4,18 +4,22 @@ using GameSetBook.Core.Models.Admin.Club;
 using GameSetBook.Core.Models.Admin.Country;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
+using GameSetBook.Infrastructure.Models.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static GameSetBook.Common.UserConstants;
 
 namespace GameSetBook.Core.Services.Admin
 {
     public class CityServiceAdmin : ICityServiceAdmin
     {
         private readonly IRepository repository;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public CityServiceAdmin(IRepository repository)
+        public CityServiceAdmin(IRepository repository, UserManager<ApplicationUser> userManager)
         {
             this.repository = repository;
+            this.userManager = userManager;   
         }
 
         public async Task<IEnumerable<CityAdminServiceModel>> GetAllCitiesAsync()
@@ -76,6 +80,13 @@ namespace GameSetBook.Core.Services.Admin
             repository.RemoveRange(city.Clubs.SelectMany(club => club.Courts));
             repository.RemoveRange(city.Clubs);
             repository.HardDelete(city);
+
+            foreach (var club in city.Clubs)
+            {
+                var user = await userManager.FindByIdAsync(club.ClubOwnerId);
+
+                await userManager.RemoveFromRoleAsync(user, ClubOwnerRole);
+            }
 
             await repository.SaveChangesAsync();
         }
