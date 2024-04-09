@@ -49,14 +49,11 @@
     </tbody>
 </table>
 
-<!-- Button to trigger modal -->
 <div class="form-group">
     <button type="button" class="btn btn-danger mb-2 w-25 p-3 fw-bold" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
         Delete Country
     </button>
 </div>
-
-<!-- Delete Country Modal -->
 
 <form asp-controller="Country" asp-action="Delete" method="post">
     <input type="hidden" asp-for="Id" />
