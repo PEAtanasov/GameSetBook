@@ -84,6 +84,7 @@ namespace GameSetBook.Core.Services
         public async Task<IEnumerable<ReviewViewModel>> GetClubReviews(int clubId)
         {
             var reviews = await repository.GetAllReadOnly<Review>()
+                .IgnoreQueryFilters()
                 .Where(r => r.ClubId == clubId && r.Booking.IsDeleted == false)
                 .OrderByDescending(r => r.Id)
                 .Select(r => new ReviewViewModel()

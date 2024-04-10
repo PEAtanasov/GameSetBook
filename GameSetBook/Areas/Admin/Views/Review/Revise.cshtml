@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Revise Review";
 
-    string returnUrl = ViewData["returnUrl"] as string;
+    string returnUrl = ViewData["returnUrl"] as string ?? string.Empty;
 }
 
 <h2 class="text-center">ViewBag.Title</h2>

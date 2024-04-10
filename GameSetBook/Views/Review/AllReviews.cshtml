@@ -81,8 +81,8 @@
                             </li>
                             @for (int i = 1; i <= maxPage; i++)
                             {
-                                <li class="page-item">
-                                    <a class="page-link @(Model.CurrentPage == i ? "active" : string.Empty)"
+                                <li class="page-item @(Model.CurrentPage == i ? "active" : string.Empty)">
+                                    <a class="page-link"
                                        asp-controller="Review"
                                        asp-action="AllReviews"
                                        asp-route-reviewSorting="@((int)Model.ReviewSorting)"
