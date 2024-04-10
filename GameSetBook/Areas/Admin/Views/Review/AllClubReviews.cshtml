@@ -112,7 +112,6 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <form asp-area="Admin" asp-controller="Review" asp-action="Delete" method="post">
                             <input type="hidden" name="id" value="@r.Id" />
-                            @* <input type="hidden" name="clubId" value="@r.ClubId" /> *@
                             <input type="hidden" asp-for="ClubId" />
                             <input type="hidden" asp-for="CurrentPage" />
                             <input type="hidden" asp-for="ReviewSorting" />
