@@ -7,9 +7,7 @@ namespace GameSetBook.Core.Models.Review
     {
         public int ClubId { get; set; }
 
-        public string ClubName { get; set; } = string.Empty;
-
-        public int ReviewsPerPage { get; } = 5;
+        public int ReviewsPerPage { get; set; } = 5;
 
         public int CurrentPage { get; init; } = 1;
 

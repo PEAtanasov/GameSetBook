@@ -20,16 +20,14 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> AllClubReviews(int clubId)
+        public async Task<IActionResult> AllClubReviews([FromQuery]AllReviewAdminSortingModel model)
         {
-            if (!await clubService.ExistAsync(clubId))
+            if (!await clubService.ExistAsync(model.ClubId))
             {
                 return BadRequest();
             }
 
-            ViewData["ClubName"] = await clubService.GetClubNameAsync(clubId);
-
-            var model = await reviewService.AllClubReviewsAsync(clubId);
+            model = await reviewService.AllClubReviewsAsync(model);
 
             return View(model);
         }
@@ -95,7 +93,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(ReviewReviseAdminFormModel model)
+        public async Task<IActionResult> Delete(ReviewReviseAdminFormModel model, string? returnUrl, AllReviewAdminSortingModel? filters)
         {
             if (!await reviewService.ExistAsync(model.Id))
             {
@@ -104,12 +102,12 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 
             await reviewService.HardDeleteAsync(model.Id);
 
-            if (model.ClubId==null)
+            if (!string.IsNullOrWhiteSpace(returnUrl))
             {
-                return RedirectToAction("Index", "Booking");
+                return Redirect(returnUrl);
             }
 
-            return RedirectToAction(nameof(AllClubReviews), new { model.ClubId });
+            return RedirectToAction(nameof(AllClubReviews), filters);
         }
     }
 }

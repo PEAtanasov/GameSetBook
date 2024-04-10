@@ -1,10 +1,11 @@
-﻿using GameSetBook.Core.Models.Admin.Review;
+﻿using GameSetBook.Core.Models.Admin.Club;
+using GameSetBook.Core.Models.Admin.Review;
 
 namespace GameSetBook.Core.Contracts.Admin
 {
     public interface IReviewServiceAdmin
     {
-        Task<IEnumerable<ReviewAdminViewModel>> AllClubReviewsAsync(int clubId);
+        Task<AllReviewAdminSortingModel> AllClubReviewsAsync(AllReviewAdminSortingModel model);
 
         Task<bool> ExistAsync(int id);
 

@@ -1,15 +1,65 @@
-﻿@model IEnumerable<ReviewAdminViewModel>
+﻿@model AllReviewAdminSortingModel
 
 @{
-    var clubName = ViewData["ClubName"] as string;
-    ViewBag.Title = $"{clubName} All Reviews";
+    ViewBag.Title = $"All Reviews";
+
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+    var maxPage = Math.Ceiling((double)Model.TotalReviewCount / Model.ReviewsPerPage);
 }
 
-<h2 class="text-center">@ViewBag.Title</h2>
 
-@if (Model.Any())
+<div>
+    @await Component.InvokeAsync(nameof(ClubMenuComponent), new { clubId = Model.ClubId })
+</div>
+
+
+
+<h2 class="text-center">@Model.ClubName @ViewBag.Title</h2>
+
+@if (Model.Reviews.Any())
 {
-    @foreach (var r in Model)
+    <div class="container col-sm-10 mb-4">
+        <form id="filterForm" method="get" class="row g-3">
+            <input type="hidden" asp-for="ClubId" />
+            <input type="hidden" asp-for="CurrentPage" />
+            <div class="col-md-3">
+                <label class="form-label">Sort By</label>
+                <select asp-for="ReviewSorting" class="form-select">
+                    <option value="">All</option>
+                    <option value="1">Date (Latest -> Earliest)</option>
+                    <option value="2">Date (Earliest -> Latest)</option>
+                    <option value="3">Rating (Low -> High)</option>
+                    <option value="4">Rating (High -> Low)</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Search by</label>
+                <div class="input-group">
+                    <input asp-for="SearchTerm" class="form-control" placeholder="Email/Title/Description">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label">Reviews Per Page</label>
+                <select asp-for="ReviewsPerPage" class="form-select">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </form>
+        <div class="text-center mt-3">
+            <a asp-area="Admin" asp-controller="Review" asp-action="AllClubReviews" asp-route-ClubId="@Model.ClubId" class="btn btn-secondary">Back to full list</a>
+        </div>
+    </div>
+    @foreach (var r in Model.Reviews)
     {
         <div class="pb-3">
             <div class="card">
@@ -24,7 +74,19 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col col-2">
-                            <a asp-area="Admin" asp-controller="Review" asp-action="Revise" asp-route-id="@r.Id" asp-route-returnUrl="@Url.Action("AllClubReviews","Review", new {clubId=r.ClubId})" class="btn btn-primary w-100 fw-bold">Revise</a>
+                            <a 
+                                asp-area="Admin" 
+                                asp-controller="Review" 
+                                asp-action="Revise" 
+                                asp-route-id="@r.Id" 
+                                asp-route-returnUrl="@Url.Action("AllClubReviews","Review", new {
+                                    ClubId=Model.ClubId,
+                                    CurrentPage=Model.CurrentPage,
+                                    ReviewSorting = Model.ReviewSorting,
+                                    SearchTerm = Model.SearchTerm,
+                                    ReviewsPerPage = Model.ReviewsPerPage,
+                                })" class="btn btn-primary w-100 fw-bold">Revise
+                            </a>
                         </div>
                         <div class="col col-2">
                             <button type="button" class="btn btn-danger w-100 fw-bold" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal_@r.Id">
@@ -50,14 +112,61 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <form asp-area="Admin" asp-controller="Review" asp-action="Delete" method="post">
                             <input type="hidden" name="id" value="@r.Id" />
-                            <input type="hidden" name="clubId" value="@r.ClubId" />
+                            @* <input type="hidden" name="clubId" value="@r.ClubId" /> *@
+                            <input type="hidden" asp-for="ClubId" />
+                            <input type="hidden" asp-for="CurrentPage" />
+                            <input type="hidden" asp-for="ReviewSorting" />
+                            <input type="hidden" asp-for="SearchTerm" />
+                            <input type="hidden" asp-for="ReviewsPerPage" />
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>        
     }
+    <div class="d-flex justify-content-center mt-4">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : string.Empty)">
+                    <a class="page-link"
+                       asp-controller="Review"
+                       asp-action="AllReviews"
+                       asp-route-reviewSorting="@((int)Model.ReviewSorting)"
+                       asp-route-currentPage="@previousPage"
+                       asp-route-reviewsPerPage="@Model.ReviewsPerPage"
+                       asp-route-clubId="@Model.ClubId">Previous</a>
+                </li>
+                @for (int i = 1; i <= maxPage; i++)
+                {
+                    <li class="page-item">
+                        <a class="page-link @(Model.CurrentPage == i ? "active" : string.Empty)"
+                           asp-controller="Review"
+                           asp-action="AllReviews"
+                           asp-route-reviewSorting="@((int)Model.ReviewSorting)"
+                           asp-route-currentPage="@i"
+                           asp-route-reviewsPerPage="@Model.ReviewsPerPage"
+                           asp-route-clubId="@Model.ClubId">
+                            @i
+                        </a>
+                    </li>
+                }
+                @{
+                    var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
+                    !Model.Reviews.Any();
+                }
+                <li class="page-item @(shouldButtonBeDisabled ? "disabled" : string.Empty)">
+                    <a class="page-link"
+                       asp-controller="Review"
+                       asp-action="AllReviews"
+                       asp-route-reviewSorting="@((int)Model.ReviewSorting)"
+                       asp-route-currentPage="@(Model.CurrentPage+1)"
+                       asp-route-reviewsPerPage="@Model.ReviewsPerPage"
+                       asp-route-clubId="@Model.ClubId">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 }
 else
 {

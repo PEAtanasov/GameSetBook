@@ -9,6 +9,7 @@ using static GameSetBook.Common.ValidationConstatns.DateTimeFormats;
 
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 
 namespace GameSetBook.Core.Services.Admin
 {
@@ -134,7 +135,7 @@ namespace GameSetBook.Core.Services.Admin
 
         public async Task<bool> ExistByNameAsync(int id, string name)
         {
-            return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Name.ToLower() == name.ToLower() && c.Id!=id);
+            return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Name.ToLower() == name.ToLower() && c.Id != id);
         }
 
         public async Task<bool> IsClubApprovedAsync(int id)
@@ -434,6 +435,22 @@ namespace GameSetBook.Core.Services.Admin
                 .FirstAsync();
 
             return club;
+        }
+
+        public async Task<ClubMenuViewModel> GetClubMenuAsync(int id)
+        {
+            var model = await repository.GetAllWithDeleted<Club>()
+                .Where(c => c.Id == id)
+                .Select(c => new ClubMenuViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    IsApproved = c.IsAproovedByAdmin,
+                    IsDeleted = c.IsDeleted
+                })
+                .FirstAsync();
+
+            return model;
         }
 
     }

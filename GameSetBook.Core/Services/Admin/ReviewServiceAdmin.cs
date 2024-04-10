@@ -1,4 +1,5 @@
 ﻿using GameSetBook.Core.Contracts.Admin;
+using GameSetBook.Core.Enums;
 using GameSetBook.Core.Models.Admin.Review;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
@@ -17,24 +18,64 @@ namespace GameSetBook.Core.Services.Admin
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<ReviewAdminViewModel>> AllClubReviewsAsync(int clubId)
+        public async Task<AllReviewAdminSortingModel> AllClubReviewsAsync(AllReviewAdminSortingModel model)
         {
-            var reviews = await repository.GetAllReadOnly<Review>()
-                .Where(r => r.ClubId == clubId)
+            var reviews = repository.GetAllReadOnly<Review>()
+                 .Where(r => r.ClubId == model.ClubId)
+                 .IgnoreQueryFilters();
+
+
+            if (!string.IsNullOrWhiteSpace(model.SearchTerm))
+            {
+                reviews = reviews.Where(r => r.Reviewer.Email.ToUpper().Contains(model.SearchTerm.ToUpper())
+                                                       ||r.Title.ToUpper().Contains(model.SearchTerm.ToUpper())
+                                                       ||r.Description.ToUpper().Contains(model.SearchTerm.ToUpper()));
+            }
+
+            reviews = model.ReviewSorting switch
+            {
+                ReviewSorting.CreatedOnAscending => reviews.OrderBy(r => r.CreatedOn).ThenBy(r => r.Id),
+                ReviewSorting.CreatedOnDescending => reviews.OrderByDescending(r => r.CreatedOn).ThenBy(r => r.Id),
+                ReviewSorting.RatingAscending => reviews.OrderBy(r => r.Rate).ThenBy(r => r.Id),
+                ReviewSorting.RatingDescending => reviews.OrderByDescending(r => r.Rate).ThenBy(r => r.Id),
+                _ => reviews.OrderByDescending(r => r.CreatedOn).ThenByDescending(r => r.Id),
+            };
+
+            int totalReviews = reviews.Count();
+
+            var maxPage = Math.Ceiling((double)totalReviews / model.ReviewsPerPage);
+
+            int currentPage = model.CurrentPage;
+
+            if (currentPage > maxPage)
+            {
+                currentPage = (int)maxPage;
+            }
+            if (currentPage <= 0)
+            {
+                currentPage = 1;
+            }
+
+            var reviewsToPass = await reviews
+                .Skip((currentPage - 1) * model.ReviewsPerPage)
+                .Take(model.ReviewsPerPage)
                 .Select(r => new ReviewAdminViewModel()
                 {
-                    Id = r.Id,
-                    ClubId = r.ClubId,
-                    Description = r.Description,
+                    Id= r.Id,
+                    ClubId=r.ClubId,
                     Rate = r.Rate,
                     Title = r.Title,
+                    Description = r.Description,
                     ReviewerName = r.Reviewer.FirstName + " " + r.Reviewer.LastName,
-                    ReviewerEmail = r.Reviewer.Email,
-                    AddedDateOn = r.CreatedOn.ToString(DateTimeFormat, CultureInfo.InvariantCulture)
+                    AddedDateOn = r.CreatedOn.ToString(DateTimeFormat, CultureInfo.InvariantCulture),
+                    ReviewerEmail = r.Reviewer.Email,        
                 })
                 .ToListAsync();
 
-            return reviews;
+            model.Reviews = reviewsToPass;
+            model.TotalReviewCount = totalReviews;
+
+            return model;
         }
 
         public async Task<ReviewAdminViewModel> GetDetailsViewModel(int id)

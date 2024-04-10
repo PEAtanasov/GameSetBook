@@ -11,10 +11,15 @@
     ViewBag.Title = $"{Model.Name} Schedule";
 }
 
+<div>
+    @await Component.InvokeAsync(nameof(ClubMenuComponent), new { clubId = Model.Id })
+</div>
+
 @if (cuurentDate != null)
 {
     <h2 class="text-center">@ViewBag.Title for @cuurentDate.Value.ToShortDateString() @cuurentDate.GetValueOrDefault().DayOfWeek</h2>
 }
+
 
 <div class="container">
     <div class="row">

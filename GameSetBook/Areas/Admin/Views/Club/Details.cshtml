@@ -8,7 +8,12 @@
     bool isClubDeleted = await clubservice.IsDeletedAsync(Model.Id);
 }
 
+<div>
+    @await Component.InvokeAsync(nameof(ClubMenuComponent), new { clubId = Model.Id })
+</div>
+
 <h1 class="text-center pb-3">@ViewBag.Title</h1>
+
 <div class="row">
     <div class="col col-3">
         <a asp-area="Admin" asp-controller="Booking" asp-action="Index" asp-route-ClubId="@Model.Id" class="btn btn-primary mb-2 w-100 p-3 fw-bold">All Bookings</a>

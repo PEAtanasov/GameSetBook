@@ -1,4 +1,5 @@
 ﻿using GameSetBook.Core.Models.Admin.Club;
+using System.Threading.Tasks;
 
 namespace GameSetBook.Core.Contracts.Admin
 {
@@ -41,5 +42,7 @@ namespace GameSetBook.Core.Contracts.Admin
         Task<int> GetClubIdByNameAsync(string name);
 
         public Task<ClubScheduleAdminServiceModel> GetClubScheduleModelAsync(int id, DateTime date);
+
+        Task<ClubMenuViewModel> GetClubMenuAsync(int id);
     }
 }

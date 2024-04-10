@@ -21,6 +21,13 @@
     var maxPage = Math.Ceiling((double)Model.TotalBookingsCount / Model.BookingsPerPage);
 }
 
+@if (Model.ClubId!=null)
+{
+    
+        @await Component.InvokeAsync(nameof(ClubMenuComponent), new { clubId = Model.ClubId })
+    
+}
+
 
 <h2 class="text-center">@ViewBag.Title</h2>
 
