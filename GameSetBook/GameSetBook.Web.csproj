@@ -40,4 +40,8 @@
     <ProjectReference Include="..\GameSetBook.Infrastructure\GameSetBook.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\error_page\" />
+  </ItemGroup>
+
 </Project>

@@ -13,22 +13,13 @@
 </div>
 
 <h1 class="text-center pb-3">@ViewBag.Title</h1>
-
-<div class="row">
-    <div class="col col-3">
-        <a asp-area="Admin" asp-controller="Booking" asp-action="Index" asp-route-ClubId="@Model.Id" class="btn btn-primary mb-2 w-100 p-3 fw-bold">All Bookings</a>
-    </div>
-    <div class="col col-3">
-        <a asp-area="Admin" asp-controller="Review" asp-action="AllClubReviews" asp-route-ClubId="@Model.Id" class="btn btn-primary mb-2 w-100 p-3 fw-bold">All Reviews</a>
-    </div>
-    @if (isApproved == true && isClubDeleted==false)
-    {
-        <div class="col col-3">
-            <a asp-area="Admin" asp-controller="Club" asp-action="Schedule" asp-route-Id="@Model.Id" class="btn btn-primary mb-2 w-100 p-3 fw-bold">Schedule</a>
-        </div>
-    }
-   
-</div>
+@if (Model.IsAproovedByAdmin==false)
+{
+    <h3 class="text-center text-danger">
+        Important! This club is pending for approval!
+    </h3>
+    <h4 class="text-center"><a asp-area="Admin" asp-controller="Club" asp-action="Approve" asp-route-id="@Model.Id" class="">Click here for more details</a></h4>
+}
 <partial name="_ClubDetailsPartial" model="Model" />
 
 <div class="row pt-3">

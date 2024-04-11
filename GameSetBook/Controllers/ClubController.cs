@@ -74,10 +74,6 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            //var model = await clubService.GetClubDetailsAndInfoAsync(id);
-
-
-            // test
             var info = await clubService.GetClubIfnoAsync(id);
 
             var details = await clubService.GetClubDetailsAsync(id);

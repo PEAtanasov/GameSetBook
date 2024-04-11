@@ -109,7 +109,7 @@ namespace GameSetBook.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Cancel(int id)
+        public async Task<IActionResult> Cancel(int id, AllBookingsSortingModel filters)
         {
             if (!await bookingService.BookingExistById(id))
             {
@@ -128,7 +128,7 @@ namespace GameSetBook.Web.Controllers
 
             await bookingService.DeleteAsync(id);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index),filters);
         }
 
         [HttpGet]

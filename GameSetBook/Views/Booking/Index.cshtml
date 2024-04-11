@@ -127,6 +127,12 @@ else
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                 <form asp-action="Cancel" method="post">
                                                     <input type="hidden" name="id" value="@booking.Id" />
+                                                    <input type="hidden" asp-for="BookingSorting" />
+                                                    <input type="hidden" asp-for="BookingDateFrom" />
+                                                    <input type="hidden" asp-for="BookingDateTo" />
+                                                    <input type="hidden" asp-for="CurrentPage" />
+                                                    <input type="hidden" asp-for="SearchTerm" />
+
                                                     <button type="submit" class="btn btn-danger">Confirm Cancel</button>
                                                 </form>
                                             </div>
@@ -152,7 +158,9 @@ else
                        asp-route-BookingDateFrom="@Model.BookingDateFrom"
                        asp-route-BookingDateTo="@Model.BookingDateTo"
                        asp-route-SearchTerm="@Model.SearchTerm"
-                       asp-route-BookingSorting="@((int)Model.BookingSorting)">Previous</a>
+                       asp-route-BookingSorting="@((int)Model.BookingSorting)">
+                       Previous
+                   </a>
                 </li>
 
                 @for (int i = 1; i <= maxPage; i++)
@@ -184,7 +192,9 @@ else
                        asp-route-BookingDateFrom="@Model.BookingDateFrom"
                        asp-route-BookingDateTo="@Model.BookingDateTo"
                        asp-route-SearchTerm="@Model.SearchTerm"
-                       asp-route-BookingSorting="@((int)Model.BookingSorting)">Next</a>
+                       asp-route-BookingSorting="@((int)Model.BookingSorting)">
+                       Next
+                   </a>
                 </li>
             </ul>
         </nav>
