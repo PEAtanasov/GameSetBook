@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34601.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameSetBook.Web", "GameSetBook\GameSetBook.Web.csproj", "{0FBE31F4-3094-4CCE-A4A3-417E276DEF78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameSetBook.Web", "GameSetBook\GameSetBook.Web.csproj", "{0FBE31F4-3094-4CCE-A4A3-417E276DEF78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameSetBook.Infrastructure", "GameSetBook.Infrastructure\GameSetBook.Infrastructure.csproj", "{A93038B9-289B-4CF9-AEBE-BBDAED8BBAE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameSetBook.Infrastructure", "GameSetBook.Infrastructure\GameSetBook.Infrastructure.csproj", "{A93038B9-289B-4CF9-AEBE-BBDAED8BBAE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameSetBook.Core", "GameSetBook.Core\GameSetBook.Core.csproj", "{CDEFCE19-62CC-47A8-AB39-D7C7940DF134}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameSetBook.Core", "GameSetBook.Core\GameSetBook.Core.csproj", "{CDEFCE19-62CC-47A8-AB39-D7C7940DF134}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameSetBook.Common", "GameSetBook.Common\GameSetBook.Common.csproj", "{77A01E53-6343-4AE5-BC87-27E6F5F0FF2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameSetBook.Common", "GameSetBook.Common\GameSetBook.Common.csproj", "{77A01E53-6343-4AE5-BC87-27E6F5F0FF2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameSetBook.Tests", "GameSetBook.Tests\GameSetBook.Tests.csproj", "{2C63605E-8149-4EDF-99D1-B4C92ADDC027}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{77A01E53-6343-4AE5-BC87-27E6F5F0FF2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77A01E53-6343-4AE5-BC87-27E6F5F0FF2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77A01E53-6343-4AE5-BC87-27E6F5F0FF2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C63605E-8149-4EDF-99D1-B4C92ADDC027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C63605E-8149-4EDF-99D1-B4C92ADDC027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C63605E-8149-4EDF-99D1-B4C92ADDC027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C63605E-8149-4EDF-99D1-B4C92ADDC027}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
