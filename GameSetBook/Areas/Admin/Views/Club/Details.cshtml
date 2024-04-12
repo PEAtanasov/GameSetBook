@@ -1,11 +1,7 @@
-﻿@using GameSetBook.Core.Contracts.Admin
-@model ClubDetailsAdminViewModel
-@inject IClubServiceAdmin clubservice
+﻿@model ClubDetailsAdminViewModel
 
 @{
-    ViewBag.Title = $"Manage Club {Model.Name}";
-    bool isApproved = await clubservice.IsClubApprovedAsync(Model.Id);
-    bool isClubDeleted = await clubservice.IsDeletedAsync(Model.Id);
+    ViewBag.Title = $"Manage Club";
 }
 
 <div>

@@ -2,11 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameSetBook.Infrastructure.Data.Configurations
 {
@@ -22,46 +17,51 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             var users = new List<ApplicationUser>();
             var hasher = new PasswordHasher<ApplicationUser>();
 
-            ApplicationUser user;
-
-            user = new ApplicationUser()
+            ApplicationUser admin = new ApplicationUser()
             {
                 Id = "65a12477-a9c9-48f1-a844-0ec223e1bca5",
                 UserName = "admin@mail.com",
-                NormalizedUserName = "ADMIN@GMAIL.COM",
+                NormalizedUserName = "ADMIN@MAIL.COM",
                 Email = "admin@mail.com",
-                NormalizedEmail = "ADMIN@GMAIL.COM"
-
+                NormalizedEmail = "ADMIN@MAIL.COM",
+                PhoneNumber = "0000000000",
+                FirstName = "Petar",
+                LastName = "Atanasov",
             };
-            user.PasswordHash =
-                 hasher.HashPassword(user, "aaaaaa1");
-            users.Add(user);
+            admin.PasswordHash =
+                 hasher.HashPassword(admin, "aaaaaa1");
+            users.Add(admin);
 
-            user = new ApplicationUser()
+            ApplicationUser clubOwner = new ApplicationUser()
             {
                 Id = "82cd50ca-b023-42e5-8344-227d5c45877c",
                 UserName = "clubowner@mail.com",
-                NormalizedUserName = "CLUBOWNER@GMAIL.COM",
+                NormalizedUserName = "CLUBOWNER@MAIL.COM",
                 Email = "clubowner@mail.com",
-                NormalizedEmail = "CLUBOWNER@GMAIL.COM"
-
+                NormalizedEmail = "CLUBOWNER@MAIL.COM",
+                PhoneNumber = "1111111111",
+                FirstName = "Atanas",
+                LastName = "Atanasov",
             };
-            user.PasswordHash =
-                 hasher.HashPassword(user, "aaaaaa1");
-            users.Add(user);
+            clubOwner.PasswordHash =
+                 hasher.HashPassword(clubOwner, "aaaaaa1");
+            users.Add(clubOwner);
 
-            user = user = new ApplicationUser()
+            ApplicationUser user = user = new ApplicationUser()
             {
                 Id = "83544abd-e9e2-4592-ad5e-23cd2f63e5a0",
                 UserName = "user@mail.com",
-                NormalizedUserName = "USER@GMAIL.COM",
+                NormalizedUserName = "USER@MAIL.COM",
                 Email = "user@mail.com",
-                NormalizedEmail = "USER@GMAIL.COM"
+                NormalizedEmail = "USER@MAIL.COM",
+                PhoneNumber = "2222222222",
+                FirstName = "Encho",
+                LastName = "Georgiev",
             };
             user.PasswordHash =
                  hasher.HashPassword(user, "aaaaaa1");
             users.Add(user);
-            
+
             return users;
         }
     }

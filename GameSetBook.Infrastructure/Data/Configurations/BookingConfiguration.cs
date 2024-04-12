@@ -31,11 +31,11 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 {
                     Id = 1,
                     ClientId = "83544abd-e9e2-4592-ad5e-23cd2f63e5a0",
-                    ClientName = "Petar Atanasov",
+                    ClientName = "Encho georgiev",
                     CourtId = 1,
                     Hour = 17,
                     IsAvailable=false,
-                    PhoneNumber = "+359000111",
+                    PhoneNumber = "2222222222",
                     Price= 20.00m,
                     IsDeleted=false,
                     BookedOn= new DateTime(2024, 3, 9, 10 ,0,0),

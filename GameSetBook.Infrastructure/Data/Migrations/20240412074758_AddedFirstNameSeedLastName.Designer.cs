@@ -4,6 +4,7 @@ using GameSetBook.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameSetBook.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240412074758_AddedFirstNameSeedLastName")]
+    partial class AddedFirstNameSeedLastName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,7 +92,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasIndex("CourtId");
 
-                    b.ToTable("Bookings", (string)null);
+                    b.ToTable("Bookings");
 
                     b.HasComment("Booking entity");
 
@@ -135,7 +137,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
 
                     b.HasComment("City entity");
 
@@ -280,7 +282,7 @@ namespace GameSetBook.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Clubs", (string)null);
+                    b.ToTable("Clubs");
 
                     b.HasComment("Club entity");
 
@@ -326,7 +328,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
 
                     b.HasComment("Country entity");
 
@@ -386,7 +388,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasIndex("ClubId");
 
-                    b.ToTable("Courts", (string)null);
+                    b.ToTable("Courts");
 
                     b.HasComment("Court entity");
 
@@ -602,7 +604,7 @@ namespace GameSetBook.Data.Migrations
 
                     b.HasIndex("ReviewerId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
 
                     b.HasComment("Club's review entity");
                 });
