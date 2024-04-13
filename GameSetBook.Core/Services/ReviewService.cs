@@ -100,7 +100,7 @@ namespace GameSetBook.Core.Services
             return reviews;
         }
 
-        public async Task<AllReviewsSortingServiceModel> GetReviewsPagingModelAsync(AllReviewsSortingServiceModel model)
+        public async Task<AllReviewsSortingServiceModel> GetReviewsSortingModelAsync(AllReviewsSortingServiceModel model)
         {
             var reviews = repository.GetAllReadOnly<Review>()
                 .Where(r => r.ClubId == model.ClubId && r.Booking.IsDeleted == false);

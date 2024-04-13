@@ -16,6 +16,6 @@ namespace GameSetBook.Core.Contracts
 
         Task<IEnumerable<ReviewViewModel>> GetClubReviewsAsync(int clubId);
 
-        Task<AllReviewsSortingServiceModel> GetReviewsPagingModelAsync(AllReviewsSortingServiceModel model);
+        Task<AllReviewsSortingServiceModel> GetReviewsSortingModelAsync(AllReviewsSortingServiceModel model);
     }
 }

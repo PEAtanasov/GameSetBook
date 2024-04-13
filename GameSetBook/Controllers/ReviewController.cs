@@ -158,7 +158,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            model = await reviewService.GetReviewsPagingModelAsync(model);
+            model = await reviewService.GetReviewsSortingModelAsync(model);
 
             model.ClubInfo = await clubService.GetClubIfnoAsync(model.ClubId);
 
