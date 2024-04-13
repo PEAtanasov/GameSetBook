@@ -66,7 +66,6 @@ namespace GameSetBook.Tests.PublicAreaTests
         private Booking booking20;
 
 
-
         private Review review1;
         private Review review2;
         private Review review3;
@@ -166,14 +165,24 @@ namespace GameSetBook.Tests.PublicAreaTests
                 CityId = 1,
                 ClubOwnerId = "newOwnerId",
                 IsAproovedByAdmin = true,
+                NumberOfCourts = 3,
+                WorkingTimeEnd = 21,
+                WorkingTimeStart = 8,
+                RegisteredOn = DateTime.Now.AddDays(-30),
+                HasShop = false,
             };
 
             club3 = new Club()
             {
-                Id = 2,
+                Id = 3,
                 CityId = 1,
-                ClubOwnerId = "newOwnerId",
+                ClubOwnerId = "newOwner3Id",
                 IsAproovedByAdmin = true,
+                NumberOfCourts = 3,
+                WorkingTimeEnd = 21,
+                WorkingTimeStart = 8,
+                RegisteredOn = DateTime.Now.AddDays(-30),
+                HasShop = true,
             };
 
             court1 = new Court()
@@ -330,7 +339,7 @@ namespace GameSetBook.Tests.PublicAreaTests
                 CourtId = 2,
                 ClientId = "userId",
                 Hour = 11,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now.AddDays(2),
             };
 
             booking8 = new Booking()
@@ -339,6 +348,7 @@ namespace GameSetBook.Tests.PublicAreaTests
                 CourtId = 2,
                 ClientId = "userId",
                 Hour = 12,
+                BookingDate = DateTime.Now.AddDays(2),
             };
 
             booking9 = new Booking()
@@ -347,7 +357,7 @@ namespace GameSetBook.Tests.PublicAreaTests
                 CourtId = 3,
                 ClientId = "userId",
                 Hour = 10,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now.AddDays(2),
             };
 
             booking10 = new Booking()
@@ -356,7 +366,7 @@ namespace GameSetBook.Tests.PublicAreaTests
                 CourtId = 3,
                 ClientId = "userId",
                 Hour = 11,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now.AddDays(2),
             };
 
             bookingDeleted1 = new Booking()
@@ -366,7 +376,7 @@ namespace GameSetBook.Tests.PublicAreaTests
                 ClientId = "userId",
                 Hour = 12,
                 IsDeleted = true,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now.AddDays(2),
             };
 
             booking12 = new Booking()
@@ -375,7 +385,7 @@ namespace GameSetBook.Tests.PublicAreaTests
                 CourtId = 5,
                 ClientId = "userId",
                 Hour = 10,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now.AddDays(2),
             };
 
             booking13 = new Booking()
@@ -384,65 +394,65 @@ namespace GameSetBook.Tests.PublicAreaTests
                 CourtId = 5,
                 ClientId = "userId",
                 Hour = 11,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now.AddDays(2),
             };
 
             booking14 = new Booking()
             {
                 Id = 14,
                 CourtId = 5,
-                ClientId = "newOwner3Id",
+                ClientId = "newUser3Id",
                 Hour = 12,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now.AddDays(-1),
             };
             booking15 = new Booking()
             {
                 Id = 15,
                 CourtId = 6,
-                ClientId = "newOwner3Id",
+                ClientId = "newUser3Id",
                 Hour = 10,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now.AddDays(-1),
             };
             booking16 = new Booking()
             {
                 Id = 16,
                 CourtId = 6,
-                ClientId = "newOwner3Id",
+                ClientId = "newUser3Id",
                 Hour = 11,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now.AddDays(2),
             };
             booking17 = new Booking()
             {
                 Id = 17,
                 CourtId = 6,
-                ClientId = "newOwner3Id",
+                ClientId = "newUser3Id",
                 Hour = 12,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now.AddDays(2),
             };
             booking18 = new Booking()
             {
                 Id = 18,
                 CourtId = 6,
-                ClientId = "newOwner3Id",
-                Hour = 17,
-                BookingDate = DateTime.Now.AddDays(1),
+                ClientId = "newUser3Id",
+                Hour = 13,
+                BookingDate = DateTime.Now.AddDays(3),
             };
             bookingDeleted2 = new Booking()
             {
                 Id = 19,
                 CourtId = 6,
-                ClientId = "newOwner3Id",
+                ClientId = "newUser3Id",
                 Hour = 10,
                 IsDeleted = true,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now.AddDays(3),
             };
             booking20 = new Booking()
             {
                 Id = 20,
                 CourtId = 4,
-                ClientId = "newOwner3Id",
+                ClientId = "newUser3Id",
                 Hour = 11,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now.AddDays(2),
             };
 
             review1 = new Review()
@@ -548,7 +558,7 @@ namespace GameSetBook.Tests.PublicAreaTests
 
             bookings = new List<Booking>()
             {
-                booking1,booking2,booking3,booking4, booking5, booking6, booking7, booking8, booking9, booking10, bookingDeleted1,booking12,booking13,booking14,booking15, booking16, booking17, booking18, booking20
+                booking1,booking2,booking3,booking4, booking5, booking6, booking7, booking8, booking9, booking10, bookingDeleted1,booking12,booking13,booking14,booking15, booking16, booking17, booking18,bookingDeleted2, booking20
             };
 
             reviews = new List<Review>()
@@ -589,9 +599,91 @@ namespace GameSetBook.Tests.PublicAreaTests
         }
 
         [Test]
-        public async Task a()
+        public async Task ExistAsync_ShouldReturnTrueIfCourtExistAndFalseIfDoesNotExist()
         {
+            var existingCourtId = 1;
+            var existingCourtId2 = 3;
 
+            var nonExistingCourtId = -1;
+            var nonExistingCourtId2 = int.MaxValue;
+
+            var result1 = await service.ExistAsync(existingCourtId);
+            var result2 = await service.ExistAsync(existingCourtId2);
+            var result3 = await service.ExistAsync(nonExistingCourtId);
+            var result4 = await service.ExistAsync(nonExistingCourtId2);
+
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.True);
+            Assert.That(result3, Is.False);
+            Assert.That(result4, Is.False);
+        }
+
+        [Test]
+        public async Task GetPriceAsync_ShoudReturnCourtPricePerHour()
+        {
+            var expectedResul1 = court1.PricePerHour;
+            var actualPriceCourt1 = 30M;
+
+            var expectedResult2 = court2.PricePerHour;
+            var actualPriceCourt2 = 20M;
+
+            var result1 = await service.GetPriceAsync(court1.Id);
+            var result2 = await service.GetPriceAsync(court2.Id);
+
+            Assert.That(result1, Is.EqualTo(expectedResul1));
+            Assert.That(result1, Is.EqualTo(actualPriceCourt1));
+            Assert.That(result2, Is.EqualTo(expectedResult2));
+            Assert.That(result2, Is.EqualTo(actualPriceCourt2));
+        }
+
+        [Test]
+        public async Task IsCourtInClubOfTheOwnerAsync_ShouldReturnTrueIfTheCourtIsIntheClubOwnersClubOrFalseIfNot()
+        {
+            var ownerId = "clubOwnerId";
+            var courtInTheClubId = 1;
+            var courtNotInTheClubId = 5;
+
+            var result1 = await service.IsCourtInClubOfTheOwnerAsync(courtInTheClubId, ownerId);
+            var result2 = await service.IsCourtInClubOfTheOwnerAsync(courtNotInTheClubId, ownerId);
+
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.False);
+        }
+
+        [Test]
+        public async Task ChangeStatusAsync_ShouldChangeIsActive()
+        {
+            var statusBeforeChange = court1.IsActive;
+
+            await service.ChangeStatusAsync(court1.Id);
+
+            var result = court1.IsActive;
+
+            Assert.That(result, Is.Not.EqualTo(statusBeforeChange));
+        }
+
+        [Test]
+        public async Task ChangeStatusAsync_ShouldChangeIsActiveFromFalseToTrue()
+        {
+            var courtIdNotActiveStatus = notActiveCourt4.Id;
+
+            await service.ChangeStatusAsync(courtIdNotActiveStatus);
+
+            var result = notActiveCourt4.IsActive;
+
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public async Task ChangeStatusAsync_ShouldChangeIsActiveFromTrueToFlase()
+        {
+            var courtIdActiveStatus = court1.Id;
+
+            await service.ChangeStatusAsync(courtIdActiveStatus);
+
+            var result = court1.IsActive;
+
+            Assert.That(result, Is.False);
         }
     }
 }
