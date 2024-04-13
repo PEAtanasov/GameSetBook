@@ -22,17 +22,17 @@ namespace GameSetBook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> AddReview(int bookingId)
         {
-            if (!await bookingService.BookingExistById(bookingId))
+            if (!await bookingService.ExistByIdAsync(bookingId))
             {
                 return BadRequest();
             }
 
-            if (await bookingService.BookingHasReview(bookingId))
+            if (await bookingService.HasReviewAsync(bookingId))
             {
                 return BadRequest();
             }
 
-            if (!await bookingService.IsUserClientOfBooking(User.Id(), bookingId))
+            if (!await bookingService.IsBookingClientAsync(bookingId, User.Id()))
             {
                 return Unauthorized();
             }
@@ -63,17 +63,17 @@ namespace GameSetBook.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddReview(ReviewFormModel model)
         {
-            if (!await bookingService.BookingExistById(model.BookingId))
+            if (!await bookingService.ExistByIdAsync(model.BookingId))
             {
                 return BadRequest();
             }
 
-            if (await bookingService.BookingHasReview(model.BookingId))
+            if (await bookingService.HasReviewAsync(model.BookingId))
             {
                 return BadRequest();
             }
 
-            if (!await bookingService.IsUserClientOfBooking(User.Id(), model.BookingId))
+            if (!await bookingService.IsBookingClientAsync(model.BookingId, User.Id()))
             {
                 return Unauthorized();
             }

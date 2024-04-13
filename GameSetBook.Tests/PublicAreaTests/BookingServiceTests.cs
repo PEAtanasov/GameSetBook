@@ -1,23 +1,24 @@
 ﻿using GameSetBook.Core.Contracts;
-using GameSetBook.Core.Enums;
-using GameSetBook.Core.Models.Review;
-using GameSetBook.Core.Services;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Data;
-using GameSetBook.Infrastructure.Models;
 using GameSetBook.Infrastructure.Models.Identity;
-using Microsoft.AspNetCore.Identity;
+using GameSetBook.Infrastructure.Models;
+using GameSetBook.Core.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
+using static System.Reflection.Metadata.BlobBuilder;
+using System.Diagnostics.Metrics;
+using System.Runtime.Intrinsics.X86;
+using GameSetBook.Core.Models.Booking;
 
 namespace GameSetBook.Tests.PublicAreaTests
 {
-    public class ReviewServiceTests
+    [TestFixture]
+    public class BookingServiceTests
     {
         private ApplicationDbContext dbContext;
 
         private IRepository repository;
-        private IReviewService reviewService;
+        private IBookingService service;
 
         private IEnumerable<Booking> bookings;
         private IEnumerable<Review> reviews;
@@ -121,7 +122,7 @@ namespace GameSetBook.Tests.PublicAreaTests
                 LogoUrl = "DefaultImage",
                 NumberOfCoaches = 1,
                 PhoneNumber = "1234567890",
-                ClubOwnerId = "fbc3aa46-7418-4ba3-a5e3-a9e8887d063c",
+                ClubOwnerId = "clubOwnerId",
                 Description = "Club Description, The best club in town",
                 Email = "club@email.com",
                 HasParking = true,
@@ -138,7 +139,7 @@ namespace GameSetBook.Tests.PublicAreaTests
             {
                 Id = 2,
                 CityId = 1,
-                ClubOwnerId = "NewUserId",
+                ClubOwnerId = "newOwnerId",
                 IsAproovedByAdmin = true,
             };
 
@@ -164,7 +165,7 @@ namespace GameSetBook.Tests.PublicAreaTests
             booking1 = new Booking()
             {
                 Id = 1,
-                ClientId = "55eb5415-58ab-458d-9120-b929b87e911a",
+                ClientId = "userId",
                 ClientName = "Test Testov",
                 BookingDate = DateTime.Now.AddDays(2),
                 CourtId = 1,
@@ -178,7 +179,7 @@ namespace GameSetBook.Tests.PublicAreaTests
             booking2 = new Booking()
             {
                 Id = 2,
-                ClientId = "55eb5415-58ab-458d-9120-b929b87e911a",
+                ClientId = "userId",
                 ClientName = "Test Testov",
                 BookingDate = DateTime.Now.AddDays(3),
                 CourtId = 1,
@@ -194,7 +195,7 @@ namespace GameSetBook.Tests.PublicAreaTests
                 Id = 10,
                 CourtId = 10,
                 ClientId = "newUserId",
-                Hour = 10
+                Hour = 10,
             };
 
             booking4 = new Booking()
@@ -391,7 +392,7 @@ namespace GameSetBook.Tests.PublicAreaTests
             await dbContext.SaveChangesAsync();
 
             repository = new Repository(dbContext);
-            reviewService = new ReviewService(repository);
+            service = new BookingService(repository);
         }
 
         [TearDown]
@@ -402,324 +403,272 @@ namespace GameSetBook.Tests.PublicAreaTests
         }
 
         [Test]
-        public async Task GetAllCountriesAsync_ReturnsCorrectResult()
+        public async Task ExistByIdAsync_ShouldReturnTrueIfBookingExistOrFalseIfBookingDoesNotExist()
         {
-            var existId = 1;
-            var nonExistId = -1;
-            var result = await reviewService.ExistAsync(existId);
-            var result2 = await reviewService.ExistAsync(nonExistId);
+            var existingBookingId = 1;
+            var notExistingBookingId = -2;
+
+            var result1 = await service.ExistByIdAsync(existingBookingId);
+            var result2 = await service.ExistByIdAsync(notExistingBookingId);
+
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.False);
+        }
+
+        [Test]
+        public async Task BookingExistAsync_ShouldReturnTrueIfBookingExistOrFalseIfBookingDoesNotExist()
+        {
+            var existingBookingDate = booking3.BookingDate;
+            var existingBookingHour = booking3.Hour;
+            var existingBookingCourtId = booking3.CourtId;
+
+            var result1 = await service.BookingExistAsync(existingBookingDate, existingBookingHour, existingBookingCourtId);
+            var result2 = await service.BookingExistAsync(DateTime.Now.AddDays(1000), 1, existingBookingCourtId);
+            var result3 = await service.BookingExistAsync(DateTime.Now.AddDays(1000), existingBookingHour, existingBookingCourtId);
+            var result4 = await service.BookingExistAsync(existingBookingDate, -1, existingBookingCourtId);
+
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.False);
+            Assert.That(result3, Is.False);
+            Assert.That(result4, Is.False);
+        }
+
+        [Test]
+        public async Task DeleteAsync_ShouldSetBookingToDeleted()
+        {
+            booking1.IsDeleted = false;
+            await dbContext.SaveChangesAsync();
+
+            var cuurentStateOfbooking1 = booking1.IsDeleted;
+
+            await service.DeleteAsync(booking1.Id);
+
+            var stateOfBooking1ResultAfterDelete = booking1.IsDeleted;
 
             Assert.Multiple(() =>
             {
-                Assert.That(result, Is.True);
-                Assert.That(result2, Is.False);
+                Assert.That(cuurentStateOfbooking1, Is.False);
+                Assert.That(stateOfBooking1ResultAfterDelete, Is.True);
             });
+
+            Assert.That(cuurentStateOfbooking1, Is.Not.EqualTo(stateOfBooking1ResultAfterDelete));
         }
 
         [Test]
-        public async Task IsTheReviewerAsync_ShouldReturnTrueIfTheUserIsTheReviewer()
+        public async Task EditAsync_ShouldChangeClientName()
         {
-            var reviewId = 1;
-            var reviewerId = "userId";
-            var nonReviewerId = "userIdnon";
+            var currentName = booking1.ClientName;
+            var newName = "Name Edited";
 
-            var result1 = await reviewService.IsTheReviewerAsync(reviewId, reviewerId);
-            var result2 = await reviewService.IsTheReviewerAsync(1, nonReviewerId);
-
-            Assert.Multiple(() =>
+            var model = new BookingEditFormModel()
             {
-                Assert.That(result1, Is.True);
-                Assert.That(result2, Is.False);
-            });
+                Id = booking1.Id,
+                ClientName = newName,
+                BookingDate = booking1.BookingDate,
+                PhoneNumber = booking1.PhoneNumber,
+                Hour = booking1.Hour,
+                Price = booking1.Price
+            };
+
+            await service.EditAsync(model);
+
+            Assert.That(newName, Is.Not.EqualTo(currentName));
+            Assert.That(booking1.ClientName, Is.EqualTo(newName));
+            Assert.That(booking1.ClientName, Is.Not.EqualTo(currentName));
         }
 
         [Test]
-        public async Task AddReviewAsync_CheckIfReviewIsAddedSuccessfuly()
+        public async Task AddAsync_CheckIfBookingIsAddedSuccesfullyAndReturnsClubId()
         {
-            var totalReviews = reviews.Count();
-
-            ReviewFormModel model = new ReviewFormModel()
+            var model = new BookingCreateFormModel()
             {
-                Title = "test",
-                Description = "test",
-                BookingId = 2,
-                ClubId = 1,
-                Rate = 1,
-                ReviewerId = "userId",
+                ClientId = user1.Id,
+                BookingDate = DateTime.Now.AddDays(100),
+                Hour = 12,
+                ClientName = user1.FirstName + " " + user1.LastName,
+                CourtId = 1,
+                PhoneNumber = user1.PhoneNumber,
+                IsBookedByOwnerOrAdmin = false,
+                Price = 30,
             };
-            await reviewService.AddReviewAsync(model);
 
-            var updatedCount = await repository.GetAll<Review>().CountAsync();
+            var totalReviewsBeforeAdding = await dbContext.Bookings.CountAsync();
 
-            Assert.That(updatedCount, Is.EqualTo(totalReviews + 1));
+            int clubId = await service.AddAsync(model);
+
+            var totalReviewsAfterAdding = await dbContext.Bookings.CountAsync();
+
+            Assert.That(totalReviewsAfterAdding, Is.EqualTo(totalReviewsBeforeAdding + 1));
+            Assert.That(clubId, Is.EqualTo(club1.Id));
         }
 
         [Test]
-        public async Task GetReviseModel_ShouldNotReturnNull()
+        public async Task IsClubOwnerAllowedToEditAsync_CheckIfTheClubOwnerIsAllowedToEditBooking()
         {
-            var result = await reviewService.GetReviseModelAsync(1);
-            Assert.That(result, Is.Not.Null);
+            var ownerId = clubOwner1.Id;
+            var anotherClubOwnerId = clubOwner2.Id;
+
+            var result1 = await service.IsClubOwnerAllowedToEditAsync(booking1.Id, ownerId);
+            var result2 = await service.IsClubOwnerAllowedToEditAsync(booking1.Id, anotherClubOwnerId);
+
+
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.False);
         }
 
         [Test]
-        public async Task GetReviseModel_ReturnsCorrectModelData()
+        public async Task IsBookingClientAsync_CheckIfTheUserIsTheClientOfTheBooking()
         {
-            var result = await reviewService.GetReviseModelAsync(1);
+            var booking1Id = booking1.Id;
+            var user1Id = user1.Id;
 
-            Assert.Multiple(() =>
-            {
-                Assert.That(result.Id, Is.EqualTo(review1.Id));
-                Assert.That(result.Title, Is.EqualTo(review1.Title));
-                Assert.That(result.Description, Is.EqualTo(review1.Description));
-                Assert.That(result.Rate, Is.EqualTo(review1.Rate));
-                Assert.That(result.ClubId, Is.EqualTo(review1.ClubId));
-                Assert.That(result.ReviewerId, Is.EqualTo(review1.ReviewerId));
-                Assert.That(result.BookingId, Is.EqualTo(review1.BookingId));
-            });
+            var booking3Id = booking3.Id;
+            var user2Id = user2.Id;
+
+            var result1 = await service.IsBookingClientAsync(booking1Id, user1Id);
+            var result2 = await service.IsBookingClientAsync(booking3Id, user2Id);
+
+            var result3 = await service.IsBookingClientAsync(booking1Id, user2Id);
+            var result4 = await service.IsBookingClientAsync(booking3Id, user1Id);
+
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.True);
+            Assert.That(result3, Is.False);
+            Assert.That(result4, Is.False);
         }
 
         [Test]
-        public async Task ReviseAsync_UpdatesDataCorrectly()
+        public async Task IsCancelableAsync_ShouldReturnFalseIfBookingDateIsLessThanDayTimeNow()
         {
-            var model = new ReviewFormModel()
-            {
-                Id = 1,
-                Title = "Changed",
-                Description = "Changed"
-            };
+            booking3.BookingDate = DateTime.Now.AddDays(-1);
+            await dbContext.SaveChangesAsync();
 
-            await reviewService.ReviseAsync(model);
+            var result = await service.IsCancelableAsync(booking3.Id);
 
-            var modelToCompare = await reviewService.GetReviseModelAsync(model.Id);
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(modelToCompare.Id, Is.EqualTo(model.Id));
-                Assert.That(modelToCompare.Title, Is.EqualTo(model.Title));
-                Assert.That(modelToCompare.Description, Is.EqualTo(model.Description));
-            });
+            Assert.That(result, Is.False);
         }
 
         [Test]
-        public async Task GetClubReviewsAsync_CheckIfReturnsAllClubReviews()
+        public async Task IsCancelableAsync_ShouldReturnFalseIfBookingDateIsEqualToDayTimeNowDateButHourIsNotGreaterOrEqualThenTwoHoursOfDateTimeNowHour()
         {
-            var clubId = 1;
+            booking3.BookingDate = DateTime.Now;
+            booking3.Hour = DateTime.Now.AddHours(+2).Hour;
+            booking4.BookingDate = DateTime.Now;
+            booking4.Hour = DateTime.Now.AddHours(+1).Hour;
+            await dbContext.SaveChangesAsync();
 
-            var allReviewsCount = await dbContext.Reviews
-              .Where(r => r.ClubId == clubId).CountAsync();
+            var result1 = await service.IsCancelableAsync(booking3.Id);
+            var result2 = await service.IsCancelableAsync(booking4.Id);
 
-            var reviews = await reviewService.GetClubReviewsAsync(clubId);
-
-            Assert.That(reviews.Count(), Is.EqualTo(allReviewsCount));
+            Assert.That(result1, Is.False);
+            Assert.That(result2, Is.False);
         }
 
         [Test]
-        public async Task GetClubReviewsAsync_CheckIfReturnsAllClubReviewsTestAfterAddingNewReview()
+        public async Task IsCancelableAsync_ShouldReturnTrueIfBookingDateIsEqualToDayTimeNowDateAndHourIsGreaterThenTwoHoursOfDateTimeNowHour()
         {
-            var clubId = 1;
 
-            ReviewFormModel model = new ReviewFormModel()
-            {
-                Title = "test",
-                Description = "test",
-                BookingId = 2,
-                ClubId = 1,
-                Rate = 1,
-                ReviewerId = "userId",
-            };
+            booking3.BookingDate = DateTime.Now;
+            booking3.Hour = DateTime.Now.Hour + 3;
+            booking4.BookingDate = DateTime.Now;
+            booking4.Hour = DateTime.Now.Hour + 5;
+            await dbContext.SaveChangesAsync();
 
-            await reviewService.AddReviewAsync(model);
+            var result1 = await service.IsCancelableAsync(booking3.Id);
+            var result2 = await service.IsCancelableAsync(booking3.Id);
 
-            var expectedResult1 = 2;
-            var expectedResult2 = await dbContext.Reviews
-              .Where(r => r.ClubId == clubId).CountAsync();
-
-            var reviews = await reviewService.GetClubReviewsAsync(clubId);
-
-            var actualResult = reviews.Count();
-
-            Assert.That(actualResult, Is.EqualTo(expectedResult1));
-            Assert.That(actualResult, Is.EqualTo(expectedResult2));
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.True);
         }
 
         [Test]
-        public async Task GetReviewsSortingModelAsync_ShouldNotReturnNull()
+        public async Task IsCancelableAsync_ShouldReturnTrueIfBookingDateIsGreaterThenDateTimeNowWithOneOrMoreDays()
         {
 
-            var model = new AllReviewsSortingServiceModel()
-            {
-                ClubId = club2.Id,
-                ReviewSorting = ReviewSorting.CreatedOnDescending,
-                ReviewsPerPage = int.MaxValue
+            booking3.BookingDate = DateTime.Now.AddDays(1);
+            booking4.BookingDate = DateTime.Now.AddDays(30);
+            await dbContext.SaveChangesAsync();
 
-            };
+            var result1 = await service.IsCancelableAsync(booking3.Id);
+            var result2 = await service.IsCancelableAsync(booking4.Id);
 
-            var result = await reviewService.GetReviewsSortingModelAsync(model);
-
-            Assert.NotNull(result);
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.True);
         }
 
         [Test]
-        public async Task GetReviewsSortingModelAsync_ShouldReturnexactNumberOfItems()
+        public async Task BookingHasReviewAsync_CheckIfTheBookingHasReview()
         {
-            var itemsPerPage1 = 1;
-            var itemsPerPage2 = 5;
-            var itemsPerPage3 = int.MaxValue;
+            var bookingWithoutReviewId = booking2.Id;
+            var bookingWithReviewId = booking1.Id;
 
-            var model1 = new AllReviewsSortingServiceModel()
-            {
-                ClubId = club2.Id,
-                ReviewSorting = ReviewSorting.CreatedOnDescending,
-                ReviewsPerPage = itemsPerPage1
-            };
+            var result1 = await service.HasReviewAsync(bookingWithoutReviewId);
+            var result2 = await service.HasReviewAsync(bookingWithReviewId);
 
-            var result1 = await reviewService.GetReviewsSortingModelAsync(model1);
-
-            var model2 = new AllReviewsSortingServiceModel()
-            {
-                ClubId = club2.Id,
-                ReviewSorting = ReviewSorting.CreatedOnDescending,
-                ReviewsPerPage = itemsPerPage2
-            };
-
-            var result2 = await reviewService.GetReviewsSortingModelAsync(model2);
-
-            var model3 = new AllReviewsSortingServiceModel()
-            {
-                ClubId = club2.Id,
-                ReviewSorting = ReviewSorting.CreatedOnDescending,
-                ReviewsPerPage = itemsPerPage3
-            };
-
-            var result3 = await reviewService.GetReviewsSortingModelAsync(model3);
-
-            var numberOfDeletedBookings = 1;
-            var nymberOfBookingsToAnotherClub = 1;
-
-            var expectedResultForTest3 = reviews.Count() - numberOfDeletedBookings - nymberOfBookingsToAnotherClub;
-
-            Assert.That(result1.Reviews.Count(), Is.EqualTo(1));
-            Assert.That(result2.Reviews.Count(), Is.EqualTo(5));
-            Assert.That(result3.Reviews.Count(), Is.EqualTo(expectedResultForTest3));
+            Assert.That(result1, Is.False);
+            Assert.That(result2, Is.True);
         }
 
         [Test]
-        public async Task GetReviewsSortingModelAsync_ShouldreturnOrderedReviewsByDateAddedDescending()
+        public async Task GetBookingToEditAsync_CheckIfReturnsModelWithCorrectData()
         {
-            var model = new AllReviewsSortingServiceModel()
-            {
-                ClubId = club2.Id,
-                ReviewSorting = ReviewSorting.CreatedOnDescending,
-                ReviewsPerPage = 3
-            };
+            var result = await service.GetBookingToEditAsync(booking1.Id);
 
-            var sortedModel = await reviewService.GetReviewsSortingModelAsync(model);
-
-            var sotedModelRatesToCompare = new List<int>()
-            {
-                review9.Rate, review8.Rate, review7.Rate
-            };
-
-            var actualResult = new List<int>()
-            {
-                sortedModel.Reviews.Take(1).First().Rating,
-                sortedModel.Reviews.Skip(1).Take(1).First().Rating,
-                sortedModel.Reviews.Skip(2).Take(1).First().Rating,
-            };
-
-            Assert.That(sotedModelRatesToCompare[0], Is.EqualTo(actualResult[0]));
-            Assert.That(sotedModelRatesToCompare[1], Is.EqualTo(actualResult[1]));
-            Assert.That(sotedModelRatesToCompare[2], Is.EqualTo(actualResult[2]));
+            Assert.That(result.Id, Is.EqualTo(booking1.Id));
+            Assert.That(result.Hour, Is.EqualTo(booking1.Hour));
+            Assert.That(result.Price, Is.EqualTo(booking1.Price));
+            Assert.That(result.ClientName, Is.EqualTo(booking1.ClientName));
+            Assert.That(result.PhoneNumber, Is.EqualTo(booking1.PhoneNumber));
+            Assert.That(result.BookingDate, Is.EqualTo(booking1.BookingDate));
         }
 
         [Test]
-        public async Task GetReviewsSortingModelAsync_ShouldreturnOrderedReviewsByDateAddedAscending()
+        public async Task AreDateAndHourValidAsync_ShouldReturnFalseIfDateIsLessThanDateTimeNowDate()
         {
-            var model = new AllReviewsSortingServiceModel()
-            {
-                ClubId = club2.Id,
-                ReviewSorting = ReviewSorting.CreatedOnAscending,
-                ReviewsPerPage = 3
-            };
+            var invalidDate1 = DateTime.Now.AddDays(-1);
+            var invalidDate2 = DateTime.Now.AddDays(-100);
+            var validHour = 12;
+            var courtId = court1.Id;
 
-            var sortedModel = await reviewService.GetReviewsSortingModelAsync(model);
+            var result1 = await service.AreDateAndHourValidAsync(invalidDate1, validHour, courtId);
+            var result2 = await service.AreDateAndHourValidAsync(invalidDate2, validHour, courtId);
 
-            var sotedModelRatesToCompare = new List<int>()
-            {
-                review2.Rate, review3.Rate, review4.Rate
-            };
-
-            var actualResult = new List<int>()
-            {
-                sortedModel.Reviews.Take(1).First().Rating,
-                sortedModel.Reviews.Skip(1).Take(1).First().Rating,
-                sortedModel.Reviews.Skip(2).Take(1).First().Rating,
-            };
-
-            Assert.That(sotedModelRatesToCompare[0], Is.EqualTo(actualResult[0]));
-            Assert.That(sotedModelRatesToCompare[1], Is.EqualTo(actualResult[1]));
-            Assert.That(sotedModelRatesToCompare[2], Is.EqualTo(actualResult[2]));
+            Assert.That(result1,Is.False);
+            Assert.That(result2, Is.False);
         }
 
         [Test]
-        public async Task GetReviewsSortingModelAsync_ShouldreturnOrderedReviewsByRateAscending()
+        public async Task AreDateAndHourValidAsync_ShouldReturnFalseIfDateIsEqualToDateTimeNowDateButHourIsLessThanDateTimeNowHour()
         {
-            var model = new AllReviewsSortingServiceModel()
-            {
-                ClubId = club2.Id,
-                ReviewSorting = ReviewSorting.RatingAscending,
-                ReviewsPerPage = 3
-            };
+            var validDate = DateTime.Now;
+            var invalidHour1 = DateTime.Now.Hour - 1;
+            var invalidHour2 = DateTime.Now.Hour - 5;
+            var courtId = court1.Id;
 
-            var sortedModel = await reviewService.GetReviewsSortingModelAsync(model);
+            var result1 = await service.AreDateAndHourValidAsync(validDate, invalidHour1, courtId);
+            var result2 = await service.AreDateAndHourValidAsync(validDate, invalidHour2, courtId);
 
-            var sotedModelRatesToCompare = new List<int>()
-            {
-                review2.Rate, review3.Rate, review4.Rate
-            };
-
-            var actualResult = new List<int>()
-            {
-                sortedModel.Reviews.Take(1).First().Rating,
-                sortedModel.Reviews.Skip(1).Take(1).First().Rating,
-                sortedModel.Reviews.Skip(2).Take(1).First().Rating,
-
-            };
-
-            Assert.That(sotedModelRatesToCompare[0], Is.EqualTo(actualResult[0]));
-            Assert.That(sotedModelRatesToCompare[1], Is.EqualTo(actualResult[1]));
-            Assert.That(sotedModelRatesToCompare[2], Is.EqualTo(actualResult[2]));
+            Assert.That(result1, Is.False);
+            Assert.That(result2, Is.False);
         }
 
         [Test]
-        public async Task GetReviewsSortingModelAsync_ShouldreturnOrderedReviewsByRateDescending()
+        public async Task AreDateAndHourValidAsync_ShouldReturnTrueIfDateIsValid()
         {
-            {
-                var model = new AllReviewsSortingServiceModel()
-                {
-                    ClubId = club2.Id,
-                    ReviewSorting = ReviewSorting.RatingDescending,
-                    ReviewsPerPage = 3
-                };
+            var workingTimeStart = club1.WorkingTimeStart;
+            var workingTimeEnd = club1.WorkingTimeEnd;
 
-                var sortedModel = await reviewService.GetReviewsSortingModelAsync(model);
+            var date = DateTime.Now.AddDays(1);
 
-                var sotedModelRatesToCompare = new List<int>()
-            {
-                review9.Rate, review8.Rate, review7.Rate
-            };
+            var validHour1 = workingTimeStart + 1;
+            var validHour2 = workingTimeEnd - 1;
+            var courtId = court1.Id;
 
-                var actualResult = new List<int>()
-            {
-                sortedModel.Reviews.Take(1).First().Rating,
-                sortedModel.Reviews.Skip(1).Take(1).First().Rating,
-                sortedModel.Reviews.Skip(2).Take(1).First().Rating,
-            };
+            var result1 = await service.AreDateAndHourValidAsync(date, validHour1, courtId);
+            var result2 = await service.AreDateAndHourValidAsync(date, validHour2, courtId);
 
-                Assert.That(sotedModelRatesToCompare[0], Is.EqualTo(actualResult[0]));
-                Assert.That(sotedModelRatesToCompare[1], Is.EqualTo(actualResult[1]));
-                Assert.That(sotedModelRatesToCompare[2], Is.EqualTo(actualResult[2]));
-            }
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.True);
         }
     }
 }

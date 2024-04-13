@@ -103,7 +103,7 @@ namespace GameSetBook.Web.Controllers
 
             model.ClientId = User.Id();
 
-            var clubId = await bookingService.AddBookingAsync(model);
+            var clubId = await bookingService.AddAsync(model);
 
             return RedirectToAction("Schedule", "Club", new { id = clubId, date = model.BookingDate });
         }
@@ -111,17 +111,17 @@ namespace GameSetBook.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Cancel(int id, AllBookingsSortingModel filters)
         {
-            if (!await bookingService.BookingExistById(id))
+            if (!await bookingService.ExistByIdAsync(id))
             {
                 return BadRequest();
             }
 
-            if (!await bookingService.IsBookingClient(id,User.Id()))
+            if (!await bookingService.IsBookingClientAsync(id,User.Id()))
             {
                 return Unauthorized();
             }
 
-            if(!await bookingService.IsCancelable(id))
+            if(!await bookingService.IsCancelableAsync(id))
             {
                 return BadRequest();
             }
@@ -195,7 +195,7 @@ namespace GameSetBook.Web.Controllers
             model.ClientId = User.Id();
             model.IsBookedByOwnerOrAdmin = true;
 
-            var clubId = await bookingService.AddBookingAsync(model);
+            var clubId = await bookingService.AddAsync(model);
 
             return RedirectToAction("MyClubSchedule", "Club", new { id = clubId, date = model.BookingDate });
         }
@@ -204,12 +204,12 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Edit(int id)
         {
-            if (!await bookingService.BookingExistById(id))
+            if (!await bookingService.ExistByIdAsync(id))
             {
                 return BadRequest();
             }
 
-            if (!await bookingService.IsClubOwnerAllowedToEdit(id, User.Id()))
+            if (!await bookingService.IsClubOwnerAllowedToEditAsync(id, User.Id()))
             {
                 return Unauthorized();
             }
@@ -227,12 +227,12 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Edit(BookingEditFormModel model)
         {
-            if (!await bookingService.BookingExistById(model.Id))
+            if (!await bookingService.ExistByIdAsync(model.Id))
             {
                 return BadRequest();
             }
 
-            if (!await bookingService.IsClubOwnerAllowedToEdit(model.Id, User.Id()))
+            if (!await bookingService.IsClubOwnerAllowedToEditAsync(model.Id, User.Id()))
             {
                 return Unauthorized();
             }
@@ -252,12 +252,12 @@ namespace GameSetBook.Web.Controllers
         [Authorize(Roles = ClubOwnerRole)]
         public async Task<IActionResult> Delete(BookingEditFormModel model)
         {
-            if (!await bookingService.BookingExistById(model.Id))
+            if (!await bookingService.ExistByIdAsync(model.Id))
             {
                 return BadRequest();
             }
 
-            if (!await bookingService.IsClubOwnerAllowedToEdit(model.Id, User.Id()))
+            if (!await bookingService.IsClubOwnerAllowedToEditAsync(model.Id, User.Id()))
             {
                 return Unauthorized();
             }

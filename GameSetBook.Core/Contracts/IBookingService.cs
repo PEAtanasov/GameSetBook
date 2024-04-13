@@ -5,7 +5,7 @@ namespace GameSetBook.Core.Contracts
     public interface IBookingService
     {
 
-        Task<int> AddBookingAsync(BookingCreateFormModel model);
+        Task<int> AddAsync(BookingCreateFormModel model);
 
         Task<BookingEditFormModel> GetBookingToEditAsync(int id);
 
@@ -17,18 +17,16 @@ namespace GameSetBook.Core.Contracts
 
         Task<bool> BookingExistAsync(DateTime date, int hour, int courtId);
 
-        Task<bool> BookingExistById(int id);
+        Task<bool> ExistByIdAsync(int id);
 
-        Task<bool> IsClubOwnerAllowedToEdit(int id, string ownerId);
+        Task<bool> IsClubOwnerAllowedToEditAsync(int id, string ownerId);
 
         Task<AllBookingsSortingModel> GetBookingSortingServiceModelAsync(AllBookingsSortingModel queryModel, string userId);
 
-        Task<bool> IsBookingClient(int bookingId, string userId);
+        Task<bool> IsBookingClientAsync(int bookingId, string userId);
 
-        Task<bool> IsCancelable(int bookingId);
+        Task<bool> IsCancelableAsync(int bookingId);
 
-        Task<bool> IsUserClientOfBooking(string clientId, int id);
-
-        Task<bool> BookingHasReview(int bookingId);
+        Task<bool> HasReviewAsync(int bookingId);
     }
 }

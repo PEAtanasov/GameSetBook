@@ -38,7 +38,7 @@ namespace GameSetBook.Core.Services
             return true;
         }
 
-        public async Task<int> AddBookingAsync(BookingCreateFormModel model)
+        public async Task<int> AddAsync(BookingCreateFormModel model)
         {
             var booking = new Booking()
             {
@@ -106,19 +106,20 @@ namespace GameSetBook.Core.Services
                .AnyAsync(b => b.BookingDate.Date == date.Date && b.Hour == hour && b.IsAvailable == false);
         }
 
-        public async Task<bool> BookingExistById(int id)
+        public async Task<bool> ExistByIdAsync(int id)
         {
             return await repository.GetAllReadOnly<Booking>()
                .AnyAsync(b => b.Id == id);
         }
 
-        public async Task<bool> IsClubOwnerAllowedToEdit(int id, string ownerId)
+        public async Task<bool> IsClubOwnerAllowedToEditAsync(int id, string ownerId)
         {
             return await repository.GetAllReadOnly<Booking>()
                 .Where(c => c.Court.Club.ClubOwnerId == ownerId)
                 .AnyAsync(b => b.Id == id);
         }
 
+        //TODO TESTS
         public async Task<AllBookingsSortingModel> GetBookingSortingServiceModelAsync(AllBookingsSortingModel queryModel, string userId)
         {
             var bookingToSort = repository.GetAllReadOnly<Booking>()
@@ -193,7 +194,7 @@ namespace GameSetBook.Core.Services
             return queryModel;
         }
 
-        public async Task<bool> IsBookingClient(int bookingId, string userId)
+        public async Task<bool> IsBookingClientAsync(int bookingId, string userId)
         {
             return await repository.GetAllReadOnly<Booking>()
                 .AnyAsync(b => b.Id == bookingId &&
@@ -201,7 +202,7 @@ namespace GameSetBook.Core.Services
                 b.IsBookedByOwnerOrAdmin == false);
         }
 
-        public async Task<bool> IsCancelable(int bookingId)
+        public async Task<bool> IsCancelableAsync(int bookingId)
         {
             var booking = await repository.GetAllReadOnly<Booking>()
                 .FirstAsync(b => b.Id == bookingId);
@@ -222,13 +223,7 @@ namespace GameSetBook.Core.Services
             return true;
         }
 
-        public async Task<bool> IsUserClientOfBooking(string clientId, int id)
-        {
-            return await repository.GetAllReadOnly<Booking>()
-                .AnyAsync(b => b.ClientId == clientId && b.Id == id);
-        }
-
-        public async Task<bool> BookingHasReview(int bookingId)
+        public async Task<bool> HasReviewAsync(int bookingId)
         {
             var booking = await repository.GetAllReadOnly<Booking>()
                 .Where(b => b.Id == bookingId)
@@ -238,4 +233,4 @@ namespace GameSetBook.Core.Services
             return booking.Review != null;
         }
     }
-}
+} 
