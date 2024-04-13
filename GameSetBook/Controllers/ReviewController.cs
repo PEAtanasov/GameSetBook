@@ -98,7 +98,7 @@ namespace GameSetBook.Web.Controllers
                 return Unauthorized();
             }
 
-            await reviewService.AddReview(model);
+            await reviewService.AddReviewAsync(model);
 
             return RedirectToAction("Index", "Booking");
         }
@@ -111,7 +111,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if (!await reviewService.IsTheReviewer(id, User.Id()))
+            if (!await reviewService.IsTheReviewerAsync(id, User.Id()))
             {
                 return Unauthorized();
             }
@@ -134,7 +134,7 @@ namespace GameSetBook.Web.Controllers
                 return Unauthorized();
             }
 
-            if (!await reviewService.IsTheReviewer(model.Id, User.Id()))
+            if (!await reviewService.IsTheReviewerAsync(model.Id, User.Id()))
             {
                 return Unauthorized();
             }
@@ -158,7 +158,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            model = await reviewService.GetReviewsPagingModel(model);
+            model = await reviewService.GetReviewsPagingModelAsync(model);
 
             model.ClubInfo = await clubService.GetClubIfnoAsync(model.ClubId);
 

@@ -18,7 +18,7 @@ namespace GameSetBook.Core.Services
             this.repository = repository;
         }
 
-        public async Task AddReview(ReviewFormModel model)
+        public async Task AddReviewAsync(ReviewFormModel model)
         {
             var review = new Review()
             {
@@ -42,7 +42,7 @@ namespace GameSetBook.Core.Services
                 .AnyAsync(r => r.Id == reviewId);
         }
 
-        public async Task<bool> IsTheReviewer(int reviewId, string userId)
+        public async Task<bool> IsTheReviewerAsync(int reviewId, string userId)
         {
             var review = await repository.GetAllReadOnly<Review>()
                 .FirstAsync(r => r.Id == reviewId);
@@ -81,7 +81,7 @@ namespace GameSetBook.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ReviewViewModel>> GetClubReviews(int clubId)
+        public async Task<IEnumerable<ReviewViewModel>> GetClubReviewsAsync(int clubId)
         {
             var reviews = await repository.GetAllReadOnly<Review>()
                 .IgnoreQueryFilters()
@@ -100,7 +100,7 @@ namespace GameSetBook.Core.Services
             return reviews;
         }
 
-        public async Task<AllReviewsSortingServiceModel> GetReviewsPagingModel(AllReviewsSortingServiceModel model)
+        public async Task<AllReviewsSortingServiceModel> GetReviewsPagingModelAsync(AllReviewsSortingServiceModel model)
         {
             var reviews = repository.GetAllReadOnly<Review>()
                 .Where(r => r.ClubId == model.ClubId && r.Booking.IsDeleted == false);

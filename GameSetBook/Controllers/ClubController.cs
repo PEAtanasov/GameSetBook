@@ -78,7 +78,7 @@ namespace GameSetBook.Web.Controllers
 
             var details = await clubService.GetClubDetailsAsync(id);
 
-            var reviews = await reviewService.GetClubReviews(id);
+            var reviews = await reviewService.GetClubReviewsAsync(id);
 
             var model = new ClubIfnoDetailsReviewsServiceViewModel()
             {

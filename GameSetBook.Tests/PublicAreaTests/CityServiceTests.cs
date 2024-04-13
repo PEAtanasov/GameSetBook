@@ -27,7 +27,7 @@ namespace GameSetBook.Tests.PublicAreaTests
         private ICityService cityService;
 
         [SetUp]
-        public async Task SetUp()
+        public async Task Setup()
         {
             //Counties
             Bulgaria = new Country()
@@ -86,13 +86,21 @@ namespace GameSetBook.Tests.PublicAreaTests
 
             //Database
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: "ApplicationDbContextInMemory" + Guid.NewGuid().ToString())
+                .UseInMemoryDatabase(databaseName: "GameSetBookTestInMemoryDb" + Guid.NewGuid().ToString())
                 .Options;
+
             dbContext = new ApplicationDbContext(options);
+            //dbContext.Database.EnsureCreated();
 
             await dbContext.AddRangeAsync(countries);
             await dbContext.AddRangeAsync(cities);
-            await dbContext.SaveChangesAsync();
+            //await dbContext.SaveChangesAsync();
+
+            var number = await dbContext.SaveChangesAsync();
+
+            var countcities = dbContext.Cities.Count();
+            var countcountriwes = dbContext.Countries.Count();
+
 
             //repository
             repository = new Repository(dbContext);
@@ -102,7 +110,7 @@ namespace GameSetBook.Tests.PublicAreaTests
         }
 
         [TearDown]
-        public async Task TearDown()
+        public async Task Teardown()
         {
             await this.dbContext.Database.EnsureDeletedAsync();
             await this.dbContext.DisposeAsync();
@@ -131,7 +139,7 @@ namespace GameSetBook.Tests.PublicAreaTests
             var expectedName5 = this.cities.ToList()[4].Name;
 
             var cities = await cityService.GetAllCitiesAsync();
-            
+
             var resultName1 = cities.ToList()[0].Name;
             var resultName2 = cities.ToList()[1].Name;
             var resultName3 = cities.ToList()[2].Name;
@@ -151,13 +159,13 @@ namespace GameSetBook.Tests.PublicAreaTests
         [Test]
         public async Task GetAllCitivesAsync_ReturnsCorrectCountryName()
         {
-            var expectedResult1 = this.Bulgaria.Name ;
+            var expectedResult1 = this.Bulgaria.Name;
             var expectedResult2 = this.Romania.Name;
 
             var cities = await cityService.GetAllCitiesAsync();
 
             var result1 = cities.ToList()[0].CountryName;
-            var result2 = cities.ToList()[4 ].CountryName;
+            var result2 = cities.ToList()[4].CountryName;
 
             Assert.Multiple(() =>
             {

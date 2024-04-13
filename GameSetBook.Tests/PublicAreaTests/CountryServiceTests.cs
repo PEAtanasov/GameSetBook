@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameSetBook.Tests.PublicAreaTests
 {
+    [TestFixture]
     public class CountryServiceTests
     {
         private ApplicationDbContext dbContext;
@@ -21,7 +22,7 @@ namespace GameSetBook.Tests.PublicAreaTests
         private Country Greece;
 
         [SetUp]
-        public async Task SetUp()
+        public async Task Setup()
         {
             Bulgaria = new Country()
             {
@@ -45,19 +46,23 @@ namespace GameSetBook.Tests.PublicAreaTests
             };
 
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: "ApplicationDbContextInMemory" + Guid.NewGuid().ToString())
+                .UseInMemoryDatabase(databaseName: "GameSetBookTestInMemoryDb" + Guid.NewGuid().ToString())
                 .Options;
-            dbContext = new ApplicationDbContext(options);
+
+            this.dbContext = new ApplicationDbContext(options);
 
             await dbContext.AddRangeAsync(countries);
             await dbContext.SaveChangesAsync();
+
+            var huinq = await dbContext.Countries.AsNoTracking().ToListAsync();
+            var myrsha = await dbContext.Countries.FirstOrDefaultAsync(C=>C.Id == 1);
 
             repository = new Repository(dbContext);
             countryService = new CountryService(repository);
         }
 
         [TearDown]
-        public async Task TearDown()
+        public async Task Teardown()
         {
             await this.dbContext.Database.EnsureDeletedAsync();
             await this.dbContext.DisposeAsync();
