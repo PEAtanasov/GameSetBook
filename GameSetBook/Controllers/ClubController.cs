@@ -307,7 +307,7 @@ namespace GameSetBook.Web.Controllers
                 ClubId = id,
                 Details = details,
                 Info = info,
-                Courts = await courtService.GetAllCourtsDetails(id),
+                Courts = await courtService.GetAllCourtsDetailsAsync(id),
             };
 
             return View(model);

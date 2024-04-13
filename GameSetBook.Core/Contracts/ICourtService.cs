@@ -8,19 +8,19 @@ namespace GameSetBook.Core.Contracts
 
         Task AddCourtAsync(CourtCreateFormModel model);
 
-        Task Edit(CourtEditFormModel model);
+        Task EditAsync(CourtEditFormModel model);
 
         Task<CourtEditFormModel> GetCourtEditFormModelAsync(int courtId);
 
         Task<IEnumerable<CourtScheduleViewModel>> GetAllCourtsScheduleAsync(int clubId, DateTime date);
 
-        Task<IEnumerable<CourtDetailsViewModel>> GetAllCourtsDetails(int clubId);
+        Task<IEnumerable<CourtDetailsViewModel>> GetAllCourtsDetailsAsync(int clubId);
 
         Task<bool> ExistAsync(int id);
 
-        Task<decimal> GetPrice(int id);
+        Task<decimal> GetPriceAsync(int id);
 
-        Task<bool> IsCourtInOwnerClub(int courtId, string UserId);
+        Task<bool> IsCourtInClubOfTheOwnerAsync(int courtId, string UserId);
 
         Task ChangeStatusAsync(int id);
     }

@@ -1,14 +1,11 @@
 ﻿using GameSetBook.Core.Contracts;
+using GameSetBook.Core.Models.Booking;
+using GameSetBook.Core.Services;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Data;
-using GameSetBook.Infrastructure.Models.Identity;
 using GameSetBook.Infrastructure.Models;
-using GameSetBook.Core.Services;
+using GameSetBook.Infrastructure.Models.Identity;
 using Microsoft.EntityFrameworkCore;
-using static System.Reflection.Metadata.BlobBuilder;
-using System.Diagnostics.Metrics;
-using System.Runtime.Intrinsics.X86;
-using GameSetBook.Core.Models.Booking;
 
 namespace GameSetBook.Tests.PublicAreaTests
 {
@@ -21,7 +18,6 @@ namespace GameSetBook.Tests.PublicAreaTests
         private IBookingService service;
 
         private IEnumerable<Booking> bookings;
-        private IEnumerable<Review> reviews;
         private IEnumerable<Club> clubs;
         private IEnumerable<Court> courts;
 
@@ -53,15 +49,6 @@ namespace GameSetBook.Tests.PublicAreaTests
         private Booking bookingDeleted;
 
         private Review review1;
-        private Review review2;
-        private Review review3;
-        private Review review4;
-        private Review review5;
-        private Review review6;
-        private Review review7;
-        private Review review8;
-        private Review review9;
-        private Review review10;
 
         [SetUp]
         public async Task Setup()
@@ -275,101 +262,13 @@ namespace GameSetBook.Tests.PublicAreaTests
                 CreatedOn = DateTime.Now,
             };
 
-            review2 = new Review()
-            {
-                Id = 10,
-                BookingId = 10,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-10),
-                Rate = 1
-            };
-
-            review3 = new Review()
-            {
-                Id = 11,
-                BookingId = 11,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-9),
-                Rate = 2
-            };
-
-            review4 = new Review()
-            {
-                Id = 12,
-                BookingId = 12,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-8),
-                Rate = 3
-            };
-
-            review5 = new Review()
-            {
-                Id = 13,
-                BookingId = 13,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-7),
-                Rate = 4
-            };
-            review6 = new Review()
-            {
-                Id = 14,
-                BookingId = 14,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-6),
-                Rate = 5
-            };
-            review7 = new Review()
-            {
-                Id = 15,
-                BookingId = 15,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-5),
-                Rate = 6
-            };
-            review8 = new Review()
-            {
-                Id = 16,
-                BookingId = 16,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-4),
-                Rate = 7
-            };
-            review9 = new Review()
-            {
-                Id = 17,
-                BookingId = 17,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-3),
-                Rate = 8
-            };
-            review10 = new Review()
-            {
-                Id = 18,
-                BookingId = 18,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-2),
-                Rate = 9
-            };
-
             clubs = new List<Club>() { club1, club2 };
+
             courts = new List<Court>() { court1, court2 };
+
             bookings = new List<Booking>()
             {
                 booking1,booking2,booking3,booking4, booking5, booking6, booking7, booking8, booking9, booking10, bookingDeleted
-            };
-
-            reviews = new List<Review>()
-            {
-                review1,review2,review3, review4, review5, review6, review7, review8, review9, review10
             };
 
 
@@ -388,7 +287,7 @@ namespace GameSetBook.Tests.PublicAreaTests
             await dbContext.AddRangeAsync(clubs);
             await dbContext.AddRangeAsync(courts);
             await dbContext.AddRangeAsync(bookings);
-            await dbContext.AddRangeAsync(reviews);
+            await dbContext.AddAsync(review1);
             await dbContext.SaveChangesAsync();
 
             repository = new Repository(dbContext);
@@ -492,13 +391,13 @@ namespace GameSetBook.Tests.PublicAreaTests
                 Price = 30,
             };
 
-            var totalReviewsBeforeAdding = await dbContext.Bookings.CountAsync();
+            var totalBookingsBeforeAdding = await dbContext.Bookings.CountAsync();
 
             int clubId = await service.AddAsync(model);
 
-            var totalReviewsAfterAdding = await dbContext.Bookings.CountAsync();
+            var totalBookingsAfterAdding = await dbContext.Bookings.CountAsync();
 
-            Assert.That(totalReviewsAfterAdding, Is.EqualTo(totalReviewsBeforeAdding + 1));
+            Assert.That(totalBookingsAfterAdding, Is.EqualTo(totalBookingsBeforeAdding + 1));
             Assert.That(clubId, Is.EqualTo(club1.Id));
         }
 

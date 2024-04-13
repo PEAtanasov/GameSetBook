@@ -67,7 +67,7 @@ namespace GameSetBook.Web.Controllers
                 Hour = hour,
                 CourtId = courtId,
                 BookingDate = bookingDate,
-                Price = await courtService.GetPrice(courtId),
+                Price = await courtService.GetPriceAsync(courtId),
                 ClientName = user.FirstName + " " + user.LastName,
                 PhoneNumber = user.PhoneNumber
             };
@@ -142,7 +142,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if (!await courtService.IsCourtInOwnerClub(courtId, User.Id()))
+            if (!await courtService.IsCourtInClubOfTheOwnerAsync(courtId, User.Id()))
             {
                 return Unauthorized();
             }
@@ -160,7 +160,7 @@ namespace GameSetBook.Web.Controllers
                 Hour = hour,
                 CourtId = courtId,
                 BookingDate = bookingDate,
-                Price = await courtService.GetPrice(courtId),
+                Price = await courtService.GetPriceAsync(courtId),
             };
 
             return View(model);
@@ -182,7 +182,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if (!await courtService.IsCourtInOwnerClub(courtId, User.Id()))
+            if (!await courtService.IsCourtInClubOfTheOwnerAsync(courtId, User.Id()))
             {
                 return Unauthorized();
             }

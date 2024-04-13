@@ -88,7 +88,7 @@ namespace GameSetBook.Core.Services
             return model;
         }
 
-        public async Task<IEnumerable<CourtDetailsViewModel>> GetAllCourtsDetails(int clubId)
+        public async Task<IEnumerable<CourtDetailsViewModel>> GetAllCourtsDetailsAsync(int clubId)
         {
             return await repository.GetAllReadOnly<Court>()
                 .Where(c => c.ClubId == clubId)
@@ -105,7 +105,7 @@ namespace GameSetBook.Core.Services
                 .ToListAsync();
         }
 
-        public async Task Edit(CourtEditFormModel model)
+        public async Task EditAsync(CourtEditFormModel model)
         {
             var courtToEdit = await repository.GetAll<Court>()
                 .Where(c => c.Id == model.Id)
@@ -153,7 +153,7 @@ namespace GameSetBook.Core.Services
 
             for (int i = 0; i < courts.Count; i++)
             {
-                List<BookingScheduleViewModel> bookings = GetAvailableBookings(workingTimeStart, workingTimeEnd, currentDate, courts[i].Id);
+                List<BookingScheduleViewModel> bookings = GetAvailableBookingSlots(workingTimeStart, workingTimeEnd, currentDate, courts[i].Id);
                 foreach (var booking in courts[i].Bookings)
                 {
                     for (int n = 0; n < bookings.Count; n++)
@@ -175,14 +175,14 @@ namespace GameSetBook.Core.Services
             return await repository.GetAllReadOnly<Court>().AnyAsync(c => c.Id == id);
         }
 
-        public async Task<decimal> GetPrice(int id)
+        public async Task<decimal> GetPriceAsync(int id)
         {
             var court = await repository.GetAllReadOnly<Court>().FirstAsync(c => c.Id == id);
 
             return court.PricePerHour;
         }
 
-        public async Task<bool> IsCourtInOwnerClub(int courtId, string UserId)
+        public async Task<bool> IsCourtInClubOfTheOwnerAsync(int courtId, string UserId)
         {
             return await repository.GetAllReadOnly<Court>()
                 .Where(c => c.Club.ClubOwnerId == UserId)
@@ -207,7 +207,7 @@ namespace GameSetBook.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        private List<BookingScheduleViewModel> GetAvailableBookings(int start, int end, DateTime date, int courtId)
+        private List<BookingScheduleViewModel> GetAvailableBookingSlots(int start, int end, DateTime date, int courtId)
         {
             List<BookingScheduleViewModel> bookings = new List<BookingScheduleViewModel>();
 

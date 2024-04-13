@@ -83,7 +83,7 @@ namespace GameSetBook.Web.Controllers
             {
                 return BadRequest();
             }
-            if (!await courtService.IsCourtInOwnerClub(id, User.Id()))
+            if (!await courtService.IsCourtInClubOfTheOwnerAsync(id, User.Id()))
             {
                 return Unauthorized();
             }
@@ -109,7 +109,7 @@ namespace GameSetBook.Web.Controllers
                 return Unauthorized();
             }
 
-            if (!await courtService.IsCourtInOwnerClub(model.Id, User.Id()))
+            if (!await courtService.IsCourtInClubOfTheOwnerAsync(model.Id, User.Id()))
             {
                 return Unauthorized();
             }
@@ -121,7 +121,7 @@ namespace GameSetBook.Web.Controllers
                 return View(model);
             }
 
-            await courtService.Edit(model);
+            await courtService.EditAsync(model);
             
             return RedirectToAction("MyClub", "Club", new { id = model.ClubId });
         }
@@ -175,7 +175,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if (!await courtService.IsCourtInOwnerClub(id, User.Id()))
+            if (!await courtService.IsCourtInClubOfTheOwnerAsync(id, User.Id()))
             {
                 return Unauthorized();
             }
