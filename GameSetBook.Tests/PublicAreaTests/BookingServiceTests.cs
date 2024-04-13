@@ -79,12 +79,26 @@ namespace GameSetBook.Tests.PublicAreaTests
 
             clubOwner2 = new ApplicationUser()
             {
-                Id = "newOwnerId"
+                Id = "newOwnerId",
+                UserName = "clubowner2@clubowner.com",
+                NormalizedUserName = "clubowner2@clubowner.com".ToUpper(),
+                Email = "clubowner2@clubowner.com",
+                NormalizedEmail = "clubowner2@clubowner.com".ToUpper(),
+                FirstName = "Owner2",
+                LastName = "Ownerov",
+                PhoneNumber = "888888888888"
             };
 
             user2 = new ApplicationUser()
             {
-                Id = "newUserId"
+                Id = "newUserId",
+                UserName = "user2@usermail.com",
+                NormalizedUserName = "user2@usermail.com".ToUpper(),
+                Email = "user2@usermail.com",
+                NormalizedEmail = "user2@usermail.com".ToUpper(),
+                FirstName = "user2",
+                LastName = "Testov",
+                PhoneNumber = "9999999999"
             };
 
             country = new Country()

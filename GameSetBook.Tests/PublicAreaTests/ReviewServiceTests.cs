@@ -6,9 +6,7 @@ using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Data;
 using GameSetBook.Infrastructure.Models;
 using GameSetBook.Infrastructure.Models.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace GameSetBook.Tests.PublicAreaTests
 {
