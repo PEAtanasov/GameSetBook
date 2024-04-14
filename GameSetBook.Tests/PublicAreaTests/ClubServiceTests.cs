@@ -1021,6 +1021,8 @@ namespace GameSetBook.Tests.PublicAreaTests
         [Test]
         public async Task GetClubDetailsAsync_ShouldReturnModelWithCorrectData()
         {
+            var clubId = 1;
+
             var expectedClubId = club1.Id;
             var expectedClubName = club1.Name;
             var expectedHasParking = club1.HasParking;
@@ -1033,7 +1035,7 @@ namespace GameSetBook.Tests.PublicAreaTests
             var expectedWorkingTimeStart = club1.WorkingTimeStart;
             var expectedWorkingTimeEnd = club1.WorkingTimeEnd;
 
-            var model = await service.GetClubDetailsAsync(expectedClubId);
+            var model = await service.GetClubDetailsAsync(clubId);
 
             var actualId = model.Id;
             var actualName = model.Name;
@@ -1060,6 +1062,68 @@ namespace GameSetBook.Tests.PublicAreaTests
                 Assert.That(actualNumberOfCourts, Is.EqualTo(expectedNumberOfCourts));
                 Assert.That(actualWorkingTimeStart, Is.EqualTo(expectedWorkingTimeStart));
                 Assert.That(actualWorkingTimeEnd, Is.EqualTo(expectedWorkingTimeEnd));
+            });
+        }
+
+        [Test]
+        public async Task GetEditFormModelAsync_ShouldReturnModelWithCorrectData()
+        {
+            var clubId = 1;
+
+            var expectedClubId = club1.Id;
+            var expectedClubName = club1.Name;
+            var expectedHasParking = club1.HasParking;
+            var expectedHasShower = club1.HasShower;
+            var expectedHasShop = club1.HasShop;
+            var expectedDescription = club1.Description;
+            var expectedNumberOfCoaches = club1.NumberOfCoaches;
+            var expectedNumberOfCourts = club1.NumberOfCourts;
+            var expectedWorkingTimeStart = club1.WorkingTimeStart;
+            var expectedWorkingTimeEnd = club1.WorkingTimeEnd;
+            var expectedAdress = club1.Address;
+            var expectedCityId = club1.CityId;
+            var expectedEmail = club1.Email;
+            var expectedClubOwnerId = club1.ClubOwnerId;
+            var expectedLogoUrl = club1.LogoUrl;
+            var expectedPhoneNumber = club1.PhoneNumber;
+
+            var model = await service.GetEditFormModelAsync(clubId);
+
+            var actualId = model.Id;
+            var actualName = model.Name;
+            var actualHasParking = model.HasParking;
+            var actualHasShower = model.HasShower;
+            var actualHasShop = model.HasShop;
+            var actualDescription = model.Description;
+            var actualNumberOfCoaches = model.NumberOfCoaches;
+            var actualNumberOfCourts = model.NumberOfCourts;
+            var actualWorkingTimeStart = model.WorkingTimeStart;
+            var actualWorkingTimeEnd = model.WorkingTimeEnd;
+            var actualAdress = model.Address;
+            var actualCityId = model.CityId;
+            var actualEmail = model.Email;
+            var actualClubOwnerId = model.ClubOwnerId;
+            var actualLogoUrl = model.LogoUrl;
+            var actualPhoneNumber = model.PhoneNumber;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualId, Is.EqualTo(expectedClubId));
+                Assert.That(actualName, Is.EqualTo(expectedClubName));
+                Assert.That(actualHasParking, Is.EqualTo(expectedHasParking));
+                Assert.That(actualHasShower, Is.EqualTo(expectedHasShower));
+                Assert.That(actualHasShop, Is.EqualTo(expectedHasShop));
+                Assert.That(actualDescription, Is.EqualTo(expectedDescription));
+                Assert.That(actualNumberOfCoaches, Is.EqualTo(expectedNumberOfCoaches));
+                Assert.That(actualNumberOfCourts, Is.EqualTo(expectedNumberOfCourts));
+                Assert.That(actualWorkingTimeStart, Is.EqualTo(expectedWorkingTimeStart));
+                Assert.That(actualWorkingTimeEnd, Is.EqualTo(expectedWorkingTimeEnd));
+                Assert.That(actualAdress, Is.EqualTo(expectedAdress));
+                Assert.That(actualCityId, Is.EqualTo(expectedCityId));
+                Assert.That(actualEmail, Is.EqualTo(expectedEmail));
+                Assert.That(actualClubOwnerId, Is.EqualTo(expectedClubOwnerId));
+                Assert.That(actualLogoUrl, Is.EqualTo(expectedLogoUrl));
+                Assert.That(actualPhoneNumber, Is.EqualTo(expectedPhoneNumber));
             });
         }
     }
