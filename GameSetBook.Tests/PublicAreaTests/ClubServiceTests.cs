@@ -963,6 +963,36 @@ namespace GameSetBook.Tests.PublicAreaTests
             Assert.That(clubExistBeforeAdding, Is.False);
             Assert.That(clubExistAfterAdding, Is.True);
         }
+
+        [Test]
+        public async Task GetClubIfnoAsync_ShouldReturnModelWithCorrectData()
+        {
+            var expectedClubId = club1.Id;
+            var expectedClubName = club1.Name;
+            var expectedPhoneNumber = club1.PhoneNumber;
+            var expectedEmail = club1.Email;
+            var expectedAdress = club1.Address;
+            var expectedLogourl = club1.LogoUrl;
+
+            var model = await service.GetClubIfnoAsync(expectedClubId);
+
+            var actualId = model.Id;
+            var actualName = model.Name;
+            var actualPhoneNumber = model.PhoneNumber;
+            var actualEmail = model.Email;
+            var actualAdress=model.Address;
+            var actualLogourl = model.Logourl;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualId, Is.EqualTo(expectedClubId));
+                Assert.That(actualEmail, Is.EqualTo(expectedEmail));
+                Assert.That(actualName, Is.EqualTo(expectedClubName));
+                Assert.That(actualPhoneNumber, Is.EqualTo(expectedPhoneNumber));
+                Assert.That(actualAdress, Is.EqualTo(expectedAdress));
+                Assert.That(actualLogourl, Is.EqualTo(expectedLogourl));
+            });
+        }
     }
 }
 
