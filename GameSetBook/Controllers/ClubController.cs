@@ -98,7 +98,7 @@ namespace GameSetBook.Web.Controllers
             {
                 var clubId = await clubService.GetClubIdByOwnerIdAsync(User.Id());
 
-                if (!await clubService.ClubHasCourts(clubId))
+                if (!await clubService.ClubHasCourtsAsync(clubId))
                 {
                     var numberOfCourts = await clubService.NumberOfCourtsAsync(clubId);
                     return RedirectToAction("Create", "Court", new { clubId, numberOfCourts });

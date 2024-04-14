@@ -37,7 +37,7 @@ namespace GameSetBook.Web.Controllers
                 return Unauthorized();
             }
 
-            int? clubId = await clubService.GetClubIdByBookingId(bookingId);
+            int? clubId = await clubService.GetClubIdByBookingIdAsync(bookingId);
 
             if (clubId == null)
             {

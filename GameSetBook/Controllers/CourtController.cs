@@ -58,7 +58,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if (await clubService.ClubHasCourts(clubId))
+            if (await clubService.ClubHasCourtsAsync(clubId))
             {
                 return BadRequest();
             }

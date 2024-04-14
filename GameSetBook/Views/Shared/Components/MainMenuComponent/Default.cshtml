@@ -12,7 +12,7 @@
     {
         clubId = await clubService.GetClubIdByOwnerIdAsync(User.Id());
         isClubAprooved = await clubService.IsClubAproovedAsync(clubId);
-        clubHasCourts = await clubService.ClubHasCourts(clubId);
+        clubHasCourts = await clubService.ClubHasCourtsAsync(clubId);
     }
 }
 @*  *@

@@ -34,10 +34,10 @@ namespace GameSetBook.Core.Contracts
 
         Task EditAsync(ClubFormModel model);
 
-        Task<bool> ClubHasCourts(int clubId);
+        Task<bool> ClubHasCourtsAsync(int clubId);
 
         Task<int> NumberOfCourtsAsync(int clubId);
 
-        Task<int?> GetClubIdByBookingId(int bookingId);
+        Task<int?> GetClubIdByBookingIdAsync(int bookingId);
     }
 }

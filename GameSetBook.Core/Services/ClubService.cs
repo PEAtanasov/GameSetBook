@@ -300,7 +300,7 @@ namespace GameSetBook.Core.Services
             return club.Id;
         }
 
-        public async Task<bool> ClubHasCourts(int clubId)
+        public async Task<bool> ClubHasCourtsAsync(int clubId)
         {
             return await repository.GetAllReadOnly<Court>()
                 .Where(c => c.ClubId == clubId)
@@ -315,7 +315,7 @@ namespace GameSetBook.Core.Services
             return club.NumberOfCourts;
         }
 
-        public async Task<int?> GetClubIdByBookingId(int bookingId)
+        public async Task<int?> GetClubIdByBookingIdAsync(int bookingId)
         {
             var club = await repository.GetAllReadOnly<Club>()
                 .FirstOrDefaultAsync(c => c.Courts.Any(ct => ct.Bookings.Any(b => b.Id == bookingId)));

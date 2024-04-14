@@ -35,6 +35,7 @@ namespace GameSetBook.Tests.PublicAreaTests
         private ApplicationUser clubOwner7;
         private ApplicationUser clubOwner8;
         private ApplicationUser clubOwnerDeletedClub;
+        private ApplicationUser clubOwnerWiCourts;
 
         private Country country1;
         private Country country2;
@@ -53,6 +54,7 @@ namespace GameSetBook.Tests.PublicAreaTests
         private Club club7;
         private Club club8;
         private Club deletedClub;
+        private Club clubWithNoCouts;
 
         private Court court1;
         private Court court2;
@@ -159,6 +161,10 @@ namespace GameSetBook.Tests.PublicAreaTests
             clubOwnerDeletedClub = new ApplicationUser()
             {
                 Id = "clubOwnerDeletedClub"
+            };
+            clubOwnerWiCourts = new ApplicationUser()
+            {
+                Id = "clubOwnerWiCourts"
             };
 
             country1 = new Country()
@@ -322,6 +328,21 @@ namespace GameSetBook.Tests.PublicAreaTests
                 IsDeleted = true,
                 DeletedOn = DateTime.Now.AddDays(-30),
                 NumberOfCourts = 1,
+                WorkingTimeEnd = 21,
+                WorkingTimeStart = 8,
+                RegisteredOn = DateTime.Now.AddDays(-180),
+                HasShop = true,
+            };
+
+            clubWithNoCouts = new Club()
+            {
+                Id = 10,
+                CityId = 1,
+                Name = "Club With No Couts",
+                ClubOwnerId = "clubOwnerWiCourts",
+                IsAproovedByAdmin = false,
+                IsDeleted = false,
+                DeletedOn = DateTime.Now.AddDays(-30),
                 WorkingTimeEnd = 21,
                 WorkingTimeStart = 8,
                 RegisteredOn = DateTime.Now.AddDays(-180),
@@ -667,10 +688,10 @@ namespace GameSetBook.Tests.PublicAreaTests
 
             users = new List<ApplicationUser>()
             {
-                    user1,user2,user3,clubOwner1,clubOwner2,clubOwner3,clubOwner4,clubOwner5,clubOwner6,clubOwner7,clubOwner8,clubOwnerDeletedClub
+                    user1,user2,user3,clubOwner1,clubOwner2,clubOwner3,clubOwner4,clubOwner5,clubOwner6,clubOwner7,clubOwner8,clubOwnerDeletedClub,clubOwnerWiCourts
             };
 
-            clubs = new List<Club>() { club1, club2, club3, club4, club5, club6, club7, club8, deletedClub };
+            clubs = new List<Club>() { club1, club2, club3, club4, club5, club6, club7, club8, deletedClub, clubWithNoCouts };
 
             courts = new List<Court>() { court1, court2, court3, notActiveCourt4, court5, court6, court7, court8, court9, court10, court11, court12 };
 
@@ -843,6 +864,77 @@ namespace GameSetBook.Tests.PublicAreaTests
             Assert.That(result1, Is.Not.EqualTo(result2));
             Assert.That(result1, Is.EqualTo(club1Id));
             Assert.That(result2, Is.EqualTo(club2Id));
+        }
+
+        [Test]
+        public async Task ClubHasCourtsAsync_ShouldReturnTrueIfClubHasCourtsAndFalseIfNot()
+        {
+            var clubWithCourtsId = club2.Id;
+            var clubWithOutCourtsId = clubWithNoCouts.Id;
+
+            var result1 = await service.ClubHasCourtsAsync(clubWithCourtsId);
+            var result2 = await service.ClubHasCourtsAsync(clubWithOutCourtsId);
+
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.False);
+        }
+
+        [Test]
+        public async Task NumberOfCourtsAsync_ShoudReturnValueOfTheClubPropertyNumberOfCourts()
+        {
+            var club1Id = club1.Id;
+            var expectedResult1 = club1.NumberOfCourts; ;
+
+            var club2Id = club2.Id;
+            var expectedResult2 = club2.NumberOfCourts;
+
+            var result1 = await service.NumberOfCourtsAsync(club1Id);
+            var result2 = await service.NumberOfCourtsAsync(club2Id);
+
+            Assert.That(result1, Is.EqualTo(expectedResult1));
+            Assert.That(result2, Is.EqualTo(expectedResult2));
+        }
+
+        [Test]
+        public async Task GetClubIdByBookingIdAsync_ShouldReturnClubId()
+        {
+            var bookingId1 = booking1.Id;
+            var bookingId2 = booking2.Id;
+
+            var expectedResult = club1.Id;
+
+            var result1 = await service.GetClubIdByBookingIdAsync(bookingId1);
+            var result2 = await service.GetClubIdByBookingIdAsync(bookingId2);
+
+            Assert.That(result1, Is.EqualTo(expectedResult));
+            Assert.That(result2, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public async Task GetClubIdByNameAsync_ShouldReturnClubId()
+        {
+            var clubName1 = club1.Name;
+            var clubName2 = club2.Name;
+
+            var expectedResult1 = club1.Id;
+            var expectedResult2 = club2.Id;
+
+            var result1 = await service.GetClubIdByNameAsync(clubName1);
+            var result2 = await service.GetClubIdByNameAsync(clubName2);
+
+            Assert.That(result1,Is.Not.EqualTo(result2));
+            Assert.That(result1, Is.EqualTo(expectedResult1));
+            Assert.That(result2, Is.EqualTo(expectedResult2));
+        }
+
+        [Test]
+        public async Task GetAllClubsAsync_ShoudReturnCollectionOfAllClubs()
+        {
+            var totalClubsCountWithoutDeletedAndAprroved = clubs.Where(c => c.IsDeleted == false && c.IsAproovedByAdmin == true).Count();
+
+            var result = await service.GetAllClubsAsync();
+
+            Assert.That(result.Count(), Is.EqualTo(totalClubsCountWithoutDeletedAndAprroved));
         }
     }
 }
