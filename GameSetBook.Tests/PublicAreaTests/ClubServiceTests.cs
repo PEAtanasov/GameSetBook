@@ -7,6 +7,7 @@ using GameSetBook.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using GameSetBook.Core.Models.Club;
 using NUnit.Framework.Internal;
+using GameSetBook.Core.Models.Admin.Club;
 
 namespace GameSetBook.Tests.PublicAreaTests
 {
@@ -1124,6 +1125,101 @@ namespace GameSetBook.Tests.PublicAreaTests
                 Assert.That(actualClubOwnerId, Is.EqualTo(expectedClubOwnerId));
                 Assert.That(actualLogoUrl, Is.EqualTo(expectedLogoUrl));
                 Assert.That(actualPhoneNumber, Is.EqualTo(expectedPhoneNumber));
+            });
+        }
+
+        [Test]
+        public async Task EditAsync_ChecksIfClubUpdatedSuccessfully()
+        {
+            int clubId = 1;
+
+            var currentClubId = club1.Id;
+            var currentClubOwnerId = club1.ClubOwnerId;
+            var currentClubName = club1.Name;
+            var currentHasParking = club1.HasParking;
+            var currentHasShower = club1.HasShower;
+            var currentHasShop = club1.HasShop;
+            var currentDescription = club1.Description;
+            var currentNumberOfCoaches = club1.NumberOfCoaches;
+            var currentWorkingTimeStart = club1.WorkingTimeStart;
+            var currentWorkingTimeEnd = club1.WorkingTimeEnd;
+            var currentAdress = club1.Address;
+            var currentCityId = club1.CityId;
+            var currentEmail = club1.Email;
+            var currentLogoUrl = club1.LogoUrl;
+            var currentPhoneNumber = club1.PhoneNumber;
+
+            var editModel = new ClubFormModel()
+            {
+                Id = clubId,
+                Name = "updated name",
+                Description = "updated description",
+                Address = "updated address",
+                CityId = 2,
+                HasParking = false,
+                Email = "updated@mail.com",
+                HasShop = true,
+                HasShower = false,
+                NumberOfCoaches = 2,
+                PhoneNumber = "000000000",
+                WorkingTimeStart = 7,
+                WorkingTimeEnd = 22,
+                LogoUrl = "updatedLogo"
+            };
+
+            await service.EditAsync(editModel);
+
+            var updatedClub = await dbContext.Clubs.Where(c => c.Id == clubId).FirstAsync();
+
+            var actualId = updatedClub.Id;
+            var actualClubOwnerId = updatedClub.ClubOwnerId;
+            var actualName = updatedClub.Name;
+            var actualHasParking = updatedClub.HasParking;
+            var actualHasShower = updatedClub.HasShower;
+            var actualHasShop = updatedClub.HasShop;
+            var actualDescription = updatedClub.Description;
+            var actualNumberOfCoaches = updatedClub.NumberOfCoaches;
+            var actualWorkingTimeStart = updatedClub.WorkingTimeStart;
+            var actualWorkingTimeEnd = updatedClub.WorkingTimeEnd;
+            var actualAdress = updatedClub.Address;
+            var actualCityId = updatedClub.CityId;
+            var actualEmail = updatedClub.Email;
+            var actualLogoUrl = updatedClub.LogoUrl;
+            var actualPhoneNumber = updatedClub.PhoneNumber;
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualId, Is.EqualTo(currentClubId));
+                Assert.That(actualClubOwnerId, Is.EqualTo(currentClubOwnerId));
+
+                //Updated Data
+                Assert.That(actualName, Is.Not.EqualTo(currentClubName));
+                Assert.That(actualHasParking, Is.Not.EqualTo(currentHasParking));
+                Assert.That(actualHasShower, Is.Not.EqualTo(currentHasShower));
+                Assert.That(actualHasShop, Is.Not.EqualTo(currentHasShop));
+                Assert.That(actualDescription, Is.Not.EqualTo(currentDescription));
+                Assert.That(actualNumberOfCoaches, Is.Not.EqualTo(currentNumberOfCoaches));
+                Assert.That(actualWorkingTimeStart, Is.Not.EqualTo(currentWorkingTimeStart));
+                Assert.That(actualWorkingTimeEnd, Is.Not.EqualTo(currentWorkingTimeEnd));
+                Assert.That(actualAdress, Is.Not.EqualTo(currentAdress));
+                Assert.That(actualCityId, Is.Not.EqualTo(currentCityId));
+                Assert.That(actualEmail, Is.Not.EqualTo(currentEmail));
+                Assert.That(actualLogoUrl, Is.Not.EqualTo(currentLogoUrl));
+                Assert.That(actualPhoneNumber, Is.Not.EqualTo(currentPhoneNumber));
+            });
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualHasShower, Is.EqualTo(editModel.HasShower));
+                Assert.That(actualHasShop, Is.EqualTo(editModel.HasShop));
+                Assert.That(actualDescription, Is.EqualTo(editModel.Description));
+                Assert.That(actualNumberOfCoaches, Is.EqualTo(editModel.NumberOfCoaches));
+                Assert.That(actualWorkingTimeStart, Is.EqualTo(editModel.WorkingTimeStart));
+                Assert.That(actualWorkingTimeEnd, Is.EqualTo(editModel.WorkingTimeEnd));
+                Assert.That(actualAdress, Is.EqualTo(editModel.Address));
+                Assert.That(actualCityId, Is.EqualTo(editModel.CityId));
+                Assert.That(actualEmail, Is.EqualTo(editModel.Email));
+                Assert.That(actualLogoUrl, Is.EqualTo(editModel.LogoUrl));
+                Assert.That(actualPhoneNumber, Is.EqualTo(editModel.PhoneNumber));
             });
         }
     }
