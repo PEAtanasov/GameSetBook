@@ -22,7 +22,7 @@ namespace GameSetBook.Core.Contracts
 
         Task<bool> ExsitByNameAsync(int id, string name);
 
-        Task<bool> IsClubAprooved(int id);
+        Task<bool> IsClubAproovedAsync(int id);
 
         Task<bool> ClubWithOwnerIdExistAsync(string ownerId);
 

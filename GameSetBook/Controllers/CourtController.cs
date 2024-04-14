@@ -29,7 +29,7 @@ namespace GameSetBook.Web.Controllers
                 return BadRequest();
             }
 
-            if (await clubService.IsClubAprooved(clubId))
+            if (await clubService.IsClubAproovedAsync(clubId))
             {
                 return BadRequest();
             }

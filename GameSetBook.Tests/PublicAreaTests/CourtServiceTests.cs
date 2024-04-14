@@ -19,7 +19,6 @@ namespace GameSetBook.Tests.PublicAreaTests
         private ICourtService service;
 
         private IEnumerable<Booking> bookings;
-        private IEnumerable<Review> reviews;
         private IEnumerable<Club> clubs;
         private IEnumerable<Court> courts;
 
@@ -66,18 +65,6 @@ namespace GameSetBook.Tests.PublicAreaTests
         private Booking booking18;
         private Booking bookingDeleted2;
         private Booking booking20;
-
-
-        private Review review1;
-        private Review review2;
-        private Review review3;
-        private Review review4;
-        private Review review5;
-        private Review review6;
-        private Review review7;
-        private Review review8;
-        private Review review9;
-        private Review review10;
 
         [SetUp]
         public async Task Setup()
@@ -457,103 +444,6 @@ namespace GameSetBook.Tests.PublicAreaTests
                 BookingDate = DateTime.Now.AddDays(2),
             };
 
-            review1 = new Review()
-            {
-                Id = 1,
-                ReviewerId = "userId",
-                BookingId = 1,
-                Title = "Review Title",
-                Description = "Review Description",
-                Rate = 10,
-                ClubId = 1,
-                CreatedOn = DateTime.Now,
-            };
-
-            review2 = new Review()
-            {
-                Id = 10,
-                BookingId = 2,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-10),
-                Rate = 1
-            };
-
-            review3 = new Review()
-            {
-                Id = 11,
-                BookingId = 3,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-9),
-                Rate = 2
-            };
-
-            review4 = new Review()
-            {
-                Id = 12,
-                BookingId = 4,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-8),
-                Rate = 3
-            };
-
-            review5 = new Review()
-            {
-                Id = 13,
-                BookingId = 5,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-7),
-                Rate = 4
-            };
-            review6 = new Review()
-            {
-                Id = 14,
-                BookingId = 6,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-6),
-                Rate = 5
-            };
-            review7 = new Review()
-            {
-                Id = 15,
-                BookingId = 7,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-5),
-                Rate = 6
-            };
-            review8 = new Review()
-            {
-                Id = 16,
-                BookingId = 8,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-4),
-                Rate = 7
-            };
-            review9 = new Review()
-            {
-                Id = 17,
-                BookingId = 9,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-3),
-                Rate = 8
-            };
-            review10 = new Review()
-            {
-                Id = 18,
-                BookingId = 10,
-                ClubId = 2,
-                ReviewerId = "newUserId",
-                CreatedOn = DateTime.Now.AddDays(-2),
-                Rate = 9
-            };
-
             clubs = new List<Club>() { club1, club2, club3 };
 
             courts = new List<Court>() { court1, court2, court3, notActiveCourt4, court5, court6, court7 };
@@ -562,12 +452,6 @@ namespace GameSetBook.Tests.PublicAreaTests
             {
                 booking1,booking2,booking3,booking4, booking5, booking6, booking7, booking8, booking9, booking10, bookingDeleted1,booking12,booking13,booking14,booking15, booking16, booking17, booking18,bookingDeleted2, booking20
             };
-
-            reviews = new List<Review>()
-            {
-                review1,review2,review3, review4, review5, review6, review7, review8, review9, review10
-            };
-
 
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(databaseName: "GameSetBookTestInMemoryDb" + Guid.NewGuid().ToString())
@@ -586,7 +470,6 @@ namespace GameSetBook.Tests.PublicAreaTests
             await dbContext.AddRangeAsync(clubs);
             await dbContext.AddRangeAsync(courts);
             await dbContext.AddRangeAsync(bookings);
-            await dbContext.AddRangeAsync(reviews);
             await dbContext.SaveChangesAsync();
 
             repository = new Repository(dbContext);

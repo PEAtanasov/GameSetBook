@@ -11,7 +11,7 @@
     if (clubExist)
     {
         clubId = await clubService.GetClubIdByOwnerIdAsync(User.Id());
-        isClubAprooved = await clubService.IsClubAprooved(clubId);
+        isClubAprooved = await clubService.IsClubAproovedAsync(clubId);
         clubHasCourts = await clubService.ClubHasCourts(clubId);
     }
 }
