@@ -198,7 +198,12 @@ namespace GameSetBook.Core.Services
 
         public async Task<bool> IsClubAproovedAsync(int id)
         {
-            var club = await repository.GetAllReadOnly<Club>().FirstAsync(c => c.Id == id);
+            var club = await repository.GetAllReadOnly<Club>().FirstOrDefaultAsync(c => c.Id == id);
+
+            if (club==null)
+            {
+                return false;
+            }
 
             return club.IsAproovedByAdmin;
         }
