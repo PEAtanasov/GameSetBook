@@ -789,6 +789,61 @@ namespace GameSetBook.Tests.PublicAreaTests
 
             Assert.That(result, Is.False);
         }
+
+        [Test]
+        public async Task ClubWithOwnerIdExistAsync_ShouldReturnTrueIfClubExistOrFalseIfNot()
+        {
+            var existingClubOwnerId = clubOwner1.Id;
+            var notExistingClubOwnerId = "NotExistingClubOwnerId";
+
+            var result1 = await service.ClubWithOwnerIdExistAsync(existingClubOwnerId);
+            var result2 = await service.ClubWithOwnerIdExistAsync(notExistingClubOwnerId);
+
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.False);
+        }
+
+        [Test]
+        public async Task ClubWithOwnerIdExistAsync_ShouldReturnFalseIfClubExistButSetToDeleted()
+        {
+            var deletedClubOwnerId = clubOwnerDeletedClub.Id;
+            
+
+            var result = await service.ClubWithOwnerIdExistAsync(deletedClubOwnerId);
+
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public async Task IsTheOwnerOfTheClubAsync_ShouldReturnTrueIfUserIsTheOwnerOfTheClub()
+        {
+            var clubId = club1.Id;
+            var clubOwnerId = clubOwner1.Id;
+            var notClubOwnerId = clubOwner2.Id;
+
+            var result1 = await service.IsTheOwnerOfTheClubAsync(clubId, clubOwnerId);
+            var result2 = await service.IsTheOwnerOfTheClubAsync(clubId, notClubOwnerId);
+
+            Assert.That(result1, Is.True); 
+            Assert.That(result2, Is.False);
+        }
+
+        [Test]
+        public async Task GetClubIdByOwnerIdAsync_ShouldReturnClubId()
+        {
+            var club1Id = club1.Id;
+            var clubOwner1Id = clubOwner1.Id;
+
+            var club2Id = club2.Id;
+            var clubOwner2Id = clubOwner2.Id;
+
+            var result1 = await service.GetClubIdByOwnerIdAsync(clubOwner1Id);
+            var result2 = await service.GetClubIdByOwnerIdAsync(clubOwner2Id);
+
+            Assert.That(result1, Is.Not.EqualTo(result2));
+            Assert.That(result1, Is.EqualTo(club1Id));
+            Assert.That(result2, Is.EqualTo(club2Id));
+        }
     }
 }
 
