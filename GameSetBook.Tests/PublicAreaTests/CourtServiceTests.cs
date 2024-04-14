@@ -1,4 +1,6 @@
-﻿using GameSetBook.Core.Contracts;
+﻿using GameSetBook.Common.Enums;
+using GameSetBook.Core.Contracts;
+using GameSetBook.Core.Models.Court;
 using GameSetBook.Core.Services;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Data;
@@ -684,6 +686,228 @@ namespace GameSetBook.Tests.PublicAreaTests
             var result = court1.IsActive;
 
             Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public async Task AddCourtAsync_CheckIfCourtIsAddedSuccesfully()
+        {
+            int totalCourtsBeforeAdding = await dbContext.Courts.CountAsync();
+
+            var model = new CourtCreateFormModel()
+            {
+                ClubId = club1.Id,
+                IsIndoor = true,
+                IsLighted = true,
+                Name = "Test",
+                PricePerHour = 30,
+                Surface = Common.Enums.Surface.ArtificialGrass
+            };
+
+            await service.AddCourtAsync(model);
+
+            int totalCourtsAfterAdding = await dbContext.Courts.CountAsync();
+
+            Assert.That(totalCourtsAfterAdding, Is.GreaterThan(totalCourtsBeforeAdding));
+        }
+
+        [Test]
+        public async Task AddCourtAsync_CheckIfNumberOfCourtsIsIncreasedAfterAddingNewCourt()
+        {
+            int totalCourtsBeforeAdding = club1.NumberOfCourts;
+            int courtCountBefore = club1.Courts.Count();
+
+            var model = new CourtCreateFormModel()
+            {
+                ClubId = club1.Id,
+                IsIndoor = true,
+                IsLighted = true,
+                Name = "Test",
+                PricePerHour = 30,
+                Surface = Common.Enums.Surface.ArtificialGrass
+            };
+
+            await service.AddCourtAsync(model);
+
+            int totalCourtsAfterAdding = club1.NumberOfCourts;
+            int courtCountAfter = club1.Courts.Count();
+
+            Assert.That(totalCourtsAfterAdding, Is.GreaterThan(totalCourtsBeforeAdding));
+            Assert.That(totalCourtsAfterAdding, Is.EqualTo(totalCourtsBeforeAdding + 1));
+            Assert.That(courtCountAfter, Is.GreaterThan(courtCountBefore));
+            Assert.That(courtCountAfter, Is.EqualTo(courtCountBefore + 1));
+        }
+
+        [Test]
+        public async Task GetCourtEditFormModelAsync_CheckIfReturnsModelWithCorrectDataAndNotNull()
+        {
+            var courtId = court1.Id;
+
+            var result = await service.GetCourtEditFormModelAsync(courtId);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Id, Is.EqualTo(courtId));
+            Assert.That(result.Name, Is.EqualTo(court1.Name));
+            Assert.That(result.IsActive, Is.EqualTo(court1.IsActive));
+            Assert.That(result.IsLighted, Is.EqualTo(court1.IsLighted));
+            Assert.That(result.IsIndoor, Is.EqualTo(court1.IsIndoor));
+            Assert.That(result.ClubId, Is.EqualTo(court1.ClubId));
+        }
+
+        [Test]
+        public async Task EdidAsync_CheckIfTheDataIsUpdatedSuccesfully()
+        {
+            var courtId = court1.Id;
+            var nameBefore = "No1";
+            var isLightedBefore = true;
+            var isIndoorBefore = true;
+            var isActiveBefore = true;
+            var priceBefore = 30;
+            var surfaceBefore = Surface.Carpet;
+
+            var model = new CourtEditFormModel()
+            {
+                Id = courtId,
+                Name = "test-update" + Guid.NewGuid().ToString(),
+                IsActive = false,
+                IsIndoor = false,
+                IsLighted = false,
+                PricePerHour = 99,
+                Surface = Surface.Hard,
+            };
+
+            await service.EditAsync(model);
+
+            var courtIdAfter = court1.Id;
+            var nameAfter = court1.Name;
+            var isLightedAfter = court1.IsLighted;
+            var isIndoorAfter = court1.IsIndoor;
+            var isActiveAfter = court1.IsActive;
+            var priceAfter = court1.PricePerHour;
+            var surfaceAfter = court1.Surface;
+
+            Assert.That(courtId, Is.EqualTo(courtIdAfter));
+            Assert.That(nameBefore, Is.Not.EqualTo(nameAfter));
+            Assert.That(isLightedBefore, Is.Not.EqualTo(isLightedAfter));
+            Assert.That(isIndoorBefore, Is.Not.EqualTo(isIndoorAfter));
+            Assert.That(isActiveBefore, Is.Not.EqualTo(isActiveAfter));
+            Assert.That(priceBefore, Is.Not.EqualTo(priceAfter));
+            Assert.That(surfaceBefore, Is.Not.EqualTo(surfaceAfter));
+
+            Assert.That(courtIdAfter, Is.EqualTo(model.Id));
+            Assert.That(nameAfter, Is.EqualTo(model.Name));
+            Assert.That(isLightedAfter, Is.EqualTo(model.IsLighted));
+            Assert.That(isIndoorAfter, Is.EqualTo(model.IsIndoor));
+            Assert.That(isActiveAfter, Is.EqualTo(model.IsActive));
+            Assert.That(priceAfter, Is.EqualTo(model.PricePerHour));
+            Assert.That(surfaceAfter, Is.EqualTo(model.Surface));
+
+            Assert.False(isLightedAfter);
+            Assert.False(isIndoorAfter);
+            Assert.False(isActiveAfter);
+        }
+
+        [Test]
+        public async Task CreateInitialAsync_CheckIfAddesCourtsToTheClubWhenRegistered()
+        {
+            var owner = new ApplicationUser()
+            {
+                Id = "testOwnerAddingCourtsToClub",
+
+            };
+
+            var club = new Club()
+            {
+                Id = 100,
+                ClubOwnerId = owner.Id,
+                NumberOfCourts= 2,
+            };
+
+            await dbContext.AddAsync(owner);
+            await dbContext.AddAsync(club);
+            await dbContext.SaveChangesAsync();
+
+            var clubCourtsCountBeforeAdding = club.Courts.Count;
+
+            var model = new CourtCreateFormModel[2];
+          
+            for (int i = 0; i < club.NumberOfCourts; i++)
+            {
+                model[i] = new CourtCreateFormModel() { ClubId = club.Id };
+            }
+
+            await service.CreateInitialAsync(model);
+
+            var clubCourtsCountAfterAdding = club.Courts.Count;
+
+            Assert.That(clubCourtsCountAfterAdding, Is.GreaterThan(clubCourtsCountBeforeAdding));
+            Assert.That(clubCourtsCountAfterAdding, Is.EqualTo(club.NumberOfCourts));
+        }
+
+        [Test]
+        public async Task GetAllCourtsDetailsAsync_ShouldReturnCollectionOfCourtDetailsModel()
+        {
+            var club2Id = club2.Id;
+            var club3Id = club3.Id;
+
+            var club2CourtsCount = club2.Courts.Count;
+            var club3CourtsCount = club3.Courts.Count;
+
+            var result1 = await service.GetAllCourtsDetailsAsync(club2Id);
+            var result2 = await service.GetAllCourtsDetailsAsync(club3Id);
+
+            Assert.That(club2CourtsCount, Is.EqualTo(result1.Count()));
+            Assert.That(club3CourtsCount, Is.EqualTo(result2.Count()));
+        }
+
+        [Test]
+        public async Task GetAllCourtsScheduleAsync_CheckIfReturnsCorrectData()
+        {
+            var clubId = club1.Id;
+            var dateToCheck = DateTime.Now.AddDays(1);
+
+            var result1 = await service.GetAllCourtsScheduleAsync(clubId, dateToCheck);
+
+            var numberOfActiveCourts1 = 1;
+            var numberOfBookings1 = 4;
+            var numberOfReturnedCourtsFromResult1 = result1.Count();
+            var numberOfBookedSlotsToCheckFromResult1 = 0;
+
+            foreach (var court in result1)
+            {
+                foreach (var booking in court.Bookings)
+                {
+                    if (booking.IsAvailable==false)
+                    {
+                        numberOfBookedSlotsToCheckFromResult1 += 1;
+                    }
+                }
+            }
+
+            var clubId2 = club2.Id;
+            var dateToCheck2 = DateTime.Now.AddDays(10);
+
+            var result2 = await service.GetAllCourtsScheduleAsync(clubId2, dateToCheck2);
+
+            var numberOfActiveCourts2 = 2;
+            var numberOfBookings2 = 0;
+            var numberOfReturnedCourtsFromResult2 = result2.Count();
+            var numberOfBookedSlotsToCheckFromResult2 = 0;
+
+            foreach (var court in result2)
+            {
+                foreach (var booking in court.Bookings)
+                {
+                    if (booking.IsAvailable == false)
+                    {
+                        numberOfBookedSlotsToCheckFromResult2 += 1;
+                    }
+                }
+            }
+
+            Assert.That(numberOfReturnedCourtsFromResult1, Is.EqualTo(numberOfActiveCourts1));
+            Assert.That(numberOfBookedSlotsToCheckFromResult1, Is.EqualTo(numberOfBookings1));
+            Assert.That(numberOfReturnedCourtsFromResult2, Is.EqualTo(numberOfActiveCourts2));
+            Assert.That(numberOfBookedSlotsToCheckFromResult2, Is.EqualTo(numberOfBookings2));
         }
     }
 }
