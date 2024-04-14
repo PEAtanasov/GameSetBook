@@ -16,7 +16,7 @@ namespace GameSetBook.Tests.PublicAreaTests
             private ApplicationDbContext dbContext;
 
             private IRepository repository;
-            private ICourtService service;
+            private IClubService service;
 
             private IEnumerable<City> cities;
             private IEnumerable<Booking> bookings;
@@ -649,9 +649,9 @@ namespace GameSetBook.Tests.PublicAreaTests
                     user1,user2,user3,clubOwner1,clubOwner2,clubOwner3,clubOwner4,clubOwner5,clubOwner6,clubOwner7,clubOwner8
                 };
 
-                clubs = new List<Club>() { club1, club2, club3,club4,club5,club6,club7,club8 };
+                clubs = new List<Club>() { club1, club2, club3, club4, club5, club6, club7, club8 };
 
-                courts = new List<Court>() { court1, court2, court3, notActiveCourt4, court5, court6, court7,court8,court9,court10,court11,court12 };
+                courts = new List<Court>() { court1, court2, court3, notActiveCourt4, court5, court6, court7, court8, court9, court10, court11, court12 };
 
                 bookings = new List<Booking>()
                 {
@@ -674,7 +674,7 @@ namespace GameSetBook.Tests.PublicAreaTests
                 await dbContext.SaveChangesAsync();
 
                 repository = new Repository(dbContext);
-                service = new CourtService(repository);
+                service = new ClubService(repository);
             }
 
             [TearDown]
@@ -682,6 +682,19 @@ namespace GameSetBook.Tests.PublicAreaTests
             {
                 await this.dbContext.Database.EnsureDeletedAsync();
                 await this.dbContext.DisposeAsync();
+            }
+
+            [Test]
+            public async Task IsClubAproovedAsync_ShouldReturnTrueIfClubisApprovedOrFalseIfNot()
+            {
+                var approvedClubId = 1;
+                var notApprovedClubId = 7;
+
+                var result1 = await service.IsClubAproovedAsync(approvedClubId);
+                var result2 = await service.IsClubAproovedAsync(notApprovedClubId);
+
+                Assert.That(result1, Is.True);
+                Assert.That(result2, Is.False);
             }
         }
     }
