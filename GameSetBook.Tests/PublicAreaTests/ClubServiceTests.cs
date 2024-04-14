@@ -5,6 +5,8 @@ using GameSetBook.Infrastructure.Data;
 using GameSetBook.Infrastructure.Models.Identity;
 using GameSetBook.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using GameSetBook.Core.Models.Club;
+using NUnit.Framework.Internal;
 
 namespace GameSetBook.Tests.PublicAreaTests
 {
@@ -805,7 +807,7 @@ namespace GameSetBook.Tests.PublicAreaTests
         public async Task ExsitAsync_ShouldReturnFalseClubIsSetAsDeleted()
         {
             var deletedClubId = deletedClub.Id;
-           
+
             var result = await service.ExsitAsync(deletedClubId);
 
             Assert.That(result, Is.False);
@@ -828,7 +830,7 @@ namespace GameSetBook.Tests.PublicAreaTests
         public async Task ClubWithOwnerIdExistAsync_ShouldReturnFalseIfClubExistButSetToDeleted()
         {
             var deletedClubOwnerId = clubOwnerDeletedClub.Id;
-            
+
 
             var result = await service.ClubWithOwnerIdExistAsync(deletedClubOwnerId);
 
@@ -845,7 +847,7 @@ namespace GameSetBook.Tests.PublicAreaTests
             var result1 = await service.IsTheOwnerOfTheClubAsync(clubId, clubOwnerId);
             var result2 = await service.IsTheOwnerOfTheClubAsync(clubId, notClubOwnerId);
 
-            Assert.That(result1, Is.True); 
+            Assert.That(result1, Is.True);
             Assert.That(result2, Is.False);
         }
 
@@ -922,7 +924,7 @@ namespace GameSetBook.Tests.PublicAreaTests
             var result1 = await service.GetClubIdByNameAsync(clubName1);
             var result2 = await service.GetClubIdByNameAsync(clubName2);
 
-            Assert.That(result1,Is.Not.EqualTo(result2));
+            Assert.That(result1, Is.Not.EqualTo(result2));
             Assert.That(result1, Is.EqualTo(expectedResult1));
             Assert.That(result2, Is.EqualTo(expectedResult2));
         }
@@ -935,6 +937,31 @@ namespace GameSetBook.Tests.PublicAreaTests
             var result = await service.GetAllClubsAsync();
 
             Assert.That(result.Count(), Is.EqualTo(totalClubsCountWithoutDeletedAndAprroved));
+        }
+
+        [Test]
+        public async Task CreateAsync_CheckIfClubIsAddedSuccessfully()
+        {
+            var clubsCountBeforeAdding = clubs.Count();
+            var clubExistBeforeAdding = await dbContext.Clubs.IgnoreQueryFilters().AnyAsync(c => c.Id == 100);
+            var clubToAdd = new ClubFormModel()
+            {
+                Id = 100,
+                Name = "Test Adding",
+                ClubOwnerId = "userId",
+                CityId = 1,
+            };
+
+            await service.CreateAsync(clubToAdd);
+
+            var clubsCountAfterAdding = await dbContext.Clubs.IgnoreQueryFilters().CountAsync();
+            var clubExistAfterAdding = await dbContext.Clubs.IgnoreQueryFilters().AnyAsync(c => c.Name == "Test Adding");
+
+
+            Assert.That(clubsCountAfterAdding, Is.GreaterThan(clubsCountBeforeAdding));
+            Assert.That(clubsCountAfterAdding, Is.EqualTo(clubsCountBeforeAdding+1));
+            Assert.That(clubExistBeforeAdding, Is.False);
+            Assert.That(clubExistAfterAdding, Is.True);
         }
     }
 }
