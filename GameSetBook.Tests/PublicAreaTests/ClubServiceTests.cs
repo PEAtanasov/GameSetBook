@@ -92,6 +92,9 @@ namespace GameSetBook.Tests.PublicAreaTests
         private Booking bookingDeleted2;
         private Booking booking20;
 
+        private Review review1;
+        private Review review2;
+
         [SetUp]
         public async Task Setup()
         {
@@ -683,6 +686,25 @@ namespace GameSetBook.Tests.PublicAreaTests
                 BookingDate = DateTime.Now.AddDays(2),
             };
 
+            review1 = new Review()
+            {
+                Id = 1,
+                BookingId = 1,
+                ClubId = 1,
+                Rate = 10,
+                ReviewerId = "userId"
+            };
+            review2 = new Review()
+            {
+                Id = 2,
+                BookingId = 2,
+                ClubId = 1,
+                Rate = 7,
+                ReviewerId = "userId"
+            };
+
+
+
             cities = new List<City>()
             {
                     city1, city2, city3,city4
@@ -715,6 +737,8 @@ namespace GameSetBook.Tests.PublicAreaTests
             await dbContext.AddRangeAsync(clubs);
             await dbContext.AddRangeAsync(courts);
             await dbContext.AddRangeAsync(bookings);
+            await dbContext.AddAsync(review1);
+            await dbContext.AddAsync(review2);
             await dbContext.SaveChangesAsync();
 
             repository = new Repository(dbContext);
@@ -959,7 +983,7 @@ namespace GameSetBook.Tests.PublicAreaTests
 
 
             Assert.That(clubsCountAfterAdding, Is.GreaterThan(clubsCountBeforeAdding));
-            Assert.That(clubsCountAfterAdding, Is.EqualTo(clubsCountBeforeAdding+1));
+            Assert.That(clubsCountAfterAdding, Is.EqualTo(clubsCountBeforeAdding + 1));
             Assert.That(clubExistBeforeAdding, Is.False);
             Assert.That(clubExistAfterAdding, Is.True);
         }
@@ -980,7 +1004,7 @@ namespace GameSetBook.Tests.PublicAreaTests
             var actualName = model.Name;
             var actualPhoneNumber = model.PhoneNumber;
             var actualEmail = model.Email;
-            var actualAdress=model.Address;
+            var actualAdress = model.Address;
             var actualLogourl = model.Logourl;
 
             Assert.Multiple(() =>
@@ -991,6 +1015,51 @@ namespace GameSetBook.Tests.PublicAreaTests
                 Assert.That(actualPhoneNumber, Is.EqualTo(expectedPhoneNumber));
                 Assert.That(actualAdress, Is.EqualTo(expectedAdress));
                 Assert.That(actualLogourl, Is.EqualTo(expectedLogourl));
+            });
+        }
+
+        [Test]
+        public async Task GetClubDetailsAsync_ShouldReturnModelWithCorrectData()
+        {
+            var expectedClubId = club1.Id;
+            var expectedClubName = club1.Name;
+            var expectedHasParking = club1.HasParking;
+            var expectedHasShower = club1.HasShower;
+            var expectedHasShop = club1.HasShop;
+            var expectedRating = club1.Rating;
+            var expectedDescription = club1.Description;
+            var expectedNumberOfCoaches = club1.NumberOfCoaches;
+            var expectedNumberOfCourts = club1.NumberOfCourts;
+            var expectedWorkingTimeStart = club1.WorkingTimeStart;
+            var expectedWorkingTimeEnd = club1.WorkingTimeEnd;
+
+            var model = await service.GetClubDetailsAsync(expectedClubId);
+
+            var actualId = model.Id;
+            var actualName = model.Name;
+            var actualHasParking = model.HasParking;
+            var actualHasShower = model.HasShower;
+            var actualHasShop = model.HasShop;
+            var actualRating = model.Rating;
+            var actualDescription = model.Description;
+            var actualNumberOfCoaches = model.NumberOfCoaches;
+            var actualNumberOfCourts = model.NumberOfCourts;
+            var actualWorkingTimeStart = model.WorkingTimeStart;
+            var actualWorkingTimeEnd = model.WorkingTimeEnd;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(actualId, Is.EqualTo(expectedClubId));
+                Assert.That(actualName, Is.EqualTo(expectedClubName));
+                Assert.That(actualHasParking, Is.EqualTo(expectedHasParking));
+                Assert.That(actualHasShower, Is.EqualTo(expectedHasShower));
+                Assert.That(actualHasShop, Is.EqualTo(expectedHasShop));
+                Assert.That(actualRating, Is.EqualTo(expectedRating));
+                Assert.That(actualDescription, Is.EqualTo(expectedDescription));
+                Assert.That(actualNumberOfCoaches, Is.EqualTo(expectedNumberOfCoaches));
+                Assert.That(actualNumberOfCourts, Is.EqualTo(expectedNumberOfCourts));
+                Assert.That(actualWorkingTimeStart, Is.EqualTo(expectedWorkingTimeStart));
+                Assert.That(actualWorkingTimeEnd, Is.EqualTo(expectedWorkingTimeEnd));
             });
         }
     }
