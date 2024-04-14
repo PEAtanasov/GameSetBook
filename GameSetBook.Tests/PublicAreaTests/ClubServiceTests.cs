@@ -696,6 +696,44 @@ namespace GameSetBook.Tests.PublicAreaTests
                 Assert.That(result1, Is.True);
                 Assert.That(result2, Is.False);
             }
+
+            [Test]
+            public async Task ExsitByNameAsync_ShouldReturnTrueIfClubExistOrFalseIfNot()
+            {
+                var existingClubName1 = "Club1";
+                var existingClubName2 = "Club2";
+                var notExistingClubName = "Not Exist";
+
+                var result1 = await service.ExsitByNameAsync(existingClubName1);
+                var result2 = await service.ExsitByNameAsync(existingClubName2);
+                var result3 = await service.ExsitByNameAsync(notExistingClubName);
+
+                Assert.That(result1, Is.True);
+                Assert.That(result2, Is.True);
+                Assert.That(result3, Is.False);
+            }
+
+            [Test]
+            public async Task ExsitAnotherCluWhitNameAsync_ShoudReturnTrueIfAnotherClubHasThatNameOrFalseIfNot()
+            {
+                var existingClubName1 = "Club1";
+                var existingClubId1 = 1;
+                var existingClubName2 = "Club2";
+                var existingClubId2 = 2;
+                var notExistingClubName = "Not Exist";
+                var notExistingClubId = -1;
+
+                var result1 = await service.ExsitAnotherCluWhitNameAsync(existingClubId1, existingClubName2);
+                var result2 = await service.ExsitAnotherCluWhitNameAsync(existingClubId2, existingClubName1);
+                var result3 = await service.ExsitAnotherCluWhitNameAsync(notExistingClubId, notExistingClubName);
+                var result4 = await service.ExsitAnotherCluWhitNameAsync(existingClubId1, existingClubName1);
+
+
+                Assert.That(result1, Is.True);
+                Assert.That(result2, Is.True);
+                Assert.That(result3, Is.False);
+                Assert.That(result4, Is.False);
+            }
         }
     }
 }
