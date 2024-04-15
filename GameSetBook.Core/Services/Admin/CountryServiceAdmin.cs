@@ -16,7 +16,6 @@ namespace GameSetBook.Core.Services.Admin
         private readonly IRepository repository;
         private readonly UserManager<ApplicationUser> userManager;
 
-
         public CountryServiceAdmin(IRepository repository, UserManager<ApplicationUser> userManager)
         {
             this.repository = repository;
@@ -54,7 +53,7 @@ namespace GameSetBook.Core.Services.Admin
             return countries;
         }
 
-        public async Task<bool> ExistById(int id)
+        public async Task<bool> ExistAsync(int id)
         {
             return await repository.GetAllReadOnly<Country>()
                 .AnyAsync(c => c.Id == id);

@@ -207,7 +207,8 @@ namespace GameSetBook.Core.Services
 
             return club.IsAproovedByAdmin;
         }
-
+        
+        //TODO tests
         public async Task<AllClubsSortingModel> GetClubSortingServiceModelAsync(AllClubsSortingModel model)
         {
 

@@ -52,7 +52,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            if (!await countryService.ExistById(id))
+            if (!await countryService.ExistAsync(id))
             {
                 return BadRequest();
             }
@@ -65,7 +65,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            if (!await countryService.ExistById(id))
+            if (!await countryService.ExistAsync(id))
             {
                 return BadRequest();
             }

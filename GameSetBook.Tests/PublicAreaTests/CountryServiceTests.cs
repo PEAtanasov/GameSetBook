@@ -54,9 +54,6 @@ namespace GameSetBook.Tests.PublicAreaTests
             await dbContext.AddRangeAsync(countries);
             await dbContext.SaveChangesAsync();
 
-            var huinq = await dbContext.Countries.AsNoTracking().ToListAsync();
-            var myrsha = await dbContext.Countries.FirstOrDefaultAsync(C=>C.Id == 1);
-
             repository = new Repository(dbContext);
             countryService = new CountryService(repository);
         }
@@ -99,8 +96,8 @@ namespace GameSetBook.Tests.PublicAreaTests
                 Assert.That(result1, Is.EqualTo(expectedResult1));
                 Assert.That(result2, Is.EqualTo(expectedResult2));
                 Assert.That(result3, Is.EqualTo(expectedResult3));
-            });
+                Assert.That(countries.Count(), Is.EqualTo(this.countries.Count()));
+            });   
         }
-
     }
 }

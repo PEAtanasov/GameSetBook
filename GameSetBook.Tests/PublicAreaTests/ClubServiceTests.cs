@@ -1,13 +1,12 @@
 ﻿using GameSetBook.Core.Contracts;
+using GameSetBook.Core.Models.Club;
 using GameSetBook.Core.Services;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Data;
-using GameSetBook.Infrastructure.Models.Identity;
 using GameSetBook.Infrastructure.Models;
+using GameSetBook.Infrastructure.Models.Identity;
 using Microsoft.EntityFrameworkCore;
-using GameSetBook.Core.Models.Club;
 using NUnit.Framework.Internal;
-using GameSetBook.Core.Models.Admin.Club;
 
 namespace GameSetBook.Tests.PublicAreaTests
 {
