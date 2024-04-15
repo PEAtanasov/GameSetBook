@@ -6,6 +6,7 @@ using GameSetBook.Infrastructure.Models.Identity;
 using GameSetBook.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using GameSetBook.Core.Models.Admin.Review;
+using GameSetBook.Core.Enums;
 
 namespace GameSetBook.Tests.AdminAreaTests
 {
@@ -979,14 +980,17 @@ namespace GameSetBook.Tests.AdminAreaTests
 
             var result = await service.GetDetailsViewModelAsync(existingReviewId);
 
-            Assert.NotNull(result);
-            Assert.AreEqual(existingReviewId, result.Id);
-            Assert.AreEqual(review1.ClubId, result.ClubId);
-            Assert.AreEqual(review1.Description, result.Description);
-            Assert.AreEqual(review1.Rate, result.Rate);
-            Assert.AreEqual(review1.Title, result.Title);
-            Assert.AreEqual(club1.Name, result.ClubName);
-            Assert.AreEqual(review1.CreatedOn.ToString("yyyy-MM-dd HH:mm"), result.AddedDateOn);
+            Assert.That(result, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Id, Is.EqualTo(existingReviewId));
+                Assert.That(result.ClubId, Is.EqualTo(review1.ClubId));
+                Assert.That(result.Description, Is.EqualTo(review1.Description));
+                Assert.That(result.Rate, Is.EqualTo(review1.Rate));
+                Assert.That(result.Title, Is.EqualTo(review1.Title));
+                Assert.That(result.ClubName, Is.EqualTo(club1.Name));
+                Assert.That(result.AddedDateOn, Is.EqualTo(review1.CreatedOn.ToString("yyyy-MM-dd HH:mm")));
+            });
         }
 
         [Test]
@@ -999,11 +1003,80 @@ namespace GameSetBook.Tests.AdminAreaTests
 
             var result = await dbContext.Reviews.FindAsync(existingReviewId);
             var reviewsCountAfterAct = await dbContext.Reviews.CountAsync();
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Is.Null);
+                Assert.That(reviewsCountBeforeAct, Is.GreaterThan(reviewsCountAfterAct));
+                Assert.That(reviewsCountAfterAct, Is.EqualTo(reviewsCountBeforeAct - 1));
+            });
+        }
 
+        [Test]
+        public async Task AllClubReviewsAsync_FilterByClubId_ReturnsFilteredResults()
+        {
+            int clubId = club1.Id;
+            var model = new AllReviewAdminSortingModel
+            {
+                ClubId = clubId
+            };
 
-            Assert.That(result, Is.Null);
-            Assert.That(reviewsCountBeforeAct, Is.GreaterThan(reviewsCountAfterAct));
-            Assert.That(reviewsCountAfterAct, Is.EqualTo(reviewsCountBeforeAct - 1));
+            var result = await service.AllClubReviewsAsync(model);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.ClubId, Is.EqualTo(clubId));
+                Assert.That(result.Reviews.All(r => r.ClubId == clubId), Is.True);
+                Assert.That(result.TotalReviewCount, Is.EqualTo(3));
+            });
+        }
+
+        [Test]
+        public async Task AllClubReviewsAsync_FilterBySearchTerm_ReturnsFilteredResults()
+        {
+            var searchTerm = "review1";
+            var model = new AllReviewAdminSortingModel
+            {
+                SearchTerm = searchTerm
+            };
+
+            var result = await service.AllClubReviewsAsync(model);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Reviews.All(r =>
+                r.Title.ToUpper().Contains(searchTerm.ToUpper()) ||
+                r.Description.ToUpper().Contains(searchTerm.ToUpper()) ||
+                r.ReviewerName.ToUpper().Contains(searchTerm.ToUpper()) ||
+                r.ReviewerEmail.ToUpper().Contains(searchTerm.ToUpper())
+            ), Is.True);
+        }
+
+        [Test]
+        public async Task AllClubReviewsAsync_SortByCreatedOnAscending_ReturnsSortedResults()
+        {
+            var model = new AllReviewAdminSortingModel
+            {
+                ReviewSorting = ReviewSorting.CreatedOnAscending
+            };
+
+            var result = await service.AllClubReviewsAsync(model);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Reviews.OrderBy(r => r.AddedDateOn).SequenceEqual(result.Reviews), Is.True);
+        }
+
+        [Test]
+        public async Task AllClubReviewsAsync_SortByRatingDescending_ReturnsSortedResults()
+        {
+            var model = new AllReviewAdminSortingModel
+            {
+                ReviewSorting = ReviewSorting.RatingDescending
+            };
+
+            var result = await service.AllClubReviewsAsync(model);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Reviews.OrderByDescending(r => r.Rate).SequenceEqual(result.Reviews), Is.True);
         }
     }
 }
