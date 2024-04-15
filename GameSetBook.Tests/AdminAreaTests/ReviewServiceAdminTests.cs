@@ -1,27 +1,27 @@
-﻿using GameSetBook.Common.Enums.EnumExtensions;
-using GameSetBook.Core.Contracts.Admin;
-using GameSetBook.Core.Models.Admin.Court;
+﻿using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Services.Admin;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Data;
-using GameSetBook.Infrastructure.Models;
 using GameSetBook.Infrastructure.Models.Identity;
+using GameSetBook.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameSetBook.Tests.AdminAreaTests
 {
-    public class CourtServiceAdminTests
+    [TestFixture]
+    public class ReviewServiceAdminTests
     {
         private ApplicationDbContext dbContext;
 
         private IRepository repository;
-        private ICourtServiceAdmin service;
+        private IReviewServiceAdmin service;
 
         private IEnumerable<City> cities;
         private IEnumerable<Booking> bookings;
         private IEnumerable<Club> clubs;
         private IEnumerable<Court> courts;
         private IEnumerable<ApplicationUser> users;
+        private IEnumerable<Review> reviews;
 
         private ApplicationUser user1;
         private ApplicationUser user2;
@@ -96,13 +96,22 @@ namespace GameSetBook.Tests.AdminAreaTests
 
         private Review review1;
         private Review review2;
+        private Review review3;
+        private Review review4;
+        private Review review5;
+        private Review review6;
+        private Review review7;
+        private Review review8;
+        private Review review9;
+        private Review review10;
+        private Review review11;
 
         [SetUp]
         public async Task Setup()
         {
             user1 = new ApplicationUser()
             {
-                Id = "userId",
+                Id = "user1",
                 UserName = "user@usermail.com",
                 NormalizedUserName = "user@usermail.com".ToUpper(),
                 Email = "user@usermail.com",
@@ -114,12 +123,12 @@ namespace GameSetBook.Tests.AdminAreaTests
 
             user2 = new ApplicationUser()
             {
-                Id = "newUserId"
+                Id = "user2"
             };
 
             user3 = new ApplicationUser()
             {
-                Id = "newUser3Id"
+                Id = "use3"
             };
 
             clubOwner1 = new ApplicationUser()
@@ -580,7 +589,7 @@ namespace GameSetBook.Tests.AdminAreaTests
                 CourtId = 1,
                 ClientId = "newUserId",
                 Hour = 10,
-                BookingDate = DateTime.Now,
+                BookingDate = DateTime.Now.AddDays(1),
             };
 
             booking4 = new Booking()
@@ -589,7 +598,7 @@ namespace GameSetBook.Tests.AdminAreaTests
                 CourtId = 1,
                 ClientId = "newUserId",
                 Hour = 11,
-                BookingDate = DateTime.Now,
+                BookingDate = DateTime.Now.AddDays(1),
             };
 
             booking5 = new Booking()
@@ -738,7 +747,10 @@ namespace GameSetBook.Tests.AdminAreaTests
                 BookingId = 1,
                 ClubId = 1,
                 Rate = 10,
-                ReviewerId = "userId"
+                ReviewerId = "user1",
+                Title = "review1 title",
+                Description = "review1 description",
+                CreatedOn = DateTime.Now.AddDays(-10),
             };
             review2 = new Review()
             {
@@ -746,19 +758,110 @@ namespace GameSetBook.Tests.AdminAreaTests
                 BookingId = 2,
                 ClubId = 1,
                 Rate = 7,
-                ReviewerId = "userId"
+                ReviewerId = "user1",
+                Title = "review2 title",
+                Description = "review2 description",
+                CreatedOn = DateTime.Now.AddDays(-2),
+            };
+            review3 = new Review()
+            {
+                Id = 3,
+                BookingId = 3,
+                ClubId = 1,
+                Rate = 7,
+                ReviewerId = "user1",
+                Title = "review3 title",
+                Description = "review3 description",
+                CreatedOn = DateTime.Now.AddDays(-2),
+            };
+            review4 = new Review()
+            {
+                Id = 4,
+                BookingId = 4,
+                ClubId = 2,
+                Rate = 8,
+                ReviewerId = "user1",
+                Title = "review4 title",
+                Description = "review4 description",
+                CreatedOn = DateTime.Now.AddDays(-2),
+            };
+            review5 = new Review()
+            {
+                Id = 5,
+                BookingId = 5,
+                ClubId = 2,
+                Rate = 5,
+                ReviewerId = "user2",
+                Title = "review5 title",
+                Description = "review5 description",
+                CreatedOn = DateTime.Now.AddDays(-5),
+            };
+            review6 = new Review()
+            {
+                Id = 6,
+                BookingId = 6,
+                ClubId = 2,
+                Rate = 7,
+                ReviewerId = "user2",
+                Title = "review6 title",
+                Description = "review6 description",
+                CreatedOn = DateTime.Now.AddDays(-5),
+            };
+            review7 = new Review()
+            {
+                Id = 7,
+                BookingId = 7,
+                ClubId = 2,
+                Rate = 7,
+                ReviewerId = "user2",
+                Title = "review7 title",
+                Description = "review7 description",
+                CreatedOn = DateTime.Now.AddDays(-4),
+            };
+            review8 = new Review()
+            {
+                Id = 8,
+                BookingId = 8,
+                ClubId = 3,
+                Rate = 3,
+                ReviewerId = "user3",
+                Title = "review8 title",
+                Description = "review8 description",
+                CreatedOn = DateTime.Now.AddDays(-3),
+            };
+            review9 = new Review()
+            {
+                Id = 9,
+                BookingId = 9,
+                ClubId = 3,
+                Rate = 7,
+                ReviewerId = "user3",
+                Title = "review9 title",
+                Description = "review9 description",
+                CreatedOn = DateTime.Now.AddDays(-2),
+            };
+            review10 = new Review()
+            {
+                Id = 10,
+                BookingId = 10,
+                ClubId = 3,
+                Rate = 7,
+                ReviewerId = "user3",
+                Title = "review10 title",
+                Description = "review10 description",
+                CreatedOn = DateTime.Now.AddDays(-1),
             };
 
 
 
             cities = new List<City>()
             {
-                    city1, city2, city3,city4
+                city1, city2, city3,city4
             };
 
             users = new List<ApplicationUser>()
             {
-                    user1,user2,user3,clubOwner1,clubOwner2,clubOwner3,clubOwner4,clubOwner5,clubOwner6,clubOwnerPendingClub1,clubOwner8,clubOwnerDeletedClub,clubOwnerWiCourts,clubOwnerPendingClub1,clubOwnerPendingClub2
+                user1,user2,user3,clubOwner1,clubOwner2,clubOwner3,clubOwner4,clubOwner5,clubOwner6,clubOwnerPendingClub1,clubOwner8,clubOwnerDeletedClub,clubOwnerWiCourts,clubOwnerPendingClub1,clubOwnerPendingClub2
             };
 
             clubs = new List<Club>() { club1, club2, club3, club4, club5, club6, pendingClub1, club8, deletedClub, clubWithNoCouts, pendingClub2 };
@@ -767,7 +870,12 @@ namespace GameSetBook.Tests.AdminAreaTests
 
             bookings = new List<Booking>()
             {
-                booking1,booking2,booking3,booking4, booking5, booking6, booking7, booking8, booking9, booking10, bookingDeleted1,booking12,booking13,booking14,booking15, booking16, booking17, booking18,bookingDeleted2, booking20
+            booking1,booking2,booking3,booking4, booking5, booking6, booking7, booking8, booking9, booking10, bookingDeleted1,booking12,booking13,booking14,booking15, booking16, booking17, booking18,bookingDeleted2, booking20
+            };
+
+            reviews = new List<Review>()
+            {
+                review1,review2,review3,review4,review5,review6,review7,review8,review9,review10
             };
 
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -783,12 +891,11 @@ namespace GameSetBook.Tests.AdminAreaTests
             await dbContext.AddRangeAsync(clubs);
             await dbContext.AddRangeAsync(courts);
             await dbContext.AddRangeAsync(bookings);
-            await dbContext.AddAsync(review1);
-            await dbContext.AddAsync(review2);
+            await dbContext.AddRangeAsync(reviews);
             await dbContext.SaveChangesAsync();
 
             repository = new Repository(dbContext);
-            service = new CourtServiceAdmin(repository);
+            service = new ReviewServiceAdmin(repository);
         }
 
         [TearDown]
@@ -799,38 +906,9 @@ namespace GameSetBook.Tests.AdminAreaTests
         }
 
         [Test]
-        public async Task EditAsync_UpdatesCourtProperties()
+        public async Task ExistAsync_ExistingId_ReturnsTrue()
         {
-            var model = new CourtAdminEditFormModel
-            {
-                Id = court1.Id,
-                Name = "Updated Court Name",
-                PricePerHour = 99,
-                Surface = Common.Enums.Surface.Grass,
-                IsLighted = false,
-                IsIndoor = false,
-                IsActive = false
-            };
-
-            await service.EditAsync(model);
-
-            var updatedCourt = await dbContext.Courts.FindAsync(court1.Id);
-            Assert.That(updatedCourt, Is.Not.Null);
-            Assert.Multiple(() =>
-            {
-                Assert.That(updatedCourt.Name, Is.EqualTo(model.Name));
-                Assert.That(updatedCourt.PricePerHour, Is.EqualTo(model.PricePerHour));
-                Assert.That(updatedCourt.Surface, Is.EqualTo(model.Surface));
-                Assert.That(updatedCourt.IsLighted, Is.EqualTo(model.IsLighted));
-                Assert.That(updatedCourt.IsIndoor, Is.EqualTo(model.IsIndoor));
-                Assert.That(updatedCourt.IsActive, Is.EqualTo(model.IsActive));
-            });
-        }
-
-        [Test]
-        public async Task ExistAsync_ShouldReturnTrueIfCourtExist()
-        {
-            int existingId = court1.Id;
+            int existingId = review1.Id;
 
             bool exists = await service.ExistAsync(existingId);
 
@@ -838,7 +916,7 @@ namespace GameSetBook.Tests.AdminAreaTests
         }
 
         [Test]
-        public async Task ExistAsync_ShouldReturnFalseIfCourtDoesNotExist()
+        public async Task ExistAsync_NonExistingId_ReturnsFalse()
         {
             int nonExistingId = -1;
 
@@ -847,218 +925,24 @@ namespace GameSetBook.Tests.AdminAreaTests
             Assert.That(exists, Is.False);
         }
 
-
         [Test]
-        public async Task AddAsync_WithValidData_AddsNewCourtAndUpdatesClub()
+        public async Task GetReviewReviseModelAsync_ExistingId_ReturnsValidModel()
         {
-            var model = new CourtAdminCreateFormModel
-            {
-                Name = "New Court",
-                PricePerHour = 50,
-                Surface = Common.Enums.Surface.Hard,
-                IsLighted = true,
-                ClubId = club1.Id,
-                IsIndoor = true,
-            };
+            int existingId = review1.Id;
 
-            await service.AddAsync(model);
+            var model = await service.GetReviewReviseModelAsync(existingId);
 
-            var addedCourt = await dbContext.Courts.FindAsync(15);
-            Assert.That(addedCourt, Is.Not.Null);
-            Assert.That(addedCourt.Name, Is.EqualTo("New Court"));
-            Assert.That(addedCourt.PricePerHour, Is.EqualTo(50));
-            Assert.That(addedCourt.Surface, Is.EqualTo(Common.Enums.Surface.Hard));
-            Assert.That(addedCourt.IsLighted, Is.True);
-            Assert.That(addedCourt.IsActive, Is.True);
-
-            var updatedClub = await dbContext.Clubs.FindAsync(club1.Id);
-            Assert.That(updatedClub.NumberOfCourts, Is.EqualTo(2));
-        }
-
-        [Test]
-        public async Task AddAsync_ClubNotApproved_CourtNotAddedAndClubNotUpdated()
-        {
-            var initialClubNumberOfCourts = pendingClub1.NumberOfCourts;
-            var model = new CourtAdminCreateFormModel
-            {
-                Name = "New Court",
-                PricePerHour = 50,
-                Surface = Common.Enums.Surface.Hard,
-                IsLighted = true,
-                ClubId = pendingClub1.Id,
-                IsIndoor = true,
-            };
-
-            await service.AddAsync(model);
-
-            var addedCourt = await dbContext.Courts.FindAsync(15);
-            Assert.That(addedCourt, Is.Not.Null);
-            Assert.That(addedCourt.IsActive, Is.False);
-
-            var updatedClub = await dbContext.Clubs.FirstAsync(c => c.Id == pendingClub1.Id);
-            Assert.That(updatedClub.NumberOfCourts, Is.EqualTo(initialClubNumberOfCourts + 1));
-        }
-
-        [Test]
-        public async Task AddAsync_ClubDeleted_CourtNotAddedAndClubNotUpdated()
-        {
-            var initialClubCourtCount = deletedClub.NumberOfCourts;
-            var model = new CourtAdminCreateFormModel
-            {
-                Name = "New Court",
-                PricePerHour = 50,
-                Surface = Common.Enums.Surface.Hard,
-                IsLighted = true,
-                ClubId = deletedClub.Id,
-                IsIndoor = true,
-            };
-
-            await service.AddAsync(model);
-
-            var addedCourt = await dbContext.Courts.FindAsync(15);
-            Assert.That(addedCourt, Is.Not.Null);
-            Assert.That(addedCourt.IsActive, Is.False);
-
-            var updatedClub = await dbContext.Clubs.IgnoreQueryFilters().FirstAsync(c => c.Id == deletedClub.Id);
-            Assert.That(updatedClub.NumberOfCourts, Is.EqualTo(initialClubCourtCount + 1));
-        }
-
-        [Test]
-        public async Task CreateInitialAsync_WithValidData_AddsCourtsToClub()
-        {
-            var model = new CourtAdminCreateFormModel[]
-            {
-            new CourtAdminCreateFormModel
-            {
-                Name = "Court A",
-                ClubId = clubWithNoCouts.Id,
-                IsLighted = true,
-                IsIndoor = true,
-                PricePerHour = 30,
-                Surface = Common.Enums.Surface.Clay
-            },
-            new CourtAdminCreateFormModel
-            {
-                Name = "Court B",
-                ClubId = clubWithNoCouts.Id,
-                IsLighted = true,
-                IsIndoor = false,
-                PricePerHour = 25,
-                Surface = Common.Enums.Surface.Hard
-            }
-            };
-
-            await service.CreateInitialAsync(model);
-
-            var club = await dbContext.Clubs.FirstAsync(c=>c.Id==clubWithNoCouts.Id);
-
-            Assert.That(club.Courts, Has.Count.EqualTo(2));
-        }
-
-        [Test]
-        public async Task GetEditModelAsync_ReturnsCorrectModel()
-        {
-            int courtId = court1.Id;
-
-            var result = await service.GetEditModelAsync(courtId);
-
-            Assert.That(result, Is.Not.Null);
+            Assert.That(model, Is.Not.Null);
             Assert.Multiple(() =>
             {
-                Assert.That(result.Id, Is.EqualTo(courtId));
-                Assert.That(result.ClubId, Is.EqualTo(court1.ClubId));
-                Assert.That(result.ClubName, Is.EqualTo(court1.Club.Name));
-                Assert.That(result.Name, Is.EqualTo(court1.Name));
-                Assert.That(result.IsActive, Is.EqualTo(court1.IsActive));
-                Assert.That(result.IsIndoor, Is.EqualTo(court1.IsIndoor));
-                Assert.That(result.IsLighted, Is.EqualTo(court1.IsLighted));
-                Assert.That(result.PricePerHour, Is.EqualTo(court1.PricePerHour));
-                Assert.That(result.Surface, Is.EqualTo(court1.Surface));
-            });
-        }
-
-        [Test]
-        public async Task GetCourtScheduleAsync_ReturnsCorrectSchedule()
-        {
-            int clubId = court1.ClubId;
-            DateTime date = DateTime.Now.Date;
-            int workingHourStart = 8;
-            int workingHourEnd = 18; 
-
-            var result = await service.GetCourtsScheduleAsync(clubId, date, workingHourStart, workingHourEnd);
-
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.InstanceOf<IEnumerable<CourtScheduleAdminViewModel>>());
-            Assert.That(result.Any(), Is.True);
-
-            var courtSchedule = result.First(c=>c.Id==court1.Id);
-            Assert.That(courtSchedule, Is.Not.Null);
-            Assert.Multiple(() =>
-            {
-                Assert.That(courtSchedule.Id, Is.EqualTo(court1.Id));
-                Assert.That(courtSchedule.ClubId, Is.EqualTo(court1.ClubId));
-                Assert.That(courtSchedule.Name, Is.EqualTo(court1.Name));
-                Assert.That(courtSchedule.IsIndoor, Is.EqualTo(court1.IsIndoor));
-                Assert.That(courtSchedule.IsLighted, Is.EqualTo(court1.IsLighted));
-                Assert.That(courtSchedule.Price, Is.EqualTo(court1.PricePerHour));
-                Assert.That(courtSchedule.Surface, Is.EqualTo(court1.Surface.GetDisplayName()));
-            });
-
-            var dateBookings = court1.Bookings.Where(b => b.BookingDate.Date == date.Date);
-            Assert.That(courtSchedule.Bookings.Where(b => b.IsAvailable == false).Count(), Is.EqualTo(dateBookings.Count()));
-        }
-
-        [Test]
-        public async Task DeleteAsync_DeletesCourtAndAssociatedEntities()
-        {
-            int courtIdToDelete = court1.Id;
-            int expectedNumberOfCourts = court1.Club.NumberOfCourts - 1;
-
-            await service.DeleteAsync(courtIdToDelete);
-
-            var deletedCourt = await repository.GetAll<Court>()
-                .IgnoreQueryFilters()
-                .FirstOrDefaultAsync(c => c.Id == courtIdToDelete);
-
-            Assert.That(deletedCourt, Is.Null);
-
-            var deletedBookings = await repository.GetAll<Booking>()
-                .Where(b => b.CourtId == courtIdToDelete)
-                .ToListAsync();
-
-            Assert.That(deletedBookings, Is.Empty);
-
-            var deletedReviews = await repository.GetAll<Review>()
-                .Where(r => r.Booking.CourtId == courtIdToDelete)
-                .ToListAsync();
-
-            Assert.That(deletedReviews, Is.Empty);
-
-            var updatedClub = await repository.GetAll<Club>()
-                .FirstOrDefaultAsync(c => c.Id == court1.ClubId);
-
-            Assert.That(updatedClub, Is.Not.Null);
-            Assert.That(updatedClub.NumberOfCourts, Is.EqualTo(expectedNumberOfCourts));
-        }
-
-        [Test]
-        public async Task GetViewModelForDeleteAsync_ReturnsViewModelWithCorrectData()
-        {
-            int courtIdToGet = court1.Id;
-
-            var viewModel = await service.GetViewModelForDeleteAsync(courtIdToGet);
-
-            Assert.That(viewModel, Is.Not.Null); // Ensure that the view model is not null
-            Assert.Multiple(() =>
-            {
-                Assert.That(viewModel.Id, Is.EqualTo(court1.Id)); // Check if the IDs match
-                Assert.That(viewModel.ClubId, Is.EqualTo(court1.ClubId)); // Check if the club IDs match
-                Assert.That(viewModel.IsActive, Is.EqualTo(court1.IsActive)); // Check if IsActive values match
-                Assert.That(viewModel.IsIndoor, Is.EqualTo(court1.IsIndoor)); // Check if IsIndoor values match
-                Assert.That(viewModel.IsLighted, Is.EqualTo(court1.IsLighted)); // Check if IsLighted values match
-                Assert.That(viewModel.Name, Is.EqualTo(court1.Name)); // Check if the names match
-                Assert.That(viewModel.PricePerHour, Is.EqualTo(court1.PricePerHour)); // Check if PricePerHour values match
-                Assert.That(viewModel.Surface, Is.EqualTo(court1.Surface.GetDisplayName())); // Check if Surface display names match
+                Assert.That(model.Id, Is.EqualTo(existingId));
+                Assert.That(model.ClubId, Is.EqualTo(review1.ClubId));
+                Assert.That(model.Description, Is.EqualTo(review1.Description));
+                Assert.That(model.Rating, Is.EqualTo(review1.Rate));
+                Assert.That(model.Title, Is.EqualTo(review1.Title));
+                Assert.That(model.ReviewerEmail, Is.EqualTo(user1.Email));
+                Assert.That(model.ClubName, Is.EqualTo(club1.Name));
+                Assert.That(model.DateAddedOn, Is.Not.Empty);
             });
         }
     }
