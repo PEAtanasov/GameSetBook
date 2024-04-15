@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Review Details";
-    string returnUrl = ViewData["returnUrl"] as string;
+    string returnUrl = ViewData["returnUrl"] as string ?? string.Empty;
 }
 
 <div class="pb-3">

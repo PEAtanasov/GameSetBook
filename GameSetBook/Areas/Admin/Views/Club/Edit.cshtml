@@ -11,7 +11,7 @@
 
 <div class="container-fluid align-content-center text-center pb-3">
     <img src="~/@Model.LogoUrl" alt="@Model.Name Logo" class="img-fluid" style="max-width: 300px; max-height: 300px;" />
-    <p>Club status: @(Model.IsDeleted ? $"Not active - deleted on {Model.DeletedOn.Value.ToShortDateString()}" : "Active")</p>
+    <p>Club status: @(Model.IsDeleted ? $"Not active - deleted on {(Model.DeletedOn != null ? Model.DeletedOn.Value.ToShortDateString() : string.Empty)}" : "Active")</p>
     <p>Aprooved by admin: @(Model.IsAproovedByAdmin ? "Approved" : "Not approved")</p>
     <p>Registration date: @Model.RegisteredOn.ToLongDateString()</p>
     <p>Club owner email: @Model.ClubOwnerName</p>

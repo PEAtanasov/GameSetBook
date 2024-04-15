@@ -871,7 +871,7 @@ namespace GameSetBook.Tests.AdminAreaTests
             Assert.That(addedCourt.IsLighted, Is.True);
             Assert.That(addedCourt.IsActive, Is.True);
 
-            var updatedClub = await dbContext.Clubs.FindAsync(club1.Id);
+            var updatedClub = await dbContext.Clubs.FirstAsync(c=>c.Id==club1.Id);
             Assert.That(updatedClub.NumberOfCourts, Is.EqualTo(2));
         }
 
@@ -1048,17 +1048,17 @@ namespace GameSetBook.Tests.AdminAreaTests
 
             var viewModel = await service.GetViewModelForDeleteAsync(courtIdToGet);
 
-            Assert.That(viewModel, Is.Not.Null); // Ensure that the view model is not null
+            Assert.That(viewModel, Is.Not.Null);
             Assert.Multiple(() =>
             {
-                Assert.That(viewModel.Id, Is.EqualTo(court1.Id)); // Check if the IDs match
-                Assert.That(viewModel.ClubId, Is.EqualTo(court1.ClubId)); // Check if the club IDs match
-                Assert.That(viewModel.IsActive, Is.EqualTo(court1.IsActive)); // Check if IsActive values match
-                Assert.That(viewModel.IsIndoor, Is.EqualTo(court1.IsIndoor)); // Check if IsIndoor values match
-                Assert.That(viewModel.IsLighted, Is.EqualTo(court1.IsLighted)); // Check if IsLighted values match
-                Assert.That(viewModel.Name, Is.EqualTo(court1.Name)); // Check if the names match
-                Assert.That(viewModel.PricePerHour, Is.EqualTo(court1.PricePerHour)); // Check if PricePerHour values match
-                Assert.That(viewModel.Surface, Is.EqualTo(court1.Surface.GetDisplayName())); // Check if Surface display names match
+                Assert.That(viewModel.Id, Is.EqualTo(court1.Id));
+                Assert.That(viewModel.ClubId, Is.EqualTo(court1.ClubId)); 
+                Assert.That(viewModel.IsActive, Is.EqualTo(court1.IsActive)); 
+                Assert.That(viewModel.IsIndoor, Is.EqualTo(court1.IsIndoor)); 
+                Assert.That(viewModel.IsLighted, Is.EqualTo(court1.IsLighted)); 
+                Assert.That(viewModel.Name, Is.EqualTo(court1.Name)); 
+                Assert.That(viewModel.PricePerHour, Is.EqualTo(court1.PricePerHour));
+                Assert.That(viewModel.Surface, Is.EqualTo(court1.Surface.GetDisplayName()));
             });
         }
     }

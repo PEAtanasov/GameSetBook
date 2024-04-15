@@ -106,7 +106,6 @@ namespace GameSetBook.Tests.AdminAreaTests
         private Review review8;
         private Review review9;
         private Review review10;
-        private Review review11;
 
         [SetUp]
         public async Task Setup()

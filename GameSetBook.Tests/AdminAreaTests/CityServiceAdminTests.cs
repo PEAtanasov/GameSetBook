@@ -235,7 +235,7 @@ namespace GameSetBook.Tests.AdminAreaTests
             await dbContext.SaveChangesAsync();
 
             mockUserManager = new Mock<UserManager<ApplicationUser>>(
-            Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
+            Mock.Of<IUserStore<ApplicationUser>>(), null!, null!, null!, null!, null!, null!, null!, null!);
 
             repository = new Repository(dbContext);
             service = new CityServiceAdmin(repository, mockUserManager.Object);

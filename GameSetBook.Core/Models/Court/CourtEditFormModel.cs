@@ -39,7 +39,7 @@ namespace GameSetBook.Core.Models.Court
         /// </summary>
         [Required(ErrorMessage = RequiredMessage)]
         [Range(MinPricePerHour, MaxPricePerHour, ErrorMessage = RangeMessage)]
-        [Display(Name = "Price Per Hour")]
+        [Display(Name = "Price Per Hour (BGN)")]
         public decimal PricePerHour { get; set; }
 
         /// <summary>

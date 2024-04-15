@@ -24,7 +24,7 @@ namespace GameSetBook.Core.Models.Booking
         /// <summary>
         /// Price of the booking
         /// </summary>
-        [Display(Name = "Price")]
+        [Display(Name = "Price in BGN")]
         [Range(MinPricePerHour, MaxPricePerHour)]
         public decimal? Price { get; set; }
 
