@@ -11,7 +11,7 @@ namespace GameSetBook.Core.Contracts.Admin
 
         Task HardDeleteAsync(int id);
 
-        Task<ReviewAdminViewModel> GetDetailsViewModel(int id);
+        Task<ReviewAdminViewModel> GetDetailsViewModelAsync(int id);
 
         Task<ReviewReviseAdminFormModel> GetReviewReviseModelAsync(int id);
 

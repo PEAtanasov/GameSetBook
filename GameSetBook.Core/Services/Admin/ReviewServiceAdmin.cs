@@ -78,7 +78,7 @@ namespace GameSetBook.Core.Services.Admin
             return model;
         }
 
-        public async Task<ReviewAdminViewModel> GetDetailsViewModel(int id)
+        public async Task<ReviewAdminViewModel> GetDetailsViewModelAsync(int id)
         {
             var model = await repository.GetAllReadOnly<Review>()
                 .Where(r => r.Id == id)

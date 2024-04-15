@@ -45,7 +45,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 ViewData["returnUrl"] = returnUrl;
             }
 
-            var model = await reviewService.GetDetailsViewModel(id);
+            var model = await reviewService.GetDetailsViewModelAsync(id);
 
             return View(model);
         }

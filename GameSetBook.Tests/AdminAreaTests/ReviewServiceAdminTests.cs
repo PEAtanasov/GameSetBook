@@ -5,6 +5,7 @@ using GameSetBook.Infrastructure.Data;
 using GameSetBook.Infrastructure.Models.Identity;
 using GameSetBook.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using GameSetBook.Core.Models.Admin.Review;
 
 namespace GameSetBook.Tests.AdminAreaTests
 {
@@ -944,6 +945,65 @@ namespace GameSetBook.Tests.AdminAreaTests
                 Assert.That(model.ClubName, Is.EqualTo(club1.Name));
                 Assert.That(model.DateAddedOn, Is.Not.Empty);
             });
+        }
+
+        [Test]
+        public async Task ReviseAsync_ExistingModel_UpdatesReview()
+        {
+            var updatedRate = 5;
+
+            var model = new ReviewReviseAdminFormModel
+            {
+                Id = review1.Id,
+                Title = "Revised Title",
+                Description = "Revised Description",
+                Rating = updatedRate
+            };
+
+            await service.ReviseAsync(model);
+
+            var revisedReview = reviews.FirstOrDefault(r => r.Id == model.Id);
+            Assert.That(revisedReview, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(revisedReview.Title, Is.EqualTo(model.Title));
+                Assert.That(revisedReview.Description, Is.EqualTo(model.Description));
+                Assert.That(revisedReview.Rate, Is.EqualTo(model.Rating));
+            });
+        }
+
+        [Test]
+        public async Task GetDetailsViewModel_ReturnsCorrectViewModel()
+        {
+            int existingReviewId = review1.Id;
+
+            var result = await service.GetDetailsViewModelAsync(existingReviewId);
+
+            Assert.NotNull(result);
+            Assert.AreEqual(existingReviewId, result.Id);
+            Assert.AreEqual(review1.ClubId, result.ClubId);
+            Assert.AreEqual(review1.Description, result.Description);
+            Assert.AreEqual(review1.Rate, result.Rate);
+            Assert.AreEqual(review1.Title, result.Title);
+            Assert.AreEqual(club1.Name, result.ClubName);
+            Assert.AreEqual(review1.CreatedOn.ToString("yyyy-MM-dd HH:mm"), result.AddedDateOn);
+        }
+
+        [Test]
+        public async Task HardDeleteAsync_RemovesReviewEntity()
+        {
+            var existingReviewId = review1.Id;
+            var reviewsCountBeforeAct = await dbContext.Reviews.CountAsync();
+
+            await service.HardDeleteAsync(existingReviewId);
+
+            var result = await dbContext.Reviews.FindAsync(existingReviewId);
+            var reviewsCountAfterAct = await dbContext.Reviews.CountAsync();
+
+
+            Assert.That(result, Is.Null);
+            Assert.That(reviewsCountBeforeAct, Is.GreaterThan(reviewsCountAfterAct));
+            Assert.That(reviewsCountAfterAct, Is.EqualTo(reviewsCountBeforeAct - 1));
         }
     }
 }
