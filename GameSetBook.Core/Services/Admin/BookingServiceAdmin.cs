@@ -81,7 +81,6 @@ namespace GameSetBook.Core.Services.Admin
 
             bookingToSort = queryModel.StatusSorting switch
             {
-                //BookingStatusSorting.All => bookingToSort.OrderByDescending(c => c.Id),
                 BookingStatusSorting.Active => bookingToSort.Where(b => b.IsDeleted == false),
                 BookingStatusSorting.Canceled => bookingToSort.Where(b => b.IsDeleted == true),
                 _ => bookingToSort.OrderBy(b => b.ClientName).ThenByDescending(b => b.Id),
@@ -149,6 +148,8 @@ namespace GameSetBook.Core.Services.Admin
                 .AnyAsync(b => b.Id == id);
         }
 
+        //TODO Implement HardDelete booking method.
+
         public async Task CancelAsync(int id)
         {
             var booking = await repository.GetAllWithDeleted<Booking>()
@@ -160,7 +161,7 @@ namespace GameSetBook.Core.Services.Admin
             await repository.SaveChangesAsync();
         }
 
-        public async Task<bool> BookingExistAsync(DateTime date, int hour, int courtId)
+        public async Task<bool> BookingSpotAlreadyBookedAsync(DateTime date, int hour, int courtId)
         {
             return await repository.GetAllReadOnly<Booking>()
                .Where(b => b.CourtId == courtId)

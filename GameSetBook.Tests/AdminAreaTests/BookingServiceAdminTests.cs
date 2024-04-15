@@ -1,9 +1,10 @@
 ﻿using GameSetBook.Core.Contracts.Admin;
+using GameSetBook.Core.Models.Admin.Booking;
 using GameSetBook.Core.Services.Admin;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Data;
-using GameSetBook.Infrastructure.Models.Identity;
 using GameSetBook.Infrastructure.Models;
+using GameSetBook.Infrastructure.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameSetBook.Tests.AdminAreaTests
@@ -556,6 +557,7 @@ namespace GameSetBook.Tests.AdminAreaTests
                 PhoneNumber = "111111111",
                 Price = 30,
                 IsBookedByOwnerOrAdmin = false,
+                IsDeleted = false
             };
 
             booking2 = new Booking()
@@ -796,5 +798,127 @@ namespace GameSetBook.Tests.AdminAreaTests
             await this.dbContext.DisposeAsync();
         }
 
+        [Test]
+        public async Task ExistAsync_ReturnTrueIfBookingExist()
+        {
+            var existingBookingId = booking1.Id;
+
+            var result = await service.ExistAsync(existingBookingId);
+
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public async Task ExistAsync_ReturnFalseIfBookingDoesNotExist()
+        {
+            var nonExistingBookingId = -1;
+
+            var result = await service.ExistAsync(nonExistingBookingId);
+
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public async Task CancelAsync_SetsBookingToIsDeletedTrue()
+        {
+            var existingActiveBookingId = booking1.Id;
+
+            var bookingBeforeCanceling = await dbContext.Bookings.FirstAsync(b => b.Id == existingActiveBookingId);
+            var statusBeforeCanceling = bookingBeforeCanceling.IsDeleted;
+
+            await service.CancelAsync(existingActiveBookingId);
+
+            var bookingAfterCanceling = await dbContext.Bookings.IgnoreQueryFilters().FirstAsync(b => b.Id == existingActiveBookingId);
+
+            Assert.That(statusBeforeCanceling, Is.False);
+            Assert.That(bookingAfterCanceling.IsDeleted, Is.True);
+        }
+
+        [Test]
+        public async Task BookingSpotAlreadyBookedAsync_ReturnsTrueIfSpotAlreadyBooked()
+        {
+
+            var bookedDate = booking1.BookingDate.Date;
+            var bookedHour = booking1.Hour;
+            var bookedCourtId = booking1.CourtId;
+
+            var result = await service.BookingSpotAlreadyBookedAsync(bookedDate, bookedHour, bookedCourtId);
+
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public async Task BookingSpotAlreadyBookedAsync_ReturnsFalseIfSpotNotBooked()
+        {
+
+            var nonBookedDate = DateTime.Now.AddDays(10).Date;
+            var nonBookedHour = 10;
+            var nonBookedCourtId = 2;
+
+            var result = await service.BookingSpotAlreadyBookedAsync(nonBookedDate, nonBookedHour, nonBookedCourtId);
+
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public async Task CreateAsync_ChecksIfAddsNewBookingSuccessfully()
+        {
+            var model = new BookingCreateAdminFormModel
+            {
+                CourtId = court1.Id,
+                BookingDate = DateTime.Now.AddDays(7).Date,
+                ClientId = "newClientId",
+                ClientName = "New Client",
+                Hour = 14,
+                IsBookedByOwnerOrAdmin = true,
+                PhoneNumber = "1234567890",
+                Price = court1.PricePerHour,
+            };
+
+            var initialBookingCount = await dbContext.Bookings.CountAsync();
+
+            await service.CreateAsync(model);
+
+            var finalBookingCount = await dbContext.Bookings.CountAsync();
+
+            Assert.That(finalBookingCount, Is.GreaterThan(initialBookingCount));
+            Assert.That(finalBookingCount, Is.EqualTo(initialBookingCount + 1));
+        }
+
+        [Test]
+        public async Task GetEditModelAsync_ReturnsCorrectModel()
+        {
+            var existingBookingId = booking1.Id;
+
+            var result = await service.GetEditModelAsync(existingBookingId);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Id, Is.EqualTo(existingBookingId));
+        }
+
+        [Test]
+        public async Task EditAsync_ShouldUpdatePhoneNumberAndClientName()
+        {
+            var existingBookinId = booking1.Id;
+            var originalName = booking1.ClientName;
+            var originalBookingId = booking1.PhoneNumber;
+
+            var model = new BookingEditAdminFormModel
+            {
+                Id = existingBookinId,
+                PhoneNumber = "987654321",
+                ClientName = "Updated Client Name"
+            };
+
+            await service.EditAsync(model);
+
+            var updatedBooking = await dbContext.Bookings.FindAsync(booking1.Id);
+            Assert.That(updatedBooking, Is.Not.Null);
+            Assert.That(updatedBooking.PhoneNumber, Is.EqualTo(model.PhoneNumber));
+            Assert.That(updatedBooking.ClientName, Is.EqualTo(model.ClientName));
+            Assert.That(updatedBooking.ClientName, Is.Not.EqualTo(originalName));
+            Assert.That(updatedBooking.ClientName, Is.Not.EqualTo(originalName));
+        }
     }
 }
+

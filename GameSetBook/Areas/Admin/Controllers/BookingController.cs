@@ -64,7 +64,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             var bookingDate = queryModel.BookingDate;
             var pricePerHour = price;
 
-            if (await bookingService.BookingExistAsync(queryModel.BookingDate, queryModel.Hour, queryModel.CourtId))
+            if (await bookingService.BookingSpotAlreadyBookedAsync(queryModel.BookingDate, queryModel.Hour, queryModel.CourtId))
             {
                 return BadRequest();
             }
@@ -99,7 +99,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            if (await bookingService.BookingExistAsync(model.BookingDate, model.Hour, model.CourtId))
+            if (await bookingService.BookingSpotAlreadyBookedAsync(model.BookingDate, model.Hour, model.CourtId))
             {
                 return BadRequest();
             }

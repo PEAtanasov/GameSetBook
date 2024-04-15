@@ -12,7 +12,7 @@ namespace GameSetBook.Core.Contracts.Admin
 
         Task CancelAsync(int id);
 
-        Task<bool> BookingExistAsync(DateTime date, int hour, int courtId);
+        Task<bool> BookingSpotAlreadyBookedAsync(DateTime date, int hour, int courtId);
 
         Task CreateAsync(BookingCreateAdminFormModel model);
 
