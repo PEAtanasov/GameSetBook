@@ -5,7 +5,6 @@ namespace GameSetBook.Web.Controllers
 {
     [Authorize]
     public class BaseController : Controller
-    {
-        
+    {       
     }
 }

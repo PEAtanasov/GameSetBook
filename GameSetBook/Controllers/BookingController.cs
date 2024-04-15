@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-using GameSetBook.Core.Contracts;
+﻿using GameSetBook.Core.Contracts;
 using GameSetBook.Core.Models.Booking;
-using System.Security.Claims;
+using GameSetBook.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using GameSetBook.Infrastructure.Models.Identity;
-
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using static GameSetBook.Common.UserConstants;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace GameSetBook.Web.Controllers
 {
