@@ -2,12 +2,9 @@
 using GameSetBook.Core.Contracts.Admin;
 using GameSetBook.Core.Models.Admin.Booking;
 using GameSetBook.Core.Models.Admin.Court;
-using GameSetBook.Core.Models.Booking;
-using GameSetBook.Core.Models.Court;
 using GameSetBook.Infrastructure.Common;
 using GameSetBook.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace GameSetBook.Core.Services.Admin
 {
