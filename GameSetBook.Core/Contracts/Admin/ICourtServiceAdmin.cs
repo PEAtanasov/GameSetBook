@@ -24,6 +24,6 @@ namespace GameSetBook.Core.Contracts.Admin
 
         Task CreateInitialAsync(CourtAdminCreateFormModel[] model);
 
-        Task<IEnumerable<CourtScheduleAdminViewModel>> GetCourtScheduleAsync(int clubId, DateTime date, int workingHourStart, int workingHourEnd);
+        Task<IEnumerable<CourtScheduleAdminViewModel>> GetCourtsScheduleAsync(int clubId, DateTime date, int workingHourStart, int workingHourEnd);
     }
 }

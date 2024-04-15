@@ -349,7 +349,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 
             model = await clubService.GetClubScheduleModelAsync(model.Id, currentDate);
 
-            model.Courts = await courtService.GetCourtScheduleAsync(model.Id, currentDate, model.WorkingHourStart, model.WorkingHourEnd);
+            model.Courts = await courtService.GetCourtsScheduleAsync(model.Id, currentDate, model.WorkingHourStart, model.WorkingHourEnd);
 
             return View(model);
         }

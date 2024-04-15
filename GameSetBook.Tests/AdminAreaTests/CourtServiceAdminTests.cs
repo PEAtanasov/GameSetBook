@@ -1,4 +1,6 @@
-﻿using GameSetBook.Core.Contracts.Admin;
+﻿using GameSetBook.Common.Enums.EnumExtensions;
+using GameSetBook.Core.Contracts.Admin;
+using GameSetBook.Core.Models.Admin.Booking;
 using GameSetBook.Core.Models.Admin.Court;
 using GameSetBook.Core.Services.Admin;
 using GameSetBook.Infrastructure.Common;
@@ -579,7 +581,7 @@ namespace GameSetBook.Tests.AdminAreaTests
                 CourtId = 1,
                 ClientId = "newUserId",
                 Hour = 10,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now,
             };
 
             booking4 = new Booking()
@@ -588,7 +590,7 @@ namespace GameSetBook.Tests.AdminAreaTests
                 CourtId = 1,
                 ClientId = "newUserId",
                 Hour = 11,
-                BookingDate = DateTime.Now.AddDays(1),
+                BookingDate = DateTime.Now,
             };
 
             booking5 = new Booking()
@@ -951,7 +953,114 @@ namespace GameSetBook.Tests.AdminAreaTests
 
             var club = await dbContext.Clubs.FirstAsync(c=>c.Id==clubWithNoCouts.Id);
 
-            Assert.That(club.Courts.Count(), Is.EqualTo(2));
+            Assert.That(club.Courts, Has.Count.EqualTo(2));
+        }
+
+        [Test]
+        public async Task GetEditModelAsync_ReturnsCorrectModel()
+        {
+            int courtId = court1.Id;
+
+            var result = await service.GetEditModelAsync(courtId);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.Id, Is.EqualTo(courtId));
+                Assert.That(result.ClubId, Is.EqualTo(court1.ClubId));
+                Assert.That(result.ClubName, Is.EqualTo(court1.Club.Name));
+                Assert.That(result.Name, Is.EqualTo(court1.Name));
+                Assert.That(result.IsActive, Is.EqualTo(court1.IsActive));
+                Assert.That(result.IsIndoor, Is.EqualTo(court1.IsIndoor));
+                Assert.That(result.IsLighted, Is.EqualTo(court1.IsLighted));
+                Assert.That(result.PricePerHour, Is.EqualTo(court1.PricePerHour));
+                Assert.That(result.Surface, Is.EqualTo(court1.Surface));
+            });
+        }
+
+        [Test]
+        public async Task GetCourtScheduleAsync_ReturnsCorrectSchedule()
+        {
+            int clubId = court1.ClubId;
+            DateTime date = DateTime.Now.Date;
+            int workingHourStart = 8;
+            int workingHourEnd = 18; 
+
+            var result = await service.GetCourtsScheduleAsync(clubId, date, workingHourStart, workingHourEnd);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<IEnumerable<CourtScheduleAdminViewModel>>());
+            Assert.That(result.Any(), Is.True);
+
+            var courtSchedule = result.First(c=>c.Id==court1.Id);
+            Assert.That(courtSchedule, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(courtSchedule.Id, Is.EqualTo(court1.Id));
+                Assert.That(courtSchedule.ClubId, Is.EqualTo(court1.ClubId));
+                Assert.That(courtSchedule.Name, Is.EqualTo(court1.Name));
+                Assert.That(courtSchedule.IsIndoor, Is.EqualTo(court1.IsIndoor));
+                Assert.That(courtSchedule.IsLighted, Is.EqualTo(court1.IsLighted));
+                Assert.That(courtSchedule.Price, Is.EqualTo(court1.PricePerHour));
+                Assert.That(courtSchedule.Surface, Is.EqualTo(court1.Surface.GetDisplayName()));
+            });
+
+            var dateBookings = court1.Bookings.Where(b => b.BookingDate.Date == date.Date);
+            Assert.That(courtSchedule.Bookings.Where(b => b.IsAvailable == false).Count(), Is.EqualTo(dateBookings.Count()));
+        }
+
+        [Test]
+        public async Task DeleteAsync_DeletesCourtAndAssociatedEntities()
+        {
+            int courtIdToDelete = court1.Id;
+            int expectedNumberOfCourts = court1.Club.NumberOfCourts - 1;
+
+            await service.DeleteAsync(courtIdToDelete);
+
+            var deletedCourt = await repository.GetAll<Court>()
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(c => c.Id == courtIdToDelete);
+
+            Assert.That(deletedCourt, Is.Null);
+
+            var deletedBookings = await repository.GetAll<Booking>()
+                .Where(b => b.CourtId == courtIdToDelete)
+                .ToListAsync();
+
+            Assert.That(deletedBookings, Is.Empty);
+
+            var deletedReviews = await repository.GetAll<Review>()
+                .Where(r => r.Booking.CourtId == courtIdToDelete)
+                .ToListAsync();
+
+            Assert.That(deletedReviews, Is.Empty);
+
+            var updatedClub = await repository.GetAll<Club>()
+                .FirstOrDefaultAsync(c => c.Id == court1.ClubId);
+
+            Assert.That(updatedClub, Is.Not.Null);
+            Assert.That(updatedClub.NumberOfCourts, Is.EqualTo(expectedNumberOfCourts));
+        }
+
+        [Test]
+        public async Task GetViewModelForDeleteAsync_ReturnsViewModelWithCorrectData()
+        {
+            int courtIdToGet = court1.Id;
+
+            var viewModel = await service.GetViewModelForDeleteAsync(courtIdToGet);
+
+            Assert.That(viewModel, Is.Not.Null); // Ensure that the view model is not null
+            Assert.Multiple(() =>
+            {
+                Assert.That(viewModel.Id, Is.EqualTo(court1.Id)); // Check if the IDs match
+                Assert.That(viewModel.ClubId, Is.EqualTo(court1.ClubId)); // Check if the club IDs match
+                Assert.That(viewModel.IsActive, Is.EqualTo(court1.IsActive)); // Check if IsActive values match
+                Assert.That(viewModel.IsIndoor, Is.EqualTo(court1.IsIndoor)); // Check if IsIndoor values match
+                Assert.That(viewModel.IsLighted, Is.EqualTo(court1.IsLighted)); // Check if IsLighted values match
+                Assert.That(viewModel.Name, Is.EqualTo(court1.Name)); // Check if the names match
+                Assert.That(viewModel.PricePerHour, Is.EqualTo(court1.PricePerHour)); // Check if PricePerHour values match
+                Assert.That(viewModel.Surface, Is.EqualTo(court1.Surface.GetDisplayName())); // Check if Surface display names match
+            });
         }
     }
 }

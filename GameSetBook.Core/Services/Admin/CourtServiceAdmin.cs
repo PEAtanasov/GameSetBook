@@ -152,7 +152,7 @@ namespace GameSetBook.Core.Services.Admin
             await repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<CourtScheduleAdminViewModel>> GetCourtScheduleAsync (int clubId, DateTime date, int workingHourStart, int workingHourEnd)
+        public async Task<IEnumerable<CourtScheduleAdminViewModel>> GetCourtsScheduleAsync (int clubId, DateTime date, int workingHourStart, int workingHourEnd)
         {
             var courts = await repository.GetAllReadOnly<Court>()
                 .Where(c => c.ClubId == clubId && c.IsActive == true)
