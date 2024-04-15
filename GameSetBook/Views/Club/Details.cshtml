@@ -9,13 +9,11 @@
     <div class="row">
         <div class="col-md-3">
             <div class="left-column">
-                <!-- Left part: Render _ClubInfoPartial.cshtml -->
                 <partial name="_ClubInfoPartial" model="Model.ClubInfo" />
                 <a asp-controller="Club" asp-action="Schedule" asp-route-id="@Model.ClubId" class="btn btn-primary mb-2 w-100 p-3 fw-bold">Book Now</a>
             </div>
         </div>
         <div class="col-md-9">
-            <!-- Right part: Display other club details -->
             <partial name="_ClubDetailsPartial" model="Model.ClubDetails" />
         </div>
     </div>

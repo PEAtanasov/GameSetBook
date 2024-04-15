@@ -19,19 +19,15 @@
 
 <div class="container">
     <div class="row">
-        <!-- Left part: Render _ClubInfoPartial.cshtml -->
         <div class="@(Model.Count()>5 ? "col-md-2" : "col-md-3")">
             <partial name="_ClubInfoPartial" model="@clubInfo" />
         </div>
-        <!-- Right part: Display court schedule -->
         <div class="col-md-9">
-
             <form id="filterForm" asp-action="MyClubSchedule" method="get">
                 <div class="row">
                     <div class="form-actions no-color col-auto">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <!-- Arrow to move one day backwards -->
                                 @if (currentDate != null)
                                 {
                                     <a asp-controller="Club" asp-action="MyClubSchedule" asp-route-id="@clubId" asp-route-date="@currentDate.Value.AddDays(-1).ToString("yyyy-MM-dd")" class="btn btn-primary"> <i class="fa fa-arrow-circle-o-left"></i> Previous Day</a>
@@ -40,12 +36,7 @@
                             <div class="col">
                                 <input class="form-control" type="date" id="datepicker" name="date" value="@(currentDate!=null ? currentDate.Value.ToString("yyyy-MM-dd") : null)" />
                             </div>
-                            @* <div class="col">
-                                <input type="submit" value="Ok" class="btn btn-primary" />
-                            </div> *@
-                            
                             <div class="col-auto">
-                                <!-- Arrow to move one day forwards -->
                                 @if (currentDate != null)
                                 {
                                     <a asp-controller="Club" asp-action="MyClubSchedule" asp-route-id="@clubId" asp-route-date="@currentDate.Value.AddDays(1).ToString("yyy-MM-dd")" class="btn btn-primary">Next Day <i class="fa fa-arrow-circle-o-right"></i></a>
