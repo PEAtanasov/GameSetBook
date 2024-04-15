@@ -20,7 +20,17 @@ namespace GameSetBook.Tests.AdminAreaTests
         private ICountryServiceAdmin service;
         private Mock<UserManager<ApplicationUser>> mockUserManager;
 
+        IEnumerable<ApplicationUser> users;
         IEnumerable<Country> countries;
+        IEnumerable<City> cities;
+        IEnumerable<Club> clubs;
+        IEnumerable<Court> courts;
+        IEnumerable<Booking> bookings;
+        IEnumerable<Review> reviews;
+
+        private ApplicationUser user1;
+        private ApplicationUser owner1;
+        private ApplicationUser owner2;
 
         private Country country1;
         private Country country2;
@@ -33,9 +43,24 @@ namespace GameSetBook.Tests.AdminAreaTests
         private Club club1;
         private Club club2;
 
+        private Court court1;
+        private Court court2;
+        private Court court3;
+
+        private Booking booking1;
+        private Booking booking2;
+        private Booking booking3;
+
+        private Review review1;
+        private Review review2;
+
         [SetUp]
         public async Task Setup()
         {
+            user1 = new ApplicationUser() { Id = "user1" };
+            owner1 = new ApplicationUser() { Id = "owner1" };
+            owner2 = new ApplicationUser() { Id = "owner2" };
+
             country1 = new Country()
             {
                 Id = 1,
@@ -52,9 +77,132 @@ namespace GameSetBook.Tests.AdminAreaTests
                 Name = "Greece"
             };
 
+            city1 = new City()
+            {
+                Id = 1,
+                Name = "Sofia",
+                CountryId = 1
+
+            };
+            city2 = new City()
+            {
+                Id = 2,
+                Name = "Varna",
+                CountryId = 1
+
+            };
+            city3 = new City()
+            {
+                Id = 3,
+                Name = "Kavarna",
+                CountryId = 1
+            };
+
+            club1 = new Club()
+            {
+                Id = 1,
+                Name = "Club1",
+                ClubOwnerId = "owner1",
+                CityId = 1
+            };
+            club2 = new Club()
+            {
+                Id = 2,
+                Name = "Club2",
+                ClubOwnerId = "owner2",
+                CityId = 1
+            };
+
+            court1 = new Court()
+            {
+                Id = 1,
+                ClubId = 1,
+            };
+
+            court2 = new Court()
+            {
+                Id = 2,
+                ClubId = 1,
+            };
+
+            court3 = new Court()
+            {
+                Id = 3,
+                ClubId = 1,
+            };
+
+            booking1 = new Booking()
+            {
+                Id = 1,
+                ClientId = "user1",
+                CourtId = 1,
+                Hour = 11
+            };
+            booking2 = new Booking()
+            {
+                Id = 2,
+                ClientId = "user1",
+                CourtId = 1,
+                Hour = 12
+            };
+            booking3 = new Booking()
+            {
+                Id = 3,
+                ClientId = "user1",
+                CourtId = 1,
+                Hour = 13
+            };
+
+            review1 = new Review()
+            {
+                Id = 1,
+                ClubId = 1,
+                BookingId = 1,
+                ReviewerId = "user1",
+                Rate = 10
+            };
+            review2 = new Review()
+            {
+                Id = 2,
+                ClubId = 1,
+                BookingId = 2,
+                ReviewerId = "user1",
+                Rate = 9
+            };
+
+            users = new List<ApplicationUser>()
+            {
+                user1,owner1,owner2
+            };
+
             countries = new List<Country>()
             {
                 country1,country2,country3
+            };
+
+            cities = new List<City>()
+            {
+                city1,city2, city3
+            };
+
+            clubs = new List<Club>()
+            {
+                club1, club2,
+            };
+
+            courts = new List<Court>()
+            {
+                court1,court2,court3
+            };
+
+            bookings = new List<Booking>()
+            {
+                booking1,booking2,booking3
+            };
+
+            reviews = new List<Review>()
+            {
+                review1,review2
             };
 
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -63,7 +211,13 @@ namespace GameSetBook.Tests.AdminAreaTests
 
             this.dbContext = new ApplicationDbContext(options);
 
+            await dbContext.AddRangeAsync(users);
             await dbContext.AddRangeAsync(countries);
+            await dbContext.AddRangeAsync(cities);
+            await dbContext.AddRangeAsync(clubs);
+            await dbContext.AddRangeAsync(courts);
+            await dbContext.AddRangeAsync(bookings);
+            await dbContext.AddRangeAsync(reviews);
             await dbContext.SaveChangesAsync();
 
             mockUserManager = new Mock<UserManager<ApplicationUser>>(
@@ -81,7 +235,7 @@ namespace GameSetBook.Tests.AdminAreaTests
         }
 
         [Test]
-        public  async Task ExistByNameAsync_CheckIfCountryExistReturnsTrueIfSoAndFalseIfNot()
+        public async Task ExistByNameAsync_CheckIfCountryExistReturnsTrueIfSoAndFalseIfNot()
         {
             var existingCountryName = country1.Name;
             var nonExistingCountryName = "Not existing";
@@ -142,6 +296,107 @@ namespace GameSetBook.Tests.AdminAreaTests
                 Assert.That(result3, Is.EqualTo(expectedResult3));
                 Assert.That(countries.Count(), Is.EqualTo(this.countries.Count()));
             });
+        }
+
+        [Test]
+        public async Task DeleteAsync_ShouldRemoveCountry()
+        {
+            var countryId = club2.Id;
+
+            var countriesCountBefore = await dbContext.Countries.CountAsync();
+
+            await service.DeleteAsync(countryId);
+
+            var countriesCountAfter = await dbContext.Countries.CountAsync();
+
+            Assert.That(countriesCountAfter, Is.LessThan(countriesCountBefore));
+        }
+
+        [Test]
+        public async Task DeleteAsync_ShouldRemoveAllCitiesRelatedToTheCountry()
+        {
+            var countryId = club1.Id;
+
+            var citiesCountBefore = await dbContext.Cities.CountAsync();
+
+            await service.DeleteAsync(countryId);
+
+            var citiesCountAfter = await dbContext.Cities.CountAsync();
+
+            Assert.That(citiesCountAfter, Is.LessThan(citiesCountBefore));
+        }
+
+        [Test]
+        public async Task DeleteAsync_ShouldRemoveAllClubsRelatedToTheCountry()
+        {
+            var countryId = club1.Id;
+
+            var clubCountBefore = await dbContext.Clubs.CountAsync();
+
+            await service.DeleteAsync(countryId);
+
+            var clubCountAfter = await dbContext.Clubs.CountAsync();
+
+            Assert.That(clubCountAfter, Is.LessThan(clubCountBefore));
+        }
+
+        [Test]
+        public async Task DeleteAsync_ShouldRemoveAllCourtsRelatedToTheCountry()
+        {
+            var countryId = club1.Id;
+
+            var courtCountBefore = await dbContext.Courts.CountAsync();
+
+            await service.DeleteAsync(countryId);
+
+            var courtCountAfter = await dbContext.Courts.CountAsync();
+
+            Assert.That(courtCountAfter, Is.LessThan(courtCountBefore));
+        }
+
+        [Test]
+        public async Task DeleteAsync_ShouldRemoveAllBookingsRelatedToTheCountry()
+        {
+            var countryId = club1.Id;
+
+            var bookingCountBefore = await dbContext.Bookings.CountAsync();
+
+            await service.DeleteAsync(countryId);
+
+            var bookingCountAfter = await dbContext.Bookings.CountAsync();
+
+            Assert.That(bookingCountAfter, Is.LessThan(bookingCountBefore));
+        }
+
+        [Test]
+        public async Task DeleteAsync_ShouldRemoveAllReviewsRelatedToTheCountry()
+        {
+            var countryId = club1.Id;
+
+            var reviewCountBefore = await dbContext.Reviews.CountAsync();
+
+            await service.DeleteAsync(countryId);
+
+            var reviewCountAfter = await dbContext.Reviews.CountAsync();
+
+            Assert.That(reviewCountAfter, Is.LessThan(reviewCountBefore));
+        }
+
+        [Test]
+        public async Task GetCountryDetailAsync_CheckIfReturnsCorrectData()
+        {
+            var countryId = club1.Id;
+
+            var expectedResultCitiesCount= await dbContext.Cities.Where(c => c.CountryId == countryId).CountAsync();
+            var expectedResultClubsCount = await dbContext.Clubs.Where(c => c.City.CountryId == countryId).CountAsync();
+
+            var result = await service.GetCountryDetailAsync(countryId);
+
+            var numberOfCitiesInTheCountryActualResult = result.Cities.Count();
+            var numberOfClubsInTheCountryActualResult = result.Clubs.Count();
+
+            Assert.That(numberOfCitiesInTheCountryActualResult, Is.EqualTo(expectedResultCitiesCount));
+            Assert.That(numberOfClubsInTheCountryActualResult, Is.EqualTo(expectedResultClubsCount));
         }
     }
 }
