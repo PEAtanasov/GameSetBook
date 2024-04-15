@@ -7,7 +7,7 @@ namespace GameSetBook.Core.Contracts.Admin
     {
         Task<IEnumerable<CityAdminServiceModel>> GetAllCitiesAsync();
 
-        Task<bool> ExystByNameAsync(string name, int countryId);
+        Task<bool> ExistByNameAsync(string name, int countryId);
 
         Task AddAsync(CityAddAdminFormModel model);
 

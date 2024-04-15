@@ -120,13 +120,15 @@ namespace GameSetBook.Tests.PublicAreaTests
         public async Task GetAllCitivesAsync_ShouldReturnAllCities()
         {
             var expectedResult = this.cities.Count();
-            var expectedResult1 = 4;
+            var wrongCount = 4;
+            var wrongCount2 = 6;
 
             var cities = await cityService.GetAllCitiesAsync();
             var result = cities.Count();
 
             Assert.That(result, Is.EqualTo(expectedResult));
-            Assert.That(result, Is.Not.EqualTo(expectedResult1));
+            Assert.That(result, Is.Not.EqualTo(wrongCount));
+            Assert.That(result, Is.Not.EqualTo(wrongCount2));
         }
 
         [Test]

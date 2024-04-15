@@ -54,7 +54,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CityAddAdminFormModel model)
         {
-            if (await cityService.ExystByNameAsync(model.Name, model.CountryId))
+            if (await cityService.ExistByNameAsync(model.Name, model.CountryId))
             {
                 ModelState.AddModelError(string.Empty, string.Format(CityWithNameExist, model.Name));
             }

@@ -301,7 +301,7 @@ namespace GameSetBook.Tests.AdminAreaTests
         [Test]
         public async Task DeleteAsync_ShouldRemoveCountry()
         {
-            var countryId = club2.Id;
+            var countryId = country2.Id;
 
             var countriesCountBefore = await dbContext.Countries.CountAsync();
 
@@ -315,7 +315,7 @@ namespace GameSetBook.Tests.AdminAreaTests
         [Test]
         public async Task DeleteAsync_ShouldRemoveAllCitiesRelatedToTheCountry()
         {
-            var countryId = club1.Id;
+            var countryId = country1.Id;
 
             var citiesCountBefore = await dbContext.Cities.CountAsync();
 
@@ -324,12 +324,21 @@ namespace GameSetBook.Tests.AdminAreaTests
             var citiesCountAfter = await dbContext.Cities.CountAsync();
 
             Assert.That(citiesCountAfter, Is.LessThan(citiesCountBefore));
+
+            if (citiesCountBefore==0)
+            {
+                Assert.That(citiesCountAfter, Is.EqualTo(citiesCountBefore));
+            }
+            else
+            {
+                Assert.That(citiesCountAfter, Is.LessThan(citiesCountBefore));
+            }
         }
 
         [Test]
         public async Task DeleteAsync_ShouldRemoveAllClubsRelatedToTheCountry()
         {
-            var countryId = club1.Id;
+            var countryId = country1.Id;
 
             var clubCountBefore = await dbContext.Clubs.CountAsync();
 
@@ -338,12 +347,21 @@ namespace GameSetBook.Tests.AdminAreaTests
             var clubCountAfter = await dbContext.Clubs.CountAsync();
 
             Assert.That(clubCountAfter, Is.LessThan(clubCountBefore));
+
+            if (clubCountBefore==0)
+            {
+                Assert.That(clubCountAfter, Is.EqualTo(clubCountBefore));
+            }
+            else
+            {
+                Assert.That(clubCountAfter, Is.LessThan(clubCountBefore));
+            }
         }
 
         [Test]
         public async Task DeleteAsync_ShouldRemoveAllCourtsRelatedToTheCountry()
         {
-            var countryId = club1.Id;
+            var countryId = country1.Id;
 
             var courtCountBefore = await dbContext.Courts.CountAsync();
 
@@ -352,12 +370,21 @@ namespace GameSetBook.Tests.AdminAreaTests
             var courtCountAfter = await dbContext.Courts.CountAsync();
 
             Assert.That(courtCountAfter, Is.LessThan(courtCountBefore));
+
+            if (courtCountBefore==0)
+            {
+                Assert.That(courtCountAfter, Is.EqualTo(courtCountBefore));
+            }
+            else
+            {
+                Assert.That(courtCountAfter, Is.LessThan(courtCountBefore));
+            }
         }
 
         [Test]
         public async Task DeleteAsync_ShouldRemoveAllBookingsRelatedToTheCountry()
         {
-            var countryId = club1.Id;
+            var countryId = country1.Id;
 
             var bookingCountBefore = await dbContext.Bookings.CountAsync();
 
@@ -366,6 +393,15 @@ namespace GameSetBook.Tests.AdminAreaTests
             var bookingCountAfter = await dbContext.Bookings.CountAsync();
 
             Assert.That(bookingCountAfter, Is.LessThan(bookingCountBefore));
+
+            if (bookingCountBefore==0)
+            {
+                Assert.That(bookingCountAfter, Is.EqualTo(bookingCountBefore));
+            }
+            else
+            {
+                Assert.That(bookingCountAfter, Is.LessThan(bookingCountBefore));
+            }
         }
 
         [Test]
@@ -380,6 +416,15 @@ namespace GameSetBook.Tests.AdminAreaTests
             var reviewCountAfter = await dbContext.Reviews.CountAsync();
 
             Assert.That(reviewCountAfter, Is.LessThan(reviewCountBefore));
+
+            if (reviewCountBefore==0)
+            {
+                Assert.That(reviewCountAfter, Is.EqualTo(reviewCountBefore));
+            }
+            else
+            {
+                Assert.That(reviewCountAfter, Is.LessThan(reviewCountBefore));
+            }
         }
 
         [Test]

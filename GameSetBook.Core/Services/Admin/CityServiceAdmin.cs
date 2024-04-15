@@ -36,7 +36,7 @@ namespace GameSetBook.Core.Services.Admin
             return cities;
         }
 
-        public async Task<bool> ExystByNameAsync(string name, int countryId)
+        public async Task<bool> ExistByNameAsync(string name, int countryId)
         {
             return await repository.GetAllReadOnly<City>()
                 .Where(c => c.CountryId == countryId)
