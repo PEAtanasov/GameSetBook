@@ -802,10 +802,10 @@ namespace GameSetBook.Tests.PublicAreaTests
             var notExistingClubName = "Not Exist";
             var notExistingClubId = -1;
 
-            var result1 = await service.ExsitAnotherCluWhitNameAsync(existingClubId1, existingClubName2);
-            var result2 = await service.ExsitAnotherCluWhitNameAsync(existingClubId2, existingClubName1);
-            var result3 = await service.ExsitAnotherCluWhitNameAsync(notExistingClubId, notExistingClubName);
-            var result4 = await service.ExsitAnotherCluWhitNameAsync(existingClubId1, existingClubName1);
+            var result1 = await service.ExsitAnotherClubWhitNameAsync(existingClubId1, existingClubName2);
+            var result2 = await service.ExsitAnotherClubWhitNameAsync(existingClubId2, existingClubName1);
+            var result3 = await service.ExsitAnotherClubWhitNameAsync(notExistingClubId, notExistingClubName);
+            var result4 = await service.ExsitAnotherClubWhitNameAsync(existingClubId1, existingClubName1);
 
 
             Assert.That(result1, Is.True);

@@ -9,7 +9,6 @@ using static GameSetBook.Common.ValidationConstatns.DateTimeFormats;
 
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using System.Security.Cryptography.X509Certificates;
 
 namespace GameSetBook.Core.Services.Admin
 {
@@ -133,7 +132,7 @@ namespace GameSetBook.Core.Services.Admin
             return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Name.ToLower() == name.ToLower());
         }
 
-        public async Task<bool> ExistByNameAsync(int id, string name)
+        public async Task<bool> ExsitAnotherClubWhitNameAsync(int id, string name)
         {
             return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Name.ToLower() == name.ToLower() && c.Id != id);
         }
@@ -269,7 +268,7 @@ namespace GameSetBook.Core.Services.Admin
 
         public async Task<AllClubsAdminSortingModel> GetClubSortingModel(AllClubsAdminSortingModel model)
         {
-            var clubsToSort = repository.GetAllWithDeletedReadOnly<Club>();
+            var clubsToSort = repository.GetAllWithDeletedReadOnly<Club>().Where(c=>c.Courts.Count()>0);
 
             if (model.Country != null)
             {
@@ -452,6 +451,5 @@ namespace GameSetBook.Core.Services.Admin
 
             return model;
         }
-
     }
 }

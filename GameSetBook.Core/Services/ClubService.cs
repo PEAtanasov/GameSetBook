@@ -191,7 +191,7 @@ namespace GameSetBook.Core.Services
             return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Name.ToLower() == name.ToLower());
         }
 
-        public async Task<bool> ExsitAnotherCluWhitNameAsync(int id, string name)
+        public async Task<bool> ExsitAnotherClubWhitNameAsync(int id, string name)
         {
             return await repository.GetAllWithDeletedReadOnly<Club>().AnyAsync(c => c.Name.ToLower() == name.ToLower() && c.Id!=id);
         }

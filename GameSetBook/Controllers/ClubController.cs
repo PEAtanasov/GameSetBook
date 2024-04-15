@@ -252,7 +252,7 @@ namespace GameSetBook.Web.Controllers
                 return Unauthorized();
             }
 
-            if (await clubService.ExsitAnotherCluWhitNameAsync(model.Id, model.Name))
+            if (await clubService.ExsitAnotherClubWhitNameAsync(model.Id, model.Name))
             {
                 ModelState.AddModelError(string.Empty, string.Format(ClubWithThatNameExist, model.Name));
             }

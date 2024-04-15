@@ -202,7 +202,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            if (await clubService.ExistByNameAsync(model.Id, model.Name))
+            if (await clubService.ExsitAnotherClubWhitNameAsync(model.Id, model.Name))
             {
                 ModelState.AddModelError(string.Empty, string.Format(ClubWithThatNameExist, model.Name));
             }

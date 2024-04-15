@@ -21,7 +21,7 @@ namespace GameSetBook.Core.Contracts.Admin
 
         Task<bool> ExistByNameAsync(string name);
 
-        Task<bool> ExistByNameAsync(int id, string name);
+        Task<bool> ExsitAnotherClubWhitNameAsync(int id, string name);
 
         Task<bool> IsClubApprovedAsync(int id);
 
