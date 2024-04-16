@@ -6,7 +6,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]/[Action]/{id?}")]
-    [Authorize(Roles = UserConstants.AdminRole)]
+    [Authorize(Roles = RoleConstants.AdminRole)]
     public class BaseController : Controller
     {
     }

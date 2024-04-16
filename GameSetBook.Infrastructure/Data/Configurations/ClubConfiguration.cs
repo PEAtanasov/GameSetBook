@@ -11,7 +11,6 @@ namespace GameSetBook.Infrastructure.Data.Configurations
         {
             builder.HasQueryFilter(c => !c.IsDeleted);
             builder.HasData(ClubSeed());
-
         }
 
         private IList<Club> ClubSeed()

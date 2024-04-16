@@ -101,6 +101,9 @@ namespace GameSetBook.Infrastructure.Models
         [ForeignKey(nameof(Client))]
         public string ClientId { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Client of the booking
+        /// </summary>
         public virtual ApplicationUser Client { get; set; } = null!;
 
         /// <summary>
@@ -111,8 +114,14 @@ namespace GameSetBook.Infrastructure.Models
         [ForeignKey(nameof(Court))]
         public int CourtId { get; set; }
 
+        /// <summary>
+        /// Court of the booking
+        /// </summary>
         public virtual Court Court { get; set; } = null!;
 
+        /// <summary>
+        /// booking review
+        /// </summary>
         public virtual Review? Review { get; set; }
     }
 }

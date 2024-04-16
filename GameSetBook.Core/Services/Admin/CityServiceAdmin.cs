@@ -7,7 +7,7 @@ using GameSetBook.Infrastructure.Models;
 using GameSetBook.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using static GameSetBook.Common.UserConstants;
+using static GameSetBook.Common.RoleConstants;
 
 namespace GameSetBook.Core.Services.Admin
 {

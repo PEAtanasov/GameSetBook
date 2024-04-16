@@ -15,7 +15,6 @@
         public const string UsersAreAllowedToRegisterOnlyOneClub = "Users are not allowed to register more than one club";
         public const string CountryWithNameExist = "Country with the name {0} already exist";
         public const string CityWithNameExist = "City with the name {0} already exist in that country";
-
         public static string ImageSizeToBig = $"The file size must not exceed {ValidationConstatns.ImageSizeConstants.ClubLogoMaxLength / 1024 / 1024} MB.";
 
     }

@@ -119,7 +119,6 @@ namespace GameSetBook.Core.Services
                 .AnyAsync(b => b.Id == id);
         }
 
-        //TODO TESTS
         public async Task<AllBookingsSortingModel> GetBookingSortingServiceModelAsync(AllBookingsSortingModel queryModel, string userId)
         {
             var bookingToSort = repository.GetAllReadOnly<Booking>()

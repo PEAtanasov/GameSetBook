@@ -9,11 +9,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<City> builder)
         {
-            //builder.HasQueryFilter(c => c.Clubs.Any(cl => !cl.IsDeleted));
-
             builder.HasData(CitySeed());
-
-
         }
 
         private IList<City> CitySeed()

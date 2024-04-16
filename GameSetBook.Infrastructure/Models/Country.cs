@@ -31,6 +31,9 @@ namespace GameSetBook.Infrastructure.Models
         [Comment("Country name")]
         public string Name { get; set; } = string.Empty;
 
+        /// <summary>
+        /// All cities in the country
+        /// </summary>
         public virtual ICollection<City> Cities { get; set;}
     }
 }

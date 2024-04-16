@@ -75,10 +75,13 @@ namespace GameSetBook.Infrastructure.Models
         [ForeignKey(nameof(City))]
         public int CityId { get; set; }
 
+        /// <summary>
+        /// City where the club is located
+        /// </summary>
         public virtual City City { get; set; } = null!;
 
         /// <summary>
-        /// Number of coaches in the club
+        /// Club's city
         /// </summary> 
         [Comment("Number of coaches in the club")]
         public int? NumberOfCoaches { get; set; }
@@ -187,10 +190,19 @@ namespace GameSetBook.Infrastructure.Models
         [Comment("Club owner's identifier")]
         public string ClubOwnerId { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Club owner
+        /// </summary>
         public virtual ApplicationUser ClubOwner { get; set; } = null!;
 
+        /// <summary>
+        /// All courts of the club
+        /// </summary>
         public virtual ICollection<Court> Courts { get; set; }
 
+        /// <summary>
+        /// All client reviews for the club
+        /// </summary>
         public virtual ICollection<Review> Reviews { get; set; }
        
     }

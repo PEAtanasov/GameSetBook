@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using static GameSetBook.Common.ErrorMessageConstants;
-using static GameSetBook.Common.UserConstants;
+using static GameSetBook.Common.RoleConstants;
 
 namespace GameSetBook.Web.Areas.Admin.Controllers
 {
@@ -24,8 +24,8 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             UserManager<ApplicationUser> userManager,
             ICityServiceAdmin cityService,
             ICountryServiceAdmin countryService,
-        IWebHostEnvironment webHostEnvironment,
-        ICourtServiceAdmin courtService)
+            IWebHostEnvironment webHostEnvironment,
+            ICourtServiceAdmin courtService)
         {
             this.clubService = clubService;
             this.roleManager = roleManager;
@@ -95,8 +95,6 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
             }
 
             var userId = await clubService.ApproveAsync(id);
-
-            //TODO possibly might need implement the logic for asigning the role via USERSERVICE. Lets keep it like this for now!!!
 
             var user = await userManager.FindByIdAsync(userId);
 

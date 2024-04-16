@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using static GameSetBook.Common.UserConstants;
+using static GameSetBook.Common.RoleConstants;
 
 namespace GameSetBook.Web.Controllers
 {

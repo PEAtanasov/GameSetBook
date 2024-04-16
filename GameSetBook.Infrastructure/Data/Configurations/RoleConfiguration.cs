@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using static GameSetBook.Common.UserConstants;
+using static GameSetBook.Common.RoleConstants;
 
 namespace GameSetBook.Infrastructure.Data.Configurations
 {
@@ -10,8 +10,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<IdentityRole> builder)
         {
-            builder.HasData(RoleSeed());
-            
+            builder.HasData(RoleSeed());           
         }
 
         private IList<IdentityRole> RoleSeed()

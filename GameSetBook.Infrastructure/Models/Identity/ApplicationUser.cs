@@ -27,10 +27,19 @@ namespace GameSetBook.Infrastructure.Models.Identity
         [MaxLength(LastNameMaxLength)]
         public string? LastName { get; set; }
 
+        /// <summary>
+        /// All bookings of the user
+        /// </summary>
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
+        /// <summary>
+        /// User's club
+        /// </summary>
         public Club? Club { get; set; }
 
+        /// <summary>
+        /// All user's reviews
+        /// </summary>
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

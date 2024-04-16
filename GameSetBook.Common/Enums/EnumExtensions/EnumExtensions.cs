@@ -9,7 +9,7 @@ namespace GameSetBook.Common.Enums.EnumExtensions
         {
             var field = value.GetType().GetField(value.ToString());
             var attribute = field?.GetCustomAttribute<DisplayAttribute>();
-            return attribute == null ? value.ToString() : attribute.Name ?? null!;
+            return attribute == null ? value.ToString() : attribute.Name ?? value.ToString();
         }
     }
 }

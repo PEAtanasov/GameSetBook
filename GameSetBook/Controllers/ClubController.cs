@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 using static GameSetBook.Common.ErrorMessageConstants;
-using static GameSetBook.Common.UserConstants;
+using static GameSetBook.Common.RoleConstants;
 
 namespace GameSetBook.Web.Controllers
 {
