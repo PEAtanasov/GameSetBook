@@ -78,7 +78,7 @@ namespace GameSetBook.Tests
 
         //C L U B S
         //Sofia-bulgaria
-        private Club tennisClubSf; //check
+        private Club tennisClubSf;
         private Club forehandTcSf;
         private Club sixZeroClubSf;
 
@@ -154,6 +154,23 @@ namespace GameSetBook.Tests
         //NotAproved Club Courts 
         private Court notAproovedCourt1;
         private Court notAproovedCourt2;
+
+        //Bookings 
+        private Booking booking1;
+        private Booking booking2;
+        private Booking booking3;
+        private Booking booking4;
+        private Booking booking5;
+        private Booking booking6;
+        private Booking booking7;
+        private Booking booking8;
+        private Booking booking9;
+        private Booking booking10;
+        private Booking deleted1;
+        private Booking deleted2;
+
+
+
 
 
 
@@ -398,7 +415,7 @@ namespace GameSetBook.Tests
                 PhoneNumber = "99999991"
             };
 
-            
+
 
             //Countries SetUp
             bulgaria = new Country()
@@ -591,7 +608,7 @@ namespace GameSetBook.Tests
                 NumberOfCoaches = 2,
                 WorkingTimeStart = 7,
                 WorkingTimeEnd = 21,
-                RegisteredOn = DateTime.Parse("01-05-2011 10:00"),
+                RegisteredOn = DateTime.Parse("05-01-2011 10:00"),
                 IsAproovedByAdmin = true,
                 HasParking = true,
                 HasShop = true,
@@ -615,7 +632,7 @@ namespace GameSetBook.Tests
                 NumberOfCoaches = 3,
                 WorkingTimeStart = 7,
                 WorkingTimeEnd = 23,
-                RegisteredOn = DateTime.Parse("01-04-2023 10:00"),
+                RegisteredOn = DateTime.Parse("12-04-2023 10:00"),
                 IsAproovedByAdmin = true,
                 HasParking = true,
                 HasShop = true,
@@ -705,7 +722,7 @@ namespace GameSetBook.Tests
                 NumberOfCoaches = 2,
                 WorkingTimeStart = 8,
                 WorkingTimeEnd = 21,
-                RegisteredOn = DateTime.Parse("01-04-2023 10:00"),
+                RegisteredOn = DateTime.Parse("12-12-2023 10:00"),
                 IsAproovedByAdmin = false,
                 HasParking = true,
                 HasShop = true,
@@ -1033,6 +1050,337 @@ namespace GameSetBook.Tests
                 PricePerHour = 20,
             };
 
+            //Bookings court1 1
+            booking1 = new Booking()
+            {
+                Id = 1,
+                ClientName = "Petar Petrov",
+                CourtId = 1,
+                Price = 30,
+                Hour = 10,
+                BookingDate = DateTime.Parse("04-20-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "f011047b-9d4a-4cb6-8125-56fcd52a572e",
+                IsAvailable = false,
+                PhoneNumber = "111111",
+                IsBookedByOwnerOrAdmin = false,
+            };
+
+            booking2 = new Booking()
+            {
+                Id = 2,
+                ClientName = "Petar Petrov",
+                CourtId = 1,
+                Price = 30,
+                Hour = 11,
+                BookingDate = DateTime.Parse("04-20-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "f011047b-9d4a-4cb6-8125-56fcd52a572e",
+                IsAvailable = false,
+                PhoneNumber = "111111",
+                IsBookedByOwnerOrAdmin = false,
+            };
+
+            booking3 = new Booking()
+            {
+                Id = 3,
+                ClientName = "Georgi Georgiev",
+                CourtId = 2,
+                Price = 35,
+                Hour = 10,
+                BookingDate = DateTime.Parse("04-21-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "be5f9238-069b-441f-b920-3464ab6ffc21",
+                IsAvailable = false,
+                PhoneNumber = "222222",
+                IsBookedByOwnerOrAdmin = false,
+            };
+
+            booking4 = new Booking()
+            {
+                Id = 4,
+                ClientName = "Georgi Georgiev",
+                CourtId = 2,
+                Price = 35,
+                Hour = 11,
+                BookingDate = DateTime.Parse("04-21-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "be5f9238-069b-441f-b920-3464ab6ffc21",
+                IsAvailable = false,
+                PhoneNumber = "222222",
+                IsBookedByOwnerOrAdmin = false,
+            };
+
+            booking5 = new Booking()
+            {
+                Id = 5,
+                ClientName = "Atanas Atanasov",
+                CourtId = 3,
+                Price = 35,
+                Hour = 10,
+                BookingDate = DateTime.Parse("04-20-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "09ff5c8e-811b-404d-bf52-545f1100b31b",
+                IsAvailable = false,
+                PhoneNumber = "333333",
+                IsBookedByOwnerOrAdmin = false,
+            };
+
+            booking6 = new Booking()
+            {
+                Id = 6,
+                ClientName = "Atanas Atanasov",
+                CourtId = 3,
+                Price = 35,
+                Hour = 11,
+                BookingDate = DateTime.Parse("04-21-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "09ff5c8e-811b-404d-bf52-545f1100b31b",
+                IsAvailable = false,
+                PhoneNumber = "333333",
+                IsBookedByOwnerOrAdmin = false,
+            };
+
+            booking7 = new Booking()
+            {
+                Id = 7,
+                ClientName = "Atanas Atanasov",
+                CourtId = 4,
+                Price = 45,
+                Hour = 10,
+                BookingDate = DateTime.Parse("04-20-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "09ff5c8e-811b-404d-bf52-545f1100b31b",
+                IsAvailable = false,
+                PhoneNumber = "333333",
+                IsBookedByOwnerOrAdmin = false,
+            };
+            booking8 = new Booking()
+            {
+                Id = 8,
+                ClientName = "Atanas Atanasov",
+                CourtId = 4,
+                Price = 45,
+                Hour = 11,
+                BookingDate = DateTime.Parse("04-21-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "09ff5c8e-811b-404d-bf52-545f1100b31b",
+                IsAvailable = false,
+                PhoneNumber = "333333",
+                IsBookedByOwnerOrAdmin = false,
+            };
+
+            booking9 = new Booking()
+            {
+                Id = 9,
+                ClientName = "Natalia Atanasova",
+                CourtId = 5,
+                Price = 30,
+                Hour = 10,
+                BookingDate = DateTime.Parse("04-20-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "33104877-4d79-4194-b09a-9e75f1790ceb",
+                IsAvailable = false,
+                PhoneNumber = "333333",
+                IsBookedByOwnerOrAdmin = false,
+            };
+            booking10 = new Booking()
+            {
+                Id = 10,
+                ClientName = "Natalia Atanasova",
+                CourtId = 5,
+                Price = 30,
+                Hour = 11,
+                BookingDate = DateTime.Parse("04-21-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "33104877-4d79-4194-b09a-9e75f1790ceb",
+                IsAvailable = false,
+                PhoneNumber = "333333",
+                IsBookedByOwnerOrAdmin = false,
+            };
+
+            deleted1 = new Booking()
+            {
+                Id = 11,
+                ClientName = "Petar Petrov",
+                CourtId = 1,
+                Price = 30,
+                Hour = 10,
+                BookingDate = DateTime.Parse("04-21-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "f011047b-9d4a-4cb6-8125-56fcd52a572e",
+                IsAvailable = true,
+                PhoneNumber = "111111",
+                IsBookedByOwnerOrAdmin = false,
+                IsDeleted = true,
+                DeletedOn = DateTime.Parse("04-18-2023 10:00"),
+            };
+
+            deleted2 = new Booking()
+            {
+                Id = 12,
+                ClientName = "Petar Petrov",
+                CourtId = 1,
+                Price = 30,
+                Hour = 11,
+                BookingDate = DateTime.Parse("04-20-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "f011047b-9d4a-4cb6-8125-56fcd52a572e",
+                IsAvailable = true,
+                PhoneNumber = "111111",
+                IsBookedByOwnerOrAdmin = false,
+                IsDeleted = true,
+                DeletedOn = DateTime.Parse("04-18-2023 10:00"),
+            };
+
+            var booking13 = new Booking()
+            {
+                Id = 13,
+                ClientName = "Petar Petrov",
+                CourtId = 1,
+                Price = 30,
+                Hour = 13,
+                BookingDate = DateTime.Parse("04-20-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "f011047b-9d4a-4cb6-8125-56fcd52a572e",
+                IsAvailable = false,
+                PhoneNumber = "111111",
+                IsBookedByOwnerOrAdmin = false,
+            };
+
+            var booking14 = new Booking()
+            {
+                Id = 14,
+                ClientName = "Petar Petrov",
+                CourtId = 1,
+                Price = 30,
+                Hour = 14,
+                BookingDate = DateTime.Parse("04-20-2023 10:00"),
+                BookedOn = DateTime.Parse("01-04-2023 10:00"),
+                ClientId = "f011047b-9d4a-4cb6-8125-56fcd52a572e",
+                IsAvailable = false,
+                PhoneNumber = "111111",
+                IsBookedByOwnerOrAdmin = false,
+            };
+
+            //Reviews Setup
+            var review1 = new Review()
+            {
+                Id = 1,
+                BookingId = 1,
+                ClubId = 1,
+                CreatedOn = DateTime.Parse("04-18-2023 10:00"),
+                ReviewerId = "f011047b-9d4a-4cb6-8125-56fcd52a572e",
+                Title = "Super",
+                Description = "The best cluib ever",
+                Rate = 10,
+            };
+
+            var review2 = new Review()
+            {
+                Id = 2,
+                BookingId = 2,
+                ClubId = 1,
+                CreatedOn = DateTime.Parse("04-17-2023 10:00"),
+                ReviewerId = "f011047b-9d4a-4cb6-8125-56fcd52a572e",
+                Title = "Well Done",
+                Description = "The best cluib ever",
+                Rate = 9,
+            };
+            var review3 = new Review()
+            {
+                Id = 3,
+                BookingId = 13,
+                ClubId = 1,
+                CreatedOn = DateTime.Parse("04-18-2023 10:00"),
+                ReviewerId = "f011047b-9d4a-4cb6-8125-56fcd52a572e",
+                Title = "Super",
+                Description = "The best cluib ever",
+                Rate = 9,
+            };
+
+            var review4 = new Review()
+            {
+                Id = 4,
+                BookingId = 14,
+                ClubId = 1,
+                CreatedOn = DateTime.Parse("04-17-2023 10:00"),
+                ReviewerId = "f011047b-9d4a-4cb6-8125-56fcd52a572e",
+                Title = "Well Done",
+                Description = "The best cluib ever",
+                Rate = 7,
+            };
+
+            var review5 = new Review()
+            {
+                Id = 5,
+                BookingId = 9,
+                ClubId = 2,
+                CreatedOn = DateTime.Parse("04-17-2023 10:00"),
+                ReviewerId = "33104877-4d79-4194-b09a-9e75f1790ceb",
+                Title = "Ok!,but there is more to ask",
+                Description = "It was ok, they can improove, hopefully!",
+                Rate = 6,
+            };
+
+            var review6 = new Review()
+            {
+                Id = 6,
+                BookingId = 10,
+                ClubId = 2,
+                CreatedOn = DateTime.Parse("04-18-2023 10:00"),
+                ReviewerId = "33104877-4d79-4194-b09a-9e75f1790ceb",
+                Title = "meh...!",
+                Description = "not good, try to avoid if you can",
+                Rate = 3,
+            };
+
+            user1 = new ApplicationUser()
+            {
+                Id = "f011047b-9d4a-4cb6-8125-56fcd52a572e",
+                UserName = "user1@example.com",
+                NormalizedUserName = "user1@example.com".ToUpper(),
+                Email = "user1@example.com",
+                NormalizedEmail = "user1@example.com".ToUpper(),
+                FirstName = "Petar",
+                LastName = "Petrov",
+                PhoneNumber = "111111"
+            };
+
+            user2 = new ApplicationUser()
+            {
+                Id = "be5f9238-069b-441f-b920-3464ab6ffc21",
+                UserName = "user2@example.com",
+                NormalizedUserName = "user2@example.com".ToUpper(),
+                Email = "user2@example.com",
+                NormalizedEmail = "user2@example.com".ToUpper(),
+                FirstName = "Georgi",
+                LastName = "Georgiev",
+                PhoneNumber = "222222"
+            };
+            user3 = new ApplicationUser()
+            {
+                Id = "09ff5c8e-811b-404d-bf52-545f1100b31b",
+                UserName = "user3@example.com",
+                NormalizedUserName = "user3@example.com".ToUpper(),
+                Email = "user3@example.com",
+                NormalizedEmail = "user3@example.com".ToUpper(),
+                FirstName = "Atanas",
+                LastName = "Atanasov",
+                PhoneNumber = "333333"
+            };
+            user4 = new ApplicationUser()
+            {
+                Id = "33104877-4d79-4194-b09a-9e75f1790ceb",
+                UserName = "user4@example.com",
+                NormalizedUserName = "user4@example.com".ToUpper(),
+                Email = "user4@example.com",
+                NormalizedEmail = "user4@example.com".ToUpper(),
+                FirstName = "Natalia",
+                LastName = "Atanasova",
+                PhoneNumber = "444444"
+            };
+            ///////////////////////////
 
 
             users = new List<ApplicationUser>()
@@ -1068,6 +1416,16 @@ namespace GameSetBook.Tests
                 simonaHalepTcBcCourtNo2,winnerTcCnCourtNo1,winnerTcCnCourtNo2,tennisGodTcGrCourtNo1,tennisGodTcGrCourtNo2, notAproovedCourt1,notAproovedCourt2
             };
 
+            bookings = new List<Booking>()
+            {
+                booking1, booking2 , booking3 , booking4 , booking5 , booking6 , booking7 , booking8, booking9 , booking10, deleted1, deleted2, booking13,booking14
+            };
+
+            reviews = new List<Review>()
+            {
+                review1,review2, review3,review4,review5 , review6
+            };
+
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                     .UseInMemoryDatabase(databaseName: "GameSetBookTestInMemoryDb" + Guid.NewGuid().ToString())
                     .Options;
@@ -1079,8 +1437,8 @@ namespace GameSetBook.Tests
             await dbContext.AddRangeAsync(cities);
             await dbContext.AddRangeAsync(clubs);
             await dbContext.AddRangeAsync(courts);
-            //await dbContext.AddRangeAsync(bookings);
-            //await dbContext.AddRangeAsync(reviews);
+            await dbContext.AddRangeAsync(bookings);
+            await dbContext.AddRangeAsync(reviews);
             var count = await dbContext.SaveChangesAsync();
 
             var usersCount = await dbContext.Users.ToListAsync();
@@ -1088,6 +1446,8 @@ namespace GameSetBook.Tests
             var citiesCount = await dbContext.Cities.ToListAsync();
             var clubsCount = await dbContext.Clubs.ToListAsync();
             var courtsCount = await dbContext.Courts.ToListAsync();
+            var bookingsCount = await dbContext.Bookings.IgnoreQueryFilters().ToListAsync();
+            var reviewsCount = await dbContext.Reviews.IgnoreQueryFilters().ToListAsync();
 
 
         }
