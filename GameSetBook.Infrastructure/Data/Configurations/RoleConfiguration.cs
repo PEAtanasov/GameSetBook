@@ -13,7 +13,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             builder.HasData(RoleSeed());           
         }
 
-        private IList<IdentityRole> RoleSeed()
+        private static IList<IdentityRole> RoleSeed()
         {
             var roles = new List<IdentityRole>()
             {

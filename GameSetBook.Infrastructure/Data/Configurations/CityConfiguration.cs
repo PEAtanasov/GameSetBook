@@ -12,48 +12,96 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             builder.HasData(CitySeed());
         }
 
-        private IList<City> CitySeed()
+        //private IList<City> CitySeed()
+        //{
+        //    var cities = new List<City>()
+        //    {
+        //        new City()
+        //        {
+        //            Id = 1,
+        //            Name = "Sofia",
+        //            CountryId = 1
+
+        //        },
+
+        //        new City()
+        //        {
+        //            Id = 2,
+        //            Name = "Plovdiv",
+        //            CountryId = 1
+        //        },
+
+        //        new City()
+        //        {
+        //            Id = 3,
+        //            Name = "Sofia",
+        //            CountryId = 1
+        //        },
+
+        //        new City()
+        //        {
+        //            Id = 4,
+        //            Name = "Bucharest",
+        //            CountryId = 2
+        //        },
+
+        //        new City()
+        //        {
+        //            Id = 5,
+        //            Name = "Constanta",
+        //            CountryId = 2
+        //        }
+        //    };
+
+        //    return cities;
+        //}
+
+        private static IList<City> CitySeed()
         {
+            var sofia = new City()
+            {
+                Id = 1,
+                Name = "Sofia",
+                CountryId = 1
+            };
+            var varna = new City()
+            {
+                Id = 2,
+                Name = "Varna",
+                CountryId = 1
+            };
+            var kavarna = new City()
+            {
+                Id = 3,
+                Name = "Kavarna",
+                CountryId = 1
+            };
+            var bucharest = new City()
+            {
+                Id = 4,
+                Name = "Bucharest",
+                CountryId = 2
+            };
+            var constanta = new City()
+            {
+                Id = 5,
+                Name = "Constanta",
+                CountryId = 2
+            };
+            var athens = new City()
+            {
+                Id = 6,
+                Name = "Athens",
+                CountryId = 3
+            };
+
             var cities = new List<City>()
             {
-                new City()
-                {
-                    Id = 1,
-                    Name = "Sofia",
-                    CountryId = 1
-
-                },
-
-                new City()
-                {
-                    Id = 2,
-                    Name = "Plovdiv",
-                    CountryId = 1
-                },
-
-                new City()
-                {
-                    Id = 3,
-                    Name = "Sofia",
-                    CountryId = 1
-                },
-
-                new City()
-                {
-                    Id = 4,
-                    Name = "Bucharest",
-                    CountryId = 2
-                },
-
-                new City()
-                {
-                    Id = 5,
-                    Name = "Constanta",
-                    CountryId = 2
-                }
+                sofia,varna,kavarna,bucharest,constanta,athens
             };
 
             return cities;
         }
+
     }
 }

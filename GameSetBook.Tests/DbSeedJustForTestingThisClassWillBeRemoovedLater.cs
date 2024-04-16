@@ -1,6 +1,7 @@
 ﻿using GameSetBook.Infrastructure.Data;
 using GameSetBook.Infrastructure.Models;
 using GameSetBook.Infrastructure.Models.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameSetBook.Tests
@@ -21,7 +22,6 @@ namespace GameSetBook.Tests
 
         //U S E R S
         //ADMINS
-        private ApplicationUser admin;
 
         //CLUBOWNERS
         //sofia clubs
@@ -295,7 +295,7 @@ namespace GameSetBook.Tests
             //CluOwners SetUp
             tennisClubSfOwner = new ApplicationUser()
             {
-                Id = "53f6a3e4-df3b-4810-8ba0-83b9a57a379e",
+                Id = "53f6a3e4-df3b-4810-8ba0-83b9a57a379e", //check
                 UserName = "owner1@example.com",
                 NormalizedUserName = "owner1@example.com".ToUpper(),
                 Email = "owner1@example.com",
@@ -306,7 +306,7 @@ namespace GameSetBook.Tests
             };
             forehandTcSfOwner = new ApplicationUser()
             {
-                Id = "3a9b86c8-1c51-4990-aafa-6c527abef86e",
+                Id = "3a9b86c8-1c51-4990-aafa-6c527abef86e", //check
                 UserName = "owner2@example.com",
                 NormalizedUserName = "owner2@example.com".ToUpper(),
                 Email = "owner2@example.com",
@@ -317,7 +317,7 @@ namespace GameSetBook.Tests
             };
             sixZeroClubSfOwner = new ApplicationUser()
             {
-                Id = "78d95aa6-e1b2-499e-8b93-6dabcfdbc409",
+                Id = "78d95aa6-e1b2-499e-8b93-6dabcfdbc409", //check
                 UserName = "owner3@example.com",
                 NormalizedUserName = "owner3@example.com".ToUpper(),
                 Email = "owner3@example.com",
@@ -328,7 +328,7 @@ namespace GameSetBook.Tests
             };
             matchPointTcVnOwner = new ApplicationUser()
             {
-                Id = "af0e6295-932f-4d03-b243-874cd538aa4b",
+                Id = "af0e6295-932f-4d03-b243-874cd538aa4b", //check
                 UserName = "owner4@example.com",
                 NormalizedUserName = "owner4@example.com".ToUpper(),
                 Email = "owner4@example.com",
@@ -339,7 +339,7 @@ namespace GameSetBook.Tests
             };
             AceTcVnOwner = new ApplicationUser()
             {
-                Id = "4be73c85-8e2c-4553-8b17-5352c2a9d11f",
+                Id = "4be73c85-8e2c-4553-8b17-5352c2a9d11f", //check
                 UserName = "owner5@example.com",
                 NormalizedUserName = "owner5@example.com".ToUpper(),
                 Email = "owner5@example.com",
@@ -350,7 +350,7 @@ namespace GameSetBook.Tests
             };
             blackSeaRamaTcKvnOwner = new ApplicationUser()
             {
-                Id = "5813a55d-7cc0-4441-b5ed-27207a753a6d",
+                Id = "5813a55d-7cc0-4441-b5ed-27207a753a6d", //check
                 UserName = "owner6@example.com",
                 NormalizedUserName = "owner6@example.com".ToUpper(),
                 Email = "owner6@example.com",
@@ -361,7 +361,7 @@ namespace GameSetBook.Tests
             };
             numberOneTcBcOwner = new ApplicationUser()
             {
-                Id = "1c3c37d5-2189-4d71-96b5-27c0da3abde7",
+                Id = "1c3c37d5-2189-4d71-96b5-27c0da3abde7", //check
                 UserName = "owner7@example.com",
                 NormalizedUserName = "owner7@example.com".ToUpper(),
                 Email = "owner7@example.com",
@@ -372,7 +372,7 @@ namespace GameSetBook.Tests
             };
             simonaHalepTcBcOwner = new ApplicationUser()
             {
-                Id = "0e0103e9-2f94-49de-8012-eba340f8e4cf",
+                Id = "0e0103e9-2f94-49de-8012-eba340f8e4cf", //check
                 UserName = "owner8@example.com",
                 NormalizedUserName = "owner8@example.com".ToUpper(),
                 Email = "owner8@example.com",
@@ -383,7 +383,7 @@ namespace GameSetBook.Tests
             };
             winnerTcCnOwner = new ApplicationUser()
             {
-                Id = "d7fc7550-ed8f-4a86-acde-65c54168e949",
+                Id = "d7fc7550-ed8f-4a86-acde-65c54168e949",//check
                 UserName = "owner9@example.com",
                 NormalizedUserName = "owner9@example.com".ToUpper(),
                 Email = "owner9@example.com",
@@ -394,7 +394,7 @@ namespace GameSetBook.Tests
             };
             tennisGodTcGrOwner = new ApplicationUser()
             {
-                Id = "df044ba7-d51f-491d-8663-9ee9ddc57fb0",
+                Id = "df044ba7-d51f-491d-8663-9ee9ddc57fb0",//check
                 UserName = "owner10@example.com",
                 NormalizedUserName = "owner10@example.com".ToUpper(),
                 Email = "owner10@example.com",
@@ -415,6 +415,14 @@ namespace GameSetBook.Tests
                 PhoneNumber = "99999991"
             };
 
+
+
+
+            //club owner
+          
+
+
+            
 
 
             //Countries SetUp
