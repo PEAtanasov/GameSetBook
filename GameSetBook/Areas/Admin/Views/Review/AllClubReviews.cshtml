@@ -26,7 +26,7 @@
         <form id="filterForm" method="get" class="row g-3">
             <input type="hidden" asp-for="ClubId" />
             <input type="hidden" asp-for="CurrentPage" />
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label">Sort By</label>
                 <select asp-for="ReviewSorting" class="form-select">
                     <option value="">All</option>
@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <label class="form-label">Reviews Per Page</label>
                 <select asp-for="ReviewsPerPage" class="form-select">
                     <option value="10">10</option>
@@ -55,9 +55,6 @@
                 </select>
             </div>
         </form>
-        <div class="text-center mt-3">
-            <a asp-area="Admin" asp-controller="Review" asp-action="AllClubReviews" asp-route-ClubId="@Model.ClubId" class="btn btn-secondary">Back to full list</a>
-        </div>
     </div>
     @foreach (var r in Model.Reviews)
     {

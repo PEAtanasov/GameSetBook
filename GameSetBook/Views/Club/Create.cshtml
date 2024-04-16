@@ -6,22 +6,6 @@
     ViewBag.Title = "Create Club";
 }
 
-@if (TempData.ContainsKey("ImageSizeToBig"))
-{
-    <div class="alert alert-success alert-dismissible fade show text-center mx-auto col-xl-6" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        @TempData["ImageSizeToBig"]
-    </div>
-}
-
-@if (TempData.ContainsKey("WrongImageFormat"))
-{
-    <div class="alert alert-success alert-dismissible fade show text-center mx-auto col-xl-6" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        @TempData["WrongImageFormat"]
-    </div>
-}
-
 @if (!ViewData.ModelState.IsValid)
 {
     <div class="alert alert-danger" role="alert">
@@ -33,6 +17,8 @@
         </ul>
     </div>
 }
+
+<h2 class="text-center">Register Your Club</h2>
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">

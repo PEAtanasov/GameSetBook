@@ -8,22 +8,6 @@
 
 <h2 class="text-center">@ViewBag.Title</h2>
 
-@if (TempData.ContainsKey("ImageSizeToBig"))
-{
-    <div class="alert alert-success alert-dismissible fade show text-center mx-auto col-xl-6" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        @TempData["ImageSizeToBig"]
-    </div>
-}
-
-@if (TempData.ContainsKey("WrongImageFormat"))
-{
-    <div class="alert alert-success alert-dismissible fade show text-center mx-auto col-xl-6" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        @TempData["WrongImageFormat"]
-    </div>
-}
-
 @if (!ViewData.ModelState.IsValid)
 {
     <div class="alert alert-danger" role="alert">

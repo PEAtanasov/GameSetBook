@@ -9,7 +9,7 @@ namespace GameSetBook.Core.Models.Admin.Booking
         {
             Bookings = new List<BookingAdminServiceViewModel>();
         }
-        public int BookingsPerPage { get; set; } = 20;
+        public int BookingsPerPage { get; set; } = 10;
 
         public int? ClubId { get; set; }
 
