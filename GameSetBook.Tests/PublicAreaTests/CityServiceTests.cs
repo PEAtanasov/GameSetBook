@@ -29,7 +29,6 @@ namespace GameSetBook.Tests.PublicAreaTests
         [SetUp]
         public async Task Setup()
         {
-            //Counties
             Bulgaria = new Country()
             {
                 Id = 1,
@@ -41,7 +40,6 @@ namespace GameSetBook.Tests.PublicAreaTests
                 Name = "Romania"
             };
 
-            //Cities
             Sofia = new City()
             {
                 Id = 1,
@@ -73,7 +71,6 @@ namespace GameSetBook.Tests.PublicAreaTests
                 CountryId = 2
             };
 
-            //Collections
             countries = new List<Country>()
             {
                 Bulgaria,Romania
@@ -84,28 +81,18 @@ namespace GameSetBook.Tests.PublicAreaTests
                 Sofia,Varna,Kavarna,Bucharest,Constanta
             };
 
-            //Database
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(databaseName: "GameSetBookTestInMemoryDb" + Guid.NewGuid().ToString())
                 .Options;
 
             dbContext = new ApplicationDbContext(options);
-            //dbContext.Database.EnsureCreated();
 
             await dbContext.AddRangeAsync(countries);
             await dbContext.AddRangeAsync(cities);
-            //await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
 
-            var number = await dbContext.SaveChangesAsync();
-
-            var countcities = dbContext.Cities.Count();
-            var countcountriwes = dbContext.Countries.Count();
-
-
-            //repository
             repository = new Repository(dbContext);
 
-            //Service
             cityService = new CityService(repository);
         }
 
