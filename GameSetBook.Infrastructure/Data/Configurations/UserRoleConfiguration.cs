@@ -21,6 +21,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                     UserId="65a12477-a9c9-48f1-a844-0ec223e1bca5",
                     RoleId ="18906160-6956-4ecc-9b7c-fa5d0a4d0f82"
                 },
+               
 
                 //club owners
                 new IdentityUserRole<string>()

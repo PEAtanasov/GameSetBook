@@ -12,50 +12,6 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             builder.HasData(CitySeed());
         }
 
-        //private IList<City> CitySeed()
-        //{
-        //    var cities = new List<City>()
-        //    {
-        //        new City()
-        //        {
-        //            Id = 1,
-        //            Name = "Sofia",
-        //            CountryId = 1
-
-        //        },
-
-        //        new City()
-        //        {
-        //            Id = 2,
-        //            Name = "Plovdiv",
-        //            CountryId = 1
-        //        },
-
-        //        new City()
-        //        {
-        //            Id = 3,
-        //            Name = "Sofia",
-        //            CountryId = 1
-        //        },
-
-        //        new City()
-        //        {
-        //            Id = 4,
-        //            Name = "Bucharest",
-        //            CountryId = 2
-        //        },
-
-        //        new City()
-        //        {
-        //            Id = 5,
-        //            Name = "Constanta",
-        //            CountryId = 2
-        //        }
-        //    };
-
-        //    return cities;
-        //}
-
         private static IList<City> CitySeed()
         {
             var sofia = new City()

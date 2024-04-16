@@ -13,76 +13,53 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             builder.HasData(UserSeed());
         }
 
-        //private IList<ApplicationUser> UserSeed()
-        //{
-        //    var users = new List<ApplicationUser>();
-        //    var hasher = new PasswordHasher<ApplicationUser>();
-
-        //    ApplicationUser admin = new ApplicationUser()
-        //    {
-        //        Id = "65a12477-a9c9-48f1-a844-0ec223e1bca5",
-        //        UserName = "admin@mail.com",
-        //        NormalizedUserName = "ADMIN@MAIL.COM",
-        //        Email = "admin@mail.com",
-        //        NormalizedEmail = "ADMIN@MAIL.COM",
-        //        PhoneNumber = "0000000000",
-        //        FirstName = "Petar",
-        //        LastName = "Atanasov",
-        //    };
-        //    admin.PasswordHash =
-        //         hasher.HashPassword(admin, "aaaaaa1");
-        //    users.Add(admin);
-
-        //    ApplicationUser clubOwner = new ApplicationUser()
-        //    {
-        //        Id = "82cd50ca-b023-42e5-8344-227d5c45877c",
-        //        UserName = "clubowner@mail.com",
-        //        NormalizedUserName = "CLUBOWNER@MAIL.COM",
-        //        Email = "clubowner@mail.com",
-        //        NormalizedEmail = "CLUBOWNER@MAIL.COM",
-        //        PhoneNumber = "1111111111",
-        //        FirstName = "Atanas",
-        //        LastName = "Atanasov",
-        //    };
-        //    clubOwner.PasswordHash =
-        //         hasher.HashPassword(clubOwner, "aaaaaa1");
-        //    users.Add(clubOwner);
-
-        //    ApplicationUser user = user = new ApplicationUser()
-        //    {
-        //        Id = "83544abd-e9e2-4592-ad5e-23cd2f63e5a0",
-        //        UserName = "user@mail.com",
-        //        NormalizedUserName = "USER@MAIL.COM",
-        //        Email = "user@mail.com",
-        //        NormalizedEmail = "USER@MAIL.COM",
-        //        PhoneNumber = "2222222222",
-        //        FirstName = "Encho",
-        //        LastName = "Georgiev",
-        //    };
-        //    user.PasswordHash =
-        //         hasher.HashPassword(user, "aaaaaa1");
-        //    users.Add(user);
-
-        //    return users;
-        //}
-
         private static IList<ApplicationUser> UserSeed()
         {
             var hasher = new PasswordHasher<ApplicationUser>();
 
-            var admin = new ApplicationUser()
+            ApplicationUser admin = new ApplicationUser()
             {
                 Id = "65a12477-a9c9-48f1-a844-0ec223e1bca5",
-                UserName = "admin@example.com",
-                NormalizedUserName = "admin@example.com".ToUpper(),
-                Email = "admin@example.com",
-                NormalizedEmail = "admin@example.com".ToUpper(),
-                PhoneNumber = "+359883355637",
+                UserName = "admin@mail.com",
+                NormalizedUserName = "ADMIN@MAIL.COM",
+                Email = "admin@mail.com",
+                NormalizedEmail = "ADMIN@MAIL.COM",
+                PhoneNumber = "0000000000",
                 FirstName = "Petar",
                 LastName = "Atanasov",
             };
 
             admin.PasswordHash = hasher.HashPassword(admin, "admin1");
+
+            ApplicationUser clubOwner = new ApplicationUser()
+            {
+                Id = "82cd50ca-b023-42e5-8344-227d5c45877c",
+                UserName = "clubowner@mail.com",
+                NormalizedUserName = "CLUBOWNER@MAIL.COM",
+                Email = "clubowner@mail.com",
+                NormalizedEmail = "CLUBOWNER@MAIL.COM",
+                PhoneNumber = "1111111111",
+                FirstName = "Atanas",
+                LastName = "Atanasov",
+            };
+
+            clubOwner.PasswordHash = hasher.HashPassword(clubOwner, "aaaaaa1");
+
+            ApplicationUser user = user = new ApplicationUser()
+            {
+                Id = "83544abd-e9e2-4592-ad5e-23cd2f63e5a0",
+                UserName = "user@mail.com",
+                NormalizedUserName = "USER@MAIL.COM",
+                Email = "user@mail.com",
+                NormalizedEmail = "USER@MAIL.COM",
+                PhoneNumber = "2222222222",
+                FirstName = "Encho",
+                LastName = "Georgiev",
+            };
+
+            user.PasswordHash = hasher.HashPassword(user, "aaaaaa1");
+
+            //////
 
             var user1 = new ApplicationUser()
             {
@@ -96,7 +73,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "111111"
             };
 
-            admin.PasswordHash = hasher.HashPassword(user1, "aaaaaa1");
+            user1.PasswordHash = hasher.HashPassword(user1, "aaaaaa1");
 
             var user2 = new ApplicationUser()
             {
@@ -110,7 +87,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "222222"
             };
 
-            admin.PasswordHash = hasher.HashPassword(user2, "aaaaaa1");
+            user2.PasswordHash = hasher.HashPassword(user2, "aaaaaa1");
 
             var user3 = new ApplicationUser()
             {
@@ -124,7 +101,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "333333"
             };
 
-            admin.PasswordHash =  hasher.HashPassword(user3, "aaaaaa1");
+            user3.PasswordHash =  hasher.HashPassword(user3, "aaaaaa1");
 
             var user4 = new ApplicationUser()
             {
@@ -138,7 +115,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "444444"
             };
 
-            admin.PasswordHash = hasher.HashPassword(user4, "aaaaaa1");
+            user4.PasswordHash = hasher.HashPassword(user4, "aaaaaa1");
 
             var user5 = new ApplicationUser()
             {
@@ -152,7 +129,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "555555"
             };
 
-            admin.PasswordHash = hasher.HashPassword(user5, "aaaaaa1");
+            user5.PasswordHash = hasher.HashPassword(user5, "aaaaaa1");
 
             var user6 = new ApplicationUser()
             {
@@ -166,7 +143,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "666666"
             };
 
-            admin.PasswordHash = hasher.HashPassword(user6, "aaaaaa1");
+            user6.PasswordHash = hasher.HashPassword(user6, "aaaaaa1");
 
             var user7 = new ApplicationUser()
             {
@@ -180,7 +157,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "777777"
             };
 
-            admin.PasswordHash = hasher.HashPassword(user7, "aaaaaa1");
+            user7.PasswordHash = hasher.HashPassword(user7, "aaaaaa1");
 
             var user8 = new ApplicationUser()
             {
@@ -194,7 +171,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "888888"
             };
 
-            admin.PasswordHash = hasher.HashPassword(user8, "aaaaaa1");
+            user8.PasswordHash = hasher.HashPassword(user8, "aaaaaa1");
 
             var user9 = new ApplicationUser()
             {
@@ -208,7 +185,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "999999"
             };
 
-            admin.PasswordHash = hasher.HashPassword(user9, "aaaaaa1");
+            user9.PasswordHash = hasher.HashPassword(user9, "aaaaaa1");
 
             var user10 = new ApplicationUser()
             {
@@ -222,12 +199,11 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "000000"
             };
 
-            admin.PasswordHash = hasher.HashPassword(user10, "aaaaaa1");
+            user10.PasswordHash = hasher.HashPassword(user10, "aaaaaa1");
 
-            //CluOwners SetUp
             var tennisClubSfOwner = new ApplicationUser()
             {
-                Id = "53f6a3e4-df3b-4810-8ba0-83b9a57a379e", //check
+                Id = "53f6a3e4-df3b-4810-8ba0-83b9a57a379e",
                 UserName = "owner1@example.com",
                 NormalizedUserName = "owner1@example.com".ToUpper(),
                 Email = "owner1@example.com",
@@ -237,11 +213,11 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "0000000"
             };
 
-            admin.PasswordHash = hasher.HashPassword(tennisClubSfOwner, "aaaaaa1");
+            tennisClubSfOwner.PasswordHash = hasher.HashPassword(tennisClubSfOwner, "aaaaaa1");
 
             var forehandTcSfOwner = new ApplicationUser()
             {
-                Id = "3a9b86c8-1c51-4990-aafa-6c527abef86e", //check
+                Id = "3a9b86c8-1c51-4990-aafa-6c527abef86e",
                 UserName = "owner2@example.com",
                 NormalizedUserName = "owner2@example.com".ToUpper(),
                 Email = "owner2@example.com",
@@ -251,11 +227,11 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "1111111"
             };
 
-            admin.PasswordHash = hasher.HashPassword(forehandTcSfOwner, "aaaaaa1");
+            forehandTcSfOwner.PasswordHash = hasher.HashPassword(forehandTcSfOwner, "aaaaaa1");
 
             var sixZeroClubSfOwner = new ApplicationUser()
             {
-                Id = "78d95aa6-e1b2-499e-8b93-6dabcfdbc409", //check
+                Id = "78d95aa6-e1b2-499e-8b93-6dabcfdbc409",
                 UserName = "owner3@example.com",
                 NormalizedUserName = "owner3@example.com".ToUpper(),
                 Email = "owner3@example.com",
@@ -265,11 +241,11 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "2222222"
             };
 
-            admin.PasswordHash = hasher.HashPassword(sixZeroClubSfOwner, "aaaaaa1");
+            sixZeroClubSfOwner.PasswordHash = hasher.HashPassword(sixZeroClubSfOwner, "aaaaaa1");
 
             var matchPointTcVnOwner = new ApplicationUser()
             {
-                Id = "af0e6295-932f-4d03-b243-874cd538aa4b", //check
+                Id = "af0e6295-932f-4d03-b243-874cd538aa4b",
                 UserName = "owner4@example.com",
                 NormalizedUserName = "owner4@example.com".ToUpper(),
                 Email = "owner4@example.com",
@@ -279,11 +255,11 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "3333333"
             };
 
-            admin.PasswordHash = hasher.HashPassword(matchPointTcVnOwner, "aaaaaa1");
+            matchPointTcVnOwner.PasswordHash = hasher.HashPassword(matchPointTcVnOwner, "aaaaaa1");
 
             var AceTcVnOwner = new ApplicationUser()
             {
-                Id = "4be73c85-8e2c-4553-8b17-5352c2a9d11f", //check
+                Id = "4be73c85-8e2c-4553-8b17-5352c2a9d11f",
                 UserName = "owner5@example.com",
                 NormalizedUserName = "owner5@example.com".ToUpper(),
                 Email = "owner5@example.com",
@@ -293,11 +269,11 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "4444444"
             };
 
-            admin.PasswordHash = hasher.HashPassword(AceTcVnOwner, "aaaaaa1");
+            AceTcVnOwner.PasswordHash = hasher.HashPassword(AceTcVnOwner, "aaaaaa1");
 
             var blackSeaRamaTcKvnOwner = new ApplicationUser()
             {
-                Id = "5813a55d-7cc0-4441-b5ed-27207a753a6d", //check
+                Id = "5813a55d-7cc0-4441-b5ed-27207a753a6d",
                 UserName = "owner6@example.com",
                 NormalizedUserName = "owner6@example.com".ToUpper(),
                 Email = "owner6@example.com",
@@ -307,11 +283,11 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "5555555"
             };
 
-            admin.PasswordHash = hasher.HashPassword(blackSeaRamaTcKvnOwner, "aaaaaa1");
+            blackSeaRamaTcKvnOwner.PasswordHash = hasher.HashPassword(blackSeaRamaTcKvnOwner, "aaaaaa1");
 
             var numberOneTcBcOwner = new ApplicationUser()
             {
-                Id = "1c3c37d5-2189-4d71-96b5-27c0da3abde7", //check
+                Id = "1c3c37d5-2189-4d71-96b5-27c0da3abde7",
                 UserName = "owner7@example.com",
                 NormalizedUserName = "owner7@example.com".ToUpper(),
                 Email = "owner7@example.com",
@@ -321,11 +297,11 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "6666666"
             };
 
-            admin.PasswordHash = hasher.HashPassword(numberOneTcBcOwner, "aaaaaa1");
+            numberOneTcBcOwner.PasswordHash = hasher.HashPassword(numberOneTcBcOwner, "aaaaaa1");
 
             var simonaHalepTcBcOwner = new ApplicationUser()
             {
-                Id = "0e0103e9-2f94-49de-8012-eba340f8e4cf", //check
+                Id = "0e0103e9-2f94-49de-8012-eba340f8e4cf",
                 UserName = "owner8@example.com",
                 NormalizedUserName = "owner8@example.com".ToUpper(),
                 Email = "owner8@example.com",
@@ -335,11 +311,11 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "7777777"
             };
 
-            admin.PasswordHash = hasher.HashPassword(simonaHalepTcBcOwner, "aaaaaa1");
+            simonaHalepTcBcOwner.PasswordHash = hasher.HashPassword(simonaHalepTcBcOwner, "aaaaaa1");
 
             var winnerTcCnOwner = new ApplicationUser()
             {
-                Id = "d7fc7550-ed8f-4a86-acde-65c54168e949",//check
+                Id = "d7fc7550-ed8f-4a86-acde-65c54168e949",
                 UserName = "owner9@example.com",
                 NormalizedUserName = "owner9@example.com".ToUpper(),
                 Email = "owner9@example.com",
@@ -349,11 +325,11 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "8888888"
             };
 
-            admin.PasswordHash = hasher.HashPassword(winnerTcCnOwner, "aaaaaa1");
+            winnerTcCnOwner.PasswordHash = hasher.HashPassword(winnerTcCnOwner, "aaaaaa1");
 
             var tennisGodTcGrOwner = new ApplicationUser()
             {
-                Id = "df044ba7-d51f-491d-8663-9ee9ddc57fb0",//check
+                Id = "df044ba7-d51f-491d-8663-9ee9ddc57fb0",
                 UserName = "owner10@example.com",
                 NormalizedUserName = "owner10@example.com".ToUpper(),
                 Email = "owner10@example.com",
@@ -363,7 +339,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "9999999"
             };
 
-            admin.PasswordHash = hasher.HashPassword(tennisGodTcGrOwner, "aaaaaa1");
+            tennisGodTcGrOwner.PasswordHash = hasher.HashPassword(tennisGodTcGrOwner, "aaaaaa1");
 
             var notApprovedClubOwner = new ApplicationUser()
             {
@@ -377,15 +353,15 @@ namespace GameSetBook.Infrastructure.Data.Configurations
                 PhoneNumber = "99999991"
             };
 
-            admin.PasswordHash = hasher.HashPassword(notApprovedClubOwner, "aaaaaa1");
+            notApprovedClubOwner.PasswordHash = hasher.HashPassword(notApprovedClubOwner, "aaaaaa1");
 
             var users = new List<ApplicationUser>()
             {
-                admin,user1, user2, user3, user4, user5, user6, user7, user8, user9, user10,
+                admin,clubOwner,user,user1, user2, user3, user4, user5, user6, user7, user8, user9, user10,
                 tennisClubSfOwner,forehandTcSfOwner,sixZeroClubSfOwner,
                 matchPointTcVnOwner,AceTcVnOwner,blackSeaRamaTcKvnOwner,
                 numberOneTcBcOwner,simonaHalepTcBcOwner,winnerTcCnOwner,
-                tennisGodTcGrOwner,notApprovedClubOwner
+                tennisGodTcGrOwner,notApprovedClubOwner,
             };
 
             return users;

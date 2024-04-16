@@ -14,46 +14,37 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             builder.HasData(CourtSeed());
         }
 
-        //private IList<Court> CourtSeed()
-        //{
-        //    var courts = new List<Court>()
-        //    {
-        //        new Court()
-        //        {
-        //            Id = 1,
-        //            ClubId = 1,
-        //            Name = "No.1",
-        //            IsActive= true,
-        //            IsIndoor= false,
-        //            IsLighted = false,
-        //            PricePerHour = 20m,
-        //            Surface = Surface.Clay
-        //        },
-
-        //        new Court()
-        //        {
-        //            Id = 2,
-        //            ClubId = 1,
-        //            Name = "No.2",
-        //            IsActive= true,
-        //            IsIndoor= false,
-        //            IsLighted = false,
-        //            PricePerHour = 20m,
-        //            Surface = Surface.Hard
-        //        }
-
-        //    };
-
-        //    return courts;
-        //}
-
         private static IList<Court> CourtSeed()
         {
-            var tennisClubSfCourtNo1 = new Court()
+            var court1 = new Court()
             {
                 Id = 1,
-                Name = "No1",
                 ClubId = 1,
+                Name = "No.1",
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = false,
+                PricePerHour = 20m,
+                Surface = Surface.Clay
+            };
+
+            var court2=new Court()
+            {
+                Id = 2,
+                ClubId = 1,
+                Name = "No.2",
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = false,
+                PricePerHour = 20m,
+                Surface = Surface.Hard
+            };
+
+            var tennisClubSfCourtNo1 = new Court()
+            {
+                Id = 3,
+                Name = "No1",
+                ClubId = 2,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = false,
@@ -62,9 +53,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var tennisClubSfCourtNo2 = new Court()
             {
-                Id = 2,
+                Id = 4,
                 Name = "No2",
-                ClubId = 1,
+                ClubId = 2,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -73,9 +64,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var tennisClubSfCourtNo3 = new Court()
             {
-                Id = 3,
+                Id = 5,
                 Name = "No3",
-                ClubId = 1,
+                ClubId = 2,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -84,9 +75,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var tennisClubSfCourtNo4 = new Court()
             {
-                Id = 4,
+                Id = 6,
                 Name = "No4",
-                ClubId = 1,
+                ClubId = 2,
                 IsActive = true,
                 IsIndoor = true,
                 IsLighted = true,
@@ -97,9 +88,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //forehandTcSf
             var forehandTcSfCourtNo1 = new Court()
             {
-                Id = 5,
+                Id = 7,
                 Name = "Court 1",
-                ClubId = 2,
+                ClubId = 3,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -108,9 +99,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var forehandTcSfCourtNo2 = new Court()
             {
-                Id = 6,
+                Id = 8,
                 Name = "Court 2",
-                ClubId = 2,
+                ClubId = 3,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -119,9 +110,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var forehandTcSfCourtNo3 = new Court()
             {
-                Id = 7,
+                Id = 9,
                 Name = "Court 3",
-                ClubId = 2,
+                ClubId = 3,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -131,9 +122,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //sixZeroClubSf
             var sixZeroClubSfCourtNo1 = new Court()
             {
-                Id = 8,
+                Id = 10,
                 Name = "Number 1",
-                ClubId = 3,
+                ClubId = 4,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -142,9 +133,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var sixZeroClubSfCourtNo2 = new Court()
             {
-                Id = 9,
+                Id = 11,
                 Name = "Number 2",
-                ClubId = 3,
+                ClubId = 4,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -155,9 +146,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //matchPointTcVn
             var matchPointTcVnCourtNo1 = new Court()
             {
-                Id = 10,
+                Id = 12,
                 Name = "First",
-                ClubId = 4,
+                ClubId = 5,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -166,9 +157,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var matchPointTcVnCourtNo2 = new Court()
             {
-                Id = 11,
+                Id = 13,
                 Name = "Second",
-                ClubId = 4,
+                ClubId = 5,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -177,9 +168,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var matchPointTcVnCourtNo3 = new Court()
             {
-                Id = 12,
+                Id = 14,
                 Name = "Third",
-                ClubId = 4,
+                ClubId = 5,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -190,9 +181,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //AceTcVn
             var AceTcVnCourtNo1 = new Court()
             {
-                Id = 13,
+                Id = 15,
                 Name = "No 1",
-                ClubId = 5,
+                ClubId = 6,
                 IsActive = true,
                 IsIndoor = true,
                 IsLighted = true,
@@ -201,9 +192,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var AceTcVnCourtNo2 = new Court()
             {
-                Id = 14,
+                Id = 16,
                 Name = "No 2",
-                ClubId = 5,
+                ClubId = 6,
                 IsActive = true,
                 IsIndoor = true,
                 IsLighted = true,
@@ -214,9 +205,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //blackSeaRamaTcKvn
             var blackSeaRamaTcKvnCourtNo1 = new Court()
             {
-                Id = 15,
+                Id = 17,
                 Name = "No1",
-                ClubId = 6,
+                ClubId = 7,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = false,
@@ -225,9 +216,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var blackSeaRamaTcKvnCourtNo2 = new Court()
             {
-                Id = 16,
+                Id = 18,
                 Name = "No2",
-                ClubId = 6,
+                ClubId = 7,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = false,
@@ -238,9 +229,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //numberOneTcBc
             var numberOneTcBcCourtNo1 = new Court()
             {
-                Id = 17,
+                Id = 19,
                 Name = "Court 1",
-                ClubId = 7,
+                ClubId = 8,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -249,9 +240,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var numberOneTcBcCourtNo2 = new Court()
             {
-                Id = 18,
+                Id = 20,
                 Name = "Court 2",
-                ClubId = 7,
+                ClubId = 8,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -260,9 +251,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var numberOneTcBcCourtNo3 = new Court()
             {
-                Id = 19,
+                Id = 21,
                 Name = "Court 3",
-                ClubId = 7,
+                ClubId = 8,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -273,9 +264,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //simonaHalepTcBc
             var simonaHalepTcBcCourtNo1 = new Court()
             {
-                Id = 20,
+                Id = 22,
                 Name = "Court 1",
-                ClubId = 8,
+                ClubId = 9,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -284,9 +275,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var simonaHalepTcBcCourtNo2 = new Court()
             {
-                Id = 21,
+                Id = 23,
                 Name = "Court 2",
-                ClubId = 8,
+                ClubId = 9,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -297,9 +288,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //winnerTcCn
             var winnerTcCnCourtNo1 = new Court()
             {
-                Id = 22,
+                Id = 24,
                 Name = "Court No1",
-                ClubId = 9,
+                ClubId = 10,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -308,9 +299,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var winnerTcCnCourtNo2 = new Court()
             {
-                Id = 23,
+                Id = 25,
                 Name = "Court No2",
-                ClubId = 9,
+                ClubId = 10,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -321,9 +312,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //tennisGodTcGr
             var tennisGodTcGrCourtNo1 = new Court()
             {
-                Id = 24,
+                Id = 26,
                 Name = "Olymp 1",
-                ClubId = 10,
+                ClubId = 11,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -332,9 +323,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var tennisGodTcGrCourtNo2 = new Court()
             {
-                Id = 25,
+                Id = 27,
                 Name = "Olymp 2",
-                ClubId = 10,
+                ClubId = 11,
                 IsActive = true,
                 IsIndoor = false,
                 IsLighted = true,
@@ -345,9 +336,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //notApprovedClubSf
             var notAproovedCourt1 = new Court()
             {
-                Id = 26,
+                Id = 28,
                 Name = "1st",
-                ClubId = 11,
+                ClubId = 12,
                 IsActive = false,
                 IsIndoor = false,
                 IsLighted = false,
@@ -356,9 +347,9 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var notAproovedCourt2 = new Court()
             {
-                Id = 27,
+                Id = 29,
                 Name = "2nd",
-                ClubId = 11,
+                ClubId = 12,
                 IsActive = false,
                 IsIndoor = false,
                 IsLighted = false,
@@ -368,7 +359,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
 
             var courts = new List<Court>()
             {
-                tennisClubSfCourtNo1,tennisClubSfCourtNo2,tennisClubSfCourtNo3,tennisClubSfCourtNo4,
+                court1,court2,tennisClubSfCourtNo1,tennisClubSfCourtNo2,tennisClubSfCourtNo3,tennisClubSfCourtNo4,
                 forehandTcSfCourtNo1,forehandTcSfCourtNo2,forehandTcSfCourtNo3,
                 sixZeroClubSfCourtNo1,sixZeroClubSfCourtNo2,matchPointTcVnCourtNo1,
                 matchPointTcVnCourtNo2,matchPointTcVnCourtNo3,AceTcVnCourtNo1,AceTcVnCourtNo2,

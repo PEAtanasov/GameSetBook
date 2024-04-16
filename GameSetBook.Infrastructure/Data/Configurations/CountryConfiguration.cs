@@ -11,27 +11,6 @@ namespace GameSetBook.Infrastructure.Data.Configurations
         {
             builder.HasData(CountrySeed());
         }
-
-        //private IList<Country> CountrySeed()
-        //{
-        //    var countries = new List<Country>()
-        //    {
-        //        new Country
-        //        {
-        //            Id = 1,
-        //            Name = "Bulgaria"
-        //        },
-
-        //        new Country
-        //        {
-        //            Id = 2,
-        //            Name = "Romania"
-        //        }
-        //    };
-
-        //    return countries;
-        //}
-
         private static IList<Country> CountrySeed()
         {
             var bulgaria = new Country()

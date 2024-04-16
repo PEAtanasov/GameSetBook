@@ -14,40 +14,35 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             builder.HasData(ClubSeed());
         }
 
-        //private IList<Club> ClubSeed()
-        //{
-        //    var clubs = new List<Club>()
-        //    {
-        //        new Club()
-        //        {
-        //            Id = 1,
-        //            Name = "First Club",
-        //            Description = "First Club Description",
-        //            CityId=1,
-        //            ClubOwnerId = "82cd50ca-b023-42e5-8344-227d5c45877c",
-        //            Email = "firstClub@mail.com",
-        //            PhoneNumber = "+359123456",
-        //            HasParking = true,
-        //            HasShop = true,
-        //            HasShower = true,
-        //            NumberOfCoaches =2,
-        //            NumberOfCourts =2,
-        //            WorkingTimeStart = 8,
-        //            WorkingTimeEnd = 20,
-        //            IsAproovedByAdmin = true,
-        //            RegisteredOn = DateTime.Parse("09-03-2024 10:00"),
-        //            Address = "First Club Address"
-        //        }
-        //    };
-
-        //    return clubs;
-        //}
-
         private static IList<Club> ClubSeed()
         {
-            var tennisClubSf = new Club()
+
+
+            var club = new Club()
             {
                 Id = 1,
+                Name = "First Club",
+                Description = "First Club Description",
+                CityId = 1,
+                ClubOwnerId = "82cd50ca-b023-42e5-8344-227d5c45877c",
+                Email = "firstClub@mail.com",
+                PhoneNumber = "+359123456",
+                HasParking = true,
+                HasShop = true,
+                HasShower = true,
+                NumberOfCoaches = 2,
+                NumberOfCourts = 2,
+                WorkingTimeStart = 8,
+                WorkingTimeEnd = 20,
+                IsAproovedByAdmin = true,
+                RegisteredOn = DateTime.Parse("09-03-2024 10:00"),
+                Address = "First Club Address"
+            };
+            
+
+            var tennisClubSf = new Club()
+            {
+                Id = 2,
                 Name = "TC Sofia",
                 ClubOwnerId = "53f6a3e4-df3b-4810-8ba0-83b9a57a379e",
                 CityId = 1,
@@ -70,7 +65,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
 
             var forehandTcSf = new Club()
             {
-                Id = 2,
+                Id = 3,
                 Name = "Forehand TC",
                 ClubOwnerId = "3a9b86c8-1c51-4990-aafa-6c527abef86e",
                 CityId = 1,
@@ -93,7 +88,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
 
             var sixZeroClubSf = new Club()
             {
-                Id = 3,
+                Id = 4,
                 Name = "6-0 Sofia",
                 ClubOwnerId = "78d95aa6-e1b2-499e-8b93-6dabcfdbc409",
                 CityId = 1,
@@ -117,7 +112,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //Varna
             var matchPointTcVn = new Club()
             {
-                Id = 4,
+                Id = 5,
                 Name = "Match Point",
                 ClubOwnerId = "af0e6295-932f-4d03-b243-874cd538aa4b",
                 CityId = 2,
@@ -140,7 +135,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
 
             var AceTcVn = new Club()
             {
-                Id = 5,
+                Id = 6,
                 Name = "TC Ace Varna",
                 ClubOwnerId = "4be73c85-8e2c-4553-8b17-5352c2a9d11f",
                 CityId = 2,
@@ -164,7 +159,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //Kavarna
             var blackSeaRamaTcKvn = new Club()
             {
-                Id = 6,
+                Id = 7,
                 Name = "BlackSeaRama TC",
                 ClubOwnerId = "5813a55d-7cc0-4441-b5ed-27207a753a6d",
                 CityId = 3,
@@ -188,7 +183,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //Bucharest - Romania
             var numberOneTcBc = new Club()
             {
-                Id = 7,
+                Id = 8,
                 Name = "Number One",
                 ClubOwnerId = "1c3c37d5-2189-4d71-96b5-27c0da3abde7",
                 CityId = 4,
@@ -210,7 +205,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var simonaHalepTcBc = new Club()
             {
-                Id = 8,
+                Id = 9,
                 Name = "TC Simona Halep",
                 ClubOwnerId = "0e0103e9-2f94-49de-8012-eba340f8e4cf",
                 CityId = 4,
@@ -232,7 +227,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             };
             var winnerTcCn = new Club()
             {
-                Id = 9,
+                Id = 10,
                 Name = "Winner TC",
                 ClubOwnerId = "d7fc7550-ed8f-4a86-acde-65c54168e949",
                 CityId = 5,
@@ -255,7 +250,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
             //Athens - greece
             var tennisGodTcGr = new Club()
             {
-                Id = 10,
+                Id = 11,
                 Name = "Zeus TC",
                 ClubOwnerId = "df044ba7-d51f-491d-8663-9ee9ddc57fb0",
                 CityId = 6,
@@ -278,7 +273,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
 
             var notApprovedClubSf = new Club()
             {
-                Id = 11,
+                Id = 12,
                 Name = "Top Tennis",
                 ClubOwnerId = "b49cdbae-fe47-4f91-82b2-746025d31476",
                 CityId = 1,
@@ -301,7 +296,7 @@ namespace GameSetBook.Infrastructure.Data.Configurations
 
             var clubs = new List<Club>()
             {
-                tennisClubSf,forehandTcSf,sixZeroClubSf,matchPointTcVn,AceTcVn,
+                club,tennisClubSf,forehandTcSf,sixZeroClubSf,matchPointTcVn,AceTcVn,
                 blackSeaRamaTcKvn,numberOneTcBc,simonaHalepTcBc,winnerTcCn,tennisGodTcGr,notApprovedClubSf
             };
 
