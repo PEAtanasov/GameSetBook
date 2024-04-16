@@ -28,6 +28,7 @@ namespace GameSetBook.Tests
         private ApplicationUser tennisClubSfOwner;
         private ApplicationUser forehandTcSfOwner;
         private ApplicationUser sixZeroClubSfOwner;
+        private ApplicationUser notApprovedClubOwner;
         //varna clubs
         private ApplicationUser matchPointTcVnOwner;
         private ApplicationUser AceTcVnOwner;
@@ -77,7 +78,7 @@ namespace GameSetBook.Tests
 
         //C L U B S
         //Sofia-bulgaria
-        private Club tennisClubSf;
+        private Club tennisClubSf; //check
         private Club forehandTcSf;
         private Club sixZeroClubSf;
 
@@ -97,6 +98,9 @@ namespace GameSetBook.Tests
 
         //Athens - Greece
         private Club tennisGodTcGr;
+
+        //Not aprooved Club
+        private Club notApprovedClubSf;
 
 
 
@@ -147,6 +151,12 @@ namespace GameSetBook.Tests
         private Court tennisGodTcGrCourtNo1;
         private Court tennisGodTcGrCourtNo2;
 
+        //NotAproved Club Courts 
+        private Court notAproovedCourt1;
+        private Court notAproovedCourt2;
+
+
+
 
         [SetUp]
         public async Task Setup()
@@ -162,7 +172,7 @@ namespace GameSetBook.Tests
                 NormalizedEmail = "user1@example.com".ToUpper(),
                 FirstName = "Petar",
                 LastName = "Petrov",
-                PhoneNumber = "111111"               
+                PhoneNumber = "111111"
             };
 
             user2 = new ApplicationUser()
@@ -328,8 +338,8 @@ namespace GameSetBook.Tests
                 NormalizedUserName = "owner6@example.com".ToUpper(),
                 Email = "owner6@example.com",
                 NormalizedEmail = "owner6@example.com".ToUpper(),
-                FirstName = "owner6",
-                LastName = "owner6",
+                FirstName = "Petar",
+                LastName = "Atanasov",
                 PhoneNumber = "5555555"
             };
             numberOneTcBcOwner = new ApplicationUser()
@@ -376,6 +386,19 @@ namespace GameSetBook.Tests
                 LastName = "owner10",
                 PhoneNumber = "9999999"
             };
+            notApprovedClubOwner = new ApplicationUser()
+            {
+                Id = "b49cdbae-fe47-4f91-82b2-746025d31476",
+                UserName = "notapproved@example.com",
+                NormalizedUserName = "notapproved@example.com".ToUpper(),
+                Email = "notapproved@example.com",
+                NormalizedEmail = "notapproved@example.com".ToUpper(),
+                FirstName = "not Approved owner",
+                LastName = "not Approved owner",
+                PhoneNumber = "99999991"
+            };
+
+            
 
             //Countries SetUp
             bulgaria = new Country()
@@ -417,7 +440,7 @@ namespace GameSetBook.Tests
             //Romania
             bucharest = new City()
             {
-                Id= 4,
+                Id = 4,
                 Name = "Bucharest",
                 CountryId = 2
             };
@@ -435,13 +458,590 @@ namespace GameSetBook.Tests
                 CountryId = 3
             };
 
+            //CLUB setup
+            //Sofia
+            tennisClubSf = new Club()
+            {
+                Id = 1,
+                Name = "TC Sofia",
+                ClubOwnerId = "53f6a3e4-df3b-4810-8ba0-83b9a57a379e",
+                CityId = 1,
+                Address = "Address 0",
+                Email = "club1@example.com",
+                PhoneNumber = "00000001",
+                LogoUrl = "LOGO",
+                NumberOfCourts = 4,
+                NumberOfCoaches = 2,
+                WorkingTimeStart = 8,
+                WorkingTimeEnd = 21,
+                RegisteredOn = DateTime.Parse("01-03-2024 10:00"),
+                IsAproovedByAdmin = true,
+                HasParking = true,
+                HasShop = true,
+                HasShower = true,
+                IsDeleted = false,
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis quam purus, id lobortis purus efficitur eget. Cras sed dui a dui finibus condimentum. Quisque ut erat ut orci bibendum tincidunt. Aenean malesuada, augue nec facilisis porttitor, ante massa dignissim sapien, quis vulputate nisi magna id justo. Nunc placerat est ac viverra fringilla. Vestibulum mattis arcu nec lacus tempus, et ultricies nisi luctus. Ut semper scelerisque libero nec pellentesque. Aliquam commodo imperdiet felis, at eleifend diam eleifend porttitor. Cras lacus mi, tempus vitae consectetur ut, dapibus id quam. Aenean a finibus dolor, gravida euismod mauris. Quisque aliquet auctor turpis eu maximus. Duis feugiat augue vel faucibus venenatis.\r\n\r\nInteger nisl metus, aliquet et vulputate sit amet, hendrerit eget nulla. Vestibulum non convallis augue. Aenean ut egestas lacus. Sed pulvinar purus neque, at maximus nisi efficitur et. Etiam sed magna a felis rutrum lacinia a vel tortor. Class aptent taciti eu.",
+            };
+
+            forehandTcSf = new Club()
+            {
+                Id = 2,
+                Name = "Forehand TC",
+                ClubOwnerId = "3a9b86c8-1c51-4990-aafa-6c527abef86e",
+                CityId = 1,
+                Address = "Address 1",
+                Email = "club2@example.com",
+                PhoneNumber = "+35988800002",
+                LogoUrl = "LOGO2",
+                NumberOfCourts = 3,
+                NumberOfCoaches = 2,
+                WorkingTimeStart = 7,
+                WorkingTimeEnd = 20,
+                RegisteredOn = DateTime.Parse("02-03-2024 10:00"),
+                IsAproovedByAdmin = true,
+                HasParking = true,
+                HasShop = false,
+                HasShower = true,
+                IsDeleted = false,
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis quam purus, id lobortis purus efficitur eget. Cras sed dui a dui finibus condimentum. Quisque ut erat ut orci bibendum tincidunt. Aenean malesuada, augue nec facilisis porttitor, ante massa dignissim sapien, quis vulputate nisi magna id justo. Nunc placerat est ac viverra fringilla. Vestibulum mattis arcu nec lacus tempus, et ultricies nisi luctus. Ut semper scelerisque libero nec pellentesque. Aliquam commodo imperdiet felis, at eleifend diam eleifend porttitor. Cras lacus mi, tempus vitae consectetur ut, dapibus id quam. Aenean a finibus dolor, gravida euismod mauris. Quisque aliquet auctor turpis eu maximus. Duis feugiat augue vel faucibus venenatis.\r\n\r\nInteger nisl metus, aliquet et vulputate sit amet, hendrerit eget nulla. Vestibulum non convallis augue. Aenean ut egestas lacus. Sed pulvinar purus neque, at maximus nisi efficitur et. Etiam sed magna a felis rutrum lacinia a vel tortor. Class aptent taciti eu.",
+            };
+
+            sixZeroClubSf = new Club()
+            {
+                Id = 3,
+                Name = "6-0 Sofia",
+                ClubOwnerId = "78d95aa6-e1b2-499e-8b93-6dabcfdbc409",
+                CityId = 1,
+                Address = "Address 2",
+                Email = "club2@example.com",
+                PhoneNumber = "+35988800003",
+                LogoUrl = "LOGO3",
+                NumberOfCourts = 2,
+                NumberOfCoaches = 1,
+                WorkingTimeStart = 7,
+                WorkingTimeEnd = 23,
+                RegisteredOn = DateTime.Parse("03-03-2024 10:00"),
+                IsAproovedByAdmin = true,
+                HasParking = true,
+                HasShop = false,
+                HasShower = true,
+                IsDeleted = false,
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis quam purus, id lobortis purus efficitur eget. Cras sed dui a dui finibus condimentum. Quisque ut erat ut orci bibendum tincidunt. Aenean malesuada, augue nec facilisis porttitor, ante massa dignissim sapien, quis vulputate nisi magna id justo. Nunc placerat est ac viverra fringilla. Vestibulum mattis arcu nec lacus tempus, et ultricies nisi luctus. Ut semper scelerisque libero nec pellentesque. Aliquam commodo imperdiet felis, at eleifend diam eleifend porttitor. Cras lacus mi, tempus vitae consectetur ut, dapibus id quam. Aenean a finibus dolor, gravida euismod mauris. Quisque aliquet auctor turpis eu maximus. Duis feugiat augue vel faucibus venenatis.\r\n\r\nInteger nisl metus, aliquet et vulputate sit amet, hendrerit eget nulla. Vestibulum non convallis augue. Aenean ut egestas lacus. Sed pulvinar purus neque, at maximus nisi efficitur et. Etiam sed magna a felis rutrum lacinia a vel tortor. Class aptent taciti eu.",
+            };
+
+            //Varna
+            matchPointTcVn = new Club()
+            {
+                Id = 4,
+                Name = "Match Point",
+                ClubOwnerId = "af0e6295-932f-4d03-b243-874cd538aa4b",
+                CityId = 2,
+                Address = "Address 3",
+                Email = "club3@example.com",
+                PhoneNumber = "+35988800004",
+                LogoUrl = "LOGO4",
+                NumberOfCourts = 3,
+                NumberOfCoaches = 2,
+                WorkingTimeStart = 7,
+                WorkingTimeEnd = 20,
+                RegisteredOn = DateTime.Parse("04-03-2024 10:00"),
+                IsAproovedByAdmin = true,
+                HasParking = true,
+                HasShop = true,
+                HasShower = false,
+                IsDeleted = false,
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis quam purus, id lobortis purus efficitur eget. Cras sed dui a dui finibus condimentum. Quisque ut erat ut orci bibendum tincidunt. Aenean malesuada, augue nec facilisis porttitor, ante massa dignissim sapien, quis vulputate nisi magna id justo. Nunc placerat est ac viverra fringilla. Vestibulum mattis arcu nec lacus tempus, et ultricies nisi luctus. Ut semper scelerisque libero nec pellentesque. Aliquam commodo imperdiet felis, at eleifend diam eleifend porttitor. Cras lacus mi, tempus vitae consectetur ut, dapibus id quam. Aenean a finibus dolor, gravida euismod mauris. Quisque aliquet auctor turpis eu maximus. Duis feugiat augue vel faucibus venenatis.\r\n\r\nInteger nisl metus, aliquet et vulputate sit amet, hendrerit eget nulla. Vestibulum non convallis augue. Aenean ut egestas lacus. Sed pulvinar purus neque, at maximus nisi efficitur et. Etiam sed magna a felis rutrum lacinia a vel tortor. Class aptent taciti eu.",
+            };
+
+            AceTcVn = new Club()
+            {
+                Id = 5,
+                Name = "TC Ace Varna",
+                ClubOwnerId = "4be73c85-8e2c-4553-8b17-5352c2a9d11f",
+                CityId = 2,
+                Address = "Address 4",
+                Email = "club4@example.com",
+                PhoneNumber = "+35988800005",
+                LogoUrl = "LOGO5",
+                NumberOfCourts = 2,
+                NumberOfCoaches = 2,
+                WorkingTimeStart = 8,
+                WorkingTimeEnd = 22,
+                RegisteredOn = DateTime.Parse("01-03-2024 10:00"),
+                IsAproovedByAdmin = true,
+                HasParking = false,
+                HasShop = true,
+                HasShower = true,
+                IsDeleted = false,
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis quam purus, id lobortis purus efficitur eget. Cras sed dui a dui finibus condimentum. Quisque ut erat ut orci bibendum tincidunt. Aenean malesuada, augue nec facilisis porttitor, ante massa dignissim sapien, quis vulputate nisi magna id justo. Nunc placerat est ac viverra fringilla. Vestibulum mattis arcu nec lacus tempus, et ultricies nisi luctus. Ut semper scelerisque libero nec pellentesque. Aliquam commodo imperdiet felis, at eleifend diam eleifend porttitor. Cras lacus mi, tempus vitae consectetur ut, dapibus id quam. Aenean a finibus dolor, gravida euismod mauris. Quisque aliquet auctor turpis eu maximus. Duis feugiat augue vel faucibus venenatis.\r\n\r\nInteger nisl metus, aliquet et vulputate sit amet, hendrerit eget nulla. Vestibulum non convallis augue. Aenean ut egestas lacus. Sed pulvinar purus neque, at maximus nisi efficitur et. Etiam sed magna a felis rutrum lacinia a vel tortor. Class aptent taciti eu.",
+            };
+
+            //Kavarna
+            blackSeaRamaTcKvn = new Club()
+            {
+                Id = 6,
+                Name = "BlackSeaRama TC",
+                ClubOwnerId = "5813a55d-7cc0-4441-b5ed-27207a753a6d",
+                CityId = 3,
+                Address = "Address 5",
+                Email = "club5@example.com",
+                PhoneNumber = "+35988800006",
+                LogoUrl = "LOGO6",
+                NumberOfCourts = 2,
+                NumberOfCoaches = 2,
+                WorkingTimeStart = 7,
+                WorkingTimeEnd = 21,
+                RegisteredOn = DateTime.Parse("01-05-2011 10:00"),
+                IsAproovedByAdmin = true,
+                HasParking = true,
+                HasShop = true,
+                HasShower = true,
+                IsDeleted = false,
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis quam purus, id lobortis purus efficitur eget. Cras sed dui a dui finibus condimentum. Quisque ut erat ut orci bibendum tincidunt. Aenean malesuada, augue nec facilisis porttitor, ante massa dignissim sapien, quis vulputate nisi magna id justo. Nunc placerat est ac viverra fringilla. Vestibulum mattis arcu nec lacus tempus, et ultricies nisi luctus. Ut semper scelerisque libero nec pellentesque. Aliquam commodo imperdiet felis, at eleifend diam eleifend porttitor. Cras lacus mi, tempus vitae consectetur ut, dapibus id quam. Aenean a finibus dolor, gravida euismod mauris. Quisque aliquet auctor turpis eu maximus. Duis feugiat augue vel faucibus venenatis.\r\n\r\nInteger nisl metus, aliquet et vulputate sit amet, hendrerit eget nulla. Vestibulum non convallis augue. Aenean ut egestas lacus. Sed pulvinar purus neque, at maximus nisi efficitur et. Etiam sed magna a felis rutrum lacinia a vel tortor. Class aptent taciti eu.",
+            };
+
+            //Bucharest - Romania
+            numberOneTcBc = new Club()
+            {
+                Id = 7,
+                Name = "Number One",
+                ClubOwnerId = "1c3c37d5-2189-4d71-96b5-27c0da3abde7",
+                CityId = 4,
+                Address = "Address 6",
+                Email = "club6@example.com",
+                PhoneNumber = "+35988800007",
+                LogoUrl = "LOGO7",
+                NumberOfCourts = 3,
+                NumberOfCoaches = 3,
+                WorkingTimeStart = 7,
+                WorkingTimeEnd = 23,
+                RegisteredOn = DateTime.Parse("01-04-2023 10:00"),
+                IsAproovedByAdmin = true,
+                HasParking = true,
+                HasShop = true,
+                HasShower = true,
+                IsDeleted = false,
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis quam purus, id lobortis purus efficitur eget. Cras sed dui a dui finibus condimentum. Quisque ut erat ut orci bibendum tincidunt. Aenean malesuada, augue nec facilisis porttitor, ante massa dignissim sapien, quis vulputate nisi magna id justo. Nunc placerat est ac viverra fringilla. Vestibulum mattis arcu nec lacus tempus, et ultricies nisi luctus. Ut semper scelerisque libero nec pellentesque. Aliquam commodo imperdiet felis, at eleifend diam eleifend porttitor. Cras lacus mi, tempus vitae consectetur ut, dapibus id quam. Aenean a finibus dolor, gravida euismod mauris. Quisque aliquet auctor turpis eu maximus. Duis feugiat augue vel faucibus venenatis.\r\n\r\nInteger nisl metus, aliquet et vulputate sit amet, hendrerit eget nulla. Vestibulum non convallis augue. Aenean ut egestas lacus. Sed pulvinar purus neque, at maximus nisi efficitur et. Etiam sed magna a felis rutrum lacinia a vel tortor. Class aptent taciti eu.",
+            };
+            simonaHalepTcBc = new Club()
+            {
+                Id = 8,
+                Name = "TC Simona Halep",
+                ClubOwnerId = "0e0103e9-2f94-49de-8012-eba340f8e4cf",
+                CityId = 4,
+                Address = "Address 7",
+                Email = "club7@example.com",
+                PhoneNumber = "+35988800008",
+                LogoUrl = "LOGO8",
+                NumberOfCourts = 2,
+                NumberOfCoaches = 2,
+                WorkingTimeStart = 8,
+                WorkingTimeEnd = 22,
+                RegisteredOn = DateTime.Parse("03-04-2023 10:00"),
+                IsAproovedByAdmin = true,
+                HasParking = true,
+                HasShop = true,
+                HasShower = true,
+                IsDeleted = false,
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis quam purus, id lobortis purus efficitur eget. Cras sed dui a dui finibus condimentum. Quisque ut erat ut orci bibendum tincidunt. Aenean malesuada, augue nec facilisis porttitor, ante massa dignissim sapien, quis vulputate nisi magna id justo. Nunc placerat est ac viverra fringilla. Vestibulum mattis arcu nec lacus tempus, et ultricies nisi luctus. Ut semper scelerisque libero nec pellentesque. Aliquam commodo imperdiet felis, at eleifend diam eleifend porttitor. Cras lacus mi, tempus vitae consectetur ut, dapibus id quam. Aenean a finibus dolor, gravida euismod mauris. Quisque aliquet auctor turpis eu maximus. Duis feugiat augue vel faucibus venenatis.\r\n\r\nInteger nisl metus, aliquet et vulputate sit amet, hendrerit eget nulla. Vestibulum non convallis augue. Aenean ut egestas lacus. Sed pulvinar purus neque, at maximus nisi efficitur et. Etiam sed magna a felis rutrum lacinia a vel tortor. Class aptent taciti eu.",
+            };
+            winnerTcCn = new Club()
+            {
+                Id = 9,
+                Name = "Winner TC",
+                ClubOwnerId = "d7fc7550-ed8f-4a86-acde-65c54168e949",
+                CityId = 5,
+                Address = "Address 8",
+                Email = "club8@example.com",
+                PhoneNumber = "+35988800009",
+                LogoUrl = "LOGO9",
+                NumberOfCourts = 2,
+                NumberOfCoaches = 1,
+                WorkingTimeStart = 7,
+                WorkingTimeEnd = 20,
+                RegisteredOn = DateTime.Parse("04-04-2023 10:00"),
+                IsAproovedByAdmin = true,
+                HasParking = true,
+                HasShop = true,
+                HasShower = false,
+                IsDeleted = false,
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis quam purus, id lobortis purus efficitur eget. Cras sed dui a dui finibus condimentum. Quisque ut erat ut orci bibendum tincidunt. Aenean malesuada, augue nec facilisis porttitor, ante massa dignissim sapien, quis vulputate nisi magna id justo. Nunc placerat est ac viverra fringilla. Vestibulum mattis arcu nec lacus tempus, et ultricies nisi luctus. Ut semper scelerisque libero nec pellentesque. Aliquam commodo imperdiet felis, at eleifend diam eleifend porttitor. Cras lacus mi, tempus vitae consectetur ut, dapibus id quam. Aenean a finibus dolor, gravida euismod mauris. Quisque aliquet auctor turpis eu maximus. Duis feugiat augue vel faucibus venenatis.\r\n\r\nInteger nisl metus, aliquet et vulputate sit amet, hendrerit eget nulla. Vestibulum non convallis augue. Aenean ut egestas lacus. Sed pulvinar purus neque, at maximus nisi efficitur et. Etiam sed magna a felis rutrum lacinia a vel tortor. Class aptent taciti eu.",
+            };
+            //Athens - greece
+            tennisGodTcGr = new Club()
+            {
+                Id = 10,
+                Name = "Zeus TC",
+                ClubOwnerId = "df044ba7-d51f-491d-8663-9ee9ddc57fb0",
+                CityId = 6,
+                Address = "Address 10",
+                Email = "club10@example.com",
+                PhoneNumber = "+35988800010",
+                LogoUrl = "LOGO10",
+                NumberOfCourts = 2,
+                NumberOfCoaches = 2,
+                WorkingTimeStart = 8,
+                WorkingTimeEnd = 21,
+                RegisteredOn = DateTime.Parse("01-04-2023 10:00"),
+                IsAproovedByAdmin = true,
+                HasParking = true,
+                HasShop = true,
+                HasShower = true,
+                IsDeleted = false,
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis quam purus, id lobortis purus efficitur eget. Cras sed dui a dui finibus condimentum. Quisque ut erat ut orci bibendum tincidunt. Aenean malesuada, augue nec facilisis porttitor, ante massa dignissim sapien, quis vulputate nisi magna id justo. Nunc placerat est ac viverra fringilla. Vestibulum mattis arcu nec lacus tempus, et ultricies nisi luctus. Ut semper scelerisque libero nec pellentesque. Aliquam commodo imperdiet felis, at eleifend diam eleifend porttitor. Cras lacus mi, tempus vitae consectetur ut, dapibus id quam. Aenean a finibus dolor, gravida euismod mauris. Quisque aliquet auctor turpis eu maximus. Duis feugiat augue vel faucibus venenatis.\r\n\r\nInteger nisl metus, aliquet et vulputate sit amet, hendrerit eget nulla. Vestibulum non convallis augue. Aenean ut egestas lacus. Sed pulvinar purus neque, at maximus nisi efficitur et. Etiam sed magna a felis rutrum lacinia a vel tortor. Class aptent taciti eu.",
+            };
+
+            notApprovedClubSf = new Club()
+            {
+                Id = 11,
+                Name = "Top Tennis",
+                ClubOwnerId = "b49cdbae-fe47-4f91-82b2-746025d31476",
+                CityId = 1,
+                Address = "Address 101",
+                Email = "club11@example.com",
+                PhoneNumber = "+35988800011",
+                LogoUrl = "LOGO11",
+                NumberOfCourts = 2,
+                NumberOfCoaches = 2,
+                WorkingTimeStart = 8,
+                WorkingTimeEnd = 21,
+                RegisteredOn = DateTime.Parse("01-04-2023 10:00"),
+                IsAproovedByAdmin = false,
+                HasParking = true,
+                HasShop = true,
+                HasShower = true,
+                IsDeleted = false,
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur venenatis quam purus, id lobortis purus efficitur eget. Cras sed dui a dui finibus condimentum. Quisque ut erat ut orci bibendum tincidunt. Aenean malesuada, augue nec facilisis porttitor, ante massa dignissim sapien, quis vulputate nisi magna id justo. Nunc placerat est ac viverra fringilla. Vestibulum mattis arcu nec lacus tempus, et ultricies nisi luctus. Ut semper scelerisque libero nec pellentesque. Aliquam commodo imperdiet felis, at eleifend diam eleifend porttitor. Cras lacus mi, tempus vitae consectetur ut, dapibus id quam. Aenean a finibus dolor, gravida euismod mauris. Quisque aliquet auctor turpis eu maximus. Duis feugiat augue vel faucibus venenatis.\r\n\r\nInteger nisl metus, aliquet et vulputate sit amet, hendrerit eget nulla. Vestibulum non convallis augue. Aenean ut egestas lacus. Sed pulvinar purus neque, at maximus nisi efficitur et. Etiam sed magna a felis rutrum lacinia a vel tortor. Class aptent taciti eu.",
+            };
+
+            //Courts SetUp
+            //tennisClubSf
+            tennisClubSfCourtNo1 = new Court()
+            {
+                Id = 1,
+                Name = "No1",
+                ClubId = 1,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = false,
+                Surface = Common.Enums.Surface.Clay,
+                PricePerHour = 30
+            };
+            tennisClubSfCourtNo2 = new Court()
+            {
+                Id = 2,
+                Name = "No2",
+                ClubId = 1,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Clay,
+                PricePerHour = 35
+            };
+            tennisClubSfCourtNo3 = new Court()
+            {
+                Id = 3,
+                Name = "No3",
+                ClubId = 1,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Clay,
+                PricePerHour = 35
+            };
+            tennisClubSfCourtNo4 = new Court()
+            {
+                Id = 4,
+                Name = "No4",
+                ClubId = 1,
+                IsActive = true,
+                IsIndoor = true,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Carpet,
+                PricePerHour = 45
+            };
+
+            //forehandTcSf
+            forehandTcSfCourtNo1 = new Court()
+            {
+                Id = 5,
+                Name = "Court 1",
+                ClubId = 2,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Hard,
+                PricePerHour = 30
+            };
+            forehandTcSfCourtNo2 = new Court()
+            {
+                Id = 6,
+                Name = "Court 2",
+                ClubId = 2,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Hard,
+                PricePerHour = 30
+            };
+            forehandTcSfCourtNo3 = new Court()
+            {
+                Id = 7,
+                Name = "Court 3",
+                ClubId = 2,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Hard,
+                PricePerHour = 40
+            };
+            //sixZeroClubSf
+            sixZeroClubSfCourtNo1 = new Court()
+            {
+                Id = 8,
+                Name = "Number 1",
+                ClubId = 3,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.ArtificialGrass,
+                PricePerHour = 35
+            };
+            sixZeroClubSfCourtNo2 = new Court()
+            {
+                Id = 9,
+                Name = "Number 2",
+                ClubId = 3,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.ArtificialGrass,
+                PricePerHour = 35
+            };
+
+            //matchPointTcVn
+            matchPointTcVnCourtNo1 = new Court()
+            {
+                Id = 10,
+                Name = "First",
+                ClubId = 4,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Clay,
+                PricePerHour = 35
+            };
+            matchPointTcVnCourtNo2 = new Court()
+            {
+                Id = 11,
+                Name = "Second",
+                ClubId = 4,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Clay,
+                PricePerHour = 35
+            };
+            matchPointTcVnCourtNo3 = new Court()
+            {
+                Id = 12,
+                Name = "Third",
+                ClubId = 4,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Hard,
+                PricePerHour = 40
+            };
+
+            //AceTcVn
+            AceTcVnCourtNo1 = new Court()
+            {
+                Id = 13,
+                Name = "No 1",
+                ClubId = 5,
+                IsActive = true,
+                IsIndoor = true,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Carpet,
+                PricePerHour = 40
+            };
+            AceTcVnCourtNo2 = new Court()
+            {
+                Id = 14,
+                Name = "No 2",
+                ClubId = 5,
+                IsActive = true,
+                IsIndoor = true,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Carpet,
+                PricePerHour = 40
+            };
+
+            //blackSeaRamaTcKvn
+            blackSeaRamaTcKvnCourtNo1 = new Court()
+            {
+                Id = 15,
+                Name = "No1",
+                ClubId = 6,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = false,
+                Surface = Common.Enums.Surface.Hard,
+                PricePerHour = 50
+            };
+            blackSeaRamaTcKvnCourtNo2 = new Court()
+            {
+                Id = 16,
+                Name = "No2",
+                ClubId = 6,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = false,
+                Surface = Common.Enums.Surface.Hard,
+                PricePerHour = 50
+            };
+
+            //numberOneTcBc
+            numberOneTcBcCourtNo1 = new Court()
+            {
+                Id = 17,
+                Name = "Court 1",
+                ClubId = 7,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Clay,
+                PricePerHour = 30,
+            };
+            numberOneTcBcCourtNo2 = new Court()
+            {
+                Id = 18,
+                Name = "Court 2",
+                ClubId = 7,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Clay,
+                PricePerHour = 30,
+            };
+            numberOneTcBcCourtNo3 = new Court()
+            {
+                Id = 19,
+                Name = "Court 3",
+                ClubId = 7,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Clay,
+                PricePerHour = 30,
+            };
+
+            //simonaHalepTcBc
+            simonaHalepTcBcCourtNo1 = new Court()
+            {
+                Id = 20,
+                Name = "Court 1",
+                ClubId = 8,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Hard,
+                PricePerHour = 30,
+            };
+            simonaHalepTcBcCourtNo2 = new Court()
+            {
+                Id = 21,
+                Name = "Court 2",
+                ClubId = 8,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Hard,
+                PricePerHour = 30,
+            };
+
+            //winnerTcCn
+            winnerTcCnCourtNo1 = new Court()
+            {
+                Id = 22,
+                Name = "Court No1",
+                ClubId = 9,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.ArtificialGrass,
+                PricePerHour = 35,
+            };
+            winnerTcCnCourtNo2 = new Court()
+            {
+                Id = 23,
+                Name = "Court No2",
+                ClubId = 9,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.ArtificialGrass,
+                PricePerHour = 35,
+            };
+
+            //tennisGodTcGr
+            tennisGodTcGrCourtNo1 = new Court()
+            {
+                Id = 24,
+                Name = "Olymp 1",
+                ClubId = 10,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Hard,
+                PricePerHour = 60,
+            };
+            tennisGodTcGrCourtNo2 = new Court()
+            {
+                Id = 25,
+                Name = "Olymp 2",
+                ClubId = 10,
+                IsActive = true,
+                IsIndoor = false,
+                IsLighted = true,
+                Surface = Common.Enums.Surface.Hard,
+                PricePerHour = 60,
+            };
+
+            //notApprovedClubSf
+            notAproovedCourt1 = new Court()
+            {
+                Id = 26,
+                Name = "1st",
+                ClubId = 11,
+                IsActive = false,
+                IsIndoor = false,
+                IsLighted = false,
+                Surface = Common.Enums.Surface.Clay,
+                PricePerHour = 20,
+            };
+            notAproovedCourt2 = new Court()
+            {
+                Id = 27,
+                Name = "2nd",
+                ClubId = 11,
+                IsActive = false,
+                IsIndoor = false,
+                IsLighted = false,
+                Surface = Common.Enums.Surface.Clay,
+                PricePerHour = 20,
+            };
+
+
 
             users = new List<ApplicationUser>()
             {
-                user1, user2, user3, user4, user5, user6, user7, user8, user9, user10, 
+                user1, user2, user3, user4, user5, user6, user7, user8, user9, user10,
                 tennisClubSfOwner,forehandTcSfOwner,sixZeroClubSfOwner,
                 matchPointTcVnOwner,AceTcVnOwner,blackSeaRamaTcKvnOwner,
-                numberOneTcBcOwner,simonaHalepTcBcOwner,winnerTcCnOwner,tennisGodTcGrOwner
+                numberOneTcBcOwner,simonaHalepTcBcOwner,winnerTcCnOwner,
+                tennisGodTcGrOwner,notApprovedClubOwner
             };
 
             countries = new List<Country>()
@@ -456,7 +1056,8 @@ namespace GameSetBook.Tests
 
             clubs = new List<Club>()
             {
-                tennisClubSf,forehandTcSf,sixZeroClubSf,matchPointTcVn,AceTcVn,blackSeaRamaTcKvn,numberOneTcBc,simonaHalepTcBc,winnerTcCn,tennisGodTcGr
+                tennisClubSf,forehandTcSf,sixZeroClubSf,matchPointTcVn,AceTcVn,
+                blackSeaRamaTcKvn,numberOneTcBc,simonaHalepTcBc,winnerTcCn,tennisGodTcGr,notApprovedClubSf
             };
 
             courts = new List<Court>()
@@ -464,7 +1065,7 @@ namespace GameSetBook.Tests
                 tennisClubSfCourtNo1,tennisClubSfCourtNo2,tennisClubSfCourtNo3,tennisClubSfCourtNo4,forehandTcSfCourtNo1,forehandTcSfCourtNo2,forehandTcSfCourtNo3,
                 sixZeroClubSfCourtNo1,sixZeroClubSfCourtNo2,matchPointTcVnCourtNo1,matchPointTcVnCourtNo2,matchPointTcVnCourtNo3,AceTcVnCourtNo1,AceTcVnCourtNo2,
                 blackSeaRamaTcKvnCourtNo1,blackSeaRamaTcKvnCourtNo2,numberOneTcBcCourtNo1,numberOneTcBcCourtNo2,numberOneTcBcCourtNo3,simonaHalepTcBcCourtNo1,
-                simonaHalepTcBcCourtNo2,winnerTcCnCourtNo1,winnerTcCnCourtNo2,tennisGodTcGrCourtNo1,tennisGodTcGrCourtNo2
+                simonaHalepTcBcCourtNo2,winnerTcCnCourtNo1,winnerTcCnCourtNo2,tennisGodTcGrCourtNo1,tennisGodTcGrCourtNo2, notAproovedCourt1,notAproovedCourt2
             };
 
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -476,8 +1077,8 @@ namespace GameSetBook.Tests
             await dbContext.AddRangeAsync(users);
             await dbContext.AddRangeAsync(countries);
             await dbContext.AddRangeAsync(cities);
-            //await dbContext.AddRangeAsync(clubs);
-            //await dbContext.AddRangeAsync(courts);
+            await dbContext.AddRangeAsync(clubs);
+            await dbContext.AddRangeAsync(courts);
             //await dbContext.AddRangeAsync(bookings);
             //await dbContext.AddRangeAsync(reviews);
             var count = await dbContext.SaveChangesAsync();
@@ -485,6 +1086,8 @@ namespace GameSetBook.Tests
             var usersCount = await dbContext.Users.ToListAsync();
             var countriesCount = await dbContext.Countries.ToListAsync();
             var citiesCount = await dbContext.Cities.ToListAsync();
+            var clubsCount = await dbContext.Clubs.ToListAsync();
+            var courtsCount = await dbContext.Courts.ToListAsync();
 
 
         }
