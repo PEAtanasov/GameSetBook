@@ -45,6 +45,13 @@
                 }
             </div>
         </form>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <form asp-area="Admin" asp-controller="Booking" asp-action="Cancel" method="post">
+                <input type="hidden" name="returnUrl" value="@returnUrl" />
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-secondary mb-2 w-100 p-3 fw-bold">Cancel</button>
+            </form>
     </div>
 </div>
 
