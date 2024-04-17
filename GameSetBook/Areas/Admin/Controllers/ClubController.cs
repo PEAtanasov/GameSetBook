@@ -39,7 +39,7 @@ namespace GameSetBook.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] AllClubsAdminSortingModel model)
         {
-            model = await clubService.GetClubSortingModel(model);
+            model = await clubService.GetClubSortingModelAsync(model);
 
             var cities = await cityService.GetAllCitiesAsync();
             var countries = await countryService.GetAllCountriesAsync();

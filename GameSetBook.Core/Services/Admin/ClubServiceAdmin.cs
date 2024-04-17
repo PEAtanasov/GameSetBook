@@ -266,7 +266,7 @@ namespace GameSetBook.Core.Services.Admin
             await repository.SaveChangesAsync();
         }
 
-        public async Task<AllClubsAdminSortingModel> GetClubSortingModel(AllClubsAdminSortingModel model)
+        public async Task<AllClubsAdminSortingModel> GetClubSortingModelAsync(AllClubsAdminSortingModel model)
         {
             var clubsToSort = repository.GetAllWithDeletedReadOnly<Club>().Where(c=>c.Courts.Count()>0);
 

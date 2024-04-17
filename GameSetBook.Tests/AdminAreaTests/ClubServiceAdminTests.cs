@@ -1355,7 +1355,7 @@ namespace GameSetBook.Tests.AdminAreaTests
                 CurrentPage = 1
             };
 
-            var sortedModel = await service.GetClubSortingModel(model);
+            var sortedModel = await service.GetClubSortingModelAsync(model);
 
             Assert.That(sortedModel, Is.Not.Null);
             Assert.That(sortedModel.Clubs, Is.Not.Null);
@@ -1379,7 +1379,7 @@ namespace GameSetBook.Tests.AdminAreaTests
                 CurrentPage = 1
             };
 
-            var sortedModel = await service.GetClubSortingModel(model);
+            var sortedModel = await service.GetClubSortingModelAsync(model);
 
             Assert.That(sortedModel, Is.Not.Null);
             Assert.That(sortedModel.Clubs, Is.Not.Null);
@@ -1400,7 +1400,7 @@ namespace GameSetBook.Tests.AdminAreaTests
                 CurrentPage = 1
             };
 
-            var sortedModel = await service.GetClubSortingModel(model);
+            var sortedModel = await service.GetClubSortingModelAsync(model);
 
             Assert.That(sortedModel, Is.Not.Null);
             Assert.That(sortedModel.Clubs, Is.Not.Null);
@@ -1421,7 +1421,7 @@ namespace GameSetBook.Tests.AdminAreaTests
                 CurrentPage = 1
             };
 
-            var sortedModel = await service.GetClubSortingModel(model);
+            var sortedModel = await service.GetClubSortingModelAsync(model);
 
             Assert.That(sortedModel, Is.Not.Null);
             Assert.That(sortedModel.Clubs, Is.Not.Null);
@@ -1442,7 +1442,7 @@ namespace GameSetBook.Tests.AdminAreaTests
                 CurrentPage = 1
             };
 
-            var sortedModel = await service.GetClubSortingModel(model);
+            var sortedModel = await service.GetClubSortingModelAsync(model);
 
             Assert.That(sortedModel, Is.Not.Null);
             Assert.That(sortedModel.Clubs, Is.Not.Null);

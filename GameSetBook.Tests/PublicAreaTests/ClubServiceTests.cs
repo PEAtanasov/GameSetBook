@@ -1,4 +1,6 @@
 ﻿using GameSetBook.Core.Contracts;
+using GameSetBook.Core.Enums;
+using GameSetBook.Core.Models.Admin.Club;
 using GameSetBook.Core.Models.Club;
 using GameSetBook.Core.Services;
 using GameSetBook.Infrastructure.Common;
@@ -1219,6 +1221,117 @@ namespace GameSetBook.Tests.PublicAreaTests
                 Assert.That(actualEmail, Is.EqualTo(editModel.Email));
                 Assert.That(actualLogoUrl, Is.EqualTo(editModel.LogoUrl));
                 Assert.That(actualPhoneNumber, Is.EqualTo(editModel.PhoneNumber));
+            });
+        }
+
+        [Test]
+        public async Task GetClubSortingServiceModelAsync_ReturnsClubSortingModel()
+        {
+            var model = new AllClubsSortingModel
+            {
+                Country = country1.Name,
+                City = city1.Name,
+                SearchTerm = "club",
+                ClubSorting = ClubSorting.RatingDescending,
+                ClubsPerPage = 10,
+                CurrentPage = 1
+            };
+
+            var sortedModel = await service.GetClubSortingServiceModelAsync(model);
+
+            Assert.That(sortedModel, Is.Not.Null);
+            Assert.That(sortedModel.Clubs, Is.Not.Null);
+            Assert.That(sortedModel.Clubs.Count(), Is.GreaterThanOrEqualTo(0));
+
+            switch (model.ClubSorting)
+            {
+                case ClubSorting.RatingDescending:
+                    Assert.That(sortedModel.Clubs.Select(c => c.Rating).OrderByDescending(r => r).SequenceEqual(sortedModel.Clubs.Select(c => c.Rating)), Is.True);
+                    break;
+            }
+        }
+
+        [Test]
+        public async Task GetClubSortingServiceModelAsync_SortsByPriceAscending()
+        {
+            var model = new AllClubsSortingModel
+            {
+                ClubSorting = ClubSorting.PriceAscending,
+                ClubsPerPage = 10,
+                CurrentPage = 1
+            };
+
+            var sortedModel = await service.GetClubSortingServiceModelAsync(model);
+
+            Assert.That(sortedModel, Is.Not.Null);
+            Assert.That(sortedModel.Clubs, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(sortedModel.Clubs.Count(), Is.GreaterThanOrEqualTo(0));
+                Assert.That(sortedModel.Clubs.Select(c => c.Price).OrderBy(p => p).SequenceEqual(sortedModel.Clubs.Select(c => c.Price)), Is.True);
+            });
+        }
+
+        [Test]
+        public async Task GetClubSortingServiceModelAsync_SortsByPriceDescending()
+        {
+            var model = new AllClubsSortingModel
+            {
+                ClubSorting = ClubSorting.PriceDescending,
+                ClubsPerPage = 10,
+                CurrentPage = 1
+            };
+
+            var sortedModel = await service.GetClubSortingServiceModelAsync(model);
+
+            Assert.That(sortedModel, Is.Not.Null);
+            Assert.That(sortedModel.Clubs, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(sortedModel.Clubs.Count(), Is.GreaterThanOrEqualTo(0));
+                Assert.That(sortedModel.Clubs.Select(c => c.Price).OrderByDescending(p => p).SequenceEqual(sortedModel.Clubs.Select(c => c.Price)), Is.True);
+            });
+        }
+
+        [Test]
+        public async Task GetClubSortingServiceModelAsync_SortsByNumberOfCourtsAscending()
+        {
+            var model = new AllClubsSortingModel
+            {
+                ClubSorting = ClubSorting.NumberOfCourtsAscending,
+                ClubsPerPage = 10,
+                CurrentPage = 1
+            };
+
+            var sortedModel = await service.GetClubSortingServiceModelAsync(model);
+
+            Assert.That(sortedModel, Is.Not.Null);
+            Assert.That(sortedModel.Clubs, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(sortedModel.Clubs.Count(), Is.GreaterThanOrEqualTo(0));
+                Assert.That(sortedModel.Clubs.Select(c => c.NumberofCourts).OrderBy(n => n).SequenceEqual(sortedModel.Clubs.Select(c => c.NumberofCourts)), Is.True);
+            });
+        }
+
+        [Test]
+        public async Task GetClubSortingServiceModelAsync_SortsByNumberOfCourtsDescending()
+        {
+            var model = new AllClubsSortingModel
+            {
+                ClubSorting = ClubSorting.NumberOfCourtsDescending,
+                ClubsPerPage = 10,
+                CurrentPage = 1
+            };
+
+            var sortedModel = await service.GetClubSortingServiceModelAsync(model);
+
+            Assert.That(sortedModel, Is.Not.Null);
+            Assert.That(sortedModel.Clubs, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(sortedModel.Clubs.Count(), Is.GreaterThanOrEqualTo(0));
+                Assert.That(sortedModel.Clubs.Select(c => c.NumberofCourts).OrderByDescending(n => n).SequenceEqual(sortedModel.Clubs.Select(c => c.NumberofCourts)), Is.True);
             });
         }
     }
