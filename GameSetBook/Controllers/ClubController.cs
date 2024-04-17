@@ -71,7 +71,7 @@ namespace GameSetBook.Web.Controllers
 
             if (!await clubService.ExsitAsync(id))
             {
-                return BadRequest();
+                return NotFound();
             }
 
             var info = await clubService.GetClubIfnoAsync(id);
@@ -170,7 +170,7 @@ namespace GameSetBook.Web.Controllers
 
             if (!await clubService.ExsitAsync(id))
             {
-                return BadRequest();
+                return NotFound();
             }
 
             DateTime currentDate = date ?? DateTime.Now;
